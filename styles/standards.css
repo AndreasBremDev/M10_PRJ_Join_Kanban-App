@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+}
+
+/* NavBar */
+nav {
+    height: 100vh;
+    width: 232px;
+    background-color: #2A3647;
+}
+
+.nav_icon {
+    display: flex;
+    justify-content: center;
+    padding: 64px 0px 64px 0px;
+}
+
+.nav_navigation {
+    height: 229px;
+    margin-top: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.nav_summary {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px 10px 60px;
+}
+
+.nav_add_task {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px 10px 60px;
+}
+
+.nav_board {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px 10px 60px;
+}
+
+.nav_contacts {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px 10px 60px;
+}
+
+/* NavBar Hover */
+
+.nav_summary:hover {
+    cursor: pointer;
+    background-color: #2A3D59;
+    transform: translateY(-2px);
+    transition: all 125ms ease-in-out;
+}
+
+.nav_add_task:hover {
+    cursor: pointer;
+    background-color: #2A3D59;
+    transform: translateY(-2px);
+    transition: all 125ms ease-in-out;
+}
+
+.nav_board:hover {
+    cursor: pointer;
+    background-color: #2A3D59;
+    transform: translateY(-2px);
+    transition: all 125ms ease-in-out;
+}
+
+.nav_contacts:hover {
+    cursor: pointer;
+    background-color: #2A3D59;
+    transform: translateY(-2px);
+    transition: all 125ms ease-in-out;
+}
+
