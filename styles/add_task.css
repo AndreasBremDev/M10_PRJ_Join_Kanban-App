@@ -230,6 +230,10 @@ button.clear:hover {
   color: #fff;
 }
 
+.priority-btn.medium img {
+    filter: brightness(0) saturate(100%) invert(68%) sepia(92%) saturate(668%) hue-rotate(1deg) brightness(104%) contrast(103%);
+}
+
 .priority-btn.active.low {
   background-color: #7AE229;
   color: #fff;
