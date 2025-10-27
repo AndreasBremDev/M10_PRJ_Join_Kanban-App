@@ -1,0 +1,259 @@
+body {
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+header {
+    height: 64px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    padding: 0 40px 0 64px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.help-icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.help-icon:hover {
+    transform: scale(1.25);
+}
+
+.user-avatar-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.user-avatar-icon:hover {
+    filter: brightness(0.90);
+}
+
+main {
+    flex: 1;
+    background: #F5F6F7;
+    overflow-y: auto;
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.add-task-section {
+    background: #F5F6F7;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 64px 96px;
+
+}
+
+nav {
+    height: 100vh;
+}
+
+input,
+textarea,
+select {
+    border: 1px solid #D1D1D1;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.task-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 48px;
+    width: 100%;
+    margin-top: 16px;
+    max-width: 1200px;
+}
+
+.divider {
+    width: 1px;
+    background-color: #D1D1D1;
+    margin: 0 24px;
+    align-self: stretch;
+}
+
+.form-left,
+.form-right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    margin-top: 32px;
+}
+
+label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2A3647;
+    ;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 48px;
+    margin-right: 64px;
+}
+
+button.clear {
+    background: transparent;
+    border: 1px solid #2A3647;
+    color: #2A3647;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+}
+
+button.clear:hover {
+    background: #2A3647;
+    color: #fff;
+}
+
+button.create {
+    background: #2A3647;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.15s ease-in-out;
+}
+
+button.create:hover {
+    opacity: 0.9;
+    background: #44b6e6;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+button.clear:hover {
+    background-color: #fff;
+    border-color: #44b6e6;
+    color: #44b6e6;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.form-hint {
+    font-size: 14px;
+    margin-left: 16px;
+    align-items: center;
+    display: flex;
+}
+
+.required-marker {
+    color: #FF3B30;
+    margin-right: 4px;
+}
+
+.priority-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.priority-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background-color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.priority-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.priority-btn:hover {
+    opacity: 0.9;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.priority-btn.active.urgent {
+  background-color: #FF3B30;
+  color: #fff;
+}
+
+.priority-btn.active.medium {
+  background-color: #FFA800;
+  color: #fff;
+}
+
+.priority-btn.medium img {
+    filter: brightness(0) saturate(100%) invert(68%) sepia(92%) saturate(668%) hue-rotate(1deg) brightness(104%) contrast(103%);
+}
+
+.priority-btn.active.low {
+  background-color: #7AE229;
+  color: #fff;
+}
+
+.priority-btn.active img {
+  filter: brightness(0) invert(1);
+}
+
+input::placeholder,
+textarea::placeholder, 
+select::placeholder {
+    color: #A8A8A8;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #4fb9e7 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
