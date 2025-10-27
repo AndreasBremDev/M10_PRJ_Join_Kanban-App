@@ -248,3 +248,11 @@ textarea::placeholder,
 select::placeholder {
     color: #A8A8A8;
 }
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #4fb9e7 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
