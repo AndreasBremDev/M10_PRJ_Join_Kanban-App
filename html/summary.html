@@ -72,34 +72,96 @@
             </div>
         </section>
 
-        <section class="to_do_summary">
-            <div class="to_to_container">
-                <div class="to_do">
-                    <div class="div_icon"><img src="/assets/icons/pen_icon.svg" alt=""></div>
-                    <div class="container_information">
-                        <div class="numbers">1</div>
-                        <div class="numbers_txt"><p>To-do</p></div>
+        <section class="summary_content">
+
+            <div class="to_do_summary">
+                <div class="to_to_container">
+                    <div class="to_do">
+                        <div class="div_icon">
+                            <img src="/assets/icons/pen_dark_icon.svg" class="icon_dark" alt="">
+                            <img src="/assets/icons/pen_light_icon.svg" class="icon_light" alt="">
+                        </div>
+                        <div class="container_information">
+                            <div class="numbers">1</div>
+                            <div class="numbers_txt">
+                                <p>To-do</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="done">
+                        <div class="div_icon">
+                            <img src="/assets/icons/check_dark_icon.svg" class="icon_dark" alt="">
+                            <img src="/assets/icons/check_light_icon.svg" class="icon_light" alt="">
+                        </div>
+                        <div class="container_information">
+                            <div class="numbers">1</div>
+                            <div class="numbers_txt">
+                                <p>To-do</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="done"></div>
+                <div class="urgent_container">
+                    <div class="urgent">
+                        <div class="urgent_icon"><img src="/assets/icons/urgent_icon.svg" alt=""></div>
+                        <div class="container_information">
+                            <div class="numbers">1</div>
+                            <div class="numbers_txt">
+                                <p>Urgent</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="urgent_seperator">
+                        <img class="urgent_seperator_icon" src="/assets/icons/Summary_urgent_seperator.svg"
+                            height="102.02px" width="2px" alt="">
+                    </div>
+
+                    <div class="urgent_daytime_group">
+                        <div class="urgend_calender">Shows a date</div>
+                        <div class="urgend_calender_txt">Upcoming Deadline</div>
+                    </div>
+                </div>
+
+                <div class="board_informations">
+                    <div class="tasks_in_board">
+                        <div class="container_information">
+                            <div class="numbers">5</div>
+                            <div class="numbers_txt">
+                                <p>Tasks in Board</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tasks_in_progress">
+                        <div class="container_information">
+                            <div class="numbers">2</div>
+                            <div class="numbers_txt">
+                                <p>Tasks in Progress</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="awaiting_feedback">
+                        <div class="container_information">
+                            <div class="numbers">2</div>
+                            <div class="numbers_txt">
+                                <p>Awaiting Feedback</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="urgent_container">
-                <div class="urgent"></div>
-
-                <div class="urgent_seperator"></div>
-
-                <div class="urgent_daytime_group"></div>
+            <div class="greeting_container">
+                <p id="greeting_text">Good morning,</p>
+                <p id="greeting_name">Sofia Müller</p>
             </div>
-
-            <div class="board_informations">
-                <div class="tasks_in_board"></div>
-
-                <div class="tasks_in_progress"></div>
-
-                <div class="awaiting_feedback"></div>
-            </div>
+            
         </section>
     </main>
 
