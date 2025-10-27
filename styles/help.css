@@ -20,6 +20,7 @@ main.help-page::-webkit-scrollbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  align-items: center;
   width: 1014px;
   height: 73px;
   margin-top: 206px;
@@ -66,7 +67,6 @@ main.help-page::-webkit-scrollbar {
 /* Fonts*/
 .h1_help_page {
   font-size: 61px;
-  margin-bottom: 52px;
 }
 
 .h2_help_page {
