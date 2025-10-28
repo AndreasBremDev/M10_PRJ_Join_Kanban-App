@@ -71,6 +71,12 @@ async function handleCreateTask() {
 
 }
 
+function clearForm() {
+    document.getElementById("task-form").reset();
+    document.querySelectorAll(".priority-btn").forEach(btn => btn.classList.remove("active"));
+    document.querySelector(".priority-btn.medium").classList.add("active");
+}
+
 
 const BASE_URL = "https://join-b68c5-default-rtdb.europe-west1.firebasedatabase.app/";
 
