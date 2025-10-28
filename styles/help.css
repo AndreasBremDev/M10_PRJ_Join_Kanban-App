@@ -1,30 +1,31 @@
 body {
-  overflow: hidden;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
 }
 
 main.help-page {
-  margin-left: 328px;
-  height: calc(100vh - 96px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+    margin-left: 328px;
+    height: calc(100vh - 96px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 main.help-page::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+    width: 0;
+    height: 0;
 }
 
 .help {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  align-items: center;
-  width: 1014px;
-  height: 73px;
-  margin-top: 206px;
-  margin-bottom: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    width: 1014px;
+    height: 73px;
+    margin-top: 206px;
+    margin-bottom: 52px;
 }
 
 
@@ -66,7 +67,7 @@ main.help-page::-webkit-scrollbar {
 
 /* Fonts*/
 .h1_help_page {
-  font-size: 61px;
+    font-size: 61px;
 }
 
 .h2_help_page {
