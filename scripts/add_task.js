@@ -19,3 +19,13 @@ function setupFormButtons() {
     createBtn.addEventListener("click", handleCreateTask);
     clearBtn.addEventListener("click", clearForm);
 }
+
+function setupPriorityButtons() {
+    let buttons = document.querySelectorAll(".priority-btn");
+    buttons.forEach(button => {
+        button.addEventListener("click", () => {
+            buttons.forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
+        });
+    });
+}
