@@ -1,0 +1,192 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter';
+}
+
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --red: #ff0000;
+    --primary: #2A3647;
+    --primary-hover: #29ABE2;
+    --primary-active: #091931;
+    --shadow-hover: 0 4px 4px rgba(0, 0, 0, 0.25);
+    --shadow-box: 0 0 14px 3px rgba(0, 0, 0, 0.1);
+
+}
+
+body {
+    background-color: #f5f6f7;
+}
+
+.wrapper {
+    max-width: 1920px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+header {
+    padding: 80px 70px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.inner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 1;
+}
+
+.logo {
+    width: 120px;
+}
+
+input,
+button {
+    outline: none;
+    border: none;
+    font-family: inherit;
+    flex: 1;
+}
+
+input {
+    margin-left: 8px;
+}
+
+input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.btn {
+    height: 48px;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--primary);
+    color: var(--white);
+    font-size: 21px;
+    font-weight: bold;
+    transition: all 0.1s ease-in-out;
+}
+
+.btn:hover {
+    background-color: var(--primary-hover);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn:active {
+    background-color: var(--primary-active);
+}
+
+.btn.font16 {
+    font-size: 16px;
+}
+
+.btn.secondary {
+    background-color: var(--white);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.btn.secondary:hover {
+    color: var(--primary-hover);
+    border: 1px solid var(--primary-hover);
+}
+
+.btn.secondary:active {
+    border: 1px solid var(--primary-active);
+}
+
+.black {
+    color: var(--black);
+    font-size: 20px;
+    padding-right: 35px;
+}
+
+.input-field {
+    display: flex;
+    justify-content: space-between;
+    width: 352px;
+    height: 48px;
+    border: 2px solid #d1d1d1;
+    border-radius: 8px;
+}
+
+.login-register {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 511px;
+    border-radius: 30px;
+    background-color: var(--white);
+    box-shadow: var(--shadow-box);
+    padding-bottom: 35px;
+}
+
+.login-register h2 {
+    margin: 40px auto 24px;
+    font-size: 61px;
+}
+
+.login-register hr {
+    background-color: var(--primary-hover);
+    border: none;
+    width: 150px;
+    height: 3px;
+    margin-bottom: 30px;
+}
+
+.input-field img {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.error-msg {
+    height: 12px;
+    font-size: 12px;
+    color: var(--red);
+    padding-left: 8px;
+}
+
+.two-buttons {
+    text-align: center;
+}
+
+.inline {
+    margin-right: 35px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    gap: 35px;
+    padding: 16px;
+}
+
+footer a {
+    color: #A8A8A8;
+    text-decoration: none;
+    transition: 0.1s ease-in-out;
+}
+
+footer a:hover {
+    font-weight: 700;
+    color: var(--primary-hover);
+}

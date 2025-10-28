@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="icon" href="../assets/icons/Join_dark.png" type="image/png">
+    <title>Register</title>
+
+    <link rel="stylesheet" href="../styles/fonts.css">
+    <link rel="stylesheet" href="../styles/login_register.css">
+
+    <script src="../scripts/login_register.js" defer></script>
+</head>
+<body>
+        <div class="wrapper">
+        <header>
+            <img class="logo" src="../assets/icons/Join_dark.png" alt="Join Logo">
+            <div>
+                <span class="black">Not a Join user?</span>
+                <button class="btn font16">Sign up</button>
+            </div>
+        </header>
+
+        <main class="inner-wrapper">
+            <div class="login-register">
+                <h2>Sign up</h2>
+                <hr>
+                <form class="login-form" onsubmit="addUser(); return false;">
+                    <div class="input-field">
+                        <input type="text" name="" id="name" placeholder="Name">
+                        <div class="icon-div">
+                            <img src="../assets/icons/person.png" alt="email icon">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <input type="email" name="" id="email" placeholder="Email">
+                        <div class="icon-div">
+                            <img src="../assets/icons/mail.png" alt="email icon">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" name="" id="password" placeholder="Password">
+                        <div class="icon-div">
+                            <img src="../assets/icons/lock.png" alt="lock icon">
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" name="" id="passwordConfirm" placeholder="Confirm Password">
+                        <div class="icon-div">
+                            <img src="../assets/icons/lock.png" alt="lock icon">
+                        </div>
+                    </div>
+                    <div class="error-msg" id="errorMsg">Check your email and password. Please try again.</div>
+                    <div>
+                    <input type="checkbox" name="" id="checkbox">I accept the <a href="">privacy policy</a>
+                    </div>
+                    <div class="two-buttons">
+                        <button class="btn inline" type="submit" class="btn_std">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <a href="">Privacy policy</a>
+            <a href="">Legal notice</a>
+        </footer>
+    </div>
+
+</body>
+</html>
