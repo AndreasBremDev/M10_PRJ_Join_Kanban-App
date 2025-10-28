@@ -60,3 +60,25 @@ async function handleCreateTask() {
 
     console.log("New Task Created:", newTask);
 }
+
+
+const BASE_URL = "https://join-b68c5-default-rtdb.europe-west1.firebasedatabase.app/";
+
+async function postData(path = "", data = {}) {
+    try {
+        let response = await fetch(BASE_URL + path + ".json", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error posting data:", error);
+        throw error;
+    }
+
+}
