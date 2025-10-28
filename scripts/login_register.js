@@ -73,7 +73,7 @@ function validatePasswordConfirm() {
 function validateCheckbox() {
     let checkbox = document.getElementById('checkbox');
     let errMsgCheckbox = document.getElementById('errMsgCheckbox');
-    
+
     if (!checkbox.checked) {
         errMsgCheckbox.style.display = 'block';
         errMsgCheckbox.innerText = 'Please accept the privacy policy to continue';
@@ -97,14 +97,24 @@ function checkAllValidations() {
 }
 
 async function addUser() {
+    await putRegisterData('/2', setDataForBackendUpload());
+    clearAllSignUpInputFields();
+    showPopup();
+    setTimeout(() => {
+        window.location.href = '../index.html?msg=You signed up successfully';
+    }, 2000);
+}
+
+function setDataForBackendUpload() {
+    let nameRegister = document.getElementById('nameRegister');
+    let emailRegister = document.getElementById('emailRegister');
+    let passwordRegister = document.getElementById('passwordRegister');
     let data = {
         name: nameRegister.value,
         email: emailRegister.value,
         password: passwordRegister.value
     };
-    await putRegisterData('/2', data);
-    clearAllSignUpInputFields();
-    window.location.href = '../index.html?msg=You signed up successfully'
+    return data;
 }
 
 function clearAllSignUpInputFields() {
@@ -116,6 +126,18 @@ function clearAllSignUpInputFields() {
 
     nameRegister.value = emailRegister.value = passwordRegister.value = passwordRegisterConfirm.value = '';
     signUpBtn.checked = false;
+}
+
+function showPopup() {
+    const popup = document.getElementById('popup');
+    popup.style.display = 'block';
+    popup.classList.add('show');
+    setTimeout(function () {
+        popup.classList.remove('show');
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 500);
+    }, 1000);
 }
 
 getGuestUserData();
