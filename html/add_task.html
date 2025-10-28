@@ -17,117 +17,117 @@
             <div class="nav_icon">
                 <img src="/assets/icons/Join_light.png" alt="">
             </div>
-            <div class="nav_navigation">
-                <a class="nav_summary" href="/html/summary.html">
-                    <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
-                    <p class="nav_p">Summary</p>
-                </a>
-                <a class="nav_add_task" href="/html/add_task.html">
-                    <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
-                    <p class="nav_p">Add Task</p>
-                </a>
-                <a class="nav_board" href="/html/board.html">
-                    <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
-                    <p class="nav_p">Board</p>
-                </a>
-                <a class="nav_contacts" href="/html/contacts.html">
-                    <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
-                    <p class="nav_p">Contacts</p>
-                </a>
-            </div>
+            <section class="menu">
+                <div class="nav_navigation">
+                    <a class="nav_summary active" href="/html/summary.html">
+                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
+                        <p class="nav_p">Summary</p>
+                    </a>
+                    <a class="nav_add_task" href="/html/add_task.html">
+                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
+                        <p class="nav_p">Add Task</p>
+                    </a>
+                    <a class="nav_board" href="/html/board.html">
+                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
+                        <p class="nav_p">Board</p>
+                    </a>
+                    <a class="nav_contacts" href="/html/contacts.html">
+                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
+                        <p class="nav_p">Contacts</p>
+                    </a>
+                </div>
+
+                <div class="nav_policy">
+                    <a class="privacy_policy" href="#">Privacy Policy</a>
+                    <a class="legal_notes" href="#">Legal notice</a>
+                </div>
+            </section>
         </div>
     </nav>
 
-    <div class="content">
+    <header>
+        <div class="header-left">
+            <h2>Kanban Project Management Tool</h2>
+        </div>
+        <div class="header-right">
+            <a href="/html/help.html">
+                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
+            </a>
+            <div class="user-circle">SM</div>
+        </div>
+    </header>
 
-        <header>
-            <div class="header-title">
-                Kanban Project Management Tool
-            </div>
+    <main>
+        <section class="add-task-section">
+            <h1>Add Task</h1>
 
-            <div class="header-actions">
-                <a href="#">
-                    <img class="help-icon" src="/assets/icons/help_icon.svg" alt="Help">
-                </a>
+            <form id="task-form" class="task-form">
+                <div class="form-left">
+                    <label for="title">Title*</label>
+                    <input id="title" type="text" placeholder="Enter a title">
 
-                <a href="#">
-                    <img class="user-avatar-icon" src="/assets/icons/user_profile_logo.svg" alt="User Profile">
-                </a>
-            </div>
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Enter a Description"></textarea>
 
-        </header>
-
-        <main>
-            <section class="add-task-section">
-                <h1>Add Task</h1>
-
-                <form id="task-form" class="task-form">
-                    <div class="form-left">
-                        <label for="title">Title*</label>
-                        <input id="title" type="text" placeholder="Enter a title">
-
-                        <label for="description">Description</label>
-                        <textarea id="description" placeholder="Enter a Description"></textarea>
-
-                        <label for="due-date">Due date*</label>
-                        <input id="due-date" type="date" required>
-
-                    </div>
-
-                    <div class="divider"></div>
-
-                    <div class="form-right">
-                        <label>Priority</label>
-                        <div class="priority-buttons">
-                            <button type="button" class="priority-btn urgent">
-                                Urgent
-                                <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
-                            </button>
-                            <button type="button" class="priority-btn medium active">
-                                Medium
-                                <img src="/assets/icons/prio_medium_icon.svg" alt="medium icon">
-                            </button>
-                            <button type="button" class="priority-btn low">
-                                Low
-                                <img src="/assets/icons/prio_low_icon.svg" alt="low icon">
-                            </button>
-                        </div>
-
-                        <label for="assigned">Assigned to</label>
-                        <select id="assigned">
-                            <option>Select contacts to assign</option>
-                        </select>
-
-                        <label for="category">Category*</label>
-                        <select id="category" required>
-                            <option>Select task category</option>
-                        </select>
-
-                        <label for="subtask">Subtasks</label>
-                        <input type="text" id="subtask" placeholder="Add new subtask">
-                    </div>
-                </form>
-
-                <div class="form-footer">
-
-                    <p class="form-hint">
-                        <span class="required-marker">*</span>This field is required
-                    </p>
-
-
-                    <div class="form-actions">
-                        <button id="clear-btn" type="button" class="clear">Clear ✖</button>
-                        <button id="create-btn" type="button" class="create">Create Task ✔</button>
-                    </div>
-
+                    <label for="due-date">Due date*</label>
+                    <input id="due-date" type="date" required>
 
                 </div>
 
+                <div class="divider"></div>
 
-            </section>
-        </main>
+                <div class="form-right">
+                    <label>Priority</label>
+                    <div class="priority-buttons">
+                        <button type="button" class="priority-btn urgent">
+                            Urgent
+                            <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
+                        </button>
+                        <button type="button" class="priority-btn medium active">
+                            Medium
+                            <img src="/assets/icons/prio_medium_icon.svg" alt="medium icon">
+                        </button>
+                        <button type="button" class="priority-btn low">
+                            Low
+                            <img src="/assets/icons/prio_low_icon.svg" alt="low icon">
+                        </button>
+                    </div>
 
-    </div>
+                    <label for="assigned">Assigned to</label>
+                    <select id="assigned">
+                        <option>Select contacts to assign</option>
+                    </select>
+
+                    <label for="category">Category*</label>
+                    <select id="category" required>
+                        <option>Select task category</option>
+                    </select>
+
+                    <label for="subtask">Subtasks</label>
+                    <input type="text" id="subtask" placeholder="Add new subtask">
+                </div>
+            </form>
+
+            <div class="form-footer">
+
+                <p class="form-hint">
+                    <span class="required-marker">*</span>This field is required
+                </p>
+
+
+                <div class="form-actions">
+                    <button id="clear-btn" type="button" class="clear">Clear ✖</button>
+                    <button id="create-btn" type="button" class="create">Create Task ✔</button>
+                </div>
+
+
+            </div>
+
+
+        </section>
+    </main>
+
+
 
 </body>
 
