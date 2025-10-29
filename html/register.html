@@ -28,7 +28,7 @@
                 <hr>
                 <form class="login-form" onsubmit="addUser(); return false;">
                     <div class="input-field">
-                        <input type="text" oninput="validateName()" tabindex="1" id="nameRegister" placeholder="Full name">
+                        <input type="text" id="nameRegister" oninput="validateField('nameRegister', 'errMsgName', isNameValid, 0, `Spaces only ' ' are not allowed, please update`)" tabindex="1" placeholder="Full name">
                         <div class="icon-div">
                             <img src="../assets/icons/person.png" alt="email icon">
                         </div>
@@ -36,7 +36,7 @@
                     <div id="errMsgName" class="error-msg" style="display: none;"></div>
                     
                     <div class="input-field">
-                        <input type="email" oninput="validateEmail()" tabindex="1" id="emailRegister" placeholder="Email">
+                        <input type="email" id="emailRegister" oninput="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update')" tabindex="1" placeholder="Email">
                         <div class="icon-div">
                             <img src="../assets/icons/mail.png" alt="email icon">
                         </div>
@@ -44,7 +44,7 @@
                     <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
                     
                     <div class="input-field">
-                        <input oninput="validatePassword()" type="password" tabindex="1" id="passwordRegister" placeholder="Password" minlength="12">
+                        <input type="password" id="passwordRegister" oninput="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')" tabindex="1" placeholder="Password" minlength="12">
                         <div class="icon-div">
                             <img src="../assets/icons/lock.png" alt="lock icon">
                         </div>
@@ -52,7 +52,7 @@
                     <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
                     
                     <div class="input-field">
-                        <input oninput="validatePasswordConfirm()" type="password" tabindex="1" id="passwordRegisterConfirm" placeholder="Confirm Password" minlength="12">
+                        <input type="password" id="passwordRegisterConfirm" oninput="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal. Please double check')" tabindex="1" placeholder="Confirm Password" minlength="12">
                         <div class="icon-div">
                             <img src="../assets/icons/lock.png" alt="lock icon">
                         </div>
@@ -60,7 +60,7 @@
                     <div id="errMsgPasswordConfirm" class="error-msg" style="display: none;"></div>
                     
                     <div class="ta_center">
-                    <input oninput="validateCheckbox()" type="checkbox" tabindex="1" id="checkbox">I accept the <a href=""><span class="sign_up_link">privacy policy</span></a>
+                    <input type="checkbox" id="checkbox" oninput="validateField('checkbox', 'errMsgCheckbox', isCheckboxValid, 4, 'Please accept the privacy policy to continue')" tabindex="1" >I accept the <a href=""><span class="sign_up_link">privacy policy</span></a>
                     </div>
                     <div id="errMsgCheckbox" class="error-msg" style="display: none;"></div>
 
