@@ -82,7 +82,7 @@ function clearForm() {
 }
 
 
-const BASE_URL = "https://join-b68c5-default-rtdb.europe-west1.firebasedatabase.app/";
+let BASE_URL = "https://join-b68c5-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /** Post data to backend */
 async function postData(path = "", data = {}) {
@@ -103,3 +103,16 @@ async function postData(path = "", data = {}) {
     }
 
 }
+
+function toggleDropDownMenu() {
+    let userMenu = document.getElementById('user-menu');
+    userMenu.classList.toggle('show');
+}
+
+document.addEventListener('click', function (event) {
+    let userMenu = document.getElementById('user-menu');
+    let userCircle = document.querySelector('.user-circle');
+    if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
+        userMenu.classList.remove('show');
+    }
+});
