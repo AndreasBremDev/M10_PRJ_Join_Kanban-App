@@ -13,12 +13,12 @@
     <script src="../scripts/login_register.js" defer></script>
 </head>
 <body>
-        <div class="wrapper">
+    <div class="wrapper">
         <header>
             <img class="logo" src="../assets/icons/Join_dark.png" alt="Join Logo">
             <div>
-                <span class="black">Not a Join user?</span>
-                <button class="btn font16">Sign up</button>
+                <span class="black">Already a Join user?</span>
+                <button class="btn font16"><a href="../index.html">Log in</a></button>
             </div>
         </header>
 
@@ -28,38 +28,53 @@
                 <hr>
                 <form class="login-form" onsubmit="addUser(); return false;">
                     <div class="input-field">
-                        <input type="text" name="" id="name" placeholder="Name">
+                        <input type="text" id="nameRegister" oninput="validateField('nameRegister', 'errMsgName', isNameValid, 0, `Spaces only ' ' are not allowed, please update`)" tabindex="1" placeholder="Full name">
                         <div class="icon-div">
                             <img src="../assets/icons/person.png" alt="email icon">
                         </div>
                     </div>
+                    <div id="errMsgName" class="error-msg" style="display: none;"></div>
+                    
                     <div class="input-field">
-                        <input type="email" name="" id="email" placeholder="Email">
+                        <input type="email" id="emailRegister" oninput="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update')" tabindex="1" placeholder="Email">
                         <div class="icon-div">
                             <img src="../assets/icons/mail.png" alt="email icon">
                         </div>
                     </div>
+                    <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
+                    
                     <div class="input-field">
-                        <input type="password" name="" id="password" placeholder="Password">
+                        <input type="password" id="passwordRegister" oninput="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')" tabindex="1" placeholder="Password" minlength="12">
                         <div class="icon-div">
                             <img src="../assets/icons/lock.png" alt="lock icon">
                         </div>
                     </div>
+                    <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
+                    
                     <div class="input-field">
-                        <input type="password" name="" id="passwordConfirm" placeholder="Confirm Password">
+                        <input type="password" id="passwordRegisterConfirm" oninput="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal. Please double check')" tabindex="1" placeholder="Confirm Password" minlength="12">
                         <div class="icon-div">
                             <img src="../assets/icons/lock.png" alt="lock icon">
                         </div>
                     </div>
-                    <div class="error-msg" id="errorMsg">Check your email and password. Please try again.</div>
-                    <div>
-                    <input type="checkbox" name="" id="checkbox">I accept the <a href="">privacy policy</a>
+                    <div id="errMsgPasswordConfirm" class="error-msg" style="display: none;"></div>
+                    
+                    <div class="ta_center">
+                    <input type="checkbox" id="checkbox" oninput="validateField('checkbox', 'errMsgCheckbox', isCheckboxValid, 4, 'Please accept the privacy policy to continue')" tabindex="1" >I accept the <a href=""><span class="sign_up_link">privacy policy</span></a>
                     </div>
+                    <div id="errMsgCheckbox" class="error-msg" style="display: none;"></div>
+
                     <div class="two-buttons">
-                        <button class="btn inline" type="submit" class="btn_std">Sign up</button>
+                        <button id="signUp" class="btn inline" type="submit" class="btn_std" disabled aria-disabled="true">Sign up</button>
                     </div>
                 </form>
             </div>
+
+            <div id="popup" class="popup btn">
+                <p class="btn_std">You signed up successfully</p>
+            </div>
+
+
         </main>
 
         <footer>

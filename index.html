@@ -7,6 +7,49 @@
 
 </head>
 <body>
+    <div class="wrapper">
+        <header>
+            <img class="logo" src="../assets/icons/Join_dark.png" alt="Join Logo">
+            <div>
+                <span class="black">Not a Join user?</span>
+                <button class="btn font16"><a href="./html/register.html">Sign up</a></button>
+            </div>
+        </header>
+
+        <main class="inner-wrapper">
+            <div class="login-register">
+                <h2>Log In</h2>
+                <hr>
+                <form class="login-form" onsubmit="login(); return false;">
+                    <div class="input-field">
+                        <input type="email" oninput="validateEmail()" name="" id="emailRegister" placeholder="Email">
+                        <div class="icon-div">
+                            <img src="../assets/icons/mail.png" alt="email icon">
+                        </div>
+                    </div>
+                    <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
+
+                    <div class="input-field">
+                        <input oninput="validatePassword()" type="password" name="" id="passwordRegister" placeholder="Password" minlength="12">
+                        <div class="icon-div">
+                            <img src="../assets/icons/lock.png" alt="lock icon">
+                        </div>
+                    </div>
+                    <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
+
+                    <div class="two-buttons extra-space">
+                        <button class="btn inline" type="submit" class="btn_std">Log in</button>
+                        <button class="btn secondary" onclick="guestLogin()">Guest Log in</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <a href="">Privacy policy</a>
+            <a href="">Legal notice</a>
+        </footer>
+    </div>
     
 </body>
 </html>

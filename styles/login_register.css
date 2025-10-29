@@ -17,8 +17,17 @@
 
 }
 
+a {
+    text-decoration: none;
+    color: var(--white);
+}
+
 body {
     background-color: #f5f6f7;
+}
+
+.ta_center {
+    text-align: center;
 }
 
 .wrapper {
@@ -72,11 +81,28 @@ input[type="checkbox"] {
     font-size: 21px;
     font-weight: bold;
     transition: all 0.1s ease-in-out;
+    cursor: pointer;
+}
+
+.btn[disabled] {
+    background-color: #ccc;
+}
+
+.btn[disabled]:hover {
+    background-color: #ccc;
+    box-shadow: unset;
+    cursor: unset;
 }
 
 .btn:hover {
     background-color: var(--primary-hover);
     box-shadow: var(--shadow-hover);
+}
+
+.popup.btn:hover {
+    background-color: var(--primary);
+    box-shadow: inherit;
+    cursor: default;
 }
 
 .btn:active {
@@ -117,6 +143,10 @@ input[type="checkbox"] {
     border-radius: 8px;
 }
 
+input:focus {
+    outline: 3px solid var(--primary);
+}
+
 .login-register {
     display: flex;
     flex-direction: column;
@@ -150,6 +180,7 @@ input[type="checkbox"] {
     height: 100%;
     display: flex;
     align-items: center;
+    padding-right: 8px;
 }
 
 .login-form {
@@ -162,16 +193,53 @@ input[type="checkbox"] {
     height: 12px;
     font-size: 12px;
     color: var(--red);
-    padding-left: 8px;
+    padding-left: 2px;
+}
+
+.extra-space {
+    margin-top: 30px;
 }
 
 .two-buttons {
     text-align: center;
 }
 
+.sign_up_link {
+    color: var(--primary-hover);
+    cursor: pointer;
+}
+
 .inline {
     margin-right: 35px;
 }
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--primary);
+    color: var(--white);
+    width: min(512px, 100%);
+    text-align: center;
+    font-size: 21px;
+    font-weight: bold;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.popup.show {
+    display: block;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
+
 
 footer {
     display: flex;
