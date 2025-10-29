@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacts</title>
-    
+
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/contacts.css">
 </head>
 
 <body>
@@ -55,67 +56,50 @@
             <div class="user-circle">SM</div>
         </div>
     </header>
+    <main>
+        <div class="contacts-container">
 
-</body>
+            <div class="contact-list-sidebar">
 
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join - Contacts</title>
-    <link rel="stylesheet" href="../style.css">
-    <script src="../script.js"></script>
-    <script src="../scripts/contacts.js" defer></script>
-</head>
-<body>
-    <div class="main-container">
-        <div class="sidebar">
-            <img src="../assets/img/join-logo-light.png" alt="Join Logo" class="sidebar-logo">
-            <nav class="sidebar-nav">
-                <a href="../html/summary.html" class="nav-item">
-                    <img src="../assets/img/summary-icon.png" alt="Summary Icon">
-                    Summary
-                </a>
-                <a href="../html/add_task.html" class="nav-item">
-                    <img src="../assets/img/add-task-icon.png" alt="Add Task Icon">
-                    Add Task
-                </a>
-                <a href="../html/board.html" class="nav-item">
-                    <img src="../assets/img/board-icon.png" alt="Board Icon">
-                    Board
-                </a>
-                <a href="../html/contacts.html" class="nav-item active">
-                    <img src="../assets/img/contacts-icon-active.png" alt="Contacts Icon">
-                    Contacts
-                </a>
-            </nav>
-            <div class="sidebar-footer">
-                <a href="#" class="footer-link">Privacy Policy</a>
-                <a href="#" class="footer-link">Legal notice</a>
+                <button id="add-contact-btn" class="add-contact-btn">
+                    Add new contact <span class="add-contact-icon"></span>
+                </button>
+
+                <hr class="contact-list-separator">
+
+                <div class="contact-list" id="contact-list">
+
+                    <h2 class="contact-letter-header">A</h2>
+
+                    <div class="contact-entry">
+                        <div class="contact-initials-circle contact-initials-orange">AM</div>
+                        <div class="contact-info">
+                            <p class="contact-name">Anton Mayer</p>
+                            <a href="mailto:antonina@gmail.com" class="contact-email">antonina@gmail.com</a>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+
+            <div class="contact-detail-area">
+                <div class="contact-main-content">
+                    <div class="main-header-content">
+                        <h1>Contacts</h1>
+                        <span class="header-slogan">Better with a team</span>
+                    </div>
+
+                    <hr class="content-header-separator">
+
+                </div>
+            </div>
+
         </div>
-        <div class="content-area">
-            <header class="header">
-                <div class="header-title">Kanban Project Management Tool</div>
-                <div class="header-user-menu">
-                    <img src="../assets/img/help-icon.png" alt="Help Icon" class="help-icon">
-                    <div class="user-initials">SM</div>
-                </div>
-            </header>
-            <main class="contacts-main">
-                <div class="contacts-header">
-                    <h1 class="contacts-title">Contacts <span class="contacts-subtitle">Better with a team</span></h1>
-                    <button class="add-contact-btn">
-                        Add new contact <img src="../assets/img/person-add-icon.png" alt="Add Person Icon">
-                    </button>
-                </div>
-                <div class="contact-list-container">
-                    <!-- Contact list will be rendered here by JavaScript -->
-                </div>
-            </main>
-        </div>
-    </div>
+    </main>
+
+
+
+
 </body>
+
 </html>
