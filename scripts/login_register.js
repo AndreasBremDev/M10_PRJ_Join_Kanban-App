@@ -69,8 +69,8 @@ async function addUser() {
     }, 1500);
 }
 
-async function calcNextId() {
-    let res = await fetch(BASE_URL + ".json");
+async function calcNextId(path = "") {
+    let res = await fetch(BASE_URL + path + ".json");
     let resJson = await res.json();
     let userId = Object.keys(resJson);
     userId.length === 0 ? nextUser = 1 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
@@ -84,7 +84,9 @@ function setDataForBackendUpload() {
     let data = {
         name: nameRegister.value,
         email: emailRegister.value,
-        password: passwordRegister.value
+        password: passwordRegister.value,
+        contacts: "",
+        tasks: ""
     };
     return data;
 }
@@ -111,8 +113,6 @@ function clearAllSignUpInputFields() {
     signUpBtn.checked = false;
 }
 
-// #endregion
-
 function showPopup() {
     const popup = document.getElementById('popup');
     popup.style.display = 'block';
@@ -124,3 +124,11 @@ function showPopup() {
         }, 500);
     }, 1000);
 }
+
+async function test() {
+    let userId = 3;
+    let contactsId = await calcNextId(`/${userId}/contacts`)
+    await putRegisterData(`/${userId}/contacts/${contactsId}`, data = {email: "giovanni@gmail.com", name: "Giovanni Luca", phone: "0170-9999999"});
+}
+
+// #endregion

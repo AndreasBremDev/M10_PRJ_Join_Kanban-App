@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join landing page</title>
+
+    <link rel="icon" href="../assets/icons/Join_dark.png" type="image/png">
+    <title>Join Login</title>
+
+    <link rel="stylesheet" href="./styles/login_register.css">
+
+    <script src="./scripts/login_register.js" defer></script>
 
 </head>
 <body>
@@ -22,24 +28,24 @@
                 <hr>
                 <form class="login-form" onsubmit="login(); return false;">
                     <div class="input-field">
-                        <input type="email" oninput="validateEmail()" name="" id="emailRegister" placeholder="Email">
+                        <input type="email" id="emailRegister" oninput="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update')" tabindex="1" placeholder="Email">
                         <div class="icon-div">
                             <img src="../assets/icons/mail.png" alt="email icon">
                         </div>
                     </div>
                     <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
-
+                    
                     <div class="input-field">
-                        <input oninput="validatePassword()" type="password" name="" id="passwordRegister" placeholder="Password" minlength="12">
+                        <input type="password" id="passwordRegister" oninput="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')" tabindex="1" placeholder="Password" minlength="12">
                         <div class="icon-div">
                             <img src="../assets/icons/lock.png" alt="lock icon">
                         </div>
                     </div>
                     <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
-
+                    
                     <div class="two-buttons extra-space">
                         <button class="btn inline" type="submit" class="btn_std">Log in</button>
-                        <button class="btn secondary" onclick="guestLogin()">Guest Log in</button>
+                        <button class="btn secondary" onclick="guestLogin(); return false;">Guest Log in</button>
                     </div>
                 </form>
             </div>
