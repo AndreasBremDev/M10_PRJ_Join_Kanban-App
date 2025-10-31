@@ -20,11 +20,11 @@
             </div>
             <section class="menu">
                 <div class="nav_navigation">
-                    <a class="nav_summary active" href="/html/summary.html">
+                    <a class="nav_summary" href="/html/summary.html">
                         <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
                         <p class="nav_p">Summary</p>
                     </a>
-                    <a class="nav_add_task" href="/html/add_task.html">
+                    <a class="nav_add_task active" href="/html/add_task.html">
                         <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
                         <p class="nav_p">Add Task</p>
                     </a>
@@ -54,7 +54,14 @@
             <a href="/html/help.html">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
-            <div class="user-circle">SM</div>
+            <div class="user-circle" onclick="toggleDropDownMenu()">SM</div>
+
+            <div class="user-menu" id="user-menu">
+                <a href="/html/legal_notice.html">Legal Notice</a>
+                <a href="/html/privacy_policy.html">Privacy Policy</a>
+                <a href="#" id="logout-btn">Log out</a>
+            </div>
+
         </div>
     </header>
 
@@ -101,7 +108,9 @@
 
                     <label for="category">Category*</label>
                     <select id="category" required>
-                        <option>Select task category</option>
+                        <option value="" disabled selected>Select task category</option>
+                        <option value="technical">Technical Task</option>
+                        <option value="user-story">User Story</option>
                     </select>
 
                     <label for="subtask">Subtasks</label>

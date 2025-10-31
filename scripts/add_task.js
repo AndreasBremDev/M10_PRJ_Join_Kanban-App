@@ -4,7 +4,7 @@ function init() {
     setupPriorityButtons();
 }
 
-
+/* Set active priority button*/
 function setActivateBtn() {
     document.querySelectorAll(".priority-btn").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -14,6 +14,7 @@ function setActivateBtn() {
     });
 }
 
+/** Setup form buttons */
 function setupFormButtons() {
     let createBtn = document.getElementById("create-btn");
     let clearBtn = document.getElementById("clear-btn");
@@ -22,6 +23,7 @@ function setupFormButtons() {
     clearBtn.addEventListener("click", clearForm);
 }
 
+/** Setup priority buttons */
 function setupPriorityButtons() {
     let buttons = document.querySelectorAll(".priority-btn");
     buttons.forEach(button => {
@@ -32,6 +34,7 @@ function setupPriorityButtons() {
     });
 }
 
+/** Handle create task */
 async function handleCreateTask() {
     let title = document.getElementById("title").value.trim();
     let description = document.getElementById("description").value.trim();
@@ -71,6 +74,7 @@ async function handleCreateTask() {
 
 }
 
+/** Clear form */
 function clearForm() {
     document.getElementById("task-form").reset();
     document.querySelectorAll(".priority-btn").forEach(btn => btn.classList.remove("active"));
@@ -78,8 +82,9 @@ function clearForm() {
 }
 
 
-const BASE_URL = "https://join-b68c5-default-rtdb.europe-west1.firebasedatabase.app/";
+let BASE_URL = "https://join-b68c5-default-rtdb.europe-west1.firebasedatabase.app/";
 
+/** Post data to backend */
 async function postData(path = "", data = {}) {
     try {
         let response = await fetch(BASE_URL + path + ".json", {
@@ -98,3 +103,16 @@ async function postData(path = "", data = {}) {
     }
 
 }
+
+function toggleDropDownMenu() {
+    let userMenu = document.getElementById('user-menu');
+    userMenu.classList.toggle('show');
+}
+
+document.addEventListener('click', function (event) {
+    let userMenu = document.getElementById('user-menu');
+    let userCircle = document.querySelector('.user-circle');
+    if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
+        userMenu.classList.remove('show');
+    }
+});

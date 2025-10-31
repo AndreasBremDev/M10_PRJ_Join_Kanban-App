@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/contacts.css">
 </head>
 
 <body>
@@ -56,8 +57,28 @@
             <div class="user-circle">SM</div>
         </div>
     </header>
+    <main>
+        <div class="contacts-container">
 
-</body>
+            <div class="contact-list-sidebar">
+
+                <button id="add-contact-btn" class="add-contact-btn">
+                    Add new contact <span class="add-contact-icon"></span>
+                </button>
+
+                <hr class="contact-list-separator">
+
+                <div class="contact-list" id="contact-list">
+
+                    <h2 class="contact-letter-header">A</h2>
+
+                    <div class="contact-entry">
+                        <div class="contact-initials-circle contact-initials-orange">AM</div>
+                        <div class="contact-info">
+                            <p class="contact-name">Anton Mayer</p>
+                            <a href="mailto:antonina@gmail.com" class="contact-email">antonina@gmail.com</a>
+                        </div>
+                    </div>
 
 </html>
 <!DOCTYPE html>
@@ -114,12 +135,26 @@
                         Add new contact <img src="../assets/img/person-add-icon.png" alt="Add Person Icon">
                     </button>
                 </div>
-                <div class="contact-list-container">
-                    <!-- Contact list will be rendered here by JavaScript -->
+            </div>
+
+            <div class="contact-detail-area">
+                <div class="contact-main-content">
+                    <div class="main-header-content">
+                        <h1>Contacts</h1>
+                        <span class="header-slogan">Better with a team</span>
+                    </div>
+
+                    <hr class="content-header-separator">
+
                 </div>
-            </main>
+            </div>
+
         </div>
-    </div>
+    </main>
+
+
+
+
 </body>
 
 </html>
