@@ -28,7 +28,7 @@
                 <hr>
                 <form class="login-form" onsubmit="login(); return false;">
                     <div class="input-field">
-                        <input type="email" id="emailRegister" oninput="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update')" tabindex="1" placeholder="Email">
+                        <input type="email" id="emailLogin" oninput="validateField('emailLogin', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', false)" tabindex="1" placeholder="Email">
                         <div class="icon-div">
                             <img src="../assets/icons/mail.png" alt="email icon">
                         </div>
@@ -36,7 +36,7 @@
                     <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
                     
                     <div class="input-field">
-                        <input type="password" id="passwordRegister" oninput="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')" tabindex="1" placeholder="Password" minlength="12">
+                        <input type="password" id="passwordLogin" oninput="validateField('passwordLogin', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]', false)" tabindex="1" placeholder="Password" minlength="12">
                         <div class="icon-div">
                             <img src="../assets/icons/lock.png" alt="lock icon">
                         </div>
@@ -44,8 +44,8 @@
                     <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
                     
                     <div class="two-buttons extra-space">
-                        <button class="btn inline" type="submit" class="btn_std">Log in</button>
-                        <button class="btn secondary" onclick="guestLogin(); return false;">Guest Log in</button>
+                        <button class="btn inline" type="submit" class="btn_std" tabindex="1">Log in</button>
+                        <button class="btn secondary" onclick="guestLogin(); return false;" tabindex="1">Guest Log in</button>
                     </div>
                 </form>
             </div>

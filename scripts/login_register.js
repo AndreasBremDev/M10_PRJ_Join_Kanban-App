@@ -11,7 +11,7 @@ let bool = [0, 0, 0, 0, 0]
 
 // #region registration validation
 
-function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg) {
+function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = true) {
     let input = document.getElementById(inputId);
     let errMsgElem = document.getElementById(errMsgId);
     if (validateFn(input.value)) {
@@ -22,14 +22,13 @@ function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg) {
         errMsgElem.innerText = errMsg;
         bool[boolIndex] = 0;
     }
-    checkAllValidations();
+    if (shouldCheckAll) { checkAllValidations() };
     return bool[boolIndex];
 }
 
 function validateCheckboxSeperately() {
     let checkbox = document.getElementById('checkbox');
     let errMsgCheckbox = document.getElementById('errMsgCheckbox');
-
     if (!checkbox.checked) {
         errMsgCheckbox.style.display = 'block';
         errMsgCheckbox.innerText = 'Please accept the privacy policy to continue';
@@ -43,7 +42,7 @@ function validateCheckboxSeperately() {
 
 function checkAllValidations() {
     let fourOutOfFive = bool[0] === 1 && bool[1] === 1 && bool[2] === 1 && bool[3] === 1;
-    if (fourOutOfFive) { validateCheckboxSeperately()};
+    if (fourOutOfFive) { validateCheckboxSeperately() };
     let signUpBtn = document.getElementById('signUp');
     let allBoolEqualOne = bool.every(el => el === 1);
     if (allBoolEqualOne) {
@@ -70,10 +69,14 @@ async function addUser() {
 }
 
 async function calcNextId(path = "") {
-    let res = await fetch(BASE_URL + path + ".json");
-    let resJson = await res.json();
-    let userId = Object.keys(resJson);
-    userId.length === 0 ? nextUser = 1 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
+    try {
+        let res = await fetch(BASE_URL + path + ".json");
+        let resJson = await res.json();
+        let userId = Object.keys(resJson);
+        userId.length === 0 ? nextUser = 1 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
+    } catch (error) {
+        console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
+    }
     return nextUser;
 }
 
@@ -82,8 +85,8 @@ function setDataForBackendUpload() {
     let emailRegister = document.getElementById('emailRegister');
     let passwordRegister = document.getElementById('passwordRegister');
     let data = {
-        name: nameRegister.value,
-        email: emailRegister.value,
+        name: nameRegister.value.trim(),
+        email: emailRegister.value.trim().toLowerCase(),
         password: passwordRegister.value,
         contacts: "",
         tasks: ""
@@ -125,10 +128,33 @@ function showPopup() {
     }, 1000);
 }
 
-async function test() {
-    let userId = 3;
-    let contactsId = await calcNextId(`/${userId}/contacts`)
-    await putRegisterData(`/${userId}/contacts/${contactsId}`, data = {email: "giovanni@gmail.com", name: "Giovanni Luca", phone: "0170-9999999"});
-}
+// async function test() {
+//     let userId = 3;
+//     let contactsId = await calcNextId(`/${userId}/contacts`)
+//     await putRegisterData(`/${userId}/contacts/${contactsId}`, data = { email: "giovanni@gmail.com", name: "Giovanni Luca", phone: "0170-9999999" });
+// }
 
 // #endregion
+
+async function login(path = "") {
+    let email = document.getElementById('emailLogin');
+    let password = document.getElementById('passwordLogin');
+    try {
+        let res = await fetch(BASE_URL + path + ".json");
+        let resJson = await res.json();
+        let userIdIndex = resJson.findIndex(user => user.email === email.value && user.password === password.value);
+        // let user = resJson[index]; //  FYI user object
+        userIdIndex !== -1 ? window.location.href = `../html/summary.html?activeUserId=${userIdIndex}` : document.getElementById('errMsgPassword').style.display = "block", document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
+    } catch (error) {
+        console.log(`error in login(): `, error);
+    }
+}
+
+function guestLogin() {
+    document.getElementById('emailLogin').value = 'guest@user.com';
+    document.getElementById('passwordLogin').value = 'guest@Login.1234';
+    setTimeout(() => {
+        login();
+    }, 500);
+
+}
