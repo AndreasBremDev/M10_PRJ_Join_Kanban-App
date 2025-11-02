@@ -152,7 +152,8 @@ main {
     height: 3px;
     background-color: #29ABE2;
     border: none;
-    margin: 0 0 50px 0;
+    margin: auto;
+    transform: rotate(90deg);
 }
 
 /*NewSection*/
