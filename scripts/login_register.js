@@ -143,7 +143,6 @@ async function login(path = "") {
         let res = await fetch(BASE_URL + path + ".json");
         let resJson = await res.json();
         let userIdIndex = resJson.findIndex(user => user.email === email.value && user.password === password.value);
-        // let user = resJson[index]; //  FYI user object
         userIdIndex !== -1 ? window.location.href = `../html/summary.html?activeUserId=${userIdIndex}` : document.getElementById('errMsgPassword').style.display = "block", document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
         email.value = password.value = '';
     } catch (error) {
@@ -152,12 +151,8 @@ async function login(path = "") {
 }
 
 function guestLogin() {
-    document.getElementById('emailLogin').value = 'guest@user.com';
-    document.getElementById('passwordLogin').value = 'guest@Login.1234';
-    setTimeout(() => {
-        login();
-    }, 500);
-
+    email.value = password.value = '';
+    window.location.href = `../html/summary.html?activeUserId=0`;
 }
 
 function animateLogoFirstVisit() {
