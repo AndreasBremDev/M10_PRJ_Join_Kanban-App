@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join - Board</title>
-    <link rel="shortcut icon" href="/assets/icons/Join_dark.png" type="image/x-icon">
+    <title>Contacts</title>
 
-    <link rel="stylesheet" href="/styles/board.css">
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/contacts.css">
 </head>
 
 <body>
@@ -28,19 +27,19 @@
                         <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
                         <p class="nav_p">Add Task</p>
                     </a>
-                    <a class="nav_board active" href="/html/board.html">
+                    <a class="nav_board" href="/html/board.html">
                         <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
                         <p class="nav_p">Board</p>
                     </a>
-                    <a class="nav_contacts" href="/html/contacts.html">
+                    <a class="nav_contacts active" href="/html/contacts.html">
                         <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
                         <p class="nav_p">Contacts</p>
                     </a>
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy" href="privacy_policy.html">Privacy Policy</a>
-                    <a class="legal_notes" href="legal_notice.html">Legal notice</a>
+                    <a class="privacy_policy" href="">Privacy Policy</a>
+                    <a class="legal_notes" href="">Legal notice</a>
                 </div>
             </section>
         </div>
@@ -57,44 +56,50 @@
             <div class="user-circle">SM</div>
         </div>
     </header>
-
     <main>
-        <section class="board-header">
-            <div class="board-header__top">
-                <h1 class="board-title">Board</h1>
+        <div class="contacts-container">
 
-                <div class="board-actions">
-                    <div class="searchbar">
-                        <input class="searchbar__input" type="text" placeholder="Find Task">
-                        <div class="searchbar__divider"></div>
-                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg" alt="search icon"></button>
+            <div class="contact-list-sidebar">
+
+                <button id="add-contact-btn" class="add-contact-btn">
+                    Add new contact <span class="add-contact-icon"></span>
+                </button>
+
+                <hr class="contact-list-separator">
+
+                <div class="contact-list" id="contact-list">
+
+                    <h2 class="contact-letter-header">A</h2>
+
+                    <div class="contact-entry">
+                        <div class="contact-initials-circle contact-initials-orange">AM</div>
+                        <div class="contact-info">
+                            <p class="contact-name">Anton Mayer</p>
+                            <a href="mailto:antonina@gmail.com" class="contact-email">antonina@gmail.com</a>
+                        </div>
                     </div>
 
-                    <button class="btn btn-primary" type="button">Add Task +</button>
                 </div>
             </div>
 
-            <section class="board_categories">
-                <div class="category">
-                    <h2>To do</h2>
-                    <button class="add_btn">+</button>
-                </div>
+            <div class="contact-detail-area">
+                <div class="contact-main-content">
+                    <div class="main-header-content">
+                        <h1>Contacts</h1>
+                        <hr class="content-header-separator">
+                        <span class="header-slogan">Better with a team</span>
+                    </div>
 
-                <div class="category">
-                    <h2>In progress</h2>
-                    <button class="add_btn">+</button>
-                </div>
 
-                <div class="category">
-                    <h2>Await feedback</h2>
-                    <button class="add_btn">+</button>
-                </div>
 
-                <div class="category">
-                    <h2>Done</h2>
                 </div>
-            </section>
+            </div>
+
+        </div>
     </main>
+
+
+
 
 </body>
 

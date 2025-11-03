@@ -3,10 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join landing page</title>
+
+    <link rel="icon" href="./assets/icons/Join_dark.png" type="image/png">
+    <title>Join Login</title>
+
+    <link rel="stylesheet" href="./styles/login_register.css">
+
+    <script src="./scripts/login_register.js" defer></script>
 
 </head>
-<body>
+<body onload="animateLogoFirstVisit()">
+    <div id="logoOverlay" class="logo-overlay" aria-hidden="true" aria-label="logo-animation">
+        <img src="./assets/icons/Join_dark.png" alt="Join Logo Animation">
+    </div>
+    <div class="wrapper">
+        <header>
+            <img id="logo" class="logo" src="./assets/icons/Join_dark.png" alt="Join Logo" style="opacity: 0;">
+            <div>
+                <span class="black">Not a Join user?</span>
+                <button class="btn font16"><a href="./html/register.html">Sign up</a></button>
+            </div>
+        </header>
+
+        <main class="inner-wrapper">
+            <div class="login-register">
+                <h2>Log In</h2>
+                <hr>
+                <form class="login-form" onsubmit="login(); return false;">
+                    <div class="input-field">
+                        <input type="email" id="emailLogin" oninput="validateField('emailLogin', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', false)" tabindex="1" placeholder="Email">
+                        <div class="icon-div">
+                            <img src="../assets/icons/mail.png" alt="email icon">
+                        </div>
+                    </div>
+                    <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
+                    
+                    <div class="input-field">
+                        <input type="password" id="passwordLogin" oninput="validateField('passwordLogin', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]', false)" tabindex="1" placeholder="Password" minlength="12">
+                        <div class="icon-div">
+                            <img src="../assets/icons/lock.png" alt="lock icon">
+                        </div>
+                    </div>
+                    <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
+                    
+                    <div class="two-buttons extra-space">
+                        <button class="btn inline" type="submit" class="btn_std" tabindex="1">Log in</button>
+                        <button class="btn secondary" onclick="guestLogin(); return false;" tabindex="1">Guest Log in</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+
+        <footer>
+            <a href="">Privacy policy</a>
+            <a href="">Legal notice</a>
+        </footer>
+    </div>
     
 </body>
 </html>

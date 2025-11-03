@@ -1,0 +1,109 @@
+body {
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+main.help-page {
+    margin-left: 328px;
+    height: calc(100vh - 96px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+main.help-page::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.help {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    width: 1014px;
+    height: 73px;
+    margin-top: 206px;
+    margin-bottom: 52px;
+}
+
+
+
+.left_arrow:hover {
+    background-color: #e9e9e95b;
+    transform: translate(-1px);
+    border-radius: 50%;
+}
+
+
+.help_page {
+    margin-left: 232px;
+    margin-top: 96px;
+    background-color: #F6F7F8;
+    min-height: calc(100vh - 96px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.help_page_txt_container {
+    width: 1014px;
+    margin-bottom: 120px;
+}
+
+.p_help_txt {
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+    margin-bottom: 16px;
+}
+
+.p_help_txt_blue {
+    color: #29ABE2;
+    font-weight: 500;
+}
+
+/* Fonts*/
+.h1_help_page {
+    font-size: 61px;
+}
+
+.h2_help_page {
+    font-size: 27px;
+    font-weight: 700;
+    color: #000000;
+    margin-top: 40px;
+    margin-bottom: 16px;
+}
+
+.h3_help_page {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 8px;
+    margin-left: ;
+}
+
+.help-steps {
+    padding-left: 20px;
+    list-style: decimal;
+}
+
+.help-steps li {
+    margin-bottom: 16px;
+    padding-left: 24px;
+}
+
+.closing {
+    font-size: 27px;
+    font-weight: 700;
+    color: #000000;
+    margin-top: 40px;
+}
+
+li::marker {
+    font-size: 20px;
+    font-weight: 700;
+}
