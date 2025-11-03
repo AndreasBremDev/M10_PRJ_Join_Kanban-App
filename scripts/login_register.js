@@ -145,6 +145,7 @@ async function login(path = "") {
         let userIdIndex = resJson.findIndex(user => user.email === email.value && user.password === password.value);
         // let user = resJson[index]; //  FYI user object
         userIdIndex !== -1 ? window.location.href = `../html/summary.html?activeUserId=${userIdIndex}` : document.getElementById('errMsgPassword').style.display = "block", document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
+        email.value = password.value = '';
     } catch (error) {
         console.log(`error in login(): `, error);
     }
@@ -157,4 +158,14 @@ function guestLogin() {
         login();
     }, 500);
 
+}
+
+function animateLogoFirstVisit() {
+    let logoOverlay = document.getElementById('logoOverlay');
+    let logo = document.getElementById('logo');
+    logoOverlay.classList.add('animate-out');
+    setTimeout(() => {
+        logoOverlay.style.display = 'none';
+        logo.style.opacity = 1;
+    }, 1500);
 }

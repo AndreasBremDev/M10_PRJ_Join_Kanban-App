@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="icon" href="../assets/icons/Join_dark.png" type="image/png">
+    <link rel="icon" href="./assets/icons/Join_dark.png" type="image/png">
     <title>Join Login</title>
 
     <link rel="stylesheet" href="./styles/login_register.css">
@@ -12,10 +12,13 @@
     <script src="./scripts/login_register.js" defer></script>
 
 </head>
-<body>
+<body onload="animateLogoFirstVisit()">
+    <div id="logoOverlay" class="logo-overlay" aria-hidden="true" aria-label="logo-animation">
+        <img src="./assets/icons/Join_dark.png" alt="Join Logo Animation">
+    </div>
     <div class="wrapper">
         <header>
-            <img class="logo" src="../assets/icons/Join_dark.png" alt="Join Logo">
+            <img id="logo" class="logo" src="./assets/icons/Join_dark.png" alt="Join Logo" style="opacity: 0;">
             <div>
                 <span class="black">Not a Join user?</span>
                 <button class="btn font16"><a href="./html/register.html">Sign up</a></button>

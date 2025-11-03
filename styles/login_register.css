@@ -12,6 +12,7 @@
     --primary: #2A3647;
     --primary-hover: #29ABE2;
     --primary-active: #091931;
+    --bg-color: #f5f6f7;
     --shadow-hover: 0 4px 4px rgba(0, 0, 0, 0.25);
     --shadow-box: 0 0 14px 3px rgba(0, 0, 0, 0.1);
 
@@ -23,7 +24,7 @@ a {
 }
 
 body {
-    background-color: #f5f6f7;
+    background-color: var(--bg-color);
 }
 
 .ta_center {
@@ -52,6 +53,42 @@ header {
 }
 
 .logo {
+    width: 120px;
+}
+
+.logo-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    transition: all 1.5s ease-in-out;
+}
+
+.logo-overlay img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 240px;
+    transition: all 1.5s ease-in-out;
+}
+
+.logo-overlay.animate-out {
+    background-color: transparent; /* rgba(255, 255, 255, 0); */
+    backdrop-filter: blur(0px);
+}
+
+.logo-overlay.animate-out img {
+    top: 80px;
+    left: 70px;
+    transform: translate(0, 0);
     width: 120px;
 }
 
