@@ -79,7 +79,7 @@ main {
 }
 
 /* Primary Button */
-.btn_glass{
+.btn_glass {
     background-color: transparent;
     border: none;
     height: 32px;
@@ -89,8 +89,7 @@ main {
 
 .btn_glass:hover {
     cursor: pointer;
-    background-color: #a8a8a83d
-    ;
+    background-color: #a8a8a83d;
 }
 
 .btn {
@@ -118,10 +117,10 @@ main {
 }
 
 .add_btn {
-  transition: all 125ms ease-in-out;
+    transition: all 125ms ease-in-out;
 }
 
-.add_btn:hover{
+.add_btn:hover {
     border-color: #29ABE2;
     background-color: transparent;
     color: #29ABE2;
@@ -130,10 +129,18 @@ main {
 /* Column heads row */
 .board_categories {
     display: flex;
+    flex-direction: flex-start;
     justify-content: space-between;
     align-items: center;
     margin-top: 64px;
+    gap: 20px;
     max-width: 1208px;
+}
+
+.category-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .category {
@@ -166,4 +173,24 @@ main {
 .add_btn:hover {
     background: #F0F0F0;
     transform: scale(1.05);
+}
+
+.draggable {
+    /* width: 244px; */
+    min-height: 244px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 1px solid gray;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.draggable img {
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+.highlight {
+    background-color: rgba(0, 0, 0, 0.2);
 }
