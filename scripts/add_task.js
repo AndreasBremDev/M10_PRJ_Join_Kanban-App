@@ -1,23 +1,13 @@
 let BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/";
 const urlParams = new URLSearchParams(window.location.search);
 const activeUserId = urlParams.get('activeUserId') || 0;
+let isUserMenuListenerAdded = false;
 
 
 function init() {
-    setActivateBtn();
     setupFormButtons();
     setupPriorityButtons();
     loadContacts();
-}
-
-/* Set active priority button*/
-function setActivateBtn() {
-    document.querySelectorAll(".priority-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".priority-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-        });
-    });
 }
 
 /** Setup form buttons */
@@ -46,7 +36,9 @@ async function handleCreateTask() {
     let description = document.getElementById("description").value.trim();
     let dueDate = document.getElementById("due-date").value;
     let category = document.getElementById("category").value;
-    let assigned = document.getElementById("assigned").value;
+    let assignedSelect = document.getElementById("assigned");
+    let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
+    let checkedBoxes = document.querySelectorAll('#assigned-dropdown input[type="checkbox"]:checked');
     let subtaskText = document.getElementById("subtask").value.trim();
     let subtasksArray = subtaskText ? [subtaskText] : [];
     let hasSubtasksBoolean = subtasksArray.length > 0;
@@ -115,15 +107,23 @@ async function putData(path = "", data = {}) {
 function toggleDropDownMenu() {
     let userMenu = document.getElementById('user-menu');
     userMenu.classList.toggle('show');
-    document.addEventListener('click', function (event) {
-        let userMenu = document.getElementById('user-menu');
-        let userCircle = document.querySelector('.user-circle');
-        if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
-            userMenu.classList.remove('show');
-        }
-    });
+    if (!isUserMenuListenerAdded) {
+        document.addEventListener('click', function (event) {
+            let userMenu = document.getElementById('user-menu');
+            let userCircle = document.querySelector('.user-circle');
+            if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.remove('show');
+            }
+        });
+
+        isUserMenuListenerAdded = true;
+    }
 }
 
+function toggleContactDropdown() {
+    let dropdown = document.getElementById('assigned-dropdown');
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+}
 
 
 /** function to calculate the next taskId */
@@ -153,29 +153,38 @@ async function loadData(path = "") {
 }
 
 async function loadContacts() {
-    let dropdown = document.getElementById("assigned");
-    dropdown.innerHTML = '<option value="" disabled selected>Select contacts to assign</option>';
+    let dropdownContainer = document.getElementById("assigned-dropdown");
+    dropdownContainer.innerHTML = ''; // Leere den Container
 
     try {
-
         let contacts = await loadData(`user/${activeUserId}/contacts`);
 
         if (contacts) {
-
-            Object.values(contacts).forEach(contact => {
-
+            Object.keys(contacts).forEach(key => {
+                const contact = contacts[key];
 
                 if (contact && contact.name) {
-                    let newOption = document.createElement('option');
-                    newOption.value = contact.name;
-                    newOption.textContent = contact.name;
-                    dropdown.appendChild(newOption);
-                }
+                    // Erstelle Label und Checkbox für jeden Kontakt
+                    let contactItem = document.createElement('label');
+                    contactItem.className = 'contact-item';
 
+                    // Checkbox
+                    let checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = key; // Speichere die ID
+
+                    // Text
+                    let textSpan = document.createElement('span');
+                    textSpan.textContent = contact.name;
+
+                    contactItem.appendChild(checkbox);
+                    contactItem.appendChild(textSpan);
+                    dropdownContainer.appendChild(contactItem);
+                }
             });
         }
     } catch (error) {
         console.error("Could not load contacts:", error);
-        dropdown.innerHTML += '<option value="">(Error loading contacts)</option>';
+        dropdownContainer.innerHTML = '(Error loading contacts)';
     }
 }
