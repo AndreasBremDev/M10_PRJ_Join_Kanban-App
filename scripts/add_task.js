@@ -1,3 +1,7 @@
+const urlParams = new URLSearchParams(window.location.search);
+const activeUserId = urlParams.get('activeUserId') || 0;
+
+
 function init() {
     setActivateBtn();
     setupFormButtons();
