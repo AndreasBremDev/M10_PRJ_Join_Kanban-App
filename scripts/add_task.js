@@ -41,7 +41,9 @@ async function handleCreateTask() {
     let dueDate = document.getElementById("due-date").value;
     let category = document.getElementById("category").value;
     let assigned = document.getElementById("assigned").value;
-    let subtask = document.getElementById("subtask").value.trim();
+    let subtaskText = document.getElementById("subtask").value.trim();
+    let subtasksArray = subtaskText ? [subtaskText] : [];
+    let hasSubtasksBoolean = subtasksArray.length > 0;
     let activePriority = document.querySelector(".priority-btn.active");
     let priority = activePriority ? activePriority.classList[1] : "medium";
 
@@ -60,7 +62,8 @@ async function handleCreateTask() {
         category,
         assigned,
         priority,
-        subtasks: subtask ? [subtask] : [],
+        subtasks: subtasksArray,
+        hasSubtasks: hasSubtasksBoolean,
         createdAt: new Date().toISOString()
     }
 
@@ -132,3 +135,20 @@ async function calcNextId(path) {
     let nextId = Math.max(...keys) + 1;
     return nextId;
 }
+
+
+/** Load data from backend */
+async function loadData(path = "") {
+    try {
+        let response = await fetch(BASE_URL + path + ".json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error loading data:", error);
+        throw error;
+    }
+}
+
+
