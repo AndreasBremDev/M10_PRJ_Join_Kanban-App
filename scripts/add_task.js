@@ -36,9 +36,8 @@ async function handleCreateTask() {
     let description = document.getElementById("description").value.trim();
     let dueDate = document.getElementById("due-date").value;
     let category = document.getElementById("category").value;
-    let assignedSelect = document.getElementById("assigned");
-    let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
     let checkedBoxes = document.querySelectorAll('#assigned-dropdown input[type="checkbox"]:checked');
+    let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
     let subtaskText = document.getElementById("subtask").value.trim();
     let subtasksArray = subtaskText ? [subtaskText] : [];
     let hasSubtasksBoolean = subtasksArray.length > 0;
@@ -124,7 +123,6 @@ function toggleContactDropdown() {
     let dropdown = document.getElementById('assigned-dropdown');
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
-
 
 /** function to calculate the next taskId */
 async function calcNextId(path) {
