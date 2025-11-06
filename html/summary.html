@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/summary.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+
 </head>
 
-<body>
+<body onload="initSummary()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -96,7 +97,7 @@
                             <img src="/assets/icons/check_light_icon.svg" class="icon_light" alt="">
                         </div>
                         <div class="container_information">
-                            <div class="numbers">1</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Done</p>
                             </div>
@@ -108,7 +109,7 @@
                     <div class="urgent">
                         <div class="urgent_icon"><img src="/assets/icons/urgent_icon.svg" alt=""></div>
                         <div class="container_information">
-                            <div class="numbers">1</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Urgent</p>
                             </div>
@@ -131,7 +132,7 @@
                 <div class="board_informations">
                     <a class="tasks_in_board" href="/html/board.html">
                         <div class="container_information">
-                            <div class="numbers">5</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Tasks in <br> Board</p>
                             </div>
@@ -140,7 +141,7 @@
 
                     <a class="tasks_in_progress" href="/html/board.html?status=in_progress">
                         <div class="container_information">
-                            <div class="numbers">2</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Tasks in <br> Progress</p>
                             </div>
@@ -149,7 +150,7 @@
 
                     <a class="awaiting_feedback" href="/html/board.html?status=awaiting_feedback">
                         <div class="container_information">
-                            <div class="numbers">2</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Awaiting <br> Feedback</p>
                             </div>
@@ -159,8 +160,8 @@
             </div>
 
             <div class="greeting_container">
-                <p id="greeting_text">Good morning,</p>
-                <p id="greeting_name">Sofia Müller</p>
+                <p id="greeting_text"></p>
+                <p id="greeting_name"></p>
             </div>
 
         </section>

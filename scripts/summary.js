@@ -1,50 +1,124 @@
-/**
- * Zeigt die Begrüßung basierend der eingeloggten Uhrzeit an.
- * Erwartet einen String im Format "HH:MM" (z. B. "14:30").
- * Wandelt die Zeit in eine Zahl (z. B. 1430) um und gibt je nach Uhrzeit zurück:
- * - "Good Morning" für Zeiten von 00:00 Uhr bis 12:00 Uhr
- * - "Good Afternoon" für Zeiten zwischen 12:00 und 17:59 Uhr
- * - "Good Evening" für Zeiten ab 18:00 Uhr bis Mitternacht
- */
-function greet(the_time) {
-  let this_time = the_time.split(":");
-  let combined = this_time[0].concat(this_time[1]);
-  let timeNumber = parseInt(combined, 10);
+/** reads activeUserId (?activeUserId=0), Fallback 0 */
+function getActiveUserId() {
+  let urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("activeUserId") || 0;
+}
 
-  if (timeNumber < 1200) {
-    return "Good Morning";
-  } else if (timeNumber < 1800) {
-    return "Good Afternoon";
-  } else {
-    return "Good Evening";
+/** get User-Object from realtime Database (REST) */
+async function fetchUserData(userId) {
+  let url = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user/" + userId + ".json";
+  let response = await fetch(url);
+  return await response.json();
+}
+
+/** checks, if entry Task on board */
+function isTaskEntry(entry) {
+  return entry && typeof entry === "object" && entry.board;
+}
+
+/** extracts Tasks from data.tasks and Top-Level */
+function extractTasks(userData) {
+  let tasks = [];
+  if (userData && userData.tasks && typeof userData.tasks === "object") {
+    for (let taskId in userData.tasks) {
+      let task = userData.tasks[taskId];
+      if (isTaskEntry(task)) tasks.push(task);
+    }
   }
+  for (let key in userData) {
+    if (key !== "tasks" && isTaskEntry(userData[key])) tasks.push(userData[key]);
+  }
+  return tasks;
+}
+
+/** norms Board-String (small, without space./_) */
+function normalizeBoardValue(boardValue) {
+  return String(boardValue || "").toLowerCase().replace(/\s|_/g, "");
+}
+
+/** norm Date DD.MM.YYYY (or "-") */
+function formatDate(deadlineDate) {
+  if (!deadlineDate) return "-";
+  return deadlineDate.toLocaleDateString("en-US", { month: "long", day: "2-digit",  year: "numeric" });
+}
+
+/** checks the nearest Deadline */
+function findNextDeadline(tasks) {
+  let deadlines = [];
+  for (let i = 0; i < tasks.length; i++) {
+    let task = tasks[i];
+    if (task.dueDate) {
+      let dueDate = new Date(task.dueDate);
+      if (!isNaN(dueDate)) deadlines.push(dueDate);
+    }
+  }
+  if (deadlines.length === 0) return null;
+  let earliest = new Date(Math.min.apply(null, deadlines));
+  return earliest;
 }
 
 /**
- * Gibt abhängig von der aktuellen Uhrzeit die passende Begrüßung zurück.
- * Vormittag → "Good morning,"
- * Nachmittag → "Good afternoon,"
- * Abend → "Good evening,"
- * Wird später beim Login automatisch aufgerufen,
- * sobald ein User eingeloggt ist.
+ * Counts all key metrics for the summary cards.
+ * Checks each task for its board status, priority, and due date.
  */
-function greetNow(refDate = new Date()) {
-  const hours = refDate.getHours();
-  if (hours < 12) return "Good morning,";
-  if (hours < 18) return "Good afternoon,";
+function countTasks(tasks) {
+  let counts = { todo: 0, inProgress: 0, awaitingFeedback: 0, done: 0, urgent: 0, total: tasks.length, nextDeadline: "-" };
+  for (let i = 0; i < tasks.length; i++) {
+    let board = normalizeBoardValue(tasks[i].board);
+    let priority = String(tasks[i].priority || "").toLowerCase();
+    if (board.indexOf("todo") !== -1) counts.todo++;
+    else if (board.indexOf("inprogress") !== -1) counts.inProgress++;
+    else if (board.indexOf("await") !== -1) counts.awaitingFeedback++;
+    else if (board.indexOf("done") !== -1) counts.done++;
+    if (priority === "urgent") counts.urgent++;
+  }
+  let nextDeadline = findNextDeadline(tasks);
+  counts.nextDeadline = formatDate(nextDeadline);
+  return counts;
+}
+
+/** add numbers in cards (.numbers, .urgend_calender) */
+function renderSummaryCounts(taskCounts) {
+  let numberFields = document.getElementsByClassName("numbers");
+  if (numberFields[0]) numberFields[0].innerText = taskCounts.todo;
+  if (numberFields[1]) numberFields[1].innerText = taskCounts.done;
+  if (numberFields[2]) numberFields[2].innerText = taskCounts.urgent;
+  if (numberFields[3]) numberFields[3].innerText = taskCounts.total;
+  if (numberFields[4]) numberFields[4].innerText = taskCounts.inProgress;
+  if (numberFields[5]) numberFields[5].innerText = taskCounts.awaitingFeedback;
+  let deadlineField = document.getElementsByClassName("urgend_calender")[0];
+  if (deadlineField) deadlineField.innerText = taskCounts.nextDeadline;
+}
+
+/** shows login Time and Name */
+function getGreetingText(currentDate) {
+  let hour = (currentDate || new Date()).getHours();
+  if (hour < 12) return "Good morning,";
+  if (hour < 18) return "Good afternoon,";
   return "Good evening,";
 }
 
-/**
- * Schreibt die Begrüßung und den Usernamen auf die Summary-Seite.
- * Aktuell noch mit Platzhalter-Name, 
- * später kommt hier der Name aus Firebase rein.
- */
-function renderGreeting(userName, refDate) {
-  const greetingText = document.getElementById("greeting_text");
-  const greetingName = document.getElementById("greeting_name");
-  if (!greetingText || !greetingName) return;
-
-  greetingText.textContent = greetNow(refDate);
-  greetingName.textContent = userName;
+/** writes greeting text (#greeting_text, #greeting_name) */
+function renderGreeting(userName, currentDate) {
+  let greetingText = document.getElementById("greeting_text");
+  let greetingName = document.getElementById("greeting_name");
+  if (greetingText) greetingText.innerText = getGreetingText(currentDate);
+  if (greetingName) greetingName.innerText = userName || "Guest User";
 }
+
+/** Start: loading, counts, rendert */
+async function initSummary() {
+  let userId = getActiveUserId();
+  try {
+    let userData = await fetchUserData(userId);
+    if (!userData) return;
+    let tasks = extractTasks(userData);
+    let taskCounts = countTasks(tasks);
+    renderSummaryCounts(taskCounts);
+    renderGreeting(userData.name || "Guest User", new Date());
+  } catch (error) {
+    console.error("Summary could not be opend:", error);
+  }
+}
+
+initSummary();
