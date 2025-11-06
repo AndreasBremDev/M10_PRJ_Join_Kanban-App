@@ -10,9 +10,14 @@
     <link rel="stylesheet" href="/styles/board.css">
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+
+    <script src="/scripts/login_register.js" defer></script>
+    <script src="/scripts/board.js" defer></script>
+    <script src="/scripts/templates.js" defer></script>
+
 </head>
 
-<body>
+<body onload="init()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -67,7 +72,8 @@
                     <div class="searchbar">
                         <input class="searchbar__input" type="text" placeholder="Find Task">
                         <div class="searchbar__divider"></div>
-                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg" alt="search icon"></button>
+                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg"
+                                alt="search icon"></button>
                     </div>
 
                     <button class="btn btn-primary" type="button">Add Task +</button>
@@ -75,24 +81,54 @@
             </div>
 
             <section class="board_categories">
-                <div class="category">
-                    <h2>To do</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>To do</h2>
+                        <button class="add_btn">+</button>
+                    </div>
+                    <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')">
+                    </section>
                 </div>
 
-                <div class="category">
-                    <h2>In progress</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>In Progress</h2>
+                        <button class="add_btn">+</button>
+                    </div>
+                    <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')">
+                    </section>
                 </div>
 
-                <div class="category">
-                    <h2>Await feedback</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>Await Feedback</h2>
+                        <button class="add_btn">+</button>
+                    </div>
+                    <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')">
+                        <!-- <img id="img1" src="/assets/img/test_task_1.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img2" src="/assets/img/test_task_2.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img3" src="/assets/img/test_task_3.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img4" src="/assets/img/test_task_4.png" draggable="true"
+                            ondragstart="dragstartHandler(event)"> -->
+                    </section>
                 </div>
 
-                <div class="category">
-                    <h2>Done</h2>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>Done</h2>
+                    </div>
+                    <section id="categoryDone" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('done')">
+
+                    </section>
                 </div>
+
             </section>
     </main>
 

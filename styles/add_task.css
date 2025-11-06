@@ -272,3 +272,56 @@ select:focus {
 .user-menu.show {
     display: flex;
 }
+
+.custom-select-container {
+    position: relative; 
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.select-display {
+    border: 1px solid #D1D1D1;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: white;
+}
+
+.select-display:hover {
+    border-color: #4fb9e7;
+}
+
+.select-dropdown {
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 2px;
+    padding: 8px 0;
+    border: 1px solid #D1D1D1;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.1s;
+    user-select: none;
+}
+
+.contact-item:hover {
+    background-color: #f0f0f0;
+}
+
+.contact-item input[type="checkbox"] {
+    margin-right: 12px;
+    width: 18px; 
+    height: 18px;
+}

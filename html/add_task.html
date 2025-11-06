@@ -102,9 +102,14 @@
                     </div>
 
                     <label for="assigned">Assigned to</label>
-                    <select id="assigned">
-                        <option>Select contacts to assign</option>
-                    </select>
+                    <div class="custom-select-container">
+                        <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
+                            Select contacts to assign
+                        </div>
+
+                        <div id="assigned-dropdown" class="select-dropdown" style="display: none;">
+                        </div>
+                    </div>
 
                     <label for="category">Category*</label>
                     <select id="category" required>

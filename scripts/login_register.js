@@ -1,7 +1,7 @@
 const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
 let firebase = [];
 
-const isNameValid = val => val.trim() !== '';
+const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
 const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
 const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[!§$%&\/?\-\+#@]/.test(val) && val.length >= 12;
 const isConfirmValid = val => val === document.getElementById('passwordRegister').value;
@@ -60,7 +60,7 @@ function checkAllValidations() {
 
 async function addUser() {
     let nextUserId = await calcNextId();
-    await putRegisterData('/' + nextUserId, setDataForBackendUpload());
+    await putData('/' + nextUserId, setDataForBackendUpload());
     clearAllSignUpInputFields();
     showPopup();
     setTimeout(() => {
@@ -73,7 +73,7 @@ async function calcNextId(path = "") {
         let res = await fetch(BASE_URL + path + ".json");
         let resJson = await res.json();
         let userId = Object.keys(resJson);
-        userId.length === 0 ? nextUser = 1 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
+        userId.length === 0 ? nextUser = 0 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
     } catch (error) {
         console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
     }
@@ -94,7 +94,7 @@ function setDataForBackendUpload() {
     return data;
 }
 
-async function putRegisterData(path = "", data = {}) {
+async function putData(path = "", data = {}) {
     let response = await fetch(BASE_URL + path + ".json", {
         method: "put",
         header: {
@@ -128,12 +128,6 @@ function showPopup() {
     }, 1000);
 }
 
-// async function test() {
-//     let userId = 3;
-//     let contactsId = await calcNextId(`/${userId}/contacts`)
-//     await putRegisterData(`/${userId}/contacts/${contactsId}`, data = { email: "giovanni@gmail.com", name: "Giovanni Luca", phone: "0170-9999999" });
-// }
-
 // #endregion
 
 async function login(path = "") {
@@ -143,7 +137,6 @@ async function login(path = "") {
         let res = await fetch(BASE_URL + path + ".json");
         let resJson = await res.json();
         let userIdIndex = resJson.findIndex(user => user.email === email.value && user.password === password.value);
-        // let user = resJson[index]; //  FYI user object
         userIdIndex !== -1 ? window.location.href = `../html/summary.html?activeUserId=${userIdIndex}` : document.getElementById('errMsgPassword').style.display = "block", document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
         email.value = password.value = '';
     } catch (error) {
@@ -152,12 +145,10 @@ async function login(path = "") {
 }
 
 function guestLogin() {
-    document.getElementById('emailLogin').value = 'guest@user.com';
-    document.getElementById('passwordLogin').value = 'guest@Login.1234';
-    setTimeout(() => {
-        login();
-    }, 500);
-
+    let email = document.getElementById('emailLogin');
+    let password = document.getElementById('passwordLogin');
+    email.value = password.value = '';
+    window.location.href = `../html/summary.html?activeUserId=0`;
 }
 
 function animateLogoFirstVisit() {

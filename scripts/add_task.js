@@ -1,17 +1,13 @@
+let BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/";
+const urlParams = new URLSearchParams(window.location.search);
+const activeUserId = urlParams.get('activeUserId') || 0;
+
+
+
 function init() {
-    setActivateBtn();
     setupFormButtons();
     setupPriorityButtons();
-}
-
-/* Set active priority button*/
-function setActivateBtn() {
-    document.querySelectorAll(".priority-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-            document.querySelectorAll(".priority-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-        });
-    });
+    loadContacts();
 }
 
 /** Setup form buttons */
@@ -40,8 +36,17 @@ async function handleCreateTask() {
     let description = document.getElementById("description").value.trim();
     let dueDate = document.getElementById("due-date").value;
     let category = document.getElementById("category").value;
-    let assigned = document.getElementById("assigned").value;
-    let subtask = document.getElementById("subtask").value.trim();
+    let checkedBoxes = document.querySelectorAll('#assigned-dropdown input[type="checkbox"]:checked');
+    let assigned = Array.from(checkedBoxes).map(checkbox => checkbox.value);
+    let subtaskText = document.getElementById("subtask").value.trim();
+    let subtasksArray = [];
+    if (subtaskText) {
+        const rawSubtasks = subtaskText.split('\n').filter(line => line.trim() !== '');
+        subtasksArray = rawSubtasks.map((title, index) => ({
+            done: "false",
+            title: title.trim()
+        }));
+    }
     let activePriority = document.querySelector(".priority-btn.active");
     let priority = activePriority ? activePriority.classList[1] : "medium";
 
@@ -50,9 +55,6 @@ async function handleCreateTask() {
         return;
     }
 
-    /**have to change, just testing */
-    let activeUserId = 3;
-
     let newTask = {
         title,
         description,
@@ -60,7 +62,7 @@ async function handleCreateTask() {
         category,
         assigned,
         priority,
-        subtasks: subtask ? [subtask] : [],
+        subtasks: subtasksArray,
         createdAt: new Date().toISOString()
     }
 
@@ -85,7 +87,6 @@ function clearForm() {
 }
 
 
-let BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /** Post data to backend */
 async function putData(path = "", data = {}) {
@@ -110,16 +111,23 @@ async function putData(path = "", data = {}) {
 function toggleDropDownMenu() {
     let userMenu = document.getElementById('user-menu');
     userMenu.classList.toggle('show');
-    document.addEventListener('click', function (event) {
-        let userMenu = document.getElementById('user-menu');
-        let userCircle = document.querySelector('.user-circle');
-        if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
-            userMenu.classList.remove('show');
-        }
-    });
+    if (!isUserMenuListenerAdded) {
+        document.addEventListener('click', function (event) {
+            let userMenu = document.getElementById('user-menu');
+            let userCircle = document.querySelector('.user-circle');
+            if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.remove('show');
+            }
+        });
+
+        isUserMenuListenerAdded = true;
+    }
 }
 
-
+function toggleContactDropdown() {
+    let dropdown = document.getElementById('assigned-dropdown');
+    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+}
 
 /** function to calculate the next taskId */
 async function calcNextId(path) {
@@ -131,4 +139,55 @@ async function calcNextId(path) {
     let keys = Object.keys(resJson).map(Number);
     let nextId = Math.max(...keys) + 1;
     return nextId;
+}
+
+
+/** Load data from backend */
+async function loadData(path = "") {
+    try {
+        let response = await fetch(BASE_URL + path + ".json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error loading data:", error);
+    }
+}
+
+async function loadContacts() {
+    let dropdownContainer = document.getElementById("assigned-dropdown");
+    dropdownContainer.innerHTML = ''; // Leere den Container
+
+    try {
+        let contacts = await loadData(`user/${activeUserId}/contacts`);
+
+        if (contacts) {
+            Object.keys(contacts).forEach(key => {
+                const contact = contacts[key];
+
+                if (contact && contact.name) {
+                    // Erstelle Label und Checkbox für jeden Kontakt
+                    let contactItem = document.createElement('label');
+                    contactItem.className = 'contact-item';
+
+                    // Checkbox
+                    let checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.value = key; // Speichere die ID
+
+                    // Text
+                    let textSpan = document.createElement('span');
+                    textSpan.textContent = contact.name;
+
+                    contactItem.appendChild(checkbox);
+                    contactItem.appendChild(textSpan);
+                    dropdownContainer.appendChild(contactItem);
+                }
+            });
+        }
+    } catch (error) {
+        console.error("Could not load contacts:", error);
+        dropdownContainer.innerHTML = '(Error loading contacts)';
+    }
 }

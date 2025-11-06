@@ -7,7 +7,7 @@
     <link rel="icon" href="../assets/icons/Join_dark.png" type="image/png">
     <title>Register</title>
 
-    <link rel="stylesheet" href="../styles/fonts.css">
+    <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="../styles/login_register.css">
 
     <script src="../scripts/login_register.js" defer></script>
@@ -28,7 +28,7 @@
                 <hr>
                 <form class="login-form" onsubmit="addUser(); return false;">
                     <div class="input-field">
-                        <input type="text" id="nameRegister" oninput="validateField('nameRegister', 'errMsgName', isNameValid, 0, `Spaces only ' ' are not allowed, please update`)" tabindex="1" placeholder="Full name">
+                        <input type="text" id="nameRegister" oninput="validateField('nameRegister', 'errMsgName', isNameValid, 0, `Please enter forename + 'space' + surname`)" tabindex="1" placeholder="Full name">
                         <div class="icon-div">
                             <img src="../assets/icons/person.png" alt="email icon">
                         </div>
