@@ -7,7 +7,7 @@ body {
 
 main.legal-main {
   position: fixed;
-  width: 1016px;
+  max-width: 1016px;
   top: 96px;
   left: 328px;
   right: 0;

@@ -64,8 +64,8 @@ main {
 }
 
 .to_do_summary {
-  height: 562px;
-  width: 560px;
+  display: flex;
+  flex-direction: column;
   top: 335px;
 }
 
@@ -80,7 +80,8 @@ main {
 .to_do,
 .done {
   height: 168px;
-  width: 264px;
+  max-width: 264px;
+  flex: 1 1 220px;
   background-color: white;
   border-radius: 30px;
   display: flex;
@@ -108,7 +109,6 @@ main {
 
 .urgent_container {
   height: 168px;
-  width: 560px;
   background-color: white;
   border-radius: 30px;
   display: flex;
@@ -161,6 +161,7 @@ main {
   justify-content: center;
   height: 200px;
   margin-left: 60px;
+  padding-right: 16px;
 }
 
 #greeting_text {
@@ -183,6 +184,7 @@ main {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 10px;
 }
 
 .tasks_in_board,

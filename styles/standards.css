@@ -171,6 +171,12 @@ header {
     color: #000;
 }
 
+.header-left-img{
+    display: none;
+    height: 39.02px;
+    width: 32px;
+}
+
 .header-right {
     display: flex;
     align-items: center;
