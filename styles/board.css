@@ -194,3 +194,39 @@ main {
 .highlight {
     background-color: rgba(0, 0, 0, 0.2);
 }
+
+.add-task-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;  
+}
+
+
+//
+
+
+.user-circle-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.user-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #6c8df7; /* Oder beliebige andere Farben */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+}
