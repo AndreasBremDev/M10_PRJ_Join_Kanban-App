@@ -11,10 +11,13 @@
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
 
+
+    <script src="/scripts/global.js" defer></script>
     <script src="/scripts/board.js" defer></script>
+    
 </head>
 
-<body onload="init()">
+<body onload="init() ; initGlobal()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -85,10 +88,14 @@
                     </div>
                     <div id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
                         ondragleave="toggleStyle(event)" ondrop="dropHandler(event)">
-                        <img id="img1" src="/assets/img/test_task_1.png" draggable="true" ondragstart="dragstartHandler(event)">
-                        <img id="img2" src="/assets/img/test_task_2.png" draggable="true" ondragstart="dragstartHandler(event)">
-                        <img id="img3" src="/assets/img/test_task_3.png" draggable="true" ondragstart="dragstartHandler(event)">
-                        <img id="img4" src="/assets/img/test_task_4.png" draggable="true" ondragstart="dragstartHandler(event)">
+                        <img id="img1" src="/assets/img/test_task_1.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img2" src="/assets/img/test_task_2.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img3" src="/assets/img/test_task_3.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
+                        <img id="img4" src="/assets/img/test_task_4.png" draggable="true"
+                            ondragstart="dragstartHandler(event)">
                     </div>
                 </div>
 
@@ -128,9 +135,9 @@
     </main>
 
     <div id="add-task-overlay" class="add-task-overlay">
-
         <div id="contacts-container" class="user-circle-container"></div>
     </div>
+    <div id="user-initial-circle"></div>
 </body>
 
 
