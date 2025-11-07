@@ -1,4 +1,5 @@
-const FIREBASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app";
+const FIREBASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
+
 let contactCircleColor = [
     '#FF7A00',
     '#FF5EB3',
@@ -21,6 +22,7 @@ function initGlobal() {
     renderUserCircles();
 }
 
+// function to fetch user data from firebase
 async function fetchUserData(path) {
     try {
         let url = `${FIREBASE_URL}${path}`;
@@ -36,40 +38,39 @@ async function fetchUserData(path) {
     }
 }
 
+// function to extract initials from a full name
 function getInitials(name) {
     return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
 }
 
+// function to create a user circle and put it to the container
 function createUserCircle(containerId, initials, index) {
-    const color = contactCircleColor[index % contactCircleColor.length];
-    const userCircle = document.createElement('div');
-    userCircle.classList.add('user-circle');
-    userCircle.textContent = initials;
-    userCircle.style.backgroundColor = color;
+    const color = contactCircleColor[index % contactCircleColor.length]; // choose color from  contactCircleColor
+    const userCircle = document.createElement('div'); // create a 'div' element for the circle
+    userCircle.classList.add('user-circle-intials');
+    userCircle.textContent = initials; // set the initials as text inside the circle
+    userCircle.style.backgroundColor = color; // set the background color for the circle
 
-    const container = document.getElementById(containerId);
+    const container = document.getElementById(containerId); // get the container to append the circle
     if (container) {
-        console.log("Creating circle for:", initials);
-        container.appendChild(userCircle);
+        container.appendChild(userCircle); // put circle tot he container
     } else {
-        console.error(`Container ${containerId} not found!`);  // Fehlerbehandlung: Überprüfen, ob der Container vorhanden ist
+        console.error(`Container ${containerId} not found!`);  // error handling
     }
 }
 
-// Funktion zum Laden der Kontakte und Erstellen der Benutzerkreise
+// function to load user contacts and create user circles for each contact
 async function renderUserCircles() {
-    const activeUserId = new URLSearchParams(window.location.search).get('activeUserId') || 0;
-    const contacts = await fetchUserData(`/user/${activeUserId}/contacts.json`);
-
+    const contacts = await fetchUserData(`/${activeUserId}/contacts.json`); // fetch contacts for the active user
     if (!contacts) {
-        console.error("No contacts found for user:", activeUserId);
+        console.error("No contacts found for user:", activeUserId); // error message
         return;
     }
+    // loop through the contacts and create a circle for each one
     contacts.forEach((contact, index) => {
         if (contact) {
-            console.log("Contact:", contact);  // Gibt den gesamten Kontakt aus
-            const initials = getInitials(contact.name); // Extrahiere Initialen
-            createUserCircle('user-initial-circle', initials, index); // Erstelle den Kreis
+            const initials = getInitials(contact.name); // // Extract initials
+            createUserCircle('user-initial-circle', initials, index); // create and append the user circle
         }
     });
 }
