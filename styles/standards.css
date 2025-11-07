@@ -205,10 +205,9 @@ header {
 }
 
 
-/* user-circle-intial*/
+/* user-circle-intial //global.js*/
 
 #user-initial-circle {
-    background-color: lightgrey; 
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
@@ -231,5 +230,4 @@ header {
     text-align: center;
     line-height: 40px;
     margin: 5px;
-    background-color: #FF7A00;
 }
