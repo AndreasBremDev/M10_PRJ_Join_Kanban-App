@@ -43,7 +43,7 @@ function renderTasksHtmlEmptyArray(categoryId) {
     `
 }
 
-renderContactsHtml(groupedContacts) {
+function renderContactsHtml(groupedContacts) {
     return `
     <article>
         <h2 class="contact-letter-header">A</h2>
