@@ -46,3 +46,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderContacts();
 });
+
+
+
+export function groupContactsByLetter(contacts) {
+  const grouped = {};
+  contacts.forEach((c) => {
+    const letter = (c.name?.[0] || "?").toUpperCase();
+    if (!grouped[letter]) grouped[letter] = [];
+    grouped[letter].push(c);
+  });
+  return grouped;
+}
