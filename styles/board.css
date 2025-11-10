@@ -470,3 +470,17 @@ main {
     align-self: stretch;
     flex-grow: 0;
 }
+
+.divider-overlay {
+    /* Vector 4 */
+
+    position: absolute;
+    width: 0px;
+    height: 424px;
+    left: 562.25px;
+    top: 174px;
+
+    /* Style */
+    border: 1px solid #D1D1D1;
+
+}

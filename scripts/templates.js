@@ -43,7 +43,7 @@ function renderTasksHtmlEmptyArray(categoryId) {
     `
 }
 
-function getAddTaskOverlayTemplate() {
+function getAddTaskOverlayTemplate(board) {
     return `
             <section class="add-task-section overlay-add-task">
         <div class= overlay-header>
@@ -63,7 +63,7 @@ function getAddTaskOverlayTemplate() {
                         <input id="due-date" class="due-date-overlay" type="date" required>
                     </div>
 
-                    <div class="divider"></div>
+                    <div class="divider divider-overlay"></div>
 
                     <div class="form-right form-right-overlay">
                         <label>Priority</label>
@@ -111,7 +111,7 @@ function getAddTaskOverlayTemplate() {
 
                     <div class="form-actions form-actions-overlay">
                         <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
-                        <button onclick="handleCreateTask()" id="create-btn" type="button" class="create">Create Task ✔</button>
+                        <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create">Create Task ✔</button>
                     </div>
                 </div>
             </section>

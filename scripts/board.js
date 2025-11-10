@@ -79,9 +79,9 @@ async function moveTo(category) {
     elements.forEach(el => el.classList.remove('highlight'));
 }
 
-async function renderAddTaskOverlay() {
+async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = getAddTaskOverlayTemplate();
+    overlay.innerHTML = getAddTaskOverlayTemplate(board);
     overlay.classList.toggle('d-none');
     await loadContacts();
     setupPriorityButtons();

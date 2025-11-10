@@ -16,7 +16,8 @@ function setupPriorityButtons() {
 }
 
 /** Handle create task */
-async function handleCreateTask() {
+async function handleCreateTask(boardCategory) {
+    let board = boardCategory;
     let title = document.getElementById("title").value.trim();
     let description = document.getElementById("description").value.trim();
     let dueDate = document.getElementById("due-date").value;
@@ -46,6 +47,7 @@ async function handleCreateTask() {
         dueDate,
         category,
         assigned,
+        board,
         priority,
         subtasks: subtasksArray,
         createdAt: new Date().toISOString()

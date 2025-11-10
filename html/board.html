@@ -79,7 +79,7 @@
                                 alt="search icon"></button>
                     </div>
 
-                    <button onclick="renderAddTaskOverlay()" class="btn btn-primary" type="button">Add Task +</button>
+                    <button onclick="renderAddTaskOverlay('toDo')" class="btn btn-primary" type="button">Add Task +</button>
                 </div>
             </div>
 
@@ -87,7 +87,7 @@
                 <div class="category-block">
                     <div class="category">
                         <h2>To do</h2>
-                        <button onclick="renderAddTaskOverlay()" class="add_btn">+</button>
+                        <button onclick="renderAddTaskOverlay('toDo')" class="add_btn">+</button>
                     </div>
                     <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
                         ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')">
@@ -97,7 +97,7 @@
                 <div class="category-block">
                     <div class="category">
                         <h2>In Progress</h2>
-                        <button onclick="renderAddTaskOverlay()" class="add_btn">+</button>
+                        <button onclick="renderAddTaskOverlay('inProgress')" class="add_btn">+</button>
                     </div>
                     <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
                         ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')">
@@ -107,7 +107,7 @@
                 <div class="category-block">
                     <div class="category">
                         <h2>Await Feedback</h2>
-                        <button onclick="renderAddTaskOverlay()" class="add_btn">+</button>
+                        <button onclick="renderAddTaskOverlay('awaitFeedback')" class="add_btn">+</button>
                     </div>
                     <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
                         ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')">
