@@ -2,6 +2,35 @@
     font-family: 'Inter', sans-serif;
 }
 
+a{
+    text-decoration: none;
+    color: unset;
+}
+
+.marker {
+    border: 1px solid blue;
+}
+
+.flex {
+    display: flex;
+}
+
+.gap-13 {
+    gap: 13px;
+}
+
+.gap-56 {
+    gap: 56px;
+}
+
+.align {
+    align-items: center;
+}
+
+.column {
+    flex-direction: column;
+}
+
 .contacts-wrapper {
     margin-left: 232px;
     margin-top: 96px;
@@ -21,7 +50,6 @@
     margin-bottom: 60px;
     height: 73px;
     width: 569px;
-    border: 1px solid green;
 }
 
 .h1_title_summary {
@@ -38,6 +66,7 @@
 
 .contact-list-sidebar-outer {
     width: 456px;
+    min-width: 456px;
     background-color: #FFFFFF;
     box-shadow: 4px 0 6px rgba(0, 0, 0, 0.08);
     display: flex;
@@ -100,7 +129,6 @@
     padding: 15px 24px;
     border-radius: 10px;
     gap: 35px;
-    /* border: 1px solid purple; */
 }
 
 .contact-list-card:hover {
@@ -111,13 +139,64 @@
     background-color: var(--primary);
 }
 
+.contact-list-name {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.contact-large {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    margin-top: 60px;
+    padding-left: 30px;
+    gap: 22px;
+    overflow-x: hidden;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform 300ms ease-out;
+}
+
+.contact-large-transition {
+    opacity: 1;
+    transform: translateX(0)
+}
+
+.contact-name-large{
+    font-size: 47px;
+}
+
+.user-circle-large {
+    width: 120px;
+    height: 120px;
+    font-size: 47px;
+    border: 2px solid #ffffff
+}
+
+.contacts-edit-delete-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 13px;
+    align-items: center;
+    border:none;
+    background-color: unset;
+}
+
+.contact-head {
+    padding: 30px 0;
+    font-weight: 400;
+    font-size: 20px;
+}
 
 
 
-@media (max-width: 1200px) {
+
+
+@media(max-width: 1400px) {
 
     /* CONTACTS.html */
-
     .main_title {
         flex-direction: column;
         align-items: flex-start;
@@ -126,6 +205,7 @@
 
     .title_seperator img {
         transform: rotate(90deg);
+        margin-left: 30px;
     }
 
     .tile_summary {
@@ -139,10 +219,19 @@
     .title_seperator {
         order: 3;
     }
+}
+
+@media (max-width: 1200px) {
+
+    /* CONTACTS.html */
 
     .contacts-wrapper {
         margin-left: 0px;
         margin-top: 80px;
         height: calc(100vh - 80px);
+    }
+    .title_seperator img {
+        transform: rotate(90deg);
+        margin-left: 0px;
     }
 }

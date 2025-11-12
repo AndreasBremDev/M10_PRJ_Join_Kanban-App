@@ -31,7 +31,7 @@ function renderGroupedContacts(groupedContacts) {
     const sortedKeys = Object.keys(groupedContacts).sort(); 
     for (const key of sortedKeys) {
         html += renderContactsCardPartOne(key);
-        
+
         groupedContacts[key].forEach(contact => {
             const color = contactCircleColor[globalIndex % contactCircleColor.length];
             html += renderContactsCardPartTwo(contact, color);
@@ -53,4 +53,11 @@ function groupContactsByLetter(contacts) {
         grouped[letter].push(c);
     });
     return grouped;
+}
+
+function test() {
+    let contactLargeRef = document.getElementById('contactDisplayLarge');
+    contactLargeRef.classList.toggle('contact-large-transition');
+
+    
 }

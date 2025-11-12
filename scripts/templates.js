@@ -51,18 +51,18 @@ function renderContactsCardPartOne(key) {
 
 function renderContactsCardPartTwo(contact, color) {
     return `
-        <div class="contact-list-card">
+        <div class="contact-list-card" onclick="test()">
             <div class="user-circle-intials" style="background-color: ${color}">
             ${getInitials(contact.name)}
             </div>
-        <div>
-            <div style="font-size: 20px; margin-bottom: 5px;">
+            <div>
+                <div class="contact-list-name">
                 ${contact.name}
-            </div>
-            <div style="color: #007CEE;">
+                </div>
+                <div style="color: #007CEE;">
                 ${contact.email}
+                </div>
             </div>
         </div>
-    </div>
     `;
 }
