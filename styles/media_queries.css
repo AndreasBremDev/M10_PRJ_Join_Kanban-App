@@ -1,5 +1,5 @@
 @media (max-width: 1200px) {
- /**Index Section*/
+  /**Index Section*/
 
   /**Summary Section*/
   .main_summary {
@@ -152,14 +152,9 @@
 
 /* Switch completly to Mobile */
 @media (max-width: 768px) {
-/**Index Section*/
-  .logo{
-    height: 78.03px;
-    width: 64px;
-  }
 
-
-/**Navigation Section**/
+  /*--------------------Navigation/Header Standards--------------------*/
+  /*----------Navigation----------*/
   nav {
     position: fixed;
     bottom: 0;
@@ -243,13 +238,8 @@
     margin-bottom: 30px;
   }
 
-  /**-------------End Region-----------*/
-
-  /**Header Section**/
-  h2 {
-    display: none;
-  }
-
+  /*----------End Region----------*/
+  /*----------Header----------*/
   .header-left {
     margin: 0;
   }
@@ -258,9 +248,15 @@
     display: block;
   }
 
-  /**-------------End Region-----------*/
+  .header_h2 {
+    display: none;
+  }
 
-  /**Summary Section*/
+  /*----------End Region----------*/
+
+  
+
+  /*--------------------Summary.html--------------------*/
 
   .main_summary {
     position: relative;
@@ -302,7 +298,7 @@
     height: 68px;
   }
 
-  a {
+  .a_help_summary {
     display: none;
   }
 
@@ -329,7 +325,6 @@
   #greeting_overlay.disabled {
     display: none !important;
   }
-
 
   #greeting_overlay.fade-out {
     animation: overlayFadeOut 0.8s ease forwards;
@@ -359,8 +354,9 @@
 }
 
 @media (max-width: 480px) {
+    /*--------------------Index.html--------------------*/
 
-  /**Summary Section*/
+/*--------------------Summary.html--------------------*/
   .main_title {
     margin-top: 80px;
     flex-direction: column;
@@ -463,4 +459,3 @@
 
   /**-------------End Region-----------*/
 }
-

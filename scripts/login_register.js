@@ -152,11 +152,17 @@ function guestLogin() {
 }
 
 function animateLogoFirstVisit() {
-    let logoOverlay = document.getElementById('logoOverlay');
-    let logo = document.getElementById('logo');
+  let logoOverlay = document.getElementById('logoOverlay');
+  let logo = document.getElementById('logo');
+
+  if (window.innerWidth > 768) {
     logoOverlay.classList.add('animate-out');
     setTimeout(() => {
-        logoOverlay.style.display = 'none';
-        logo.style.opacity = 1;
+      logoOverlay.style.display = 'none';
+      logo.style.opacity = 1;
     }, 1500);
+  } else {
+    logoOverlay.style.display = 'none';
+    logo.style.opacity = 1;
+  }
 }
