@@ -46,7 +46,6 @@ function categoryColor(task) {
 function dragstartHandler(event, id) {
     currentDraggedId = id;
     event.target.style.transform = 'rotate(2deg)';
-    // event.target.classList.add('dragging');
 }
 
 function dragoverHandler(ev) {
@@ -56,7 +55,6 @@ function dragoverHandler(ev) {
 
 function dragendHandler(event) {
     event.target.style.transform = '';
-    // event.target.classList.remove('dragging');
 }
 
 function toggleStyle(ev) {

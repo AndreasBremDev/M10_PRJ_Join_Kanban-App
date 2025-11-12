@@ -208,10 +208,6 @@ main {
     cursor: grab;
 }
 
-/* .drag-item.dragging {
-    cursor: grabbing;
-} */
-
 .drag-item:active {
     cursor: grabbing;
 }
