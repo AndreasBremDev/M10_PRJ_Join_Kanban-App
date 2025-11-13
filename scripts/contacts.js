@@ -2,7 +2,7 @@ let contacts = [];
 
 async function fetchContacts(activeUserId = 0) {
     try {
-        let res = await fetch(FIREBASE_URL + "/" + activeUserId + "/contacts" + ".json");
+        let res = await fetch(BASE_URL + "/" + activeUserId + "/contacts" + ".json");
         let fetchJson = await res.json();
         contacts = Object.entries(fetchJson).map(([id, contactsData]) => ({
             id: id,
