@@ -109,11 +109,12 @@ function slideInOverlay() {
 }
 
 
-async function renderTaskDetail() {
+async function renderTaskDetail(taskJson) {
+    let task = JSON.parse(taskJson);
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = getTaskDetailOverlayTemplate();
+    overlay.innerHTML = getTaskDetailOverlayTemplate(task);
     overlay.classList.remove('d-none');
-    await loadContacts();
+    // await loadContacts();
     setupPriorityButtons();
     setTimeout(() => {
         let section = overlay.querySelector('.add-task-section');

@@ -1,6 +1,7 @@
 function renderTasksCardSmallHtml(task) {
+    const taskJson = JSON.stringify(task).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
     return `
-    <article class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
+    <article onclick="renderTaskDetail('${taskJson}')" class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
         <div class="card-inner">
             <p class="${categoryColor(task)}">${task.category}</p>
             <h3>${task.title}</h3>
@@ -68,7 +69,7 @@ function renderContactsCardPartTwo(contact, color) {
     `;
 }
 
-function renderContactLargeHtml(contact,color) {
+function renderContactLargeHtml(contact, color) {
     return `
     <div class="flex gap-56 align">
         <div class="user-circle-intials user-circle-large" style="background-color: ${color}">
@@ -122,7 +123,7 @@ function renderContactLargeHtml(contact,color) {
     `;
 
 }
-   
+
 function getAddTaskOverlayTemplate(board) {
     return `
             <section class="add-task-section overlay-add-task">
@@ -210,21 +211,61 @@ function getAddTaskOverlayTemplate(board) {
 }
 
 
-function getTaskDetailOverlayTemplate() {
+function getTaskDetailOverlayTemplate(task) {
+
     return `
     <div class="task-detail-overlay">
     
         <div class="task-detail-header">
 
-            <div class="overlay-task-category">
-            
-            </div>
+            <p class="${categoryColor(task)}">${task.category}</p>
 
             <img onclick="closeTaskDetailOverlay()" class="" src="/assets/icons/close.svg" alt="close">
         
-        
         </div>
 
+            <div class="task-detail-headline">
+                <h1>${task.title}</h1>
+            </div>
+
+
+             <div class="task-detail-description">
+                <h1 class="task-detail-description">${task.description}</h1>
+            </div>
+
+
+            <div class="task-detail-due-date">
+                    <div>Due Date:</div>
+                    <div>${task.dueDate}</div>
+            </div>
+            
+            <div class="task-detail-priority">
+                <div>Priority:</div>
+                <div>${task.priority}</div>
+                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="priority icon">
+            </div>
+
+            <div class="task-detail-assigned">
+                <div>Assigned to:</div>
+                <div>${task.assigned.join(', ')}</div>
+            </div>
+
+            <div class="task-detail-subtasks">
+                <div>Subtasks:</div>
+                <div>
+                    <ul>
+                        ${task.subtasks && task.subtasks.length ? task.subtasks.map(subtask => `<li>${subtask.title}</li>`).join('') : ''}
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="task-detail-delete-edit-button-container">
+                <button onclick="closeTaskDetailOverlay()" class="task-detail-delete-button">Delete</button>
+                <button onclick="" class="task-detail-edit-button">Edit Task</button>
+            </div>
+
+            
     
     
     </div>
