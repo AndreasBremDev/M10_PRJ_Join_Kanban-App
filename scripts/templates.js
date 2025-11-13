@@ -191,8 +191,8 @@ function getAddTaskOverlayTemplate(board) {
                         <select id="category" required>
                         <label for="category">Category*</label>
                             <option value="" disabled selected>Select task category</option>
-                            <option value="technical">Technical Task</option>
-                            <option value="user-story">User Story</option>
+                            <option value="Technical Task">Technical Task</option>
+                            <option value="User Story">User Story</option>
                         </select>
                         <div class="subtask-overlay">
                             <label for="subtask">Subtasks</label>
