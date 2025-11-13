@@ -1,5 +1,12 @@
 let contacts = [];
 
+const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
+const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
+
+async function init() {
+    await renderContacts()
+}
+
 async function fetchContacts(activeUserId) {
     try {
         let res = await fetch(BASE_URL + "/" + activeUserId + "/contacts" + ".json");
@@ -14,8 +21,19 @@ async function fetchContacts(activeUserId) {
     }
 }
 
-async function init() {
-    await renderContacts()
+function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
+    let input = document.getElementById(inputId);
+    let errMsgElem = document.getElementById(errMsgId);
+    if (validateFn(input.value)) {
+        errMsgElem.style.display = 'none';
+        bool[boolIndex] = 1;
+    } else {
+        errMsgElem.style.display = 'block';
+        errMsgElem.innerText = errMsg;
+        bool[boolIndex] = 0;
+    }
+    if (shouldCheckAll) { checkAllValidations() };
+    return bool[boolIndex];
 }
 
 async function renderContacts() {
@@ -74,4 +92,19 @@ function contactsLargeSlideIn(ev, contactJson, color) {
     ev.currentTarget.classList.add('contact-list-card-active');    
     contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
     setTimeout(() => {contactLargeRef.style.display = 'block';},10);  
+}
+
+async function showDialogCreateContact(id, event/*, toggleStyling = null */) {
+    let contactAddModal = document.getElementById(id);
+    event.stopPropagation();
+    contactAddModal.showModal();
+    // contactAddModal.innerHTML = getDialogCardHtml(index);
+    // if (toggleStyling === 'yes') {
+    //     toggleDialogStyling('hidden');
+    // }
+}
+
+async function createContact() {
+    let 
+
 }
