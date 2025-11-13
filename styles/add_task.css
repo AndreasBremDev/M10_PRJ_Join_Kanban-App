@@ -7,7 +7,7 @@ body {
 
 
 
-main {
+.main-add-task {
     margin-left: 232px;
     margin-top: 96px;
     min-height: calc(100vh - 96px);
@@ -324,17 +324,4 @@ select:focus {
     margin-right: 12px;
     width: 18px; 
     height: 18px;
-}
-
-/* overlay add_task*/
-.add-task-overlay {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
 }

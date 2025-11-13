@@ -1,13 +1,10 @@
-let urlParams = new URLSearchParams(window.location.search);
-let activeUserId = urlParams.get('activeUserId') || 0;
 let currentDraggedId;
 
 async function init() {
-    await fetchTasks(activeUserId = 0);
-    await renderTasks()
+    await renderTasks();
 }
 
-async function fetchTasks(activeUserId = 0) {
+async function fetchTasks(activeUserId) {
     try {
         let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
         let tasks = await res.json();
@@ -22,7 +19,7 @@ async function fetchTasks(activeUserId = 0) {
 }
 
 async function renderTasks() {
-    let tasksWithId = await fetchTasks();
+    let tasksWithId = await fetchTasks(activeUserId);
     let categories = {
         'categoryToDo': tasksWithId.filter(cat => cat.board === "toDo") || [],
         'categoryInProgress': tasksWithId.filter(cat => cat.board === "inProgress") || [],
@@ -77,4 +74,50 @@ async function moveTo(category) {
     }
     const elements = document.querySelectorAll('.draggable');
     elements.forEach(el => el.classList.remove('highlight'));
+}
+
+async function renderAddTaskOverlay(board = "toDo") {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = getAddTaskOverlayTemplate(board);
+    overlay.classList.remove('d-none');
+    await loadContacts();
+    setupPriorityButtons();
+    setTimeout(() => {
+        let section = overlay.querySelector('.add-task-section');
+        if (section) {
+            section.classList.add('slide-in');
+        }
+    }, 50);
+}
+
+function closeAddTaskOverlay() {
+    let overlay = document.getElementById("add-task-overlay");
+    let section = overlay.querySelector('.add-task-section');
+    if (section) {
+        section.classList.remove('slide-in');
+    }
+    setTimeout(() => {
+        overlay.classList.add('d-none');
+        overlay.innerHTML = '';
+    }, 400);
+}
+
+function slideInOverlay() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.classList.add("slide-in");
+}
+
+
+async function renderTaskDetail() {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = getTaskDetailOverlayTemplate();
+    overlay.classList.remove('d-none');
+    await loadContacts();
+    setupPriorityButtons();
+    setTimeout(() => {
+        let section = overlay.querySelector('.add-task-section');
+        if (section) {
+            section.classList.add('slide-in');
+        }
+    }, 50);
 }

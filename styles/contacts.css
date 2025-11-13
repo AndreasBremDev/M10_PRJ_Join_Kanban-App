@@ -2,7 +2,7 @@
     font-family: 'Inter', sans-serif;
 }
 
-a{
+a {
     text-decoration: none;
     color: unset;
 }
@@ -169,17 +169,18 @@ a{
 }
 
 @keyframes floatFromRight {
-	0% {
-		transform: translateX(100%);
+    0% {
+        transform: translateX(100%);
         opacity: 0;
-	}
-	100% {
-		transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(0);
         opacity: 1;
-	}
+    }
 }
 
-.contact-name-large{
+.contact-name-large {
     font-size: 47px;
 }
 
@@ -190,24 +191,27 @@ a{
     border: 4px solid var(--white);
 }
 
-.contact-large button:hover{
-    color: var(--primary-hover);
-    font-weight: 700;
-    cursor: pointer;
-}
-
 .contact-large button:focus {
     outline: var(--primary-active);
 }
-
 
 .contacts-edit-delete-buttons {
     display: flex;
     flex-direction: row;
     gap: 13px;
     align-items: center;
-    border:none;
+    border: none;
     background-color: unset;
+}
+
+.contacts-edit-delete-buttons:hover {
+    color: var(--primary-hover);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.contacts-edit-delete-buttons:hover svg path {
+    fill: var(--primary-hover);
 }
 
 .contact-head {
@@ -257,6 +261,7 @@ a{
         margin-top: 80px;
         height: calc(100vh - 80px);
     }
+
     .title_seperator img {
         transform: rotate(90deg);
         margin-left: 0px;

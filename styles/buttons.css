@@ -1,0 +1,64 @@
+/**----------Login----------*/
+.btn_login_header {
+    width: 99px;
+    height: 48px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    flex: 1;
+    background-color: #2A3647;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.btn_login_header:hover {
+    background-color: #29ABE2;
+    box-shadow: var(--shadow-hover);
+    cursor: pointer;
+}
+
+.btn_log_in {
+    width: 110px;
+    height: 48px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    background-color: #2A3647;
+    font-size: 21px;
+    font-weight: 700;
+    color: white;
+}
+
+.btn_log_in:hover {
+    background-color: #29ABE2;
+    box-shadow: var(--shadow-hover);
+    transform: ;
+    cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn_guest_log_in {
+    width: 177px;
+    height: 48px;
+    outline: 1px solid;
+    outline-color: #2A3647;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    background-color: transparent;
+    font-size: 21px;
+    font-weight: 700;
+    color: #2A3647;
+}
+
+.btn_guest_log_in:hover {
+    outline-color: #29ABE2;
+    color: #29ABE2;
+    box-shadow: var(--shadow-hover);
+    cursor: pointer;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
