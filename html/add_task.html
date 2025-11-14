@@ -76,13 +76,13 @@
 
             <form id="task-form" class="task-form">
                 <div class="form-left">
-                    <label for="title">Title*</label>
+                    <label for="title">Title<span class="required-marker">*</span></label>
                     <input id="title" type="text" placeholder="Enter a title">
 
                     <label for="description">Description</label>
                     <textarea id="description" placeholder="Enter a Description"></textarea>
 
-                    <label for="due-date">Due date*</label>
+                    <label for="due-date">Due date<span class="required-marker">*</span></label>
                     <input id="due-date" type="date" required>
 
                 </div>
@@ -116,7 +116,7 @@
                         </div>
                     </div>
 
-                    <label for="category">Category*</label>
+                    <label for="category">Category<span class="required-marker">*</span></label>
                     <select id="category" required>
                         <option value="" disabled selected>Select task category</option>
                         <option value="Technical Task">Technical Task</option>
