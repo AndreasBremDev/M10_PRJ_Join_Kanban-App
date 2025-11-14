@@ -220,7 +220,7 @@ function getTaskDetailOverlayTemplate(task) {
 
             <p class="${categoryColor(task)}">${task.category}</p>
 
-            <img onclick="closeTaskDetailOverlay()" class="" src="/assets/icons/close.svg" alt="close">
+            <img onclick="closeAddTaskOverlay()" class="close-board-info-overlay" src="/assets/icons/close.svg" alt="close">
         
         </div>
 
