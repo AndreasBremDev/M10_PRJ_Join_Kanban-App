@@ -653,7 +653,7 @@ textarea {
 
 .task-detail-description {
     width: 445px;
-    height: 24px;
+
     color: #000000;
     flex: none;
     order: 2;

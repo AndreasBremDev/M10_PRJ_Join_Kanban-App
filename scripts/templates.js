@@ -22,7 +22,7 @@ function renderTasksCardSmallHtml(task) {
                         MB
                     </div>
                 </div>
-                <img src="/assets/icons/prio_medium_orange_icon.svg" alt="urgency icon">
+                <img src="/assets/icons/prio_medium_icon.svg" alt="urgency icon">
             </div>
         </div>
     </article>`
