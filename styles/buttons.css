@@ -62,3 +62,35 @@
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
+.btn_sign_up {
+    width: 126px;
+    height: 55px;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    color: white;
+    background-color: #2A3647;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+#signUp:disabled {
+    background-color: #D1D1D1 !important;
+    color: #A5A5A5 !important;
+    cursor: not-allowed;
+    box-shadow: none !important;
+}
+
+#signUp:not(:disabled) {
+    background-color: #2A3647 !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+#signUp:not(:disabled):hover {
+    background-color: #29ABE2 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
