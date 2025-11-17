@@ -214,6 +214,21 @@ a {
     }
 }
 
+@keyframes floatFromRightOverlay {
+    0% {
+        top: 50%;
+        transform: translate(100%, -50%);
+        opacity: 0;
+    }
+
+    100% {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
 .contact-name-large {
     font-size: 47px;
 }
@@ -261,14 +276,15 @@ a {
     padding: 0;
     z-index: 99;
     position: fixed;
-    top: 50%;
+    /* top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); */
     border: none;
     outline: none;
     height: 600px;
     width: min(90vw, 1240px);
     border-radius: 24px;
+    animation: floatFromRightOverlay 200ms ease-out forwards;
 }
 
 .contact-dialog-desktop::backdrop {
@@ -361,7 +377,8 @@ a {
 }
 
 .btn_contact_cancel:hover svg path {
-    stroke: var(--primary-hover); /* ← HIER gehört stroke hin! */
+    stroke: var(--primary-hover);
+    /* ← HIER gehört stroke hin! */
 }
 
 .btn_contact_create:disabled {
@@ -369,7 +386,8 @@ a {
     color: var(--primary);
     background-color: var(--bg-color);
 }
-    .btn_contact_create:disabled:hover {
+
+.btn_contact_create:disabled:hover {
     background-color: var(--bg-color);
     box-shadow: none;
 }
@@ -434,9 +452,9 @@ a {
     }
 }
 
-@media (max-width: 1200px) {
+/* @media (max-width: 1200px) {
 
-    /* CONTACTS.html */
+    --CONTACTS.html--
 
     .contacts-wrapper {
         margin-left: 0px;
@@ -448,4 +466,4 @@ a {
         transform: rotate(90deg);
         margin-left: 0px;
     }
-}
+} */

@@ -31,7 +31,8 @@ async function renderContacts() {
     if (contacts.length == 0) {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
-        let groupedContacts = groupContactsByLetter(contacts)
+        let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
+        let groupedContacts = groupContactsByLetter(sortedContacts)
         contactListRef.innerHTML = renderGroupedContacts(groupedContacts)
     };
 }
@@ -58,11 +59,19 @@ function renderContactLarge(contact, color) {
     contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
 }
 
-function checkContactForPhone(contact) {
+function checkContactForPhoneHtml(contact) {
     if (contact?.phone) {
         return `<a href="tel:${contact.phone}">${contact.phone}</a>`
     } else {
         return `<a href="tel:">phone number to be edit</a>`
+    }
+}
+
+function checkContactForPhone(contact) {
+    if (contact?.phone) {
+        return contact.phone;
+    } else {
+        return "";
     }
 }
 
@@ -92,13 +101,21 @@ function contactsLargeSlideIn(ev, contactJson, color) {
     setTimeout(() => { contactLargeRef.style.display = 'block'; }, 10);
 }
 
-async function showDialogCreateContact(id, event) {
+async function showDialogCreateContact(id, ev) {
     let contactAddModal = document.getElementById(id);
-    event.stopPropagation();
+    ev.stopPropagation();
     bool = [0, 0];
-    contactAddModal.innerHTML = renderAddNewContactHtml();
+    contactAddModal.innerHTML = renderAddNewContactOverlayHtml();
     contactAddModal.showModal();
     checkAllCreateContactValidations('contactCreateBtn');
+}
+
+async function showDialogEditContact(id, contactJson, color, ev) {
+    let contactEditDeleteModal = document.getElementById(id);
+    let contact = JSON.parse(contactJson);
+    ev.stopPropagation();
+    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color)
+    contactEditDeleteModal.showModal();
 }
 
 async function createContact() {
@@ -173,6 +190,8 @@ function showPopup(id) {
 function contactCancel(ev) {
     ev.stopPropagation();
     let contactAddModal = document.getElementById('contactAddModal');
-    clearAllContactsInputFields()
+    let contactEditDeleteModal = document.getElementById('contactEditDeleteModal');
+    clearAllContactsInputFields();
     contactAddModal.close();
+    contactEditDeleteModal.close();
 }
