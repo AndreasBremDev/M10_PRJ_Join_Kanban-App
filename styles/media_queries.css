@@ -1,6 +1,6 @@
-
 /* Switch completly to Mobile */
 @media (max-width: 768px) {
+
   /*----------Navigation----------*/
   nav {
     position: fixed;
@@ -71,6 +71,10 @@
     transition: none;
   }
 
+  .img_nav {
+    height: 24px;
+  }
+
   .nav_navigation .active {
     background-color: #091931;
   }
@@ -87,8 +91,17 @@
 
   /*----------End Region----------*/
   /*----------Header----------*/
+  header {
+    height: 80px;
+  }
+
   .header-left {
+    padding-left: 30px;
     margin: 0;
+  }
+
+  .header-right {
+    padding-right: 30px;
   }
 
   .header-left-img {
@@ -99,11 +112,12 @@
     display: none;
   }
 
+
   /*----------End Region----------*/
 }
 
 @media (max-width: 480px) {
-  
+
   .nav_summary,
   .nav_add_task,
   .nav_board,

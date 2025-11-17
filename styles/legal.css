@@ -3,6 +3,13 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+.login_nav_policy a.active,
+login_legal_notes a.active {
+  justify-content: center;
+  display: flex;
+  width: 100%;
+}
+
 /* Main Legal Notice */
 
 main.legal-main {
@@ -15,7 +22,7 @@ main.legal-main {
   overflow-y: auto;
   scrollbar-width: none;
   background-color: #F6F7F8;
-  padding: 110px 48px;
+  padding: 110px 96px 0 0;
 }
 
 main.legal-main::-webkit-scrollbar {
@@ -78,8 +85,8 @@ main.legal-main ol {
   margin: 0 0 30px;
 }
 
-main.legal-main {
-  margin: 16px 0 22px;
+.h2_legal {
+  font-size: 27px;
 }
 
 .h3_legal {
@@ -103,28 +110,67 @@ main.legal-main a {
   word-break: break-word;
 }
 
-@media (max-width: 1200px) {}
-
 @media (max-width: 834px) {
   main.legal-main {
     left: 250px;
-    padding: 110px 16px 0 0;
+    padding: 110px 16px 16px 0;
   }
 
   .header-left {
-    margin-left: 210px;
+    margin-left: 250px;
   }
 }
 
 @media (max-width: 768px) {
+  .login_menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 16px;
+  }
+
+  .login_nav_navigation {
+    display: flex;
+    margin: 0;
+    gap: 0;
+    width: 50%;
+    justify-content: flex-start;
+  }
+
+  .login_nav_policy {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    justify-content: flex-end;
+  }
+
+  .login_privacy_policy,
+  .login_legal_notes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 120px;
+    height: 76px;
+  }
+
+  .login_nav_policy a.active {
+    width: 120px;
+  }
+
+  .login_nav_policy a.active {
+    border-radius: 8px;
+    color: white;
+  }
+
   main.legal-main {
-    padding: 46px 16px;
+    padding: 0 16px;
     left: 0;
+    top: 128px;
+    bottom: 96px;
   }
 
   .legal_title {
     display: flex;
-    align-items: center;
     width: 100%;
     justify-content: space-between;
   }
@@ -147,7 +193,43 @@ main.legal-main a {
   main.legal-main li {
     font-size: 16px;
   }
-
 }
 
-@media (max-width: 480px) {}
+@media (max-width: 480px) {
+  .login_menu {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+  }
+
+  .login_nav_navigation {
+    display: flex;
+    margin: 0;
+    gap: 0;
+    width: 80px;
+    justify-content: flex-start;
+  }
+
+  .login_nav_policy {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .login_privacy_policy,
+  .login_legal_notes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 124px;
+    height: 76px;
+  }
+
+  .login_nav_policy a.active {
+    border-radius: 8px;
+    color: white;
+  }
+}
