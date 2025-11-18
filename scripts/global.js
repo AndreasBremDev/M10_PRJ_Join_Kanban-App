@@ -1,17 +1,17 @@
 const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
 let activeUserId;
 activeUserId = loadFromLocalStorage();
+let isUserMenuListenerAdded = false;
 
 function loadFromLocalStorage() {
     let activeUserIdLoad = JSON.parse(localStorage.getItem("activeUserId"));
     if (activeUserIdLoad !== null) {
         return activeUserIdLoad;
     } else {
-        console.log("Etwas beim Laden vom LocalStorage ist schief gelaufen: activeUserId = 0");
+        console.log("Security Check");
         return 0;
     }
 }
-
 
 let contactCircleColor = [
     '#FF7A00',
@@ -98,7 +98,7 @@ async function fetchUserName(activeUserId) {
     }
 }
 
-async function eachPageSetcurrentUserInitials(){
+async function eachPageSetcurrentUserInitials() {
     let currentUserInitials = document.getElementById('currentUserInitials');
     let currentUser = await fetchUserName(activeUserId);
     let initials = await getInitials(currentUser);
@@ -182,18 +182,18 @@ async function deleteTask(taskId) {
 
 
 function getInitials(name) {
-  if (!name) return "?";
-  return name.split(' ').map(word => word[0].toUpperCase()).join('');
+    if (!name) return "?";
+    return name.split(' ').map(word => word[0].toUpperCase()).join('');
 }
 
 function renderContactCircle(contact, index) {
-  const color = contactCircleColor[index % contactCircleColor.length];
-  const initials = getInitials(contact.name);
-  return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
+    const color = contactCircleColor[index % contactCircleColor.length];
+    const initials = getInitials(contact.name);
+    return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
 }
 
 async function fetchContacts() {
-  return await fetchUserData(`/${activeUserId}/contacts.json`);
+    return await fetchUserData(`/${activeUserId}/contacts.json`);
 }
 
 
@@ -203,15 +203,46 @@ async function fetchContacts() {
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
 async function renderContactsInOverlay() {
-  const contactsObject = await fetchContacts();
-  if (!contactsObject) return;
-  const container = document.getElementById('overlayContactContainer');
-  container.innerHTML = Object.values(contactsObject).map((contact, index) => {
-    const color = contactCircleColor[index % contactCircleColor.length];
-    const initials = getInitials(contact.name);
-    return `<div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+    const contactsObject = await fetchContacts();
+    if (!contactsObject) return;
+    const container = document.getElementById('overlayContactContainer');
+    container.innerHTML = Object.values(contactsObject).map((contact, index) => {
+        const color = contactCircleColor[index % contactCircleColor.length];
+        const initials = getInitials(contact.name);
+        return `
+        <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
         <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
         <div style="font-size: 18px;">${contact.name}</div>
-      </div>`;
-  }).join('');
+        </div>`;
+    }).join('');
+}
+
+function logout() {
+    localStorage.removeItem('activeUserId');
+    for (let i = 0; i < 100; i++) {
+        history.pushState(null, null, '../index.html');
+    }
+    window.location.replace(window.location.origin + '/index.html');
+}
+
+function checkLoggedInPageSecurity() {
+    if (!localStorage.getItem('activeUserId')) {
+        window.location.href = '../index.html';
+        return;
+    }
+}
+
+function toggleDropDownMenu() {
+    let userMenu = document.getElementById('user-menu');
+    userMenu.classList.toggle('show');
+    if (!isUserMenuListenerAdded) {
+        document.addEventListener('click', function (event) {
+            let userMenu = document.getElementById('user-menu');
+            let userCircle = document.querySelector('.user-circle');
+            if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
+                userMenu.classList.remove('show');
+            }
+        });
+        isUserMenuListenerAdded = true;
+    }
 }

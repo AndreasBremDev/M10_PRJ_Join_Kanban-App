@@ -1,4 +1,5 @@
 async function initAddTask() {
+    checkLoggedInPageSecurity();
     await eachPageSetcurrentUserInitials();
     loadContacts();
     setupPriorityButtons();   
@@ -96,21 +97,6 @@ async function putData(path = "", data = {}) {
 
 }
 
-function toggleDropDownMenu() {
-    let userMenu = document.getElementById('user-menu');
-    userMenu.classList.toggle('show');
-    if (!isUserMenuListenerAdded) {
-        document.addEventListener('click', function (event) {
-            let userMenu = document.getElementById('user-menu');
-            let userCircle = document.querySelector('.user-circle');
-            if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
-                userMenu.classList.remove('show');
-            }
-        });
-
-        isUserMenuListenerAdded = true;
-    }
-}
 
 function toggleContactDropdown() {
     let dropdown = document.getElementById('assigned-dropdown');

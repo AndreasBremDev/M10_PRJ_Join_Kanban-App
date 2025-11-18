@@ -1,5 +1,14 @@
 function renderTasksCardSmallHtml(task) {
-    const taskJson = JSON.stringify(task).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+    // const taskJson = JSON.stringify(task)
+    // .replace(/&/g, '&amp;')
+    // .replace(/"/g, '&quot;')
+    // .replace(/'/g, '&#39;')
+    // .replace(/</g, '&lt;')
+    // .replace(/>/g, '&gt;')
+    // .replace(/\n/g, '\\n')
+    // .replace(/\r/g, '\\r')
+    // .replace(/\t/g, '\\t');
+    const taskJson = btoa(JSON.stringify(task)); // Base64-Encoding
     return `
     <article onclick="renderTaskDetail('${taskJson}')" class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
         <div class="card-inner">

@@ -1,6 +1,7 @@
 let currentDraggedId;
 
 async function init() {
+    checkLoggedInPageSecurity();
     await eachPageSetcurrentUserInitials();
     await renderTasks();
 }
@@ -96,7 +97,8 @@ function slideInOverlay() {
 
 
 async function renderTaskDetail(taskJson) {
-    let task = JSON.parse(taskJson);
+    // let task = JSON.parse(taskJson);
+    let task = JSON.parse(atob(taskJson));// Base64-Decoding
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getTaskDetailOverlayTemplate(task);
     overlay.classList.remove('d-none');

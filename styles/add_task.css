@@ -249,36 +249,6 @@ select:focus {
     box-shadow: none !important;
 }
 
-.user-menu {
-    position: absolute;
-    top: 96px;
-    right: 40px;
-    background-color: #2A3647;
-    border-radius: 10px;
-    display: none;
-    flex-direction: column;
-    padding: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 50;
-}
-
-.user-menu a {
-    color: #fff;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: background-color 0.2s;
-    font-weight: lighter;
-}
-
-.user-menu a:hover {
-    background-color: #2A3D59;
-}
-
-.user-menu.show {
-    display: flex;
-}
-
 .custom-select-container {
     position: relative; 
     width: 100%;

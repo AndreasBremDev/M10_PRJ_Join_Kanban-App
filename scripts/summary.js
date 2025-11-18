@@ -1,7 +1,8 @@
-// function getActiveUserId() {
-//   let urlParams = new URLSearchParams(window.location.search);
-//   return urlParams.get("activeUserId") || 0;
-// }
+async function init() {
+  checkLoggedInPageSecurity()
+  await initSummary();
+  await eachPageSetcurrentUserInitials();
+}
 
 /** get User-Object from realtime Database (REST) */
 async function fetchUserData(userId) {

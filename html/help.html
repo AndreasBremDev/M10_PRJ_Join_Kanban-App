@@ -11,9 +11,11 @@
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/help.css">
     <link rel="stylesheet" href="/styles/media_queries.css">
+
+    <script src="/scripts/global.js" defer></script>
 </head>
 
-<body onload="eachPageSetcurrentUserInitials()">
+<body onload="checkLoggedInPageSecurity(); eachPageSetcurrentUserInitials()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -56,7 +58,13 @@
             <a href="#">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
-            <div class="user-circle" id="currentUserInitials"></div>
+            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
+
+            <div class="user-menu" id="user-menu">
+                <a href="/html/legal_notice.html">Legal Notice</a>
+                <a href="/html/privacy_policy.html">Privacy Policy</a>
+                <a href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            </div>
         </div>
     </header>
 
