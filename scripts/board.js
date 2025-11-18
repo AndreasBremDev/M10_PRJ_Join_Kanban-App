@@ -122,6 +122,7 @@ async function renderTaskDetail(taskJson) {
             section.classList.add('slide-in');
         }
     }, 50);
+    await renderContactsInOverlay();
 }
 
 async function deleteTaskfromBoard(taskId)  { 

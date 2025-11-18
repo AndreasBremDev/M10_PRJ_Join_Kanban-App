@@ -657,6 +657,7 @@ textarea {
     padding-right: 48px;
     align-self: stretch;
     flex-grow: 0;
+    font-size: 18px;
 }
 
 .task-detail-priority {
@@ -739,4 +740,28 @@ textarea {
     justify-content: flex-end;
     padding-right: 48px;
     align-items: center;
+}
+
+.pd-bottom-16 {
+    padding-bottom: 16px;
+}
+
+.user-circle-intials {
+  border-radius: 50%;
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  user-select: none;
+}
+
+.contact-circle-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 16px;
 }

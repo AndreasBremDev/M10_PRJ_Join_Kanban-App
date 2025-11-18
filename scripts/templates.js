@@ -233,28 +233,29 @@ function getTaskDetailOverlayTemplate(task) {
 
 
              <div class="task-detail-description">
-                <p>${task.description}</h1>
+                <p class="pd-bottom-16">${task.description}</h1>
             </div>
 
 
-            <div class="task-detail-due-date">
+            <div class="task-detail-due-date pd-bottom-16">
                     <div>Due Date:</div>
                     <div>${task.dueDate}</div>
             </div>
             
-            <div class="task-detail-priority">
-                <div>Priority:</div>
-                <div>${task.priority}</div>
+            <div class="task-detail-priority pd-bottom-16">
+                <div style="font-size: 18px;">Priority:</div>
+                <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>
                 <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="priority icon">
             </div>
 
-            <div class="task-detail-assigned">
-                <div>Assigned to:</div>
-                <div>${task.assigned.join(', ')}</div>
+            <div class="task-detail-assigned pd-bottom-16">
+                <div style="font-size: 18px;">Assigned to:</div>
+                <div id="overlayContactContainer" class="contact-circle-container"></div>
+                //<div>${task.assigned.join(', ')}</div>
             </div>
 
-            <div class="task-detail-subtasks">
-                <div>Subtasks:</div>
+            <div class="task-detail-subtasks pd-bottom-16">
+                <div style="font-size: 18px;">Subtasks:</div>
                 <div>
                     <ul>
                         ${task.subtasks && task.subtasks.length ? task.subtasks.map(subtask => `<li>${subtask.title}</li>`).join('') : ''}

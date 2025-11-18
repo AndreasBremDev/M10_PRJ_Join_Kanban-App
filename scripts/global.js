@@ -102,3 +102,35 @@ async function deleteTask(taskId) {
         console.error("Error deleting task:", error);
     }
 }
+
+
+function getInitials(name) {
+  if (!name) return "?";
+  return name.split(' ').map(word => word[0].toUpperCase()).join('');
+}
+
+function renderContactCircle(contact, index) {
+  const color = contactCircleColor[index % contactCircleColor.length];
+  const initials = getInitials(contact.name);
+  return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
+}
+
+async function fetchContacts() {
+  return await fetchUserData(`/${activeUserId}/contacts.json`);
+}
+
+
+
+/**
+ * Render contact circles in the overlay container.
+ * Fetches contacts, generates initials, and displays them with colored circles.
+ */
+async function renderContactsInOverlay() {
+  const contactsObject = await fetchContacts();
+  if (!contactsObject) return;
+  const container = document.getElementById('overlayContactContainer');
+  container.innerHTML = Object.values(contactsObject).map((contact, index) => {
+    const color = contactCircleColor[index % contactCircleColor.length];
+    return `<div class="user-circle-intials" style="background-color: ${color};">${getInitials(contact.name)}</div>`;
+  }).join('');
+}
