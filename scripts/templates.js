@@ -185,7 +185,7 @@ function getTaskDetailOverlayTemplate() {
 
 function renderContactLargeHtml(contact,color) {
     const contactJson = JSON.stringify(contact).replace(/"/g, '&quot;');
-    return `
+    return /* html */`
     <div class="flex gap-56 align">
         <div class="user-circle-intials user-circle-large" style="background-color: ${color}">
             ${getInitials(contact.name)}
