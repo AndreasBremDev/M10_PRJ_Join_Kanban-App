@@ -1,7 +1,7 @@
-const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
+// const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
 let firebase = [];
 
-const isNameValid = val => val.trim() !== '';
+const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
 const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
 const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[!§$%&\/?\-\+#@]/.test(val) && val.length >= 12;
 const isConfirmValid = val => val === document.getElementById('passwordRegister').value;
@@ -60,24 +60,12 @@ function checkAllValidations() {
 
 async function addUser() {
     let nextUserId = await calcNextId();
-    await putRegisterData('/' + nextUserId, setDataForBackendUpload());
+    await putData('/' + nextUserId, setDataForBackendUpload());
     clearAllSignUpInputFields();
-    showPopup();
+    showPopup('popup');
     setTimeout(() => {
         window.location.href = '../index.html?msg=You signed up successfully';
     }, 1500);
-}
-
-async function calcNextId(path = "") {
-    try {
-        let res = await fetch(BASE_URL + path + ".json");
-        let resJson = await res.json();
-        let userId = Object.keys(resJson);
-        userId.length === 0 ? nextUser = 1 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
-    } catch (error) {
-        console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
-    }
-    return nextUser;
 }
 
 function setDataForBackendUpload() {
@@ -94,15 +82,15 @@ function setDataForBackendUpload() {
     return data;
 }
 
-async function putRegisterData(path = "", data = {}) {
+async function putData(path = "", data = {}) {
     let response = await fetch(BASE_URL + path + ".json", {
-        method: "put",
-        header: {
+        method: "PUT",
+        headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
     });
-    return responseToJson = await response.json();
+    return await response.json();
 }
 
 function clearAllSignUpInputFields() {
@@ -116,8 +104,8 @@ function clearAllSignUpInputFields() {
     signUpBtn.checked = false;
 }
 
-function showPopup() {
-    const popup = document.getElementById('popup');
+function showPopup(id) {
+    const popup = document.getElementById(id);
     popup.style.display = 'block';
     popup.classList.add('show');
     setTimeout(function () {
@@ -128,44 +116,58 @@ function showPopup() {
     }, 1000);
 }
 
-// async function test() {
-//     let userId = 3;
-//     let contactsId = await calcNextId(`/${userId}/contacts`)
-//     await putRegisterData(`/${userId}/contacts/${contactsId}`, data = { email: "giovanni@gmail.com", name: "Giovanni Luca", phone: "0170-9999999" });
-// }
-
 // #endregion
 
 async function login(path = "") {
     let email = document.getElementById('emailLogin');
     let password = document.getElementById('passwordLogin');
+    let response = await fetchUserData();
+    let activeUser = response.findIndex(user => user.email === email.value && user.password === password.value);
+    if (activeUser !== -1) {
+        saveToLocalStorage(activeUser);
+        window.location.href = `../html/summary.html`;
+    } else {
+        document.getElementById('errMsgPassword').style.display = "block";
+        document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
+    }
+    email.value = password.value = '';
+}
+
+async function fetchUserData() {
     try {
-        let res = await fetch(BASE_URL + path + ".json");
-        let resJson = await res.json();
-        let userIdIndex = resJson.findIndex(user => user.email === email.value && user.password === password.value);
-        // let user = resJson[index]; //  FYI user object
-        userIdIndex !== -1 ? window.location.href = `../html/summary.html?activeUserId=${userIdIndex}` : document.getElementById('errMsgPassword').style.display = "block", document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
-        email.value = password.value = '';
+        let res = await fetch(BASE_URL + ".json");
+        let response = await res.json();
+        return response;
     } catch (error) {
         console.log(`error in login(): `, error);
     }
 }
 
 function guestLogin() {
-    document.getElementById('emailLogin').value = 'guest@user.com';
-    document.getElementById('passwordLogin').value = 'guest@Login.1234';
-    setTimeout(() => {
-        login();
-    }, 500);
-
+    let email = document.getElementById('emailLogin');
+    let password = document.getElementById('passwordLogin');
+    email.value = password.value = '';
+    let activeUser = 0;
+    saveToLocalStorage(activeUser)
+    window.location.href = `../html/summary.html`;
 }
 
 function animateLogoFirstVisit() {
     let logoOverlay = document.getElementById('logoOverlay');
     let logo = document.getElementById('logo');
-    logoOverlay.classList.add('animate-out');
-    setTimeout(() => {
+
+    if (window.innerWidth > 768) {
+        logoOverlay.classList.add('animate-out');
+        setTimeout(() => {
+            logoOverlay.style.display = 'none';
+            logo.style.opacity = 1;
+        }, 1500);
+    } else {
         logoOverlay.style.display = 'none';
         logo.style.opacity = 1;
-    }, 1500);
+    }
+}
+
+function saveToLocalStorage(activeUserId) {
+    localStorage.setItem("activeUserId", JSON.stringify(activeUserId));
 }

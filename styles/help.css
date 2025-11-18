@@ -3,13 +3,22 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
+.help-icon {
+    display: none;
+}
+
+
 main.help-page {
-    margin-left: 328px;
-    height: calc(100vh - 96px);
+    position: fixed;
+    max-width: 1016px;
+    top: 96px;
+    left: 328px;
+    right: 0;
+    bottom: 0;
     overflow-y: auto;
-    overscroll-behavior: contain;
-    -ms-overflow-style: none;
     scrollbar-width: none;
+    background-color: #F6F7F8;
+    padding: 110px 16px 0 0;
 }
 
 main.help-page::-webkit-scrollbar {
@@ -19,12 +28,10 @@ main.help-page::-webkit-scrollbar {
 
 .help {
     display: flex;
-    align-items: center;
     justify-content: space-between;
     align-items: center;
-    width: 1014px;
+    max-width: 1014px;
     height: 73px;
-    margin-top: 206px;
     margin-bottom: 52px;
 }
 
@@ -49,8 +56,8 @@ main.help-page::-webkit-scrollbar {
 
 
 .help_page_txt_container {
-    width: 1014px;
     margin-bottom: 120px;
+    padding-right: 16px;
 }
 
 .p_help_txt {
@@ -106,4 +113,35 @@ main.help-page::-webkit-scrollbar {
 li::marker {
     font-size: 20px;
     font-weight: 700;
+}
+
+@media (max-width: 834px) {
+    main.help-page {
+        padding: 110px 16px 0 0;
+        left: 250px;
+    }
+
+    .header-left {
+        margin-left: 250px;
+    }
+
+    .help_page_txt_container {
+        width: calc(100vw - 282px);
+    }
+}
+
+@media (max-width: 768px) {
+    main.help-page {
+        padding: 0px 16px 16px 16px;
+        left: 0;
+        top: 128px;
+    }
+
+    .help {
+        margin-bottom: 35px;
+    }
+
+    .help_page_txt_container {
+        width: 100%;
+    }
 }

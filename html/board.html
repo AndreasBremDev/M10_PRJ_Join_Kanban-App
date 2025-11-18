@@ -8,11 +8,19 @@
     <link rel="shortcut icon" href="/assets/icons/Join_dark.png" type="image/x-icon">
 
     <link rel="stylesheet" href="/styles/board.css">
+    <link rel="stylesheet" href="/styles/add_task.css">
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+
+    <script src="/scripts/global.js" defer></script>
+    <script src="/scripts/board.js" defer></script>
+    <script src="/scripts/login_register.js" defer></script>
+    <script src="/scripts/templates.js" defer></script>
+    <script src="/scripts/add_task.js" defer></script>
+
 </head>
 
-<body>
+<body onload="init()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -54,11 +62,19 @@
             <a href="/html/help.html">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
-            <div class="user-circle">SM</div>
+            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
+
+            <div class="user-menu" id="user-menu">
+                <a href="/html/legal_notice.html">Legal Notice</a>
+                <a href="/html/privacy_policy.html">Privacy Policy</a>
+                <a href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            </div>
+
         </div>
     </header>
 
     <main>
+
         <section class="board-header">
             <div class="board-header__top">
                 <h1 class="board-title">Board</h1>
@@ -67,35 +83,64 @@
                     <div class="searchbar">
                         <input class="searchbar__input" type="text" placeholder="Find Task">
                         <div class="searchbar__divider"></div>
-                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg" alt="search icon"></button>
+                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg"
+                                alt="search icon"></button>
                     </div>
 
-                    <button class="btn btn-primary" type="button">Add Task +</button>
+                    <button onclick="renderAddTaskOverlay('toDo')" class="btn btn-primary" type="button">Add Task
+                        +</button>
                 </div>
             </div>
 
             <section class="board_categories">
-                <div class="category">
-                    <h2>To do</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>To do</h2>
+                        <button onclick="renderAddTaskOverlay('toDo')" class="add_btn">+</button>
+                    </div>
+                    <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')">
+                    </section>
                 </div>
 
-                <div class="category">
-                    <h2>In progress</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>In Progress</h2>
+                        <button onclick="renderAddTaskOverlay('inProgress')" class="add_btn">+</button>
+                    </div>
+                    <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')">
+                    </section>
                 </div>
 
-                <div class="category">
-                    <h2>Await feedback</h2>
-                    <button class="add_btn">+</button>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>Await Feedback</h2>
+                        <button onclick="renderAddTaskOverlay('awaitFeedback')" class="add_btn">+</button>
+                    </div>
+                    <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')">
+                    </section>
                 </div>
 
-                <div class="category">
-                    <h2>Done</h2>
+                <div class="category-block">
+                    <div class="category">
+                        <h2>Done</h2>
+                    </div>
+                    <section id="categoryDone" class="draggable" ondragover="dragoverHandler(event)"
+                        ondragleave="toggleStyle(event)" ondrop="moveTo('done')">
+
+                    </section>
                 </div>
+
             </section>
     </main>
 
+    <div id="add-task-overlay" class="add-task-overlay d-none slide-in">
+    </div>
+
 </body>
+
+
 
 </html>

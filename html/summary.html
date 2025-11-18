@@ -9,10 +9,14 @@
 
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/summary.css">
+    <link rel="stylesheet" href="/styles/media_queries.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+
+    <script src="/scripts/global.js" defer></script>
+    <script src="/scripts/summary.js" defer></script>
 </head>
 
-<body>
+<body onload="init()" onresize="handleResizeOverlay()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -21,19 +25,19 @@
             <section class="menu">
                 <div class="nav_navigation">
                     <a class="nav_summary active" href="/html/summary.html">
-                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
+                        <img class="img_nav" src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
                         <p class="nav_p">Summary</p>
                     </a>
                     <a class="nav_add_task" href="/html/add_task.html">
-                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
+                        <img class="img_nav" src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
                         <p class="nav_p">Add Task</p>
                     </a>
                     <a class="nav_board" href="/html/board.html">
-                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
+                        <img class="img_nav" src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
                         <p class="nav_p">Board</p>
                     </a>
                     <a class="nav_contacts" href="/html/contacts.html">
-                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
+                        <img class="img_nav" src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
                         <p class="nav_p">Contacts</p>
                     </a>
                 </div>
@@ -48,17 +52,31 @@
 
     <header>
         <div class="header-left">
-            <h2>Kanban Project Management Tool</h2>
+            <h2 class="header_h2">Kanban Project Management Tool</h2>
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
         </div>
         <div class="header-right">
-            <a href="/html/help.html">
+            <a class="a_help_summary" href="/html/help.html">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
-            <div class="user-circle">SM</div>
+            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
+
+            <div class="user-menu" id="user-menu">
+                <a href="/html/legal_notice.html">Legal Notice</a>
+                <a href="/html/privacy_policy.html">Privacy Policy</a>
+                <a href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            </div>
         </div>
     </header>
 
-    <main>
+    <main class="main_summary">
+        <div id="greeting_overlay">
+            <div class="greeting_content">
+                <p id="overlay_greeting_text"></p>
+                <p id="overlay_greeting_name"></p>
+            </div>
+        </div>
+
         <section class="main_title">
             <div class="tile_summary">
                 <h1 class="h1_title_summary">Join 360</h1>
@@ -96,7 +114,7 @@
                             <img src="/assets/icons/check_light_icon.svg" class="icon_light" alt="">
                         </div>
                         <div class="container_information">
-                            <div class="numbers">1</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Done</p>
                             </div>
@@ -106,9 +124,9 @@
 
                 <a class="urgent_container" href="/html/board.html?status=urgent">
                     <div class="urgent">
-                        <div class="urgent_icon"><img src="/assets/icons/urgent_icon.svg" alt=""></div>
+                        <div class="urgent_icon"><img src="/assets/icons/Summary_urgent_icon.svg" alt=""></div>
                         <div class="container_information">
-                            <div class="numbers">1</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Urgent</p>
                             </div>
@@ -118,8 +136,7 @@
                     </div>
 
                     <div class="urgent_seperator">
-                        <img class="urgent_seperator_icon" src="/assets/icons/Summary_urgent_seperator.svg"
-                            height="102.02px" width="2px" alt="">
+                        <img class="urgent_seperator_icon" src="" height="" width="2px" alt="">
                     </div>
 
                     <div class="urgent_daytime_group">
@@ -131,7 +148,7 @@
                 <div class="board_informations">
                     <a class="tasks_in_board" href="/html/board.html">
                         <div class="container_information">
-                            <div class="numbers">5</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Tasks in <br> Board</p>
                             </div>
@@ -140,7 +157,7 @@
 
                     <a class="tasks_in_progress" href="/html/board.html?status=in_progress">
                         <div class="container_information">
-                            <div class="numbers">2</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Tasks in <br> Progress</p>
                             </div>
@@ -149,7 +166,7 @@
 
                     <a class="awaiting_feedback" href="/html/board.html?status=awaiting_feedback">
                         <div class="container_information">
-                            <div class="numbers">2</div>
+                            <div class="numbers"></div>
                             <div class="numbers_txt">
                                 <p>Awaiting <br> Feedback</p>
                             </div>
@@ -159,13 +176,12 @@
             </div>
 
             <div class="greeting_container">
-                <p id="greeting_text">Good morning,</p>
-                <p id="greeting_name">Sofia Müller</p>
+                <p id="greeting_text"></p>
+                <p id="greeting_name"></p>
             </div>
 
         </section>
     </main>
-    <script src="/scripts/summary.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,132 @@
+/* Switch completly to Mobile */
+@media (max-width: 768px) {
+
+  /*----------Navigation----------*/
+  nav {
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    height: 80px;
+    width: 100%;
+    background-color: #2A3647;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 50;
+  }
+
+  .sidenav {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+
+  .nav_icon {
+    display: none;
+  }
+
+  .nav_policy {
+    display: none;
+  }
+
+  .menu {
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
+  }
+
+  .nav_navigation {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    gap: 0;
+    margin: 0;
+  }
+
+  .nav_p {
+    padding-bottom: 3px;
+    font-size: 16px;
+    font-weight: 200;
+  }
+
+  .nav_summary,
+  .nav_add_task,
+  .nav_board,
+  .nav_contacts {
+    padding: 0;
+    height: 80px;
+    border-radius: 20px;
+  }
+
+  .nav_summary:hover,
+  .nav_add_task:hover,
+  .nav_board:hover,
+  .nav_contacts:hover {
+    cursor: pointer;
+    background-color: transparent;
+    transform: translateY(0px);
+    transition: none;
+  }
+
+  .img_nav {
+    height: 24px;
+  }
+
+  .nav_navigation .active {
+    background-color: #091931;
+  }
+
+  .nav_navigation .active:hover {
+    transform: none;
+    box-shadow: none;
+    cursor: default;
+  }
+
+  .board_informations {
+    margin-bottom: 30px;
+  }
+
+  /*----------End Region----------*/
+  /*----------Header----------*/
+  header {
+    height: 80px;
+  }
+
+  .header-left {
+    padding-left: 30px;
+    margin: 0;
+  }
+
+  .header-right {
+    padding-right: 30px;
+  }
+
+  .header-left-img {
+    display: block;
+  }
+
+  .header_h2 {
+    display: none;
+  }
+
+
+  /*----------End Region----------*/
+}
+
+@media (max-width: 480px) {
+
+  .nav_summary,
+  .nav_add_task,
+  .nav_board,
+  .nav_contacts {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 76px;
+    height: 80px;
+  }
+}
