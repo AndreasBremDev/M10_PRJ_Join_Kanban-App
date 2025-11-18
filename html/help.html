@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/help.css">
+    <link rel="stylesheet" href="/styles/media_queries.css">
 </head>
 
-<body>
+<body onload="eachPageSetcurrentUserInitials()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -48,13 +49,14 @@
 
     <header>
         <div class="header-left">
-            <h2>Kanban Project Management Tool</h2>
+            <h2 class="header_h2">Kanban Project Management Tool</h2>
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
         </div>
         <div class="header-right">
             <a href="#">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
-            <div class="user-circle">SM</div>
+            <div class="user-circle" id="currentUserInitials"></div>
         </div>
     </header>
 

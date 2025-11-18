@@ -16,7 +16,7 @@
     <script src="/scripts/board.js" defer></script>
 </head>
 
-<body onload="initAddTask()">
+<body onload="initAddTask(); eachPageSetcurrentUserInitials()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -58,7 +58,7 @@
             <a href="/html/help.html">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()">SM</div>
+            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
 
             <div class="user-menu" id="user-menu">
                 <a href="/html/legal_notice.html">Legal Notice</a>
@@ -76,13 +76,13 @@
 
             <form id="task-form" class="task-form">
                 <div class="form-left">
-                    <label for="title">Title*</label>
+                    <label for="title">Title<span class="required-marker">*</span></label>
                     <input id="title" type="text" placeholder="Enter a title">
 
                     <label for="description">Description</label>
                     <textarea id="description" placeholder="Enter a Description"></textarea>
 
-                    <label for="due-date">Due date*</label>
+                    <label for="due-date">Due date<span class="required-marker">*</span></label>
                     <input id="due-date" type="date" required>
 
                 </div>
@@ -116,11 +116,11 @@
                         </div>
                     </div>
 
-                    <label for="category">Category*</label>
+                    <label for="category">Category<span class="required-marker">*</span></label>
                     <select id="category" required>
                         <option value="" disabled selected>Select task category</option>
-                        <option value="technical">Technical Task</option>
-                        <option value="user-story">User Story</option>
+                        <option value="Technical Task">Technical Task</option>
+                        <option value="User Story">User Story</option>
                     </select>
 
                     <label for="subtask">Subtasks</label>

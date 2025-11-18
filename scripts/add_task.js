@@ -1,4 +1,5 @@
-function initAddTask() {
+async function initAddTask() {
+    await eachPageSetcurrentUserInitials();
     loadContacts();
     setupPriorityButtons();   
 }

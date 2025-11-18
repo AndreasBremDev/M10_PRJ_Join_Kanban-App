@@ -62,22 +62,10 @@ async function addUser() {
     let nextUserId = await calcNextId();
     await putData('/' + nextUserId, setDataForBackendUpload());
     clearAllSignUpInputFields();
-    showPopup();
+    showPopup('popup');
     setTimeout(() => {
         window.location.href = '../index.html?msg=You signed up successfully';
     }, 1500);
-}
-
-async function calcNextId(path = "") {
-    try {
-        let res = await fetch(BASE_URL + path + ".json");
-        let resJson = await res.json();
-        let userId = Object.keys(resJson);
-        userId.length === 0 ? nextUser = 0 : nextUser = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
-    } catch (error) {
-        console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
-    }
-    return nextUser;
 }
 
 function setDataForBackendUpload() {
@@ -96,13 +84,13 @@ function setDataForBackendUpload() {
 
 async function putData(path = "", data = {}) {
     let response = await fetch(BASE_URL + path + ".json", {
-        method: "put",
-        header: {
+        method: "PUT",
+        headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
     });
-    return responseToJson = await response.json();
+    return await response.json();
 }
 
 function clearAllSignUpInputFields() {
@@ -116,8 +104,8 @@ function clearAllSignUpInputFields() {
     signUpBtn.checked = false;
 }
 
-function showPopup() {
-    const popup = document.getElementById('popup');
+function showPopup(id) {
+    const popup = document.getElementById(id);
     popup.style.display = 'block';
     popup.classList.add('show');
     setTimeout(function () {
@@ -133,12 +121,23 @@ function showPopup() {
 async function login(path = "") {
     let email = document.getElementById('emailLogin');
     let password = document.getElementById('passwordLogin');
+    let response = await fetchUserData();
+    let activeUser = response.findIndex(user => user.email === email.value && user.password === password.value);
+    if (activeUser !== -1) {
+        saveToLocalStorage(activeUser);
+        window.location.href = `../html/summary.html`;
+    } else {
+        document.getElementById('errMsgPassword').style.display = "block";
+        document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
+    }
+    email.value = password.value = '';
+}
+
+async function fetchUserData() {
     try {
-        let res = await fetch(BASE_URL + path + ".json");
-        let resJson = await res.json();
-        let userIdIndex = resJson.findIndex(user => user.email === email.value && user.password === password.value);
-        userIdIndex !== -1 ? window.location.href = `../html/summary.html?activeUserId=${userIdIndex}` : document.getElementById('errMsgPassword').style.display = "block", document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
-        email.value = password.value = '';
+        let res = await fetch(BASE_URL + ".json");
+        let response = await res.json();
+        return response;
     } catch (error) {
         console.log(`error in login(): `, error);
     }
@@ -148,21 +147,27 @@ function guestLogin() {
     let email = document.getElementById('emailLogin');
     let password = document.getElementById('passwordLogin');
     email.value = password.value = '';
-    window.location.href = `../html/summary.html?activeUserId=0`;
+    let activeUser = 0;
+    saveToLocalStorage(activeUser)
+    window.location.href = `../html/summary.html`;
 }
 
 function animateLogoFirstVisit() {
-  let logoOverlay = document.getElementById('logoOverlay');
-  let logo = document.getElementById('logo');
+    let logoOverlay = document.getElementById('logoOverlay');
+    let logo = document.getElementById('logo');
 
-  if (window.innerWidth > 768) {
-    logoOverlay.classList.add('animate-out');
-    setTimeout(() => {
-      logoOverlay.style.display = 'none';
-      logo.style.opacity = 1;
-    }, 1500);
-  } else {
-    logoOverlay.style.display = 'none';
-    logo.style.opacity = 1;
-  }
+    if (window.innerWidth > 768) {
+        logoOverlay.classList.add('animate-out');
+        setTimeout(() => {
+            logoOverlay.style.display = 'none';
+            logo.style.opacity = 1;
+        }, 1500);
+    } else {
+        logoOverlay.style.display = 'none';
+        logo.style.opacity = 1;
+    }
+}
+
+function saveToLocalStorage(activeUserId) {
+    localStorage.setItem("activeUserId", JSON.stringify(activeUserId));
 }

@@ -1,7 +1,7 @@
-function getActiveUserId() {
-  let urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get("activeUserId") || 0;
-}
+// function getActiveUserId() {
+//   let urlParams = new URLSearchParams(window.location.search);
+//   return urlParams.get("activeUserId") || 0;
+// }
 
 /** get User-Object from realtime Database (REST) */
 async function fetchUserData(userId) {
@@ -118,9 +118,8 @@ function renderGreeting(userName, currentDate) {
 
 /** Start: loading, counts, rendert */
 async function initSummary() {
-  let userId = activeUserId;
   try {
-    let userData = await fetchUserData(userId);
+    let userData = await fetchUserData(activeUserId);
     if (!userData) return;
     let tasks = extractTasks(userData);
     let taskCounts = countTasks(tasks);
@@ -172,4 +171,4 @@ function handleResizeOverlay() {
   }
 }
 
-initSummary();
+// initSummary();

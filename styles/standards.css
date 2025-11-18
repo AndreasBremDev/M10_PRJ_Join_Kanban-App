@@ -75,14 +75,16 @@ nav {
     padding: 64px 0;
 }
 
-.menu {
+.menu,
+.login_menu {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
 }
 
-.nav_navigation {
+.nav_navigation,
+.login_nav_navigation {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -101,7 +103,8 @@ nav {
     text-decoration: none;
 }
 
-.nav_policy {
+.nav_policy,
+.login_nav_policy {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -121,12 +124,14 @@ nav {
     font-size: inherit;
 }
 
-.privacy_policy {
+.privacy_policy,
+.login_privacy_policy {
     text-decoration: none;
     color: #a0a1a2;
 }
 
-.legal_notes {
+.legal_notes,
+.login_legal_notes {
     text-decoration: none;
     color: #a0a1a2;
     display: flex;
@@ -166,7 +171,8 @@ nav {
     cursor: default;
 }
 
-.nav_policy a.active {
+.nav_policy a.active,
+.login_nav_policy a.active {
     background-color: #091931;
     color: #a0a1a2;
     cursor: default;
@@ -188,7 +194,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 40px;
     border-bottom: 1px solid #D1D1D1;
     box-sizing: border-box;
     position: fixed;
@@ -200,7 +205,7 @@ header {
 }
 
 .header-left {
-    margin-left: 288px;
+    margin-left: 328px;
 }
 
 .header_h2 {
@@ -219,6 +224,7 @@ header {
     display: flex;
     align-items: center;
     gap: 24px;
+    padding-right: 40px;
 }
 
 .help-icon {

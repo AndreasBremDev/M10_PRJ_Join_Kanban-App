@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/legal.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/media_queries.css">
+
 </head>
 
 <body>
@@ -18,18 +20,17 @@
             <div class="nav_icon">
                 <img src="/assets/icons/Join_light.png" alt="">
             </div>
-            <section class="menu">
-                <div class="nav_navigation">
+            <section class="login_menu">
+                <div class="login_nav_navigation">
                     <a class="nav_summary" href="/index.html">
                         <img src="/assets/icons/prop_login.svg" height="30px" width="30px" alt="logo_summary">
                         <p class="nav_p">Log In</p>
                     </a>
-
                 </div>
 
-                <div class="nav_policy">
-                    <a class="privacy_policy active" href="login_privacy_policy.html">Privacy Policy</a>
-                    <a class="legal_notes" href="login_legal_notice.html">Legal notice</a>
+                <div class="login_nav_policy">
+                    <a class="login_privacy_policy active" href="login_privacy_policy.html">Privacy Policy</a>
+                    <a class="login_legal_notes" href="login_legal_notice.html">Legal notice</a>
                 </div>
             </section>
         </div>
@@ -37,12 +38,18 @@
 
     <header>
         <div class="header-left">
-            <h2>Kanban Project Management Tool</h2>
+            <h2 class="header_h2">Kanban Project Management Tool</h2>
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
         </div>
     </header>
 
     <main class="legal-main legal-privacy-page">
-        <h1>Privacy Policy</h1>
+        <div class="legal_title">
+            <h1 class="h1_legal">Privacy Policy</h1>
+            <a class="go_back" onclick="history.back()">
+                <img src="/assets/icons/arrow-left-line.svg" alt="arrow-left">
+            </a>
+        </div>
         <div class="legal-updated">Last updated October 29, 2025</div>
 
         <section class="legal-section">
@@ -70,7 +77,7 @@
         </section>
 
         <section class="legal-section">
-            <h3>Summary of Key Points</h3>
+            <h3 class="h3_legal">Summary of Key Points</h3>
             <p>
                 <strong>This summary provides key points from our Privacy Notice, but you can find out more details
                     about
@@ -137,7 +144,7 @@
         </section>
 
         <section class="legal-section" id="tableOfContents">
-            <h3>Table of Contents</h3>
+            <h3 class="h3_legal">Table of Contents</h3>
             <ol>
                 <li><a class="span_legal_notice" href="#section1">WHAT INFORMATION DO WE COLLECT?</a></li>
                 <li><a class="span_legal_notice" href="#section2">HOW DO WE PROCESS YOUR INFORMATION?</a></li>
@@ -158,7 +165,7 @@
         </section>
 
         <section class="legal-section" id="section1">
-            <h5>1. WHAT INFORMATION DO WE COLLECT?</h5>
+            <h5 class="h5_legal">1. WHAT INFORMATION DO WE COLLECT?</h5>
             <p><strong>In Short:</strong> We collect personal information that you provide to us.</p>
             <p>
                 We collect personal information that you voluntarily provide to us when you register on the Services,
@@ -180,7 +187,7 @@
         </section>
 
         <section class="legal-section" id="section2">
-            <h5>2. HOW DO WE PROCESS YOUR INFORMATION?</h5>
+            <h5 class="h5_legal">2. HOW DO WE PROCESS YOUR INFORMATION?</h5>
             <p><strong>In Short:</strong> We process your information to provide, improve, and administer our Services,
                 communicate with you, for security and fraud prevention, and to comply with law. We may
                 also process your information for other purposes with your consent.</p>
@@ -201,7 +208,7 @@
         </section>
 
         <section class="legal-section" id="section3">
-            <h5>3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR INFORMATION?</h5>
+            <h5 class="h5_legal">3. WHAT LEGAL BASES DO WE RELY ON TO PROCESS YOUR INFORMATION?</h5>
             <p><strong>In Short:</strong> We only process your personal information when we believe it is necessary and
                 we
                 have a valid legal reason (i.e. legal basis) to do so under applicable law, like
@@ -231,7 +238,7 @@
         </section>
 
         <section class="legal-section" id="section4">
-            <h5>4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</h5>
+            <h5 class="h5_legal">4. WHEN AND WITH WHOM DO WE SHARE YOUR PERSONAL INFORMATION?</h5>
             <p><strong>In Short:</strong> We may share information in specific situations described in this section
                 and/or
                 with the following third parties.</p>
@@ -251,7 +258,7 @@
         </section>
 
         <section class="legal-section" id="section5">
-            <h5>5. HOW LONG DO WE KEEP YOUR INFORMATION?</h5>
+            <h5 class="h5_legal">5. HOW LONG DO WE KEEP YOUR INFORMATION?</h5>
             <p><strong>In Short:</strong> We keep your information for as long as necessary to fulfil the purposes
                 outlined
                 in this Privacy Notice unless otherwise required by law.</p>
@@ -274,7 +281,7 @@
         </section>
 
         <section class="legal-section" id="section6">
-            <h5>6. HOW DO WE KEEP YOUR INFORMATION SAFE?</h5>
+            <h5 class="h5_legal">6. HOW DO WE KEEP YOUR INFORMATION SAFE?</h5>
             <p><strong>In Short:</strong> We aim to protect your personal information through a system of organisational
                 and
                 technical security measures.</p>
@@ -295,7 +302,7 @@
         </section>
 
         <section class="legal-section" id="section7">
-            <h5>7. DO WE COLLECT INFORMATION FROM MINORS?</h5>
+            <h5 class="h5_legal">7. DO WE COLLECT INFORMATION FROM MINORS?</h5>
             <p><strong>In Short:</strong> We do not knowingly collect data from or market to children under 18 years of
                 age.</p>
             <p>
@@ -311,7 +318,7 @@
         </section>
 
         <section class="legal-section" id="section8">
-            <h5>8. WHAT ARE YOUR PRIVACY RIGHTS?</h5>
+            <h5 class="h5_legal">8. WHAT ARE YOUR PRIVACY RIGHTS?</h5>
             <p><strong>In Short:</strong> In some regions, such as the European Economic Area (EEA), you have rights
                 that
                 allow you greater access to and control over your personal information. You may
@@ -361,7 +368,7 @@
         </section>
 
         <section class="legal-section">
-            <h5>Account Information</h5>
+            <h5 class="h5_legal">Account Information</h5>
             <p>If you would at any time like to review or change the information in your account or terminate your
                 account,
                 you can contact us using the contact information provided.</p>
@@ -378,7 +385,7 @@
         </section>
 
         <section class="legal-section" id="section9">
-            <h5>9. CONTROLS FOR DO-NOT-TRACK FEATURES</h5>
+            <h5 class="h5_legal">9. CONTROLS FOR DO-NOT-TRACK FEATURES</h5>
             <p>
                 Most web browsers and some mobile operating systems and mobile applications include a Do-Not-Track
                 (“DNT”)
@@ -395,7 +402,7 @@
         </section>
 
         <section class="legal-section" id="section10">
-            <h5>10. DO WE MAKE UPDATES TO THIS NOTICE?</h5>
+            <h5 class="h5_legal">10. DO WE MAKE UPDATES TO THIS NOTICE?</h5>
             <p><strong>In Short:</strong> Yes, we will update this notice as necessary to stay compliant with relevant
                 laws.</p>
             <p>
@@ -408,14 +415,14 @@
         </section>
 
         <section class="legal-section" id="section11">
-            <h5>11. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</h5>
+            <h5 class="h5_legal">11. HOW CAN YOU CONTACT US ABOUT THIS NOTICE?</h5>
             <p>If you have questions or comments about this notice, you may email us at privacy@policy-example.com or
                 contact us by post at:</p>
             <p>Marvin S.<br>Innerlohenerstraße 11<br>Ruhpolding, Bavaria 83324<br>Germany</p>
         </section>
 
         <section class="legal-section" id="section12">
-            <h3>12. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</h3>
+            <h3 class="h3_legal">12. HOW CAN YOU REVIEW, UPDATE, OR DELETE THE DATA WE COLLECT FROM YOU?</h3>
             <p>
                 You have the right to request access to the personal information we collect from you, details about how
                 we

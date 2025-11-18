@@ -1,26 +1,12 @@
 let currentDraggedId;
 
 async function init() {
-    await fetchTasks(activeUserId = 0);
+    await eachPageSetcurrentUserInitials();
     await renderTasks();
 }
 
-async function fetchTasks(activeUserId = 0) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
-        let tasks = await res.json();
-        let tasksWithId = Object.entries(tasks).map(([id, taskData]) => ({
-            id: id,
-            ...taskData
-        }));
-        return tasksWithId
-    } catch (error) {
-        console.log("Error fetchTasks(): ", error);
-    }
-}
-
 async function renderTasks() {
-    let tasksWithId = await fetchTasks();
+    let tasksWithId = await fetchTasks(activeUserId);
     let categories = {
         'categoryToDo': tasksWithId.filter(cat => cat.board === "toDo") || [],
         'categoryInProgress': tasksWithId.filter(cat => cat.board === "inProgress") || [],

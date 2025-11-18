@@ -60,13 +60,14 @@
             <a href="/html/help.html">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
-            <div class="user-circle">SM</div>
+            <div class="user-circle" id="currentUserInitials"></div>
         </div>
     </header>
     <main class="contacts-wrapper">
         <aside class="contact-list-sidebar-outer">
 
-            <button id="add-contact-btn" class="add-contact-btn">
+            <button id="add-contact-btn" class="add-contact-btn"
+                onclick="showDialogCreateContact('contactAddModal', event)">
                 Add new contact
                 <span class="add-contact-icon">
                     <svg width="30" height="21" viewBox="0 0 30 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -97,8 +98,16 @@
             </article>
 
             <article id="contactDisplayLarge" class="contact-large" style="display: none;">
-                
+
             </article>
+
+            <dialog id="contactAddModal" class="contact-dialog-desktop">
+
+            </dialog>
+
+            <dialog id="contactEditDeleteModal" class="contact-dialog-desktop">
+
+            </dialog>
 
         </section>
     </main>
