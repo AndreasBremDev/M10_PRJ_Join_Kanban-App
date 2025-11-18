@@ -141,11 +141,11 @@ function getAddTaskOverlayTemplate(board) {
                         </div>
 
                         <div class="description-overlay">
-                            <label for="description">Description</label>
-                            <textarea style="width: 440px" id="description" class="description-input-overlay" placeholder="Enter a Description"></textarea>
+                            <label for="description" class="form-headline-text">Description</label>
+                            <textarea id="description" class="description-input-overlay title-input-overlay" placeholder="Enter a Description"></textarea>
                         </div>
 
-                        <label for="due-date">Due date*</label>
+                        <label for="due-date" class="form-headline-text">Due date*</label>
                         <div class="date-overlay">
                             <input id="due-date" class="due-date-overlay" type="date" required>
                         </div>
@@ -154,7 +154,7 @@ function getAddTaskOverlayTemplate(board) {
                     <div class="divider divider-overlay"></div>
 
                     <div class="form-right form-right-overlay">
-                            <label class="at-overlay-text">Priority</label>
+                            <label class="form-headline-text">Priority</label>
                         <div class="priority-buttons priority-buttons-overlay">
                             <button type="button" class="priority-btn urgent">
                                 Urgent
@@ -172,7 +172,7 @@ function getAddTaskOverlayTemplate(board) {
 
                         
 
-                        <label for="assigned">Assigned to</label>
+                        <label for="assigned" class="form-headline-text">Assigned to</label>
                         <div class="custom-select-container">
                             <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
                                 Select contacts to assign
@@ -184,14 +184,14 @@ function getAddTaskOverlayTemplate(board) {
 
                         
                         
-                                     <label for="category">Category*</label>
+                                     <label for="category" class="form-headline-text">Category*</label>
                                 <select id="category" required>
                                 <option value="" disabled selected>Select task category</option>
                                 <option value="technical">Technical Task</option>
                                 <option value="user-story">User Story</option>
                                 </select>
 
-                                <label for="subtask">Subtasks</label>
+                                <label for="subtask" class="form-headline-text">Subtasks</label>
                             <div class="subtask-overlay">
                                 <input  type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
                             </div>
@@ -286,13 +286,13 @@ function editTaskDetailOverlayTemplate() {
 
             <div class="task-detail-edit-main">
                 <label for="title">Title</label>
-                    <input id="title" type="text" placeholder="Enter a title">
+                    <input id="title" type="text" class="title-input-overlay" placeholder="Enter a title">
 
                       <label for="description">Description</label>
-                    <textarea id="description" placeholder="Enter a Description"></textarea>
+                    <textarea id="description" class="title-input-overlay" placeholder="Enter a Description"></textarea>
 
                     <label for="due-date">Due date</label>
-                    <input id="due-date" type="date" required>
+                    <input id="due-date" class="title-input-overlay" type="date" required>
 
                      <label><b>Priority</b></label>
                     <div class="priority-buttons">
@@ -322,7 +322,7 @@ function editTaskDetailOverlayTemplate() {
 
                     
                     <label for="subtask">Subtasks</label>
-                    <input type="text" id="subtask" placeholder="Add new subtask">
+                    <input type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
 
                     <div class="subtask-list-edit">
                         <ul id="subtask-list-edit-ul">

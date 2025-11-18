@@ -75,7 +75,7 @@ select {
     padding: 12px;
     font-size: 16px;
     cursor: pointer;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
     scrollbar-width: none;
     width: -webkit-fill-available;
 }
