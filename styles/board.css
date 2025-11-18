@@ -709,6 +709,7 @@ textarea {
 .task-detail-delete-edit-button-container {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     justify-content: flex-end;
     padding-right: 48px;
     align-items: center;
@@ -716,6 +717,57 @@ textarea {
     height: 24px;
     flex: none;
     order: 7;
+}
+
+.task-detail-delete-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-detail-delete-button:hover {
+    cursor: pointer;
+    color: #4fbae8;
+}
+
+.task-detail-edit-button:hover {
+    cursor: pointer;
+    color: #4fbae8;
+}
+
+.task-edit-icon {
+    width: 62px;
+    height: 24px;
+    background: url(/assets/icons/task_edit_block_icon.svg);
+}
+
+.task-edit-icon:hover {
+    cursor: pointer;
+    background: url(/assets/icons/task_edit_block_hover_icon.svg) no-repeat;
+}
+
+.task-delete-icon {
+    width: 82px;
+    height: 24px;
+    background: url(/assets/icons/task_delete_block_icon.svg);
+}
+
+.task-delete-icon:hover {
+    cursor: pointer;
+    background: url(/assets/icons/task_delete_block_hover_icon.svg) no-repeat;
+}
+
+.task-detail-edit-button {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-detail-spacer {
+    width: 0px;
+    border: 1px solid #D1D1D1;
+    height: 24px;
 }
 
 .close-board-info-overlay:hover {
@@ -749,22 +801,22 @@ textarea {
 }
 
 .user-circle-intials {
-  border-radius: 50%;
-  color: #fff;
-  width: 40px;
-  height: 40px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 16px;
-  user-select: none;
+    border-radius: 50%;
+    color: #fff;
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+    user-select: none;
 }
 
 .contact-circle-container {
- display: flex;
-  flex-direction: column;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
 }
