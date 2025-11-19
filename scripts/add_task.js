@@ -129,6 +129,7 @@ async function loadData(path = "") {
     }
 }
 
+
 function convertAndSortContacts(contactsObj) {
   if (!contactsObj) return [];
   const contactsArray = Object.entries(contactsObj).map(
@@ -164,7 +165,6 @@ async function loadContacts() {
       dropdownContainer.appendChild(contactElement);
     });
   } catch (error) {
-    console.error('Could not load contacts:', error);
     dropdownContainer.innerHTML = '(Error loading contacts)';
   }
 }
