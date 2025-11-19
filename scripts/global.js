@@ -196,6 +196,22 @@ async function fetchContacts() {
     return await fetchUserData(`/${activeUserId}/contacts.json`);
 }
 
+// Render HTML for a single contact row in the overlay with user initial and namen and checkbox //contact.id => checkbox 
+function contactRowHTML(contact, index) {
+  const circleHTML = renderContactCircle(contact, index);
+  return `
+    <div class="contact-row">
+      <div class="left-info">
+        ${circleHTML}
+        <span class="contact-name">${contact.name}</span>
+      </div>
+      <input type="checkbox" value="${contact.id}">
+    </div>
+  `;
+}
+
+
+
 
 
 /**

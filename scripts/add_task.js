@@ -129,7 +129,7 @@ async function loadData(path = "") {
     }
 }
 
-
+// Helper functions for contacts, to sort and render them
 function convertAndSortContacts(contactsObj) {
   if (!contactsObj) return [];
   const contactsArray = Object.entries(contactsObj).map(
@@ -154,16 +154,17 @@ function createContactElement(contact) {
   return label;
 }
 
+
+// Load and render contacts in the assigned dropdown / 
 async function loadContacts() {
-  const dropdownContainer = document.getElementById('assigned-dropdown');
+ const dropdownContainer = document.getElementById('assigned-dropdown'); // Clear existing content
   dropdownContainer.innerHTML = '';
   try {
     const contactsObj = await loadData(`/${activeUserId}/contacts`);
-    const sortedContacts = convertAndSortContacts(contactsObj);
-    sortedContacts.forEach(contact => {
-      const contactElement = createContactElement(contact);
-      dropdownContainer.appendChild(contactElement);
-    });
+    const contactsArray = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact })); // Convert to array
+    contactsArray.sort((a, b) => a.name.localeCompare(b.name, 'de', { sensitivity: 'base' })); // Sort alphabetically
+    const html = contactsArray.map((contact, i) => contactRowHTML(contact, i)).join('');
+    dropdownContainer.innerHTML = html;
   } catch (error) {
     dropdownContainer.innerHTML = '(Error loading contacts)';
   }
