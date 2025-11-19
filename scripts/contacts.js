@@ -27,10 +27,11 @@ function checkAllCreateContactValidations(id) {
 
 async function renderContacts() {
     let contactListRef = document.getElementById('contactList');
-    contacts = await fetchContacts(activeUserId);
-    if (contacts.length == 0) {
+    contactsFetch = await fetchContacts(activeUserId);
+    if (contactsFetch.length == 0) {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
+        let contacts = contactsFetch.filter(i => i.name !== undefined);
         let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
         let groupedContacts = groupContactsByLetter(sortedContacts);
         contactListRef.innerHTML = renderGroupedContacts(groupedContacts);

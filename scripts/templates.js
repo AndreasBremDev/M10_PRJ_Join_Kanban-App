@@ -242,7 +242,7 @@ function getTaskDetailOverlayTemplate(task) {
 }
 
 function editTaskDetailOverlayTemplate() {
-    return /* html */`
+    return html`
     <div class="task-detail-overlay">   
     
         <div class="task-detail-header task-detail-edit-header">
