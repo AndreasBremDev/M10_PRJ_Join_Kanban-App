@@ -1,4 +1,7 @@
 let currentDraggedId;
+let autoScrollInterval = null;
+let scrollSpeed = 10; // Pixel pro Intervall
+let scrollThreshold = 50; // Pixel vom Rand
 
 async function init() {
     checkLoggedInPageSecurity();
@@ -31,15 +34,21 @@ function categoryColor(task) {
 function dragstartHandler(event, id) {
     currentDraggedId = id;
     event.target.style.transform = 'rotate(2deg)';
+    // Auto-scroll während Drag aktivieren
+    startAutoScroll();
 }
 
 function dragoverHandler(ev) {
     ev.preventDefault();
     toggleStyle(ev);
+    // Auto-scroll basierend auf Mausposition
+    handleAutoScroll(ev);
 }
 
 function dragendHandler(event) {
     event.target.style.transform = '';
+    // Auto-scroll stoppen
+    stopAutoScroll();
 }
 
 function toggleStyle(ev) {
@@ -151,4 +160,47 @@ function renderSubtasks(subtasks) {
     .join('');
     
   return `<ul>${listItems}</ul>`;
+}
+
+// Auto-Scroll Funktionen
+function startAutoScroll() {
+    document.addEventListener('dragover', handleAutoScroll);
+}
+
+function stopAutoScroll() {
+    document.removeEventListener('dragover', handleAutoScroll);
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+    }
+}
+
+function handleAutoScroll(event) {
+    const main = document.querySelector('main');
+    const rect = main.getBoundingClientRect();
+    const mouseY = event.clientY;
+    const mouseX = event.clientX;
+    
+    // Vertikales Scrollen
+    if (mouseY < rect.top + scrollThreshold) {
+        // Nach oben scrollen
+        if (!autoScrollInterval) {
+            autoScrollInterval = setInterval(() => {
+                main.scrollTop -= scrollSpeed;
+            }, 16); // ~60fps
+        }
+    } else if (mouseY > rect.bottom - scrollThreshold) {
+        // Nach unten scrollen
+        if (!autoScrollInterval) {
+            autoScrollInterval = setInterval(() => {
+                main.scrollTop += scrollSpeed;
+            }, 16);
+        }
+    } else {
+        // Scrollen stoppen
+        if (autoScrollInterval) {
+            clearInterval(autoScrollInterval);
+            autoScrollInterval = null;
+        }
+    }
 }
