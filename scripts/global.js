@@ -1,16 +1,16 @@
 const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
 let activeUserId;
-activeUserId = loadFromLocalStorage();
+activeUserId = loadActiveUserId();
 let isUserMenuListenerAdded = false;
 
-function loadFromLocalStorage() {
-    let activeUserIdLoad = JSON.parse(localStorage.getItem("activeUserId"));
-    if (activeUserIdLoad !== null) {
-        return activeUserIdLoad;
-    } else {
-        console.log("Security Check");
-        return 0;
-    }
+function loadActiveUserId() {
+    const val = localStorage.getItem("activeUserId");
+    return val ? JSON.parse(val) : 0;
+}
+
+function loadShownGreeting() {
+    const val = localStorage.getItem("shownGreeting");
+    return val === "true";
 }
 
 let contactCircleColor = [
@@ -232,6 +232,7 @@ async function renderContactsInOverlay() {
 
 function logout() {
     localStorage.removeItem('activeUserId');
+    localStorage.removeItem('shownGreeting');
     for (let i = 0; i < 100; i++) {
         history.pushState(null, null, '../index.html');
     }
