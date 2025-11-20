@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
     <link rel="stylesheet" href="/styles/add_task.css">
+    <link rel="stylesheet" href="/styles/media_queries.css">
 
     <script src="/scripts/global.js" defer></script>
     <script src="/scripts/add_task.js" defer></script>
@@ -52,10 +53,11 @@
 
     <header>
         <div class="header-left">
-            <h2>Kanban Project Management Tool</h2>
+            <h2 class="header_h2">Kanban Project Management Tool</h2>
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
         </div>
         <div class="header-right">
-            <a href="/html/help.html">
+            <a class="a_help_summary" href="/html/help.html">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
             </a>
             <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
@@ -65,7 +67,6 @@
                 <a href="/html/privacy_policy.html">Privacy Policy</a>
                 <a href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
             </div>
-
         </div>
     </header>
 
