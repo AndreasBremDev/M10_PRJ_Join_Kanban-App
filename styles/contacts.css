@@ -164,6 +164,13 @@ a {
     margin-bottom: 5px;
 }
 
+.contact-list-email {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 200px;
+}
+
 .contact-large {
     display: flex;
     flex-direction: column;

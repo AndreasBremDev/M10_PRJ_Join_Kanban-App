@@ -1,16 +1,16 @@
 const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
 let activeUserId;
-activeUserId = loadFromLocalStorage();
+activeUserId = loadActiveUserId();
 let isUserMenuListenerAdded = false;
 
-function loadFromLocalStorage() {
-    let activeUserIdLoad = JSON.parse(localStorage.getItem("activeUserId"));
-    if (activeUserIdLoad !== null) {
-        return activeUserIdLoad;
-    } else {
-        console.log("Security Check");
-        return 0;
-    }
+function loadActiveUserId() {
+    const val = localStorage.getItem("activeUserId");
+    return val ? JSON.parse(val) : 0;
+}
+
+function loadShownGreeting() {
+    const val = localStorage.getItem("shownGreeting");
+    return val === "true";
 }
 
 let contactCircleColor = [
@@ -180,6 +180,19 @@ async function deleteTask(taskId) {
     }
 }
 
+async function deletePath(path = "") {
+    try {
+        const response = await fetch(BASE_URL + path + ".json", {
+            method: "DELETE"
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error deleting task:", error);
+    }
+}
+
 
 function getInitials(name) {
     if (!name) return "?";
@@ -192,7 +205,7 @@ function renderContactCircle(contact, index) {
     return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
 }
 
-async function fetchContacts() {
+async function fetchContactsForOverlay() {
     return await fetchUserData(`/${activeUserId}/contacts.json`);
 }
 
@@ -216,7 +229,7 @@ function contactRowHTML(contact, index) {
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
 async function renderContactsInOverlay() {
-    const contactsObject = await fetchContacts();
+    const contactsObject = await fetchContactsForOverlay();
     if (!contactsObject) return;
     const container = document.getElementById('overlayContactContainer');
     container.innerHTML = Object.values(contactsObject).map((contact, index) => {
@@ -232,6 +245,7 @@ async function renderContactsInOverlay() {
 
 function logout() {
     localStorage.removeItem('activeUserId');
+    localStorage.removeItem('shownGreeting');
     for (let i = 0; i < 100; i++) {
         history.pushState(null, null, '../index.html');
     }
