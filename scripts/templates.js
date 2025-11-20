@@ -15,26 +15,31 @@ function renderTasksCardSmallHtml(task) {
             <p class="${categoryColor(task)}">${task.category}</p>
             <h3>${task.title}</h3>
             <p class="gray-text">${task.description}</p>
-            <div class="flex">
-                <progress value="1" max="2" style="width:96px"></progress>
-                <span>1/2 Subtasks</span>
-            </div>
+            ${checkForAndDisplaySubtasks(task)}
             <div class="flex spacebetween">
-                <div class="spacing">
-                    <div class="color-one">
+                ${checkForAndDisplayUserCircles(task)}
+                <div class="grid-container" style="grid-template-columns: repeat(4, 12px); width: calc(3 * 12px + 44px);">
+                    <div style="background-color: orange;">
                         AM
                     </div>
-                    <div class="color-two">
+                    <div style="background-color: blue;">
                         EM
                     </div>
-                    <div class="color-three">
+                    <div style="background-color: purple;">
                         MB
                     </div>
                 </div>
-                <img src="/assets/icons/prio_medium_icon.svg" alt="urgency icon">
+                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="urgency icon">
             </div>
         </div>
     </article>`
+}
+
+function renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks) {
+    return `<div class="flex">
+                <progress value="${doneSubtasks}" max="${totalSubtasks}" style="width:96px"></progress>
+                <span>${doneSubtasks}/${totalSubtasks} Subtasks</span>
+            </div>`
 }
 
 function renderTasksHtmlEmptyArray(categoryId) {
@@ -86,7 +91,7 @@ function emptyContactsHtml() {
 }
 
 function getAddTaskOverlayTemplate(board) {
-    const todayStr = new Date().toISOString().split('T')[0]; 
+    const todayStr = new Date().toISOString().split('T')[0];
 
     return `
             <section class="add-task-section overlay-add-task">
@@ -244,7 +249,8 @@ function getTaskDetailOverlayTemplate(task) {
 }
 
 function editTaskDetailOverlayTemplate() {
-    return html`
+    const todayStr = new Date().toISOString().split('T')[0];
+    return `
     <div class="task-detail-overlay">   
     
         <div class="task-detail-header task-detail-edit-header">
@@ -259,7 +265,7 @@ function editTaskDetailOverlayTemplate() {
                     <textarea id="description" class="title-input-overlay" placeholder="Enter a Description"></textarea>
 
                     <label for="due-date">Due date</label>
-                    <input id="due-date" class="title-input-overlay" type="date" required>
+                    <input id="due-date" class="title-input-overlay" min="${todayStr}" type="date" required>
 
                     <label><b>Priority</b></label>
                     <div class="priority-buttons">
@@ -532,7 +538,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             </svg>
                         </button>
                         <button id="contactCreateBtn" class="btn_contact_create btn flex align gap-13" type="submit" tabindex="1">
-                            ${option === 'Edit'? 'Save' : 'Delete'}
+                            ${option === 'Edit' ? 'Save' : 'Delete'}
                             <svg width="20" height="15" viewBox="0 0 16 12" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path

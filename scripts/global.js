@@ -219,39 +219,13 @@ async function deletePath(path = "") {
     }
 }
 
-
 function getInitials(name) {
     if (!name) return "?";
     return name.split(' ').map(word => word[0].toUpperCase()).join('');
 }
 
-
-
 async function fetchContactsForOverlay() {
     return await fetchUserData(`/${activeUserId}/contacts.json`);
-}
-
-// Render HTML for a single contact row in the overlay with user initial and namen and checkbox //contact.id => checkbox 
-
-
-
-/**
- * Render contact circles in the overlay container.
- * Fetches contacts, generates initials, and displays them with colored circles.
- */
-async function renderContactsInOverlay() {
-    const contactsObject = await fetchContactsForOverlay();
-    if (!contactsObject) return;
-    const container = document.getElementById('overlayContactContainer');
-    container.innerHTML = Object.values(contactsObject).map((contact, index) => {
-        const color = contactCircleColor[index % contactCircleColor.length];
-        const initials = getInitials(contact.name);
-        return `
-        <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-        <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
-        <div style="font-size: 18px;">${contact.name}</div>
-        </div>`;
-    }).join('');
 }
 
 function logout() {

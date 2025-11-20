@@ -23,6 +23,33 @@ async function renderTasks() {
     });
 }
 
+function checkForAndDisplaySubtasks(task) {
+    if (task.subtasks) {
+        let totalSubtasks = task.subtasks.length;
+        let doneSubtasks = task.subtasks.filter(d => d.done === true).length;
+        return renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks);
+    } else {
+        return "";
+    }
+}
+/////////////////////////////////////////// currently working on /////
+async function checkForAndDisplayUserCircles(task) {
+    let assignedArray = task.assigned;
+    if (assignedArray !== '') {
+        console.log(assignedArray);
+        for (let i = 0; i < assignedArray.length; i++) {
+            console.log(assignedArray[i]);
+            let assignedName = await fetchData(`/${activeUserId}/contacts/${assignedArray[i]}`);
+            console.log(assignedName);
+            
+        }
+    } else {
+        console.log("array assignedArray empty");
+        return '';
+        
+    }
+}
+
 function categoryColor(task) {
     if (task.category === 'User Story') {
         return "blue"
@@ -119,7 +146,26 @@ async function renderTaskDetail(taskJson) {
             section.classList.add('slide-in');
         }
     }, 50);
-    await renderContactsInOverlay();
+    await renderContactsInOverlay(); // Note: all contacts for activeUserId -> innerHTML: overlayContactContainer
+}
+
+/**
+ * Render contact circles in the overlay container.
+ * Fetches contacts, generates initials, and displays them with colored circles.
+ */
+async function renderContactsInOverlay() {
+    const contactsObject = await fetchContactsForOverlay(); // all contacts for activeUserId
+    if (!contactsObject) return;
+    const container = document.getElementById('overlayContactContainer');
+    container.innerHTML = Object.values(contactsObject).map((contact, index) => {
+        const color = contactCircleColor[index % contactCircleColor.length];
+        const initials = getInitials(contact.name);
+        return `
+        <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
+        <div style="font-size: 18px;">${contact.name}</div>
+        </div>`;
+    }).join('');
 }
 
 async function deleteTaskfromBoard(taskId)  { 
