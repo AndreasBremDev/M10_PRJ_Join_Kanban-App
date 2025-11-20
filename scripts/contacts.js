@@ -1,4 +1,4 @@
-let contacts = [];
+
 bool = [0, 0]
 
 const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
@@ -6,7 +6,7 @@ const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
 
 async function init() {
     await eachPageSetcurrentUserInitials();
-    await renderContacts();
+    await loadAndRenderContacts('contactList', 'contacts');
 }
 
 function checkAllCreateContactValidations(id) {
@@ -25,18 +25,20 @@ function checkAllCreateContactValidations(id) {
     }
 }
 
-async function renderContacts() {
-    let contactListRef = document.getElementById('contactList');
-    contactsFetch = await fetchContacts(activeUserId);
-    if (contactsFetch.length == 0) {
-        contactListRef.innerHTML = emptyContactsHtml();
-    } else {
-        let contacts = contactsFetch.filter(i => i.name !== undefined);
-        let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
-        let groupedContacts = groupContactsByLetter(sortedContacts);
-        contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
-    };
-}
+// async function renderContacts() {
+//     let contactListRef = document.getElementById('contactList');
+//     let contactsFetch = await loadData(`/${activeUserId}/contacts`);
+//     if (contactsFetch.length == 0) {
+//         contactListRef.innerHTML = emptyContactsHtml();
+//     } else {
+//         let contactsWithId = Object.entries(contactsFetch || {}).map(([key, contact]) => ({ id: key, ...contact }));
+//         let contacts = contactsFetch.filter(i => i.name !== undefined);
+//         let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
+        
+//         let groupedContacts = groupContactsByLetter(sortedContacts);
+//         contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
+//     };
+// }
 
 function renderGroupedContacts(groupedContacts) {
     let html = '';
@@ -109,7 +111,7 @@ async function showDialogCreateContact(id, ev) {
     contactAddModal.innerHTML = renderAddNewContactOverlayHtml();
     contactAddModal.showModal();
     checkAllCreateContactValidations('contactCreateBtn');
-    await renderContacts();
+    await loadAndRenderContacts('contactList', 'contacts');;
 }
 
 async function showDialogContact(id, contactJson, color, ev, option) {
@@ -119,7 +121,7 @@ async function showDialogContact(id, contactJson, color, ev, option) {
     bool = [1, 1];
     contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option)
     contactEditDeleteModal.showModal();
-    await renderContacts();
+    await loadAndRenderContacts('contactList', 'contacts');;
 }
 
 async function createContact() {
@@ -137,7 +139,7 @@ async function updateContact(currContactId, option) {
         let contactData = await setContactDataForBackendUpload();
         option === 'Edit' ? await putData('/' + activeUserId + '/contacts/' + currContactId, contactData) : await deletePath('/' + activeUserId + '/contacts/' + currContactId);
         clearAllContactsInputFields();
-        await renderContacts();
+        await loadAndRenderContacts('contactList', 'contacts');
         document.getElementById('contactDisplayLarge').innerHTML = '';
         document.getElementById('contactEditDeleteModal').close();
     } catch (error) {
@@ -150,7 +152,7 @@ async function createNextIdPutDataAndRender() {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
         let contactData = await setContactDataForBackendUpload();
         let result = await putData('/' + activeUserId + '/contacts/' + nextContactId, contactData);
-        await renderContacts();
+        await loadAndRenderContacts('contactList', 'contacts');
     } catch (error) {
         console.error('Error creating contact:', error);
     }

@@ -2,6 +2,7 @@ const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.fireba
 let activeUserId;
 activeUserId = loadActiveUserId();
 let isUserMenuListenerAdded = false;
+let contacts = [];
 
 function loadActiveUserId() {
     const val = localStorage.getItem("activeUserId");
@@ -61,17 +62,42 @@ async function putData(path = "", data = {}) {
     }
 }
 
-async function fetchContacts(activeUserId) {
+async function loadAndRenderContacts(divId, useAtPage) {
+    const containerId = document.getElementById(divId);
+    let sortedContacts = await fetchAndSortContacts(containerId);
+    containerId.innerHTML = '';
+    if (useAtPage === 'addTask') {
+        const html = sortedContacts.map((contact, i) => contactRowHTML(contact, i)).join('');
+        containerId.innerHTML = html;
+    } else if (useAtPage === 'contacts') {
+        let groupedContacts = groupContactsByLetter(sortedContacts);
+        containerId.innerHTML = renderGroupedContacts(groupedContacts);
+    }
+}
+
+async function fetchAndSortContacts(containerId) {
     try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/contacts" + ".json");
-        let fetchJson = await res.json();
-        contacts = Object.entries(fetchJson).map(([id, contactsData]) => ({
-            contactId: id,
-            ...contactsData
-        }));
-        return contacts
+        const contactsObj = await fetchData(`/${activeUserId}/contacts`);
+        if (contactsObj.length == 0) { throw new Error; }
+        const contactsArray = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+        let contactsWithoutUndefined = contactsArray.filter(i => i.name !== undefined);
+        let sortedContacts = contactsWithoutUndefined.sort((a, b) => a.name.localeCompare(b.name));
+        return sortedContacts
     } catch (error) {
-        console.log("Error fetchContacts(): ", error);
+        containerId.innerHTML = '';
+        containerId.innerHTML = emptyContactsHtml();
+    }
+}
+
+async function fetchData(path = "") {
+    try {
+        let response = await fetch(BASE_URL + path + ".json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error loading data:", error);
     }
 }
 
@@ -199,29 +225,14 @@ function getInitials(name) {
     return name.split(' ').map(word => word[0].toUpperCase()).join('');
 }
 
-function renderContactCircle(contact, index) {
-    const color = contactCircleColor[index % contactCircleColor.length];
-    const initials = getInitials(contact.name);
-    return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
-}
+
 
 async function fetchContactsForOverlay() {
     return await fetchUserData(`/${activeUserId}/contacts.json`);
 }
 
 // Render HTML for a single contact row in the overlay with user initial and namen and checkbox //contact.id => checkbox 
-function contactRowHTML(contact, index) {
-  const circleHTML = renderContactCircle(contact, index);
-  return `
-    <div class="contact-row">
-      <div class="left-info">
-        ${circleHTML}
-        <span class="contact-name">${contact.name}</span>
-      </div>
-      <input type="checkbox" value="${contact.id}">
-    </div>
-  `;
-}
+
 
 
 /**

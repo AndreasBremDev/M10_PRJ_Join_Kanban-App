@@ -1,16 +1,15 @@
-window.addEventListener('DOMContentLoaded', () => {
-  const dueDateInput = document.getElementById('due-date');
-  const todayStr = new Date().toISOString().split('T')[0]; // "2025-11-20"
-  dueDateInput.setAttribute('min', todayStr);
-});
-
 async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetcurrentUserInitials();
-    loadContacts();
+    await loadAndRenderContacts('assigned-dropdown', 'addTask');
     setupPriorityButtons();
 }
 
+window.addEventListener('DOMContentLoaded', () => {
+    const dueDateInput = document.getElementById('due-date');
+    const todayStr = new Date().toISOString().split('T')[0];
+    dueDateInput.setAttribute('min', todayStr);
+});
 
 /** Setup priority buttons */
 function setupPriorityButtons() {
@@ -74,6 +73,9 @@ async function handleCreateTask(boardCategory) {
 
 }
 
+
+
+
 /** Clear form */
 function clearForm() {
     document.getElementById("task-form").reset();
@@ -109,74 +111,30 @@ function toggleContactDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
-/** function to calculate the next taskId 
-async function calcNextId(path) {
-    let res = await fetch(`${BASE_URL}${path}.json`);
-    let resJson = await res.json();
-
-    if (!resJson) return 1;
-
-    let keys = Object.keys(resJson).map(Number);
-    let nextId = Math.max(...keys) + 1;
-    return nextId;
-}*/
-
-
-/** Load data from backend */
-async function loadData(path = "") {
-    try {
-        let response = await fetch(BASE_URL + path + ".json");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Error loading data:", error);
-    }
-}
-
 // Helper functions for contacts, to sort and render them
 function convertAndSortContacts(contactsObj) {
-  if (!contactsObj) return [];
-  const contactsArray = Object.entries(contactsObj).map(
-    ([key, contact]) => ({ id: key, ...contact })
-  );
-  contactsArray.sort((a, b) =>
-    a.name.localeCompare(b.name, 'de', { sensitivity: 'base' })
-  );
-  return contactsArray;
+    if (!contactsObj) return [];
+    const contactsArray = Object.entries(contactsObj).map(
+        ([key, contact]) => ({ id: key, ...contact })
+    );
+    contactsArray.sort((a, b) =>
+        a.name.localeCompare(b.name, 'de', { sensitivity: 'base' })
+    );
+    return contactsArray;
 }
 
 function createContactElement(contact) {
-  const label = document.createElement('label');
-  label.className = 'contact-item';
-  const checkbox = document.createElement('input');
-  checkbox.type = 'checkbox';
-  checkbox.value = contact.id;
-  const span = document.createElement('span');
-  span.textContent = contact.name;
-  label.appendChild(checkbox);
-  label.appendChild(span);
-  return label;
+    const label = document.createElement('label');
+    label.className = 'contact-item';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = contact.id;
+    const span = document.createElement('span');
+    span.textContent = contact.name;
+    label.appendChild(checkbox);
+    label.appendChild(span);
+    return label;
 }
-
-
-// Load and render contacts in the assigned dropdown / 
-async function loadContacts() {
- const dropdownContainer = document.getElementById('assigned-dropdown'); // Clear existing content
-  dropdownContainer.innerHTML = '';
-  try {
-    const contactsObj = await loadData(`/${activeUserId}/contacts`);
-    const contactsArray = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact })); // Convert to array
-    contactsArray.sort((a, b) => a.name.localeCompare(b.name, 'de', { sensitivity: 'base' })); // Sort alphabetically
-    const html = contactsArray.map((contact, i) => contactRowHTML(contact, i)).join('');
-    dropdownContainer.innerHTML = html;
-  } catch (error) {
-    dropdownContainer.innerHTML = '(Error loading contacts)';
-  }
-}
-
-//overlay add_task
 
 
 function renderTaskCard(task) {

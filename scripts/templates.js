@@ -86,7 +86,7 @@ function emptyContactsHtml() {
 }
 
 function getAddTaskOverlayTemplate(board) {
-    const todayStr = new Date().toISOString().split('T')[0]; // "yyyy-mm-dd"
+    const todayStr = new Date().toISOString().split('T')[0]; 
 
     return `
             <section class="add-task-section overlay-add-task">
@@ -549,4 +549,25 @@ function renderEditContactOverlayHtml(contact, color, option) {
             <p class="btn_std">Contact updated succesfully</p>
         </div>
         `
+}
+
+
+function contactRowHTML(contact, index) {
+    const circleHTML = renderContactCircle(contact, index);
+    return `
+    <div class="contact-row">
+      <div class="left-info">
+        ${circleHTML}
+        <span class="contact-name">${contact.name}</span>
+      </div>
+      <input type="checkbox" value="${contact.id}">
+    </div>
+  `;
+}
+
+// to be reviewed later !!!
+function renderContactCircle(contact, index) {
+    const color = contactCircleColor[index % contactCircleColor.length];
+    const initials = getInitials(contact.name);
+    return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
 }
