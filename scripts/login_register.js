@@ -170,4 +170,5 @@ function animateLogoFirstVisit() {
 
 function saveToLocalStorage(activeUserId) {
     localStorage.setItem("activeUserId", JSON.stringify(activeUserId));
+    localStorage.setItem("shownGreeting", "false");
 }
