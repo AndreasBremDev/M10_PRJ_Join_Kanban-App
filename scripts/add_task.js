@@ -3,13 +3,16 @@ async function initAddTask() {
     await eachPageSetcurrentUserInitials();
     await loadAndRenderContacts('assigned-dropdown', 'addTask');
     setupPriorityButtons();
+    setupFormElements();
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+function setupFormElements() {
     const dueDateInput = document.getElementById('due-date');
-    const todayStr = new Date().toISOString().split('T')[0];
-    dueDateInput.setAttribute('min', todayStr);
-});
+    if (dueDateInput) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        dueDateInput.setAttribute('min', todayStr);
+    }
+}
 
 /** Setup priority buttons */
 function setupPriorityButtons() {

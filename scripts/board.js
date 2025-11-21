@@ -6,11 +6,23 @@ let scrollThreshold = 50; // Pixel vom Rand
 async function init() {
     checkLoggedInPageSecurity();
     await eachPageSetcurrentUserInitials();
+    
+    let start = performance.now();
     await renderTasks();
+    let end = performance.now();
+    console.log("Dauer von renderTask in ms: " + (end - start));
 }
 
 async function renderTasks() {
-    let tasksWithId = await fetchTasks(activeUserId);
+    let tasksObj = await fetchData(`/${activeUserId}/tasks`);
+    let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+    /* ab hier: doppelt mit global.js / fetchAndSortContacts(containerId) Zeile 67 bzw. 78-90 */
+    let contactsObj = await fetchData(`/${activeUserId}/contacts`);
+    let contactsWithId = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+    let contactsWithoutUndefined = contactsWithId.filter(i => i.name !== undefined);
+    let sortedContacts = contactsWithoutUndefined.sort((a, b) => a.name.localeCompare(b.name));
+    /* bis hier */
+    contacts = sortedContacts;
     let categories = {
         'categoryToDo': tasksWithId.filter(cat => cat.board === "toDo") || [],
         'categoryInProgress': tasksWithId.filter(cat => cat.board === "inProgress") || [],
@@ -21,6 +33,32 @@ async function renderTasks() {
         const container = document.getElementById(htmlContainerId);
         tasksWithId.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasksWithId.map(task => renderTasksCardSmallHtml(task)).join('');
     });
+}
+
+function checkForAndDisplaySubtasks(task) {
+    if (task.subtasks) {
+        let totalSubtasks = task.subtasks.length;
+        let doneSubtasks = task.subtasks.filter(d => d.done === true).length;
+        return renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks);
+    } else {
+        return "";
+    }
+}
+
+function checkForAndDisplayUserCircles(task) {
+    let assignedArray = task.assigned;
+    if (assignedArray.length !== 0) {
+        let html = '';
+        for (let i = 0; i < assignedArray.length; i++) {
+            let contact = contacts.find(c => c.id === assignedArray[i]);
+            const color = contactCircleColor[assignedArray[i] % contactCircleColor.length];
+            let initials = getInitials(contact.name)
+            html += renderTaskCardAssigned(initials, color);
+        }
+        return html
+    } else {
+        return '';
+    }
 }
 
 function categoryColor(task) {
@@ -119,7 +157,26 @@ async function renderTaskDetail(taskJson) {
             section.classList.add('slide-in');
         }
     }, 50);
-    await renderContactsInOverlay();
+    await renderContactsInOverlay(); // Note: all contacts for activeUserId -> innerHTML: overlayContactContainer
+}
+
+/**
+ * Render contact circles in the overlay container.
+ * Fetches contacts, generates initials, and displays them with colored circles.
+ */
+async function renderContactsInOverlay() {
+    const contactsObject = await fetchContactsForOverlay(); // all contacts for activeUserId
+    if (!contactsObject) return;
+    const container = document.getElementById('overlayContactContainer');
+    container.innerHTML = Object.values(contactsObject).map((contact, index) => {
+        const color = contactCircleColor[index % contactCircleColor.length];
+        const initials = getInitials(contact.name);
+        return `
+        <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
+        <div style="font-size: 18px;">${contact.name}</div>
+        </div>`;
+    }).join('');
 }
 
 async function deleteTaskfromBoard(taskId)  { 
