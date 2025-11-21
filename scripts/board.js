@@ -1,12 +1,12 @@
 let currentDraggedId;
 let autoScrollInterval = null;
-let scrollSpeed = 10; // Pixel pro Intervall
-let scrollThreshold = 50; // Pixel vom Rand
+let scrollSpeed = 10;
+let scrollThreshold = 50;
 
 async function init() {
     checkLoggedInPageSecurity();
     await eachPageSetcurrentUserInitials();
-    
+
     let start = performance.now();
     await renderTasks();
     let end = performance.now();
@@ -72,14 +72,12 @@ function categoryColor(task) {
 function dragstartHandler(event, id) {
     currentDraggedId = id;
     event.target.style.transform = 'rotate(2deg)';
-    // Auto-scroll während Drag aktivieren
     startAutoScroll();
 }
 
 function dragoverHandler(ev) {
     ev.preventDefault();
     toggleStyle(ev);
-    // Auto-scroll basierend auf Mausposition
     handleAutoScroll(ev);
 }
 
@@ -149,7 +147,6 @@ async function renderTaskDetail(taskJson) {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getTaskDetailOverlayTemplate(task);
     overlay.classList.remove('d-none');
-    // await loadContacts();
     setupPriorityButtons();
     setTimeout(() => {
         let section = overlay.querySelector('.add-task-section');
@@ -179,7 +176,7 @@ async function renderContactsInOverlay() {
     }).join('');
 }
 
-async function deleteTaskfromBoard(taskId)  { 
+async function deleteTaskfromBoard(taskId) {
     try {
         await deleteTask(taskId);
         closeAddTaskOverlay();
@@ -196,30 +193,29 @@ async function renderEditTaskDetail() {
     setupPriorityButtons();
 }
 
-
+////////// to be refactor'd (check/remove comments) ///////////
 function renderSubtasks(subtasks) {
-  // Konvertiere eingehende subtasks ins Array, falls es ein Objekt mit Keys ist
-  const subtasksArray = Array.isArray(subtasks)
-    ? subtasks
-    : Object.values(subtasks || {});
+    // Konvertiere eingehende subtasks ins Array, falls es ein Objekt mit Keys ist
+    const subtasksArray = Array.isArray(subtasks)
+        ? subtasks
+        : Object.values(subtasks || {});
 
-  // Filtere gültige Einträge (nicht null, haben 'name')
-  const validSubtasks = subtasksArray.filter(st => st && st.name);
+    // Filtere gültige Einträge (nicht null, haben 'name')
+    const validSubtasks = subtasksArray.filter(st => st && st.name);
 
-  // Wenn keine gültigen Subtasks, gib Hinweis zurück
-  if (validSubtasks.length === 0) {
-    return '<p>No subtasks</p>';
-  }
+    // Wenn keine gültigen Subtasks, gib Hinweis zurück
+    if (validSubtasks.length === 0) {
+        return '<p>No subtasks</p>';
+    }
 
-  // Baue HTML-Liste
-  const listItems = validSubtasks
-    .map(st => `<li>${st.name}</li>`)
-    .join('');
-    
-  return `<ul>${listItems}</ul>`;
+    // Baue HTML-Liste
+    const listItems = validSubtasks
+        .map(st => `<li>${st.name}</li>`)
+        .join('');
+
+    return `<ul>${listItems}</ul>`;
 }
 
-// Auto-Scroll Funktionen
 function startAutoScroll() {
     document.addEventListener('dragover', handleAutoScroll);
 }
@@ -232,12 +228,14 @@ function stopAutoScroll() {
     }
 }
 
+////////// to be refactor'd (>14 lines) ///////////
 function handleAutoScroll(event) {
+    // Auto-scroll basierend auf Mausposition
     const main = document.querySelector('main');
     const rect = main.getBoundingClientRect();
     const mouseY = event.clientY;
     const mouseX = event.clientX;
-    
+
     // Vertikales Scrollen
     if (mouseY < rect.top + scrollThreshold) {
         // Nach oben scrollen
