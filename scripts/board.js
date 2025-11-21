@@ -115,7 +115,7 @@ async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = getAddTaskOverlayTemplate(board);
     overlay.classList.remove('d-none');
-    await loadContacts();
+    await loadAndRenderContacts('assigned-dropdown', 'addTask');
     setupPriorityButtons();
     setTimeout(() => {
         let section = overlay.querySelector('.add-task-section');
