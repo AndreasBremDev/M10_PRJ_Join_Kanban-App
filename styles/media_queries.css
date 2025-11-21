@@ -113,6 +113,35 @@
     display: none;
   }
 
+  .a_help_summary {
+    display: none;
+  }
+
+  .user-circle:hover {
+    background-color: white;
+  }
+
+  .user-menu-help {
+    display: block;
+  }
+
+  .user-menu {
+    display: flex !important;
+    position: absolute;
+    top: 70px;
+    right: 8px;
+    transform: translateX(120%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .user-menu.show {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
 
   /*----------End Region----------*/
 }

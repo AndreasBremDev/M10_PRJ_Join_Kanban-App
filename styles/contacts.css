@@ -73,13 +73,18 @@ a {
 
 .contact-list-sidebar-outer {
     width: 456px;
-    min-width: 456px;
     background-color: #FFFFFF;
     box-shadow: 4px 0 6px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
     padding: 32px 52px 0px 52px;
     overflow-y: scroll;
+}
+
+.button_add_contact {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
 }
 
 .add-contact-btn {
@@ -96,6 +101,26 @@ a {
     font-weight: 700;
     cursor: pointer;
     transition: all 300ms ease-out;
+}
+
+.add-contact-btn-mobile {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    height: 56px;
+    width: 56px;
+    background-color: #2A3647;
+    color: #FFFFFF;
+    border-radius: 50%;
+    border: none;
+    transition: all 300ms ease-out;
+}
+
+.add-contact-icon-mobile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .add-contact-btn:hover {
@@ -427,9 +452,9 @@ a {
     opacity: 1;
 }
 
-
-
-
+.user_idle_add_task {
+    padding: 30px;
+}
 
 @media(max-width: 1400px) {
 
@@ -459,18 +484,156 @@ a {
     }
 }
 
-/* @media (max-width: 1200px) {
-
-    --CONTACTS.html--
+@media (max-width: 1050px) {
 
     .contacts-wrapper {
-        margin-left: 0px;
-        margin-top: 80px;
-        height: calc(100vh - 80px);
+        flex-direction: column;
     }
 
-    .title_seperator img {
-        transform: rotate(90deg);
-        margin-left: 0px;
+    .contact-list-sidebar-outer {
+        width: auto;
+        height: 64%;
     }
-} */
+
+    .add-contact-btn {
+        margin-bottom: 10px;
+        width: 352px;
+    }
+
+    .contact-list-letter {
+        height: 24px;
+    }
+
+    .column {
+        margin-bottom: 16px;
+    }
+
+    .main_title {
+        margin-bottom: 0;
+    }
+
+    .user-circle-large {
+        min-width: 60px;
+        min-height: 60px;
+        font-size: 24px;
+    }
+
+    .user-circle-initials {
+        font-size: 24px;
+    }
+
+    .button_add_contact {
+        justify-content: center;
+    }
+
+    .contact-dialog-add {
+        padding: 0 16px;
+    }
+
+}
+
+@media (max-width: 930px) {
+    .contact-dialog-desktop {
+        width: 95%;
+    }
+
+    .user_idle_add_task {
+        padding: 16px;
+    }
+
+    .input-field {
+        width: 300px;
+    }
+
+    .two-buttons {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main_title {
+        display: none;
+    }
+
+    .contacts-wrapper {
+        margin: 80px 0 0 0;
+        height: 100%;
+        flex-direction: column-reverse;
+    }
+
+    .contact-list-sidebar-outer {
+        padding: 16px;
+        box-shadow: none;
+    }
+
+    .add-contact-btn {
+        margin-top: 30px;
+    }
+
+    .add-contact-btn {
+        display: none;
+    }
+
+    .add-contact-btn-mobile {
+        display: flex;
+    }
+
+    .button_add_contact {
+        justify-content: flex-end;
+        top: 80%;
+        position: fixed;
+        right: 16px;
+    }
+
+    #contactAddModal {
+        position: fixed;
+        top: 120%;
+        left: 50%;
+        transform: translate(-50%, -60%);
+        width: 95%;
+        height: calc(100vh - 160px);
+        opacity: 0;
+    }
+
+    #contactAddModal.open {
+        animation: floatFromBottomOverlay 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes floatFromBottomOverlay {
+        0% {
+            top: 120%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            opacity: 0;
+        }
+
+        100% {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 1;
+        }
+    }
+}
+
+    @media (max-width: 480px) {
+        .flex {
+            display: none;
+        }
+
+        .contact-list-sidebar-outer {
+            margin: 0;
+            height: calc(100svh - 80px);
+        }
+
+        .contact-list-card {
+            justify-content: center;
+            padding: 15px 0;
+        }
+    }
+
+    @media (max-width: 370px) {
+        .contact-list-letter {
+            padding: 0;
+        }
+    }

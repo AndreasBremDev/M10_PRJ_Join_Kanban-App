@@ -380,7 +380,7 @@ function renderAddNewContactOverlayHtml() {
                 </div>
             </div>
 
-            <div class="flex align" style="padding: 30px">
+            <div class="flex align user_idle_add_task" style="padding: 30px">
                 <div class="user-circle-intials user-circle-large" style="background-color: #D1D1D1">
                     <svg width="64" height="64" viewBox="0 0 64 64" fill="none"
                         xmlns="http://www.w3.org/2000/svg">

@@ -45,6 +45,10 @@
     display: flex;
 }
 
+.user-menu-help{
+    display: none;
+}
+
 .btn {
     height: 48px;
     border: none;
@@ -267,13 +271,20 @@ header {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background-color: #2A3647;
-    color: #FFFFFF;
+    border: 2px solid;
+    border-color: #2A3647;
+    background-color: white;
+    color: #29ABE2;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
     cursor: pointer;
+}
+
+.user-circle:hover{
+    background-color: #c4c5c64a;
+    
 }
 
 /* Headerbar Hover */

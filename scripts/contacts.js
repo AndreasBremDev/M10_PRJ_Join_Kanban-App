@@ -32,7 +32,7 @@ async function renderContacts() {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
         let contacts = contactsFetch.filter(i => i.name !== undefined);
-        let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
+        let sortedContacts = contacts.sort((a, b) => { return a.name.localeCompare(b.name) });
         let groupedContacts = groupContactsByLetter(sortedContacts);
         contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
     };
@@ -103,11 +103,14 @@ function contactsLargeSlideIn(ev, contactJson, color) {
 }
 
 async function showDialogCreateContact(id, ev) {
-    let contactAddModal = document.getElementById(id);
     ev.stopPropagation();
+    let contactAddModal = document.getElementById(id);
     bool = [0, 0];
     contactAddModal.innerHTML = renderAddNewContactOverlayHtml();
     contactAddModal.showModal();
+    requestAnimationFrame(() => {
+        contactAddModal.classList.add("open");
+    });
     checkAllCreateContactValidations('contactCreateBtn');
     await renderContacts();
 }
@@ -145,7 +148,7 @@ async function updateContact(currContactId, option) {
     }
 }
 
-async function createNextIdPutDataAndRender() {    
+async function createNextIdPutDataAndRender() {
     try {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
         let contactData = await setContactDataForBackendUpload();
@@ -206,9 +209,8 @@ function showPopup(id) {
 
 function contactCancel(ev) {
     ev.stopPropagation();
-    let contactAddModal = document.getElementById('contactAddModal');
-    let contactEditDeleteModal = document.getElementById('contactEditDeleteModal');
+    let modal = document.getElementById('contactAddModal');
+    modal.classList.remove("open");
+    modal.close();
     clearAllContactsInputFields();
-    contactAddModal.close();
-    contactEditDeleteModal.close();
 }

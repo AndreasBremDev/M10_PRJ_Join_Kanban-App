@@ -19,9 +19,25 @@
 
 <body>
     <div class="wrapper">
-        <header>
-            <img class="logo" src="../assets/icons/Join_dark.png" alt="Join Logo">
-        </header>
+    <header>
+        <div class="header-left">
+            <h2 class="header_h2">Kanban Project Management Tool</h2>
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
+        </div>
+        <div class="header-right">
+            <a class="a_help_summary" href="/html/help.html">
+                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
+            </a>
+            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
+
+            <div class="user-menu" id="user-menu">
+                <a class="user-menu-help" href="/html/help.html">Help</a>
+                <a class="user-menu-legal-notice" href="/html/legal_notice.html">Legal Notice</a>
+                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html">Privacy Policy</a>
+                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            </div>
+        </div>
+    </header>
 
         <main class="inner-wrapper">
             <div class="register-login">
