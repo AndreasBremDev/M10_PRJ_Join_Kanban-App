@@ -6,7 +6,7 @@ const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
 
 async function init() {
     checkLoggedInPageSecurity();
-    await eachPageSetcurrentUserInitials();
+    await eachPageSetCurrentUserInitials();
     await loadAndRenderContacts('contactList', 'contacts');
 }
 

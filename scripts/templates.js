@@ -9,9 +9,7 @@ function renderTasksCardSmallHtml(task) {
             <p class="gray-text">${task.description}</p>
                 ${checkForAndDisplaySubtasks(task)}
             <div class="flex spacebetween">
-                <div class="grid-container" style="grid-template-columns: repeat(4, 22px); width: calc(3 *22px + 44px);">
-                    ${checkForAndDisplayUserCircles(task)}
-                </div>
+                ${checkForAndDisplayUserCircles(task)}
                 <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="urgency icon">
             </div>
         </div>
@@ -25,7 +23,14 @@ function renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks) {
             </div>`
 }
 
-function renderTaskCardAssigned(initial, color){
+function renderTaskCardAssignedSectionGrid(arrAssigned) {
+    return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(${arrAssigned.length}, 22px); width: calc(${arrAssigned.length -1} *22px + 44px);">`
+}
+function renderTaskCardAssignedSectionGridMoreThanFive() {
+    return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(6, 22px); width: calc(5 *22px + 44px);">`
+}
+
+function renderTaskCardAssignedSectionInitials(initial, color){
     return /*html*/`<div style="background-color: ${color};">${initial}</div>`
 }
 

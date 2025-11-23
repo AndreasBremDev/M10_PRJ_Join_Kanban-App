@@ -3,6 +3,7 @@ let activeUserId;
 activeUserId = loadActiveUserId();
 let isUserMenuListenerAdded = false;
 let contacts = [];
+let tasks = [];
 
 function loadActiveUserId() {
     const val = localStorage.getItem("activeUserId");
@@ -79,7 +80,7 @@ async function loadAndRenderContacts(divId, useAtPage) {
     }
 }
 
-async function fetchAndSortContacts(containerId) {
+async function fetchAndSortContacts(containerId = "") {
     try {
         const contactsObj = await fetchData(`/${activeUserId}/contacts`);
         if (contactsObj.length == 0) { throw new Error; }
@@ -128,7 +129,7 @@ async function fetchUserName(activeUserId) {
     }
 }
 
-async function eachPageSetcurrentUserInitials() {
+async function eachPageSetCurrentUserInitials() {
     let currentUserInitials = document.getElementById('currentUserInitials');
     let currentUser = await fetchUserName(activeUserId);
     let initials = await getInitials(currentUser);
@@ -208,6 +209,8 @@ async function deleteTask(taskId) {
 
 async function deletePath(path = "") {
     try {
+        console.log(BASE_URL + path + ".json");
+        
         const response = await fetch(BASE_URL + path + ".json", {
             method: "DELETE"
         });

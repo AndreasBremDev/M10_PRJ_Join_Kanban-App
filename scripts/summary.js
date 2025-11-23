@@ -12,7 +12,7 @@ async function init() {
   }
 
   await initSummary();
-  await eachPageSetcurrentUserInitials();
+  await eachPageSetCurrentUserInitials();
 }
 
 async function fetchUserData(userId) {

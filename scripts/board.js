@@ -5,7 +5,7 @@ let scrollThreshold = 50;
 
 async function init() {
     checkLoggedInPageSecurity();
-    await eachPageSetcurrentUserInitials();
+    await eachPageSetCurrentUserInitials();
 
     let start = performance.now();
     await renderTasks();
@@ -13,27 +13,50 @@ async function init() {
     console.log("Dauer von renderTask in ms: " + (end - start));
 }
 
+// FIND right position to inject new code (?!)
+// BEFORE fetch(?) / BEFORE work with(?) Tasks --> at renderTasks():
+// compare contacts to tasks.assigned
+// and delete tasks.assigned.id from firebase
+// handle issue "undefined/blanks" tasks.assigned: 0,1, ,3,4.usw.
+
+
 async function renderTasks() {
+    contacts = await fetchAndSortContacts();
+    console.log(contacts)
     let tasksObj = await fetchData(`/${activeUserId}/tasks`);
     let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
-    /* ab hier: doppelt mit global.js / fetchAndSortContacts(containerId) Zeile 67 bzw. 78-90 */
-    let contactsObj = await fetchData(`/${activeUserId}/contacts`);
-    let contactsWithId = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
-    let contactsWithoutUndefined = contactsWithId.filter(i => i.name !== undefined);
-    let sortedContacts = contactsWithoutUndefined.sort((a, b) => a.name.localeCompare(b.name));
-    /* bis hier */
-    contacts = sortedContacts;
+    tasks = tasksWithId;
+    console.log(tasks);
+    // maybe wrong if-statement // double check
+    if (tasks && tasks.length > 0) { tasks = await compareContactsWithTasksAssignedContactsAndCleanUp(tasks) }
+    console.log(tasks);
+    
     let categories = {
-        'categoryToDo': tasksWithId.filter(cat => cat.board === "toDo") || [],
-        'categoryInProgress': tasksWithId.filter(cat => cat.board === "inProgress") || [],
-        'categoryAwaitFeedback': tasksWithId.filter(cat => cat.board === "awaitFeedback") || [],
-        'categoryDone': tasksWithId.filter(cat => cat.board === "done") || []
+        'categoryToDo': tasks.filter(cat => cat.board === "toDo") || [],
+        'categoryInProgress': tasks.filter(cat => cat.board === "inProgress") || [],
+        'categoryAwaitFeedback': tasks.filter(cat => cat.board === "awaitFeedback") || [],
+        'categoryDone': tasks.filter(cat => cat.board === "done") || []
     }
-    Object.entries(categories).forEach(([htmlContainerId, tasksWithId]) => {
+    Object.entries(categories).forEach(([htmlContainerId, tasks]) => {
         const container = document.getElementById(htmlContainerId);
-        tasksWithId.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasksWithId.map(task => renderTasksCardSmallHtml(task)).join('');
+        tasks.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = tasks.map(task => renderTasksCardSmallHtml(task)).join('');
     });
 }
+
+async function compareContactsWithTasksAssignedContactsAndCleanUp(tasks) {
+    for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].assigned && Array.isArray(tasks[i].assigned)) {
+            for (let j = 0; j < tasks[i].assigned.length; j++) {
+                let contactIndex = contacts.indexOf(contacts.find(c => c.id === tasks[i].assigned[j]));
+                if (contactIndex === -1) {
+                    await deletePath(`/${activeUserId}/tasks/${tasks[i].id}/assigned/${j}`);
+                }
+            }
+        }
+    }
+    return tasks;
+}
+
 
 function checkForAndDisplaySubtasks(task) {
     if (task.subtasks) {
@@ -45,21 +68,49 @@ function checkForAndDisplaySubtasks(task) {
     }
 }
 
-//////////// NOT COMPLETED, mind parent-div, grid-setup ///////////
 function checkForAndDisplayUserCircles(task) {
-    let assignedArray = task.assigned;
-    if (assignedArray.length !== 0) {
-        let html = '';
-        for (let i = 0; i < assignedArray.length; i++) {
-            let contact = contacts.find(c => c.id === assignedArray[i]);
-            const color = contactCircleColor[assignedArray[i] % contactCircleColor.length];
-            let initials = getInitials(contact.name)
-            html += renderTaskCardAssigned(initials, color);
+    let arrAssigned = task.assigned;
+    let html = '';
+    if (arrAssigned && arrAssigned.length > 0 && arrAssigned.length <= 5) {
+        html += renderTaskCardAssignedSectionGrid(arrAssigned);
+        for (let i = 0; i < arrAssigned.length; i++) {
+            html = createInitialCircle(arrAssigned, i, html);
         }
+        html += `</div>`
+        return html
+    } else if (arrAssigned && arrAssigned.length > 5) {
+        html += renderTaskCardAssignedSectionGridMoreThanFive();
+        for (let i = 0; i < 5; i++) {
+            html = createInitialCircle(arrAssigned, i, html);
+        }
+        additionalAssigned = `+${arrAssigned.length - 5}`;
+        const color = '#2A3647';
+        html += renderTaskCardAssignedSectionInitials(additionalAssigned, color)
+        html += `</div>`
         return html
     } else {
-        return '';
+        return '<div></div>';
     }
+}
+
+/** creates the initials circles, within a for loop, 
+ * and writes html-code into the string variable html
+ * 
+ * @param {Typ[]} arrAssigned 
+ * @param {number} i 
+ * @param {string} html 
+ * @returns {string} to be rendered HTML-String.
+ */
+function createInitialCircle(arrAssigned, i, html) {
+    let contactIndex = contacts.indexOf(contacts.find(c => c.id === arrAssigned[i]));
+    const color = contactCircleColor[arrAssigned[i] % contactCircleColor.length];
+    if (contactIndex !== -1) {
+        let initials = getInitials(contacts[contactIndex].name);
+        html += renderTaskCardAssignedSectionInitials(initials, color);
+    } else {
+        html += '';
+    }
+    return html;
 }
 
 function categoryColor(task) {
