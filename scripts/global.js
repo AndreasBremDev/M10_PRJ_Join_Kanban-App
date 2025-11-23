@@ -136,7 +136,7 @@ async function eachPageSetcurrentUserInitials() {
 }
 
 
-// function to fetch user data from firebase
+// function to fetch user data from firebase                                                                //needs UPDATE
 async function fetchUserData(path) {
     try {
         let url = `${BASE_URL}${path}`;
@@ -153,7 +153,7 @@ async function fetchUserData(path) {
     }
 }
 
-// function to create a user circle and put it to the container
+// function to create a user circle and put it to the container                                         //needs UPDATE
 function createUserCircle(containerId, initials, index) {
     const color = contactCircleColor[index % contactCircleColor.length]; // choose color from  contactCircleColor
     const userCircle = document.createElement('div'); // create a 'div' element for the circle
@@ -169,7 +169,7 @@ function createUserCircle(containerId, initials, index) {
     }
 }
 
-// function to load user contacts and create user circles for each contact
+// function to load user contacts and create user circles for each contact                              //needs UPDATE
 async function renderUserCircles() {
     const contacts = await fetchUserData(`/${activeUserId}/contacts.json`); // fetch contacts for the active user
     if (!contacts) {
