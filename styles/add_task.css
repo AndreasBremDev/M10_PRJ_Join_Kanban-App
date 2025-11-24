@@ -182,7 +182,6 @@ button.clear:hover {
 .priority-buttons {
     display: flex;
     gap: 12px;
-    width: 440px;
 }
 
 .priority-btn {
