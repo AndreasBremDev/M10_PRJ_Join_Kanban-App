@@ -161,3 +161,18 @@
     padding: 0;
   }
 }
+
+@media (max-height: 700px) {
+  .sidenav {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .nav_icon{
+    padding: 32px 0;
+  }
+
+  .nav_policy{
+    margin-top: 30px;
+  }
+}

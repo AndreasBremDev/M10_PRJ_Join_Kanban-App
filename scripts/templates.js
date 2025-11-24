@@ -307,7 +307,27 @@ function editTaskDetailOverlayTemplate() {
 function renderContactLargeHtml(contact, color) {
     const contactJson = JSON.stringify(contact).replace(/"/g, '&quot;');
     return /* html */`
-    <div class="flex gap-56 align">
+                <div class="tile_summary_2">
+                <div class="overlay_title_mobile">
+                    <div>
+                        <h1 class="h1_title_summary">Contacts</h1>
+                    </div>
+                    <div>
+                        <a class="go_back" onclick="closeContactOverlay()">
+                        <img src="/assets/icons/arrow-left-line.svg" alt="arrow-left">
+                        </a>
+                    </div>
+                    </div>
+
+                <div class="title_seperator_2">
+                        <img src="/assets/icons/Summary_title_seperator.svg" height="59px" width="3px" alt="">
+                    </div>
+
+                    <div class="title_summary_discription_2">
+                        <p class="title_discription">Better with a team</p>
+                    </div>
+                </div>
+    <div class="flex gap-56 align edit_cirle_name">
         <div class="user-circle-intials user-circle-large" style="background-color: ${color}">
             ${getInitials(contact.name)}
         </div>
@@ -348,22 +368,37 @@ function renderContactLargeHtml(contact, color) {
                 </button>
             </div>
         </div>
+
     </div>
-    <div class="flex column gap-13">
+    <div class="flex column gap-13 title_mobile">
         <h1 class="contact-head" id="contactInformation">Contact Information</h1>
         <p class="font-16"><b>Email</b></p>
         <p style="color: #007CEE;"><a href="mailto:${contact.email}">${contact.email}</a></p>
         <p class="font-16"><b>Phone</b></p>
         <p style="color: #007CEE;">${checkContactForPhoneHtml(contact)}</p>
     </div>
+
+        <div class="mobile-actions-btn" onclick="toggleMobileContactMenu()">
+         <img src="../assets/icons/more_vert.svg" alt="more">
+        </div>
+
+        <div id="mobileContactMenu" class="mobile-contact-menu">
+            <button onclick="openEditContact('${contactJson}', '${color}')">
+                <img src="../assets/icons/edit.svg" alt=""> Edit
+            </button>
+
+            <button onclick="openDeleteContact('${contactJson}', '${color}')">
+                <img src="../assets/icons/delete.svg" alt=""> Delete
+            </button>
+</div>
     `;
 }
 
 function renderAddNewContactOverlayHtml() {
     return /*html*/`
-        <article class="flex h-100" style="color: var(--white); position: relative;">
+        <article class="flex h-100 add_contact_overlay" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="close-btn" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M12.001 12.0001L17.244 17.2431M6.758 17.2431L12.001 12.0001L6.758 17.2431ZM17.244 6.75708L12 12.0001L17.244 6.75708ZM12 12.0001L6.758 6.75708L12 12.0001Z"
                         stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -371,8 +406,8 @@ function renderAddNewContactOverlayHtml() {
             </button>
 
             <div class="flex align contact-dialog-add">
-                <div class="flex column gap-13">
-                    <img src="/assets/icons/Join_light.png" alt="Join Logo Small"
+                <div class="flex column gap-13 overlay_title">
+                    <img class="add_contact_overlay_img" src="/assets/icons/Join_light.png" alt="Join Logo Small"
                         style="height: 66px; width: 55px;">
                     <h2 class="contact-dialog-h2">Add contact</h2>
                     <h3 class="contact-dialog-h3">Tasks are better with a team!</h3>
@@ -380,7 +415,7 @@ function renderAddNewContactOverlayHtml() {
                 </div>
             </div>
 
-            <div class="flex align user_idle_add_task" style="padding: 30px">
+            <div class="flex align user_idle_add_task">
                 <div class="user-circle-intials user-circle-large" style="background-color: #D1D1D1">
                     <svg width="64" height="64" viewBox="0 0 64 64" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -397,7 +432,7 @@ function renderAddNewContactOverlayHtml() {
                 </div>
             </div>
 
-            <div class="flex column justify pg-r30">
+            <div class="flex column justify pg-r30 overlay_form">
                 <form class="contact-form" onsubmit="createContact(); return false;">
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact"
@@ -462,7 +497,7 @@ function renderAddNewContactOverlayHtml() {
 
 function renderEditContactOverlayHtml(contact, color, option) {
     return /*html*/`
-        <article class="flex h-100" style="color: var(--white); position: relative;">
+        <article class="flex h-100 overlay_edit_delete" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -472,16 +507,16 @@ function renderEditContactOverlayHtml(contact, color, option) {
             </button>
 
             <div class="flex align contact-dialog-add">
-                <div class="flex column gap-13">
-                    <img src="/assets/icons/Join_light.png" alt="Join Logo Small"
+                <div class="flex column gap-13 title_mobile">
+                    <img class="logo_img_edit" src="/assets/icons/Join_light.png" alt="Join Logo Small"
                         style="height: 66px; width: 55px;">
                     <h2 class="contact-dialog-h2">${option} contact</h2>
                     <div class="contact-dialog-line"></div>
                 </div>
             </div>
 
-            <div class="flex align" style="padding: 30px">
-                <div class="user-circle-intials user-circle-large" style="background-color: ${color}; font-size: 47px;">
+            <div class="flex align user_icon_edit">
+                <div class="user-circle-intials user-circle-large_edit" style="background-color: ${color}; font-size: 47px;">
                     ${getInitials(contact.name)}
                 </div>
             </div>
@@ -530,7 +565,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             </svg>
                         </button>
                         <button id="contactCreateBtn" class="btn_contact_create btn flex align gap-13" type="submit" tabindex="1">
-                            ${option === 'Edit'? 'Save' : 'Delete'}
+                            ${option === 'Edit' ? 'Save' : 'Delete'}
                             <svg width="20" height="15" viewBox="0 0 16 12" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path

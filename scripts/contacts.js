@@ -104,24 +104,28 @@ function contactsLargeSlideIn(ev, contactJson, color) {
 
 async function showDialogCreateContact(id, ev) {
     ev.stopPropagation();
-    let contactAddModal = document.getElementById(id);
+    const modal = document.getElementById(id);
     bool = [0, 0];
-    contactAddModal.innerHTML = renderAddNewContactOverlayHtml();
-    contactAddModal.showModal();
-    requestAnimationFrame(() => {
-        contactAddModal.classList.add("open");
-    });
+    modal.innerHTML = renderAddNewContactOverlayHtml();
+    modal.showModal();
+    setTimeout(() => {
+        modal.classList.add("open");
+    }, 10);
+
     checkAllCreateContactValidations('contactCreateBtn');
     await renderContacts();
 }
 
 async function showDialogContact(id, contactJson, color, ev, option) {
+    ev.stopPropagation();
     let contactEditDeleteModal = document.getElementById(id);
     let contact = JSON.parse(contactJson);
-    ev.stopPropagation();
     bool = [1, 1];
-    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option)
+    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
     contactEditDeleteModal.showModal();
+    setTimeout(() => {
+        contactEditDeleteModal.classList.add("open");
+    }, 10);
     await renderContacts();
 }
 
@@ -208,9 +212,53 @@ function showPopup(id) {
 }
 
 function contactCancel(ev) {
+    ev.preventDefault();
     ev.stopPropagation();
-    let modal = document.getElementById('contactAddModal');
+
+    const modal = ev.target.closest("dialog");
+    if (!modal) return;
+
     modal.classList.remove("open");
     modal.close();
-    clearAllContactsInputFields();
+}
+
+function closeContactOverlay() {
+    const overlay = document.getElementById('contactDisplayLarge');
+
+    overlay.classList.remove('open');
+    overlay.style.display = 'none';
+
+    document.body.classList.remove('no-scroll');
+}
+
+function toggleMobileContactMenu() {
+    const menu = document.getElementById('mobileContactMenu');
+
+    const isOpen = menu.classList.contains('show');
+
+    if (isOpen) {
+        menu.classList.remove('show');
+        document.body.onclick = null;
+    } else {
+        menu.classList.add('show');
+        setTimeout(() => {
+            document.body.onclick = (ev) => {
+                if (!menu.contains(ev.target) &&
+                    !document.querySelector('.mobile-actions-btn').contains(ev.target)) {
+                    menu.classList.remove('show');
+                    document.body.onclick = null;
+                }
+            }
+        }, 0);
+    }
+}
+
+function openEditContact(contactJson, color) {
+    toggleMobileContactMenu();
+    showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Edit');
+}
+
+function openDeleteContact(contactJson, color) {
+    toggleMobileContactMenu();
+    showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Delete');
 }
