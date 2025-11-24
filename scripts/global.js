@@ -3,6 +3,7 @@ let activeUserId;
 activeUserId = loadActiveUserId();
 let isUserMenuListenerAdded = false;
 let contacts = [];
+let tasks = [];
 
 function loadActiveUserId() {
     const val = localStorage.getItem("activeUserId");
@@ -79,7 +80,7 @@ async function loadAndRenderContacts(divId, useAtPage) {
     }
 }
 
-async function fetchAndSortContacts(containerId) {
+async function fetchAndSortContacts(containerId = "") {
     try {
         const contactsObj = await fetchData(`/${activeUserId}/contacts`);
         if (contactsObj.length == 0) { throw new Error; }
@@ -105,36 +106,15 @@ async function fetchData(path = "") {
     }
 }
 
-async function fetchTasks(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
-        let tasks = await res.json();
-        let tasksWithId = Object.entries(tasks).map(([id, taskData]) => ({
-            id: id,
-            ...taskData
-        }));
-        return tasksWithId
-    } catch (error) {
-        console.log("Error fetchTasks(): ", error);
-    }
-}
-async function fetchUserName(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/name" + ".json");
-        let response = await res.json();
-        return response
-    } catch (error) {
-        console.log("Error fetchTasks(): ", error);
-    }
-}
-
-async function eachPageSetcurrentUserInitials() {
+async function eachPageSetCurrentUserInitials() {
     let currentUserInitials = document.getElementById('currentUserInitials');
-    let currentUser = await fetchUserName(activeUserId);
+    let currentUser = await fetchData(`/${activeUserId}/name`);
     let initials = await getInitials(currentUser);
     currentUserInitials.innerHTML = initials;
 }
 
+///// 2b CLEANED UP /////
+// function to create a user circle and put it to the container
 
 // function to fetch user data from firebase                                                                //needs UPDATE
 async function fetchUserData(path) {
@@ -171,7 +151,7 @@ function createUserCircle(containerId, initials, index) {
 
 // function to load user contacts and create user circles for each contact                              //needs UPDATE
 async function renderUserCircles() {
-    const contacts = await fetchUserData(`/${activeUserId}/contacts.json`); // fetch contacts for the active user
+    const contacts = await fetchData(`/${activeUserId}/contacts`); // fetch contacts for the active user
     if (!contacts) {
         console.error("No contacts found for user:", activeUserId); // error message
         return;
@@ -222,10 +202,6 @@ async function deletePath(path = "") {
 function getInitials(name) {
     if (!name) return "?";
     return name.split(' ').map(word => word[0].toUpperCase()).join('');
-}
-
-async function fetchContactsForOverlay() {
-    return await fetchUserData(`/${activeUserId}/contacts.json`);
 }
 
 function logout() {

@@ -1,6 +1,6 @@
 async function initAddTask() {
     checkLoggedInPageSecurity();
-    await eachPageSetcurrentUserInitials();
+    await eachPageSetCurrentUserInitials();
     await loadAndRenderContacts('assigned-dropdown', 'addTask');
     setupPriorityButtons();
     setupFormElements();

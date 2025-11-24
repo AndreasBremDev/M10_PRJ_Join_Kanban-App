@@ -9,9 +9,7 @@ function renderTasksCardSmallHtml(task) {
             <p class="gray-text">${task.description}</p>
                 ${checkForAndDisplaySubtasks(task)}
             <div class="flex spacebetween">
-                <div class="grid-container" style="grid-template-columns: repeat(4, 22px); width: calc(3 *22px + 44px);">
-                    ${checkForAndDisplayUserCircles(task)}
-                </div>
+                ${checkForAndDisplayUserCircles(task)}
                 <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="urgency icon">
             </div>
         </div>
@@ -25,7 +23,14 @@ function renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks) {
             </div>`
 }
 
-function renderTaskCardAssigned(initial, color){
+function renderTaskCardAssignedSectionGrid(arrAssigned) {
+    return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(${arrAssigned.length}, 22px); width: calc(${arrAssigned.length -1} *22px + 44px);">`
+}
+function renderTaskCardAssignedSectionGridMoreThanFive() {
+    return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(6, 22px); width: calc(5 *22px + 44px);">`
+}
+
+function renderTaskCardAssignedSectionInitials(initial, color){
     return /*html*/`<div style="background-color: ${color};">${initial}</div>`
 }
 
@@ -456,7 +461,7 @@ function renderAddNewContactOverlayHtml() {
 }
 
 function renderEditContactOverlayHtml(contact, color, option) {
-    return /*html*/`
+    return /* html */`
         <article class="flex h-100" style="color: var(--white); position: relative;">
             <button class="close-button-position" onclick="contactCancel(event); return false;" aria-label="button">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -482,7 +487,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
             </div>
 
             <div class="flex column justify pg-r30">
-                <form class="contact-form" onsubmit="updateContact('${contact.contactId}', '${option}'); return false;">
+                <form class="contact-form" onsubmit="updateContact('${contact.id}', '${option}'); return false;">
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact" value="${contact.name}"
                             oninput="validateField('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"

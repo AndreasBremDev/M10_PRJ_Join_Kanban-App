@@ -6,7 +6,7 @@ const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
 
 async function init() {
     checkLoggedInPageSecurity();
-    await eachPageSetcurrentUserInitials();
+    await eachPageSetCurrentUserInitials();
     await loadAndRenderContacts('contactList', 'contacts');
 }
 
@@ -25,21 +25,6 @@ function checkAllCreateContactValidations(id) {
         contactCreateBtn.ariaDisabled = true;
     }
 }
-
-// async function renderContacts() {
-//     let contactListRef = document.getElementById('contactList');
-//     let contactsFetch = await loadData(`/${activeUserId}/contacts`);
-//     if (contactsFetch.length == 0) {
-//         contactListRef.innerHTML = emptyContactsHtml();
-//     } else {
-//         let contactsWithId = Object.entries(contactsFetch || {}).map(([key, contact]) => ({ id: key, ...contact }));
-//         let contacts = contactsFetch.filter(i => i.name !== undefined);
-//         let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
-        
-//         let groupedContacts = groupContactsByLetter(sortedContacts);
-//         contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
-//     };
-// }
 
 function renderGroupedContacts(groupedContacts) {
     let html = '';
