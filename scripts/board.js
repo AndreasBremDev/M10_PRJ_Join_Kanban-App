@@ -103,13 +103,13 @@ function checkForAndDisplayUserCircles(task) {
  * @param {string} html 
  * @returns {string} to be rendered HTML-String.
  */
-function createInitialCircle(arrAssigned, i, html, overlay = "") {
+function createInitialCircle(arrAssigned, i, html) {
     let contactIndex = contacts.indexOf(contacts.find(c => c.id === arrAssigned[i]));
     const color = contactCircleColor[arrAssigned[i] % contactCircleColor.length];
     if (contactIndex !== -1) {
         let initials = getInitials(contacts[contactIndex].name);
         html += renderTaskCardAssignedSectionInitials(initials, color);
-        if (overlay === 'overlay') { html += `<div>${contacts[contactIndex].name}</div>`}
+        // if (overlay === 'overlay') { html += `<div>${contacts[contactIndex].name}</div>`} // eine DIv mit allen circles und name
     } else {
         html += '';
     }
@@ -216,33 +216,53 @@ async function renderTaskDetail(taskJson) {
  * Render contact circles in the overlay container.
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
+
+
 function renderContactsInOverlay(task) {
     const container = document.getElementById('overlayContactContainer');
     let arrAssigned = task.assigned;
     let html = '';
-    // container.innerHTML = Object.values(contactsObject).map((contact, index) => {
+
     if (arrAssigned && arrAssigned.length > 0) {
-        html += `<div class="rendered-assigned-contacts-names">`
         for (let i = 0; i < arrAssigned.length; i++) {
-            html = createInitialCircle(arrAssigned, i, html, 'overlay');
+            let contactId = arrAssigned[i]; // holen die ID raus
+            let contact = contacts.find(c => c.id === contactId); //das ganze contact object wird anhand der ID gesucht
+
+            if (contact) {
+                let color = contactCircleColor[contact.id % contactCircleColor.length]; // Farbe anhand contact.id berechnen 
+                
+                let initials = getInitials(contact.name);
+                 //baue pro contact eigen Div 
+                html += `
+                <div class="overlay-contact-row">  
+                    <div class="user-circle-intials" style="background-color: ${color}">${initials}</div>
+                    <span>${contact.name}</span>
+                </div>
+                `;
+            }
         }
-        html += `</div>`
+        
+    } else { 
+        html = '<span class="gray-text">No contact assigned</span>';
     }
-
     container.innerHTML = html;
-
-    
-    // container.innerHTML = checkForAndDisplayUserCircles(task)
-    // contacts.map((contact, index) => {
-    //     const color = contactCircleColor[index % contactCircleColor.length];
-    //     const initials = getInitials(contact.name);
-    //     return `
-    //     <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-    //     <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
-    //     <div style="font-size: 18px;">${contact.name}</div>
-    //     </div>`;
-    // }).join('');
 }
+
+// function renderContactsInOverlay(task) {
+//     const container = document.getElementById('overlayContactContainer');
+//     let arrAssigned = task.assigned;
+//     let html = '';
+//     if (arrAssigned && arrAssigned.length > 0) {
+//         html += `<div class="rendered-assigned-contacts-names">`
+//         for (let i = 0; i < arrAssigned.length; i++) {
+//             html = createInitialCircle(arrAssigned, i, html, 'overlay');
+//         }
+//         html += `</div>`
+//     }
+
+//     container.innerHTML = html;
+
+// }
 
 async function deleteTaskfromBoard(taskId) {
     try {

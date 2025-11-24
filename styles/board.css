@@ -807,3 +807,10 @@ textarea {
     flex-wrap: wrap;
     margin-top: 16px;
 }
+
+.overlay-contact-row {
+    display: flex;
+    align-items: center;    
+    gap: 16px;              
+    padding: 7px 0;         
+}
