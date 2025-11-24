@@ -89,7 +89,7 @@ function getAddTaskOverlayTemplate(board) {
                 <form id="task-form" class="task-form">
                     <div class="form-left form-left-overlay">
                         <div class="overlay-add-task-div">
-                            <label for="title" class="form-headline-text">Title*</label>
+                            <label for="title" class="form-headline-text">Title<span class="required-marker">*</span></label>
                                <div class="title-input-container-overlay">
                                     <input id="title" class="title-input-overlay" type="text" placeholder="Enter a title">
                                  </div>
@@ -100,7 +100,7 @@ function getAddTaskOverlayTemplate(board) {
                             <textarea id="description" class="description-input-overlay title-input-overlay" placeholder="Enter a Description"></textarea>
                         </div>
 
-                        <label for="due-date" class="form-headline-text">Due date*</label>
+                        <label for="due-date" class="form-headline-text">Due date<span class="required-marker">*</span></label>
                         <div class="date-overlay">
                             <input id="due-date" class="due-date-overlay" min="${todayStr}" type="date" required>
                         </div>
@@ -139,7 +139,7 @@ function getAddTaskOverlayTemplate(board) {
 
                         
                         
-                                     <label for="category" class="form-headline-text">Category*</label>
+                                     <label for="category" class="form-headline-text">Category<span class="required-marker">*</span></label>
                                 <select id="category" required>
                                 <option value="" disabled selected>Select task category</option>
                                 <option value="technical">Technical Task</option>

@@ -450,7 +450,6 @@ main {
     width: 440px;
     height: 168px;
     flex: none;
-    order: 1;
     align-self: stretch;
     flex-grow: 0;
 }
