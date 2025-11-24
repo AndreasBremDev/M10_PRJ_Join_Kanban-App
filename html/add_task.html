@@ -13,11 +13,12 @@
     <link rel="stylesheet" href="/styles/media_queries.css">
 
     <script src="/scripts/global.js" defer></script>
+    <script src="/scripts/templates.js" defer></script>
     <script src="/scripts/add_task.js" defer></script>
     <script src="/scripts/board.js" defer></script>
 </head>
 
-<body onload="initAddTask(); eachPageSetcurrentUserInitials()">
+<body onload="initAddTask(); eachPageSetCurrentUserInitials()">
     <nav>
         <div class="sidenav">
             <div class="nav_icon">
@@ -85,7 +86,7 @@
                     <textarea id="description" placeholder="Enter a Description"></textarea>
 
                     <label for="due-date">Due date<span class="required-marker">*</span></label>
-                    <input id="due-date" type="date" required>
+                    <input id="due-date" type="date" min="" required>
 
                 </div>
 

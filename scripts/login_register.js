@@ -121,7 +121,7 @@ function showPopup(id) {
 async function login(path = "") {
     let email = document.getElementById('emailLogin');
     let password = document.getElementById('passwordLogin');
-    let response = await fetchUserData();
+    let response = await fetchData();
     let activeUser = response.findIndex(user => user.email === email.value && user.password === password.value);
     if (activeUser !== -1) {
         saveToLocalStorage(activeUser);
@@ -131,16 +131,6 @@ async function login(path = "") {
         document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
     }
     email.value = password.value = '';
-}
-
-async function fetchUserData() {
-    try {
-        let res = await fetch(BASE_URL + ".json");
-        let response = await res.json();
-        return response;
-    } catch (error) {
-        console.log(`error in login(): `, error);
-    }
 }
 
 function guestLogin() {

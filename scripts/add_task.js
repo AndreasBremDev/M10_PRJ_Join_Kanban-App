@@ -1,10 +1,18 @@
 async function initAddTask() {
     checkLoggedInPageSecurity();
-    await eachPageSetcurrentUserInitials();
-    loadContacts();
-    setupPriorityButtons();   
+    await eachPageSetCurrentUserInitials();
+    await loadAndRenderContacts('assigned-dropdown', 'addTask');
+    setupPriorityButtons();
+    setupFormElements();
 }
 
+function setupFormElements() {
+    const dueDateInput = document.getElementById('due-date');
+    if (dueDateInput) {
+        const todayStr = new Date().toISOString().split('T')[0];
+        dueDateInput.setAttribute('min', todayStr);
+    }
+}
 
 /** Setup priority buttons */
 function setupPriorityButtons() {
@@ -68,6 +76,9 @@ async function handleCreateTask(boardCategory) {
 
 }
 
+
+
+
 /** Clear form */
 function clearForm() {
     document.getElementById("task-form").reset();
@@ -103,80 +114,30 @@ function toggleContactDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
-/** function to calculate the next taskId 
-async function calcNextId(path) {
-    let res = await fetch(`${BASE_URL}${path}.json`);
-    let resJson = await res.json();
-
-    if (!resJson) return 1;
-
-    let keys = Object.keys(resJson).map(Number);
-    let nextId = Math.max(...keys) + 1;
-    return nextId;
-}*/
-
-
-/** Load data from backend */
-async function loadData(path = "") {
-    try {
-        let response = await fetch(BASE_URL + path + ".json");
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Error loading data:", error);
-    }
+// Helper functions for contacts, to sort and render them
+function convertAndSortContacts(contactsObj) {
+    if (!contactsObj) return [];
+    const contactsArray = Object.entries(contactsObj).map(
+        ([key, contact]) => ({ id: key, ...contact })
+    );
+    contactsArray.sort((a, b) =>
+        a.name.localeCompare(b.name, 'de', { sensitivity: 'base' })
+    );
+    return contactsArray;
 }
 
-async function loadContacts() {
-    let dropdownContainer = document.getElementById("assigned-dropdown");
-    dropdownContainer.innerHTML = ''; // Leere den Container
-
-    try {
-        let contacts = await loadData(`/${activeUserId}/contacts`);
-
-        if (contacts) {
-            Object.keys(contacts).forEach(key => {
-                const contact = contacts[key];
-
-                if (contact && contact.name) {
-                    // Erstelle Label und Checkbox für jeden Kontakt
-                    let contactItem = document.createElement('label');
-                    contactItem.className = 'contact-item';
-
-                    // Checkbox
-                    let checkbox = document.createElement('input');
-                    checkbox.type = 'checkbox';
-                    checkbox.value = key; // Speichere die ID
-
-                    // Text
-                    let textSpan = document.createElement('span');
-                    textSpan.textContent = contact.name;
-
-                    contactItem.appendChild(checkbox);
-                    contactItem.appendChild(textSpan);
-                    dropdownContainer.appendChild(contactItem);
-                }
-            });
-        }
-    } catch (error) {
-        console.error("Could not load contacts:", error);
-        dropdownContainer.innerHTML = '(Error loading contacts)';
-    }
+function createContactElement(contact) {
+    const label = document.createElement('label');
+    label.className = 'contact-item';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = contact.id;
+    const span = document.createElement('span');
+    span.textContent = contact.name;
+    label.appendChild(checkbox);
+    label.appendChild(span);
+    return label;
 }
-
-/** Setup form buttons 
-function setupFormButtons() {
-    let createBtn = document.getElementById("create-btn");
-    let clearBtn = document.getElementById("clear-btn");
-
-    createBtn.addEventListener("click", handleCreateTask);
-    clearBtn.addEventListener("click", clearForm);
-} */
-
-
-//overlay add_task
 
 
 function renderTaskCard(task) {

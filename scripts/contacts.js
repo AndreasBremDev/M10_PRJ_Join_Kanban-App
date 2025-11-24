@@ -1,12 +1,13 @@
-let contacts = [];
+
 bool = [0, 0]
 
 const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
 const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
 
 async function init() {
-    await eachPageSetcurrentUserInitials();
-    await renderContacts();
+    checkLoggedInPageSecurity();
+    await eachPageSetCurrentUserInitials();
+    await loadAndRenderContacts('contactList', 'contacts');
 }
 
 function checkAllCreateContactValidations(id) {
@@ -113,7 +114,7 @@ async function showDialogCreateContact(id, ev) {
     }, 10);
 
     checkAllCreateContactValidations('contactCreateBtn');
-    await renderContacts();
+    await loadAndRenderContacts('contactList', 'contacts');;
 }
 
 async function showDialogContact(id, contactJson, color, ev, option) {
@@ -144,7 +145,7 @@ async function updateContact(currContactId, option) {
         let contactData = await setContactDataForBackendUpload();
         option === 'Edit' ? await putData('/' + activeUserId + '/contacts/' + currContactId, contactData) : await deletePath('/' + activeUserId + '/contacts/' + currContactId);
         clearAllContactsInputFields();
-        await renderContacts();
+        await loadAndRenderContacts('contactList', 'contacts');
         document.getElementById('contactDisplayLarge').innerHTML = '';
         document.getElementById('contactEditDeleteModal').close();
     } catch (error) {
@@ -157,7 +158,7 @@ async function createNextIdPutDataAndRender() {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
         let contactData = await setContactDataForBackendUpload();
         let result = await putData('/' + activeUserId + '/contacts/' + nextContactId, contactData);
-        await renderContacts();
+        await loadAndRenderContacts('contactList', 'contacts');
     } catch (error) {
         console.error('Error creating contact:', error);
     }

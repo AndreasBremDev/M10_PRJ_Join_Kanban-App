@@ -1,13 +1,5 @@
 function renderTasksCardSmallHtml(task) {
-    // const taskJson = JSON.stringify(task)
-    // .replace(/&/g, '&amp;')
-    // .replace(/"/g, '&quot;')
-    // .replace(/'/g, '&#39;')
-    // .replace(/</g, '&lt;')
-    // .replace(/>/g, '&gt;')
-    // .replace(/\n/g, '\\n')
-    // .replace(/\r/g, '\\r')
-    // .replace(/\t/g, '\\t');
+    // const taskJson = JSON.stringify(task).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t');
     const taskJson = btoa(JSON.stringify(task)); // Base64-Encoding
     return `
     <article onclick="renderTaskDetail('${taskJson}')" class="drag-item" draggable="true" ondragstart="dragstartHandler(event, '${task.id}')" ondragend="dragendHandler(event)">
@@ -15,26 +7,31 @@ function renderTasksCardSmallHtml(task) {
             <p class="${categoryColor(task)}">${task.category}</p>
             <h3>${task.title}</h3>
             <p class="gray-text">${task.description}</p>
-            <div class="flex">
-                <progress value="1" max="2" style="width:96px"></progress>
-                <span>1/2 Subtasks</span>
-            </div>
+                ${checkForAndDisplaySubtasks(task)}
             <div class="flex spacebetween">
-                <div class="spacing">
-                    <div class="color-one">
-                        AM
-                    </div>
-                    <div class="color-two">
-                        EM
-                    </div>
-                    <div class="color-three">
-                        MB
-                    </div>
-                </div>
-                <img src="/assets/icons/prio_medium_icon.svg" alt="urgency icon">
+                ${checkForAndDisplayUserCircles(task)}
+                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="urgency icon">
             </div>
         </div>
     </article>`
+}
+
+function renderTaskCardSubtaskProgress(doneSubtasks, totalSubtasks) {
+    return `<div class="flex">
+                <progress value="${doneSubtasks}" max="${totalSubtasks}" style="width:96px"></progress>
+                <span>${doneSubtasks}/${totalSubtasks} Subtasks</span>
+            </div>`
+}
+
+function renderTaskCardAssignedSectionGrid(arrAssigned) {
+    return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(${arrAssigned.length}, 22px); width: calc(${arrAssigned.length -1} *22px + 44px);">`
+}
+function renderTaskCardAssignedSectionGridMoreThanFive() {
+    return /*html*/ `<div class="grid-container" style="grid-template-columns: repeat(6, 22px); width: calc(5 *22px + 44px);">`
+}
+
+function renderTaskCardAssignedSectionInitials(initial, color){
+    return /*html*/`<div style="background-color: ${color};">${initial}</div>`
 }
 
 function renderTasksHtmlEmptyArray(categoryId) {
@@ -86,6 +83,8 @@ function emptyContactsHtml() {
 }
 
 function getAddTaskOverlayTemplate(board) {
+    const todayStr = new Date().toISOString().split('T')[0];
+
     return `
             <section class="add-task-section overlay-add-task">
         <div class= overlay-header>
@@ -95,7 +94,7 @@ function getAddTaskOverlayTemplate(board) {
                 <form id="task-form" class="task-form">
                     <div class="form-left form-left-overlay">
                         <div class="overlay-add-task-div">
-                            <label for="title" class="form-headline-text">Title*</label>
+                            <label for="title" class="form-headline-text">Title<span class="required-marker">*</span></label>
                                <div class="title-input-container-overlay">
                                     <input id="title" class="title-input-overlay" type="text" placeholder="Enter a title">
                                  </div>
@@ -106,9 +105,9 @@ function getAddTaskOverlayTemplate(board) {
                             <textarea id="description" class="description-input-overlay title-input-overlay" placeholder="Enter a Description"></textarea>
                         </div>
 
-                        <label for="due-date" class="form-headline-text">Due date*</label>
+                        <label for="due-date" class="form-headline-text">Due date<span class="required-marker">*</span></label>
                         <div class="date-overlay">
-                            <input id="due-date" class="due-date-overlay" type="date" required>
+                            <input id="due-date" class="due-date-overlay" min="${todayStr}" type="date" required>
                         </div>
                     </div>
 
@@ -145,7 +144,7 @@ function getAddTaskOverlayTemplate(board) {
 
                         
                         
-                                     <label for="category" class="form-headline-text">Category*</label>
+                                     <label for="category" class="form-headline-text">Category<span class="required-marker">*</span></label>
                                 <select id="category" required>
                                 <option value="" disabled selected>Select task category</option>
                                 <option value="technical">Technical Task</option>
@@ -242,7 +241,8 @@ function getTaskDetailOverlayTemplate(task) {
 }
 
 function editTaskDetailOverlayTemplate() {
-    return html`
+    const todayStr = new Date().toISOString().split('T')[0];
+    return `
     <div class="task-detail-overlay">   
     
         <div class="task-detail-header task-detail-edit-header">
@@ -257,7 +257,7 @@ function editTaskDetailOverlayTemplate() {
                     <textarea id="description" class="title-input-overlay" placeholder="Enter a Description"></textarea>
 
                     <label for="due-date">Due date</label>
-                    <input id="due-date" class="title-input-overlay" type="date" required>
+                    <input id="due-date" class="title-input-overlay" min="${todayStr}" type="date" required>
 
                     <label><b>Priority</b></label>
                     <div class="priority-buttons">
@@ -522,7 +522,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
             </div>
 
             <div class="flex column justify pg-r30">
-                <form class="contact-form" onsubmit="updateContact('${contact.contactId}', '${option}'); return false;">
+                <form class="contact-form" onsubmit="updateContact('${contact.id}', '${option}'); return false;">
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact" value="${contact.name}"
                             oninput="validateField('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
@@ -582,4 +582,25 @@ function renderEditContactOverlayHtml(contact, color, option) {
             <p class="btn_std">Contact updated succesfully</p>
         </div>
         `
+}
+
+
+function contactRowHTML(contact, index) {
+    const circleHTML = renderContactCircle(contact, index);
+    return `
+    <div class="contact-row">
+      <div class="left-info">
+        ${circleHTML}
+        <span class="contact-name">${contact.name}</span>
+      </div>
+      <input type="checkbox" value="${contact.id}">
+    </div>
+  `;
+}
+
+// to be reviewed later !!!
+function renderContactCircle(contact, index) {
+    const color = contactCircleColor[index % contactCircleColor.length];
+    const initials = getInitials(contact.name);
+    return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
 }

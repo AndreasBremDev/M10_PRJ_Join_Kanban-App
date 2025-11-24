@@ -2,6 +2,8 @@ const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.fireba
 let activeUserId;
 activeUserId = loadActiveUserId();
 let isUserMenuListenerAdded = false;
+let contacts = [];
+let tasks = [];
 
 function loadActiveUserId() {
     const val = localStorage.getItem("activeUserId");
@@ -44,6 +46,10 @@ async function calcNextId(path = "") {
     return nextId;
 }
 
+function getInitials(name) {
+    return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
+}
+
 async function putData(path = "", data = {}) {
     try {
         let response = await fetch(BASE_URL + path + ".json", {
@@ -61,56 +67,56 @@ async function putData(path = "", data = {}) {
     }
 }
 
-async function fetchContacts(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/contacts" + ".json");
-        let fetchJson = await res.json();
-        contacts = Object.entries(fetchJson).map(([id, contactsData]) => ({
-            contactId: id,
-            ...contactsData
-        }));
-        return contacts
-    } catch (error) {
-        console.log("Error fetchContacts(): ", error);
+async function loadAndRenderContacts(divId, useAtPage) {
+    const containerId = document.getElementById(divId);
+    let sortedContacts = await fetchAndSortContacts(containerId);
+    containerId.innerHTML = '';
+    if (useAtPage === 'addTask') {
+        const html = sortedContacts.map((contact, i) => contactRowHTML(contact, i)).join('');
+        containerId.innerHTML = html;
+    } else if (useAtPage === 'contacts') {
+        let groupedContacts = groupContactsByLetter(sortedContacts);
+        containerId.innerHTML = renderGroupedContacts(groupedContacts);
     }
 }
 
-async function fetchTasks(activeUserId) {
+async function fetchAndSortContacts(containerId = "") {
     try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
-        let tasks = await res.json();
-        let tasksWithId = Object.entries(tasks).map(([id, taskData]) => ({
-            id: id,
-            ...taskData
-        }));
-        return tasksWithId
+        const contactsObj = await fetchData(`/${activeUserId}/contacts`);
+        if (contactsObj.length == 0) { throw new Error; }
+        const contactsArray = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+        let contactsWithoutUndefined = contactsArray.filter(i => i.name !== undefined);
+        let sortedContacts = contactsWithoutUndefined.sort((a, b) => a.name.localeCompare(b.name));
+        return sortedContacts
     } catch (error) {
-        console.log("Error fetchTasks(): ", error);
-    }
-}
-async function fetchUserName(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/name" + ".json");
-        let response = await res.json();
-        return response
-    } catch (error) {
-        console.log("Error fetchTasks(): ", error);
+        containerId.innerHTML = '';
+        containerId.innerHTML = emptyContactsHtml();
     }
 }
 
-async function eachPageSetcurrentUserInitials() {
+async function fetchData(path = "") {
+    try {
+        let response = await fetch(BASE_URL + path + ".json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error loading data:", error);
+    }
+}
+
+async function eachPageSetCurrentUserInitials() {
     let currentUserInitials = document.getElementById('currentUserInitials');
-    let currentUser = await fetchUserName(activeUserId);
+    let currentUser = await fetchData(`/${activeUserId}/name`);
     let initials = await getInitials(currentUser);
     currentUserInitials.innerHTML = initials;
 }
 
-// function to extract initials from a full name
-function getInitials(name) {
-    return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
-}
+///// 2b CLEANED UP /////
+// function to create a user circle and put it to the container
 
-// function to fetch user data from firebase
+// function to fetch user data from firebase                                                                //needs UPDATE
 async function fetchUserData(path) {
     try {
         let url = `${BASE_URL}${path}`;
@@ -127,7 +133,7 @@ async function fetchUserData(path) {
     }
 }
 
-// function to create a user circle and put it to the container
+// function to create a user circle and put it to the container                                         //needs UPDATE
 function createUserCircle(containerId, initials, index) {
     const color = contactCircleColor[index % contactCircleColor.length]; // choose color from  contactCircleColor
     const userCircle = document.createElement('div'); // create a 'div' element for the circle
@@ -143,9 +149,9 @@ function createUserCircle(containerId, initials, index) {
     }
 }
 
-// function to load user contacts and create user circles for each contact
+// function to load user contacts and create user circles for each contact                              //needs UPDATE
 async function renderUserCircles() {
-    const contacts = await fetchUserData(`/${activeUserId}/contacts.json`); // fetch contacts for the active user
+    const contacts = await fetchData(`/${activeUserId}/contacts`); // fetch contacts for the active user
     if (!contacts) {
         console.error("No contacts found for user:", activeUserId); // error message
         return;
@@ -193,41 +199,9 @@ async function deletePath(path = "") {
     }
 }
 
-
 function getInitials(name) {
     if (!name) return "?";
     return name.split(' ').map(word => word[0].toUpperCase()).join('');
-}
-
-function renderContactCircle(contact, index) {
-    const color = contactCircleColor[index % contactCircleColor.length];
-    const initials = getInitials(contact.name);
-    return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
-}
-
-async function fetchContactsForOverlay() {
-    return await fetchUserData(`/${activeUserId}/contacts.json`);
-}
-
-
-
-/**
- * Render contact circles in the overlay container.
- * Fetches contacts, generates initials, and displays them with colored circles.
- */
-async function renderContactsInOverlay() {
-    const contactsObject = await fetchContactsForOverlay();
-    if (!contactsObject) return;
-    const container = document.getElementById('overlayContactContainer');
-    container.innerHTML = Object.values(contactsObject).map((contact, index) => {
-        const color = contactCircleColor[index % contactCircleColor.length];
-        const initials = getInitials(contact.name);
-        return `
-        <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-        <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
-        <div style="font-size: 18px;">${contact.name}</div>
-        </div>`;
-    }).join('');
 }
 
 function logout() {
@@ -260,3 +234,4 @@ function toggleDropDownMenu() {
         isUserMenuListenerAdded = true;
     }
 }
+
