@@ -171,7 +171,7 @@ async function renderUserCircles() {
 /**
  * Delete a task from the backend.
  */
-
+///////////////// double w. line 189 deletPath(path) ??? /////
 async function deleteTask(taskId) {
     try {
         const taskPath = `/${activeUserId}/tasks/${taskId}`;
@@ -235,3 +235,16 @@ function toggleDropDownMenu() {
     }
 }
 
+/**Event listener to close dropdown when clicking outside
+ */
+document.addEventListener('click', function(event) {
+    let dropdown = document.getElementById('assigned-dropdown');
+    let displayElement = document.getElementById('assigned-display');
+    
+    // Check if the clicked element is not the dropdown or display element
+    if (dropdown && dropdown.style.display === 'block' && 
+        !dropdown.contains(event.target) && 
+        !displayElement.contains(event.target)) {
+        dropdown.style.display = 'none';
+    }
+});
