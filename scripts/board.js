@@ -17,7 +17,7 @@ async function renderTasks() {
     tasks = tasksWithId;
     // console.log(tasksWithId[0].assigned);
     if (tasksWithId && tasksWithId.length > 0) { tasksWithId = await compareContactsWithTasksAssignedContactsAndCleanUp(tasksWithId) }
-    
+
     let categories = {
         'categoryToDo': tasks.filter(cat => cat.board === "toDo") || [],
         'categoryInProgress': tasks.filter(cat => cat.board === "inProgress") || [],
@@ -208,34 +208,45 @@ async function renderTaskDetail(taskJson) {
             section.classList.add('slide-in');
         }
     }, 50);
-    await renderContactsInOverlay(task); // Note: all contacts for activeUserId -> innerHTML: overlayContactContainer
+    renderContactsInOverlay(task); // Note: all contacts for activeUserId -> innerHTML: overlayContactContainer
 }
 
 /**
  * Render contact circles in the overlay container.
  * Fetches contacts, generates initials, and displays them with colored circles.
  */
-async function renderContactsInOverlay(task) {
-    // const contactsObject = await fetchData(`/${activeUserId}/contacts`); // all contacts for activeUserId
-    // if (!contactsObject) return;
+
+
+function renderContactsInOverlay(task) {
     const container = document.getElementById('overlayContactContainer');
-    // console.log(contactsObject);
-    console.log(contacts);
-    
-    // console.log(Object.values(contactsObject));
-    
-    // container.innerHTML = Object.values(contactsObject).map((contact, index) => {
-    container.innerHTML = checkForAndDisplayUserCircles(task)
-    // contacts.map((contact, index) => {
-    //     const color = contactCircleColor[index % contactCircleColor.length];
-    //     const initials = getInitials(contact.name);
-    //     return `
-    //     <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-    //     <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
-    //     <div style="font-size: 18px;">${contact.name}</div>
-    //     </div>`;
-    // }).join('');
+    let arrAssigned = task.assigned;
+    let html = '';
+
+    if (arrAssigned && arrAssigned.length > 0) {
+        for (let i = 0; i < arrAssigned.length; i++) {
+            let contactId = arrAssigned[i]; // holen die ID raus
+            let contact = contacts.find(c => c.id === contactId); //das ganze contact object wird anhand der ID gesucht
+
+            if (contact) {
+                let color = contactCircleColor[contactId % contactCircleColor.length]; // Farbe anhand contact.id berechnen 
+
+                let initials = getInitials(contact.name);
+                //pwn Div for each contact
+                html += `
+                <div class="overlay-contact-row">  
+                    <div class="user-circle-intials" style="background-color: ${color}">${initials}</div>
+                    <span>${contact.name}</span>
+                </div>
+                `;
+            }
+        }
+
+    } else {
+        html = '<span class="gray-text">No contact assigned</span>';
+    }
+    container.innerHTML = html;
 }
+
 
 async function deleteTaskfromBoard(taskId) {
     try {
@@ -254,27 +265,38 @@ async function renderEditTaskDetail() {
     setupPriorityButtons();
 }
 
-////////// to be refactor'd (check/remove comments) ///////////
-function renderSubtasks(subtasks) {
-    // Konvertiere eingehende subtasks ins Array, falls es ein Objekt mit Keys ist
-    const subtasksArray = Array.isArray(subtasks)
-        ? subtasks
-        : Object.values(subtasks || {});
-
-    // Filtere gültige Einträge (nicht null, haben 'name')
-    const validSubtasks = subtasksArray.filter(st => st && st.name);
-
-    // Wenn keine gültigen Subtasks, gib Hinweis zurück
-    if (validSubtasks.length === 0) {
-        return '<p>No subtasks</p>';
+function renderSubtasksForOverlay(task) {
+    if (!task.subtasks || task.subtasks.length === 0) {
+        return '<div>No subtasks</div>';
     }
+    let html = '<div class="subtask-list-overlay">';
+    for (let i = 0; i < task.subtasks.length; i++) {
+        let subtask = task.subtasks[i];
+        if (!subtask) continue;
+        let subtaskTitle = subtask.title || subtask.name || "Unnamed Subtask"; // subtasks has title or name (old vs. new version)
+        let isChecked = subtask.done === true || subtask.done === 'true';
+        let icon = isChecked ? getCheckIcon() : getUncheckIcon();
+       html += generateSubtaskRowHtml(task.id, i, subtaskTitle, icon, isChecked);
+    }
+    html += '</div>';
+    return html;
+}
 
-    // Baue HTML-Liste
-    const listItems = validSubtasks
-        .map(st => `<li>${st.name}</li>`)
-        .join('');
 
-    return `<ul>${listItems}</ul>`;
+async function toggleSubtask(taskId, subtaskIndex) {  //taskId = place to save  | subtaskIndex = which subtask
+    let task = tasks.find(t => t.id === taskId); // find the task by its ID
+    if (!task || !task.subtasks) return;
+    let currentStatus = task.subtasks[subtaskIndex].done === true || task.subtasks[subtaskIndex].done === 'true'; // setting string or boolean true
+    let newStatus = !currentStatus; //toggle
+    task.subtasks[subtaskIndex].done = newStatus; // update local task object | manipulate the local object first and then update the Firebase 
+    try {
+        await putData(`/${activeUserId}/tasks/${taskId}/subtasks/${subtaskIndex}/done`, newStatus);
+        const taskJson = btoa(JSON.stringify(task)); // Base64-Encoding
+        renderTaskDetail(taskJson);
+        renderTasks();
+    } catch (error) {
+        console.error("Update failed:", error);
+    }
 }
 
 function startAutoScroll() {

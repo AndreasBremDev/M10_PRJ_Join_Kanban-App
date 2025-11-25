@@ -327,3 +327,9 @@ header {
 .border-2px {
     border: 2px solid #fff;
 }
+
+/* all input fields */
+
+.input-field:focus-within {
+    border: 2px solid var(--primary-hover)
+}

@@ -1,8 +1,8 @@
 // const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
 let firebase = [];
 
-const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
-const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
+const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß\p{M}]+$/.test(val);
+const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,254}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val);
 const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[!§$%&\/?\-\+#@]/.test(val) && val.length >= 12;
 const isConfirmValid = val => val === document.getElementById('passwordRegister').value;
 const isCheckboxValid = () => document.getElementById('checkbox').checked;
@@ -73,10 +73,15 @@ function setDataForBackendUpload() {
     let emailRegister = document.getElementById('emailRegister');
     let passwordRegister = document.getElementById('passwordRegister');
     let data = {
-        name: nameRegister.value.trim(),
+        name: nameRegister.value.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
         email: emailRegister.value.trim().toLowerCase(),
         password: passwordRegister.value,
-        contacts: "",
+        contacts: {
+            "0": {
+                name: nameRegister.value.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+                email: emailRegister.value.trim().toLowerCase(),
+            }
+        },
         tasks: ""
     };
     return data;

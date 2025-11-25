@@ -31,7 +31,7 @@ function renderTaskCardAssignedSectionGridMoreThanFive() {
 }
 
 function renderTaskCardAssignedSectionInitials(initial, color){
-    return /*html*/`<div style="background-color: ${color};">${initial}</div>`
+    return /*html*/`<div class="user-circle-task" style="background-color: ${color};">${initial}</div>`
 }
 
 function renderTasksHtmlEmptyArray(categoryId) {
@@ -216,7 +216,7 @@ function getTaskDetailOverlayTemplate(task) {
             <div class="task-detail-subtasks pd-bottom-16">
                 <div style="font-size: 18px;">Subtasks:</div>
                 <div>
-                    ${renderSubtasks(task.subtasks)}
+                    ${renderSubtasksForOverlay(task)}
                 </div>
             </div>
 
@@ -603,4 +603,30 @@ function renderContactCircle(contact, index) {
     const color = contactCircleColor[index % contactCircleColor.length];
     const initials = getInitials(contact.name);
     return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
+}
+
+function generateSubtaskRowHtml(taskId, index, title, icon, isChecked) {
+    return `
+        <div class="subtask-row" onclick="toggleSubtask('${taskId}', ${index})">
+            <div class="subtask-icon">
+                ${icon}
+            </div>
+            <span class="subtask-text ${isChecked ? 'text-done' : ''}">
+                ${title}
+            </span>
+        </div>
+    `;
+}
+
+function getUncheckIcon() {
+    return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="16" height="16" rx="3" stroke="#2A3647" stroke-width="2"/>
+            </svg>`;
+}
+
+function getCheckIcon() {
+    return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="4" width="16" height="16" rx="3" stroke="#2A3647" stroke-width="2"/>
+            <path d="M8 12L11 15L16 9" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`;
 }

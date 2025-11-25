@@ -1,8 +1,8 @@
 
 bool = [0, 0]
 
-const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
-const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
+const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
+const isEmailValid = val => /^[^@]+@[^@]+\.(?!\.)[^@]+$/.test(val);
 
 async function init() {
     checkLoggedInPageSecurity();
@@ -28,7 +28,7 @@ function checkAllCreateContactValidations(id) {
 
 async function renderContacts() {
     let contactListRef = document.getElementById('contactList');
-    contactsFetch = await fetchContacts(activeUserId);
+    contactsFetch = await fetchData(`/${activeUserId}/contacts`);
     if (contactsFetch.length == 0) {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
