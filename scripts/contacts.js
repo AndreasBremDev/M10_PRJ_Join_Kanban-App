@@ -28,7 +28,7 @@ function checkAllCreateContactValidations(id) {
 
 async function renderContacts() {
     let contactListRef = document.getElementById('contactList');
-    contactsFetch = await fetchContacts(activeUserId);
+    contactsFetch = await fetchData(`/${activeUserId}/contacts`);
     if (contactsFetch.length == 0) {
         contactListRef.innerHTML = emptyContactsHtml();
     } else {
