@@ -230,9 +230,9 @@ function renderContactsInOverlay(task) {
 
             if (contact) {
                 let color = contactCircleColor[contact.id % contactCircleColor.length]; // Farbe anhand contact.id berechnen 
-                
+
                 let initials = getInitials(contact.name);
-                 //baue pro contact eigen Div 
+                //baue pro contact eigen Div 
                 html += `
                 <div class="overlay-contact-row">  
                     <div class="user-circle-intials" style="background-color: ${color}">${initials}</div>
@@ -241,8 +241,8 @@ function renderContactsInOverlay(task) {
                 `;
             }
         }
-        
-    } else { 
+
+    } else {
         html = '<span class="gray-text">No contact assigned</span>';
     }
     container.innerHTML = html;
@@ -281,28 +281,64 @@ async function renderEditTaskDetail() {
     setupPriorityButtons();
 }
 
-////////// to be refactor'd (check/remove comments) ///////////
-function renderSubtasks(subtasks) {
-    // Konvertiere eingehende subtasks ins Array, falls es ein Objekt mit Keys ist
-    const subtasksArray = Array.isArray(subtasks)
-        ? subtasks
-        : Object.values(subtasks || {});
-
-    // Filtere gültige Einträge (nicht null, haben 'name')
-    const validSubtasks = subtasksArray.filter(st => st && st.name);
-
-    // Wenn keine gültigen Subtasks, gib Hinweis zurück
-    if (validSubtasks.length === 0) {
-        return '<p>No subtasks</p>';
+function renderSubtasksForOverlay(task) {
+    if (!task.subtasks || task.subtasks.length === 0) {
+        return '<div>No subtasks</div>';
     }
-
-    // Baue HTML-Liste
-    const listItems = validSubtasks
-        .map(st => `<li>${st.name}</li>`)
-        .join('');
-
-    return `<ul>${listItems}</ul>`;
+    let html = '<div class="subtask-list-overlay">';
+    for (let i = 0; i < task.subtasks.length; i++) {
+        let subtask = task.subtasks[i];
+        if (!subtask) continue;
+        let subtaskTitle = subtask.title || subtask.name || "Unnamed Subtask"; // subtasks has title or name (old vs. new version)
+        let isChecked = subtask.done === true || subtask.done === 'true';
+        let icon = isChecked ? getCheckIcon() : getUncheckIcon();
+       html += generateSubtaskRowHtml(task.id, i, subtaskTitle, icon, isChecked);
+    }
+    html += '</div>';
+    return html;
 }
+
+
+async function toggleSubtask(taskId, subtaskIndex) {  //taskId = place to save  | subtaskIndex = which subtask
+    let task = tasks.find(t => t.id === taskId); // find the task by its ID
+    if (!task || !task.subtasks) return;
+    let currentStatus = task.subtasks[subtaskIndex].done === true || task.subtasks[subtaskIndex].done === 'true'; // setting string or boolean true
+    let newStatus = !currentStatus; //toggle
+    task.subtasks[subtaskIndex].done = newStatus; // update local task object | manipulate the local object first and then update the Firebase 
+    try {
+        await putData(`/${activeUserId}/tasks/${taskId}/subtasks/${subtaskIndex}/done`, newStatus);
+        const taskJson = btoa(JSON.stringify(task)); // Base64-Encoding
+        renderTaskDetail(taskJson);
+        renderTasks();
+    } catch (error) {
+        console.error("Update failed:", error);
+    }
+}
+
+
+
+// ////////// to be refactor'd (check/remove comments) ///////////
+// function renderSubtasks(subtasks) {
+//     // Konvertiere eingehende subtasks ins Array, falls es ein Objekt mit Keys ist
+//     const subtasksArray = Array.isArray(subtasks)
+//         ? subtasks
+//         : Object.values(subtasks || {});
+
+//     // Filtere gültige Einträge (nicht null, haben 'name')
+//     const validSubtasks = subtasksArray.filter(st => st && st.name); // just with name , newer one has title
+
+//     // Wenn keine gültigen Subtasks, gib Hinweis zurück
+//     if (validSubtasks.length === 0) {
+//         return '<p>No subtasks</p>';
+//     }
+
+//     // Baue HTML-Liste
+//     const listItems = validSubtasks
+//         .map(st => `<li>${st.name}</li>`) // not clickable
+//         .join('');
+
+//     return `<ul>${listItems}</ul>`; // no checkboxes
+// }
 
 function startAutoScroll() {
     document.addEventListener('dragover', handleAutoScroll);
