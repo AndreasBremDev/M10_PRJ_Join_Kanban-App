@@ -263,6 +263,14 @@ main {
     grid-auto-flow: column;
 }
 
+
+
+.rendered-assigned-contacts-names {
+    display: flex;
+    /* flex-direction: column; */
+    color: #000;
+}
+
 .grid-container>div,
 .user-circle-task {
     box-sizing: border-box;
@@ -798,4 +806,27 @@ textarea {
     gap: 8px;
     flex-wrap: wrap;
     margin-top: 16px;
+}
+
+.overlay-contact-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 7px 0;
+}
+
+.subtask-list-overlay {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.subtask-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
 }
