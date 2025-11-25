@@ -109,7 +109,6 @@ function createInitialCircle(arrAssigned, i, html) {
     if (contactIndex !== -1) {
         let initials = getInitials(contacts[contactIndex].name);
         html += renderTaskCardAssignedSectionInitials(initials, color);
-        // if (overlay === 'overlay') { html += `<div>${contacts[contactIndex].name}</div>`} // eine DIv mit allen circles und name
     } else {
         html += '';
     }
@@ -229,7 +228,7 @@ function renderContactsInOverlay(task) {
             let contact = contacts.find(c => c.id === contactId); //das ganze contact object wird anhand der ID gesucht
 
             if (contact) {
-                let color = contactCircleColor[contact.id % contactCircleColor.length]; // Farbe anhand contact.id berechnen 
+                let color = contactCircleColor[contactId % contactCircleColor.length]; // Farbe anhand contact.id berechnen 
 
                 let initials = getInitials(contact.name);
                 //pwn Div for each contact
@@ -248,21 +247,6 @@ function renderContactsInOverlay(task) {
     container.innerHTML = html;
 }
 
-// function renderContactsInOverlay(task) {
-//     const container = document.getElementById('overlayContactContainer');
-//     let arrAssigned = task.assigned;
-//     let html = '';
-//     if (arrAssigned && arrAssigned.length > 0) {
-//         html += `<div class="rendered-assigned-contacts-names">`
-//         for (let i = 0; i < arrAssigned.length; i++) {
-//             html = createInitialCircle(arrAssigned, i, html, 'overlay');
-//         }
-//         html += `</div>`
-//     }
-
-//     container.innerHTML = html;
-
-// }
 
 async function deleteTaskfromBoard(taskId) {
     try {
@@ -314,31 +298,6 @@ async function toggleSubtask(taskId, subtaskIndex) {  //taskId = place to save  
         console.error("Update failed:", error);
     }
 }
-
-
-
-// ////////// to be refactor'd (check/remove comments) ///////////
-// function renderSubtasks(subtasks) {
-//     // Konvertiere eingehende subtasks ins Array, falls es ein Objekt mit Keys ist
-//     const subtasksArray = Array.isArray(subtasks)
-//         ? subtasks
-//         : Object.values(subtasks || {});
-
-//     // Filtere gültige Einträge (nicht null, haben 'name')
-//     const validSubtasks = subtasksArray.filter(st => st && st.name); // just with name , newer one has title
-
-//     // Wenn keine gültigen Subtasks, gib Hinweis zurück
-//     if (validSubtasks.length === 0) {
-//         return '<p>No subtasks</p>';
-//     }
-
-//     // Baue HTML-Liste
-//     const listItems = validSubtasks
-//         .map(st => `<li>${st.name}</li>`) // not clickable
-//         .join('');
-
-//     return `<ul>${listItems}</ul>`; // no checkboxes
-// }
 
 function startAutoScroll() {
     document.addEventListener('dragover', handleAutoScroll);
