@@ -264,7 +264,6 @@ async function renderEditTaskDetail() {
     overlay.classList.remove('d-none');
     await loadAndRenderContacts('assigned-dropdown', 'addTask');
     setupPriorityButtons();
-    renderAssignedBadges();
 }
 
 function renderSubtasksForOverlay(task) {
