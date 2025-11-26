@@ -872,6 +872,10 @@ a {
         display: none;
     }
 
+    .popup {
+        left: 50%;
+    }
+
     @keyframes floatFromBottomOverlay {
         0% {
             top: 120%;
@@ -896,9 +900,10 @@ a {
 }
 
 @media (max-width: 768px) {
-    .header-left{
+    .header-left {
         margin-left: 0;
     }
+
     .contact-large {
         position: fixed;
         top: 80px;
@@ -983,11 +988,26 @@ a {
     .input-field {
         width: 90%;
     }
+
+    .name_contact {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
 }
 
 @media (max-width: 370px) {
     .contact-list-letter {
         padding: 0;
+    }
+
+    .name_contact,
+    .contact-name-large {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
     }
 
 
