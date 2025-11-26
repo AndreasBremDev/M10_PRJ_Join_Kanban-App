@@ -241,7 +241,7 @@ function renderContactsInOverlay(task) {
 
 async function deleteTaskfromBoard(taskId) {
     try {
-        await deleteTask(taskId);
+        await deletePath(`/${activeUserId}/tasks/${taskId}`);
         closeAddTaskOverlay();
         await renderTasks();
     } catch (error) {
@@ -253,6 +253,7 @@ async function renderEditTaskDetail() {
     let overlay = document.getElementById("add-task-overlay");
     overlay.innerHTML = editTaskDetailOverlayTemplate();
     overlay.classList.remove('d-none');
+    await loadAndRenderContacts('assigned-dropdown', 'addTask');
     setupPriorityButtons();
 }
 

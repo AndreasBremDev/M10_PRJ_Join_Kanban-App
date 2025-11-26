@@ -281,10 +281,11 @@ function editTaskDetailOverlayTemplate() {
                             Select contacts to assign
                         </div>
 
-                        <div id="assigned-dropdown" class="select-dropdown" style="display: none;">
+                        <div id="assigned-dropdown" class="select-dropdown" style="display: block;">
                         </div>
                     </div>
 
+                    <div id="user-circle-assigned-edit-overlay">${checkForAndDisplayUserCircles()}</div>
                     
                     <label for="subtask">Subtasks</label>
                     <input type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
@@ -297,7 +298,10 @@ function editTaskDetailOverlayTemplate() {
             </div>  
 
             <div class="task-detail-edit-footer">
-                <button>OK</button>
+                <button onclick="handleCreateTask()" class="btn btn-primary">
+                Ok
+                <img src="/assets/icons/check.svg" alt="check">
+                </button>
             </div>  
                 
     </div>
