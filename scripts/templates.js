@@ -296,7 +296,7 @@ function editTaskDetailOverlayTemplate() {
             </div>  
 
             <div class="task-detail-edit-footer">
-                <button class="btn btn-primary">
+                <button onclick="handleCreateTask()" class="btn btn-primary">
                 Ok
                 <img src="/assets/icons/check.svg" alt="check">
                 </button>

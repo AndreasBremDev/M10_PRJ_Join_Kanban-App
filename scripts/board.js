@@ -250,7 +250,7 @@ function renderContactsInOverlay(task) {
 
 async function deleteTaskfromBoard(taskId) {
     try {
-        await deleteTask(taskId);
+        await deletePath(`/${activeUserId}/tasks/${taskId}`);
         closeAddTaskOverlay();
         await renderTasks();
     } catch (error) {

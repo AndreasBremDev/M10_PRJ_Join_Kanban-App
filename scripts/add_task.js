@@ -114,44 +114,6 @@ function toggleContactDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
-// Helper functions for contacts, to sort and render them
-function convertAndSortContacts(contactsObj) {
-    if (!contactsObj) return [];
-    const contactsArray = Object.entries(contactsObj).map(
-        ([key, contact]) => ({ id: key, ...contact })
-    );
-    contactsArray.sort((a, b) =>
-        a.name.localeCompare(b.name, 'de', { sensitivity: 'base' })
-    );
-    return contactsArray;
-}
-
-function createContactElement(contact) {
-    const label = document.createElement('label');
-    label.className = 'contact-item';
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.value = contact.id;
-    const span = document.createElement('span');
-    span.textContent = contact.name;
-    label.appendChild(checkbox);
-    label.appendChild(span);
-    return label;
-}
-
-
-function renderTaskCard(task) {
-    return `
-        <div class="task-card" draggable="true">
-            <h3>${task.title}</h3>
-            <p>${task.description}</p>
-            <div class="task-assignees">
-                ${task.assignees ? task.assignees.map(a => `<span>${a}</span>`).join('') : ''}
-            </div>
-        </div>
-    `;
-}
-
 
 function renderAddTAskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
