@@ -21,6 +21,30 @@ body {
     background-color: var(--bg-color);
 }
 
+.header_h2 {
+    display: none;
+}
+
+.header_right {
+    margin-top: 35px;
+}
+
+.header_right_mobile {
+    display: none;
+}
+
+.help-icon {
+    display: none;
+}
+
+.user-menu {
+    display: none;
+}
+
+.header-left-img {
+    margin-top: 80px;
+}
+
 /*----------Div Inner Wrapper----------*/
 .wrapper {
     max-width: 1920px;
@@ -77,20 +101,6 @@ header {
     left: 77px;
     transform: translate(0, 0);
     width: 100.03px;
-}
-
-.header_right {
-    width: 279px;
-    height: 49px;
-    margin-top: 67px;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-}
-
-.header_right_mobile {
-    display: none;
 }
 
 .span_header {
@@ -338,6 +348,16 @@ footer a:hover {
     }
 
     .logo {
+        width: 64px;
+        height: 78.03px;
+        margin-top: 37px;
+    }
+
+    .logo-overlay{
+        display: none;
+    }
+
+    .header-left-img {
         width: 64px;
         height: 78.03px;
         margin-top: 37px;

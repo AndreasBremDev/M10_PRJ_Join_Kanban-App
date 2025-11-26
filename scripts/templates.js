@@ -335,7 +335,7 @@ function renderContactLargeHtml(contact, color) {
         <div class="user-circle-intials user-circle-large" style="background-color: ${color}">
             ${getInitials(contact.name)}
         </div>
-        <div class="flex column">
+        <div class="flex column name_contact">
             <div class="contact-list-name contact-name-large">
                 ${contact.name}
             </div>
@@ -525,7 +525,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                 </div>
             </div>
 
-            <div class="flex column justify pg-r30">
+            <div class="flex column justify pg-r30 mobile_input">
                 <form class="contact-form" onsubmit="updateContact('${contact.id}', '${option}'); return false;">
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact" value="${contact.name}"
@@ -590,11 +590,10 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
 
 function contactRowHTML(contact, index) {
-    const circleHTML = renderContactCircle(contact, index);
     return `
     <div class="contact-row">
       <div class="left-info">
-        ${circleHTML}
+        ${renderContactCircle(contact, index)}
         <span class="contact-name">${contact.name}</span>
       </div>
       <input type="checkbox" value="${contact.id}">
@@ -604,7 +603,7 @@ function contactRowHTML(contact, index) {
 
 // to be reviewed later !!!
 function renderContactCircle(contact, index) {
-    const color = contactCircleColor[index % contactCircleColor.length];
+    const color = contactCircleColor[contact.id % contactCircleColor.length];
     const initials = getInitials(contact.name);
     return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
 }

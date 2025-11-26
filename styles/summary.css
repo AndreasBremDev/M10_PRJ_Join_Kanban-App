@@ -161,7 +161,7 @@ body {
   flex-direction: column;
   justify-content: center;
   height: 200px;
-  margin-left: 60px;
+  margin-left: 40px;
   padding-right: 16px;
 }
 
@@ -352,6 +352,7 @@ body {
   .main_title {
     margin-bottom: 0;
     width: 80%;
+    margin-top: 160px;
   }
 
   .summary_content {
@@ -372,7 +373,7 @@ body {
     height: clamp(110px, 15vw, 168px);
     flex-wrap: wrap;
     justify-content: center;
-    margin: 16px auto;
+    margin: 12px auto;
   }
 
   .board_informations {

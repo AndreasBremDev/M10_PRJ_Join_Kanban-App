@@ -134,7 +134,7 @@ function getInitials(name) {
 function logout() {
     localStorage.removeItem('activeUserId');
     localStorage.removeItem('shownGreeting');
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
         history.pushState(null, null, '../index.html');
     }
     window.location.replace(window.location.origin + '/index.html');
@@ -142,7 +142,11 @@ function logout() {
 
 function checkLoggedInPageSecurity() {
     if (!localStorage.getItem('activeUserId')) {
-        window.location.href = '../index.html';
+        // window.location.href = '../index.html';
+        for (let i = 0; i < 50; i++) {
+            history.pushState(null, null, '../index.html');
+        }
+        window.location.replace(window.location.origin + '/index.html');
         return;
     }
 }
@@ -164,13 +168,13 @@ function toggleDropDownMenu() {
 
 /**Event listener to close dropdown when clicking outside
  */
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     let dropdown = document.getElementById('assigned-dropdown');
     let displayElement = document.getElementById('assigned-display');
-    
+
     // Check if the clicked element is not the dropdown or display element
-    if (dropdown && dropdown.style.display === 'block' && 
-        !dropdown.contains(event.target) && 
+    if (dropdown && dropdown.style.display === 'block' &&
+        !dropdown.contains(event.target) &&
         !displayElement.contains(event.target)) {
         dropdown.style.display = 'none';
     }

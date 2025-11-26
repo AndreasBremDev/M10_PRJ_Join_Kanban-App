@@ -83,14 +83,17 @@
 
                 <div class="board-actions">
                     <div class="searchbar">
-                        <input class="searchbar__input" type="text" placeholder="Find Task">
+                        <input id="searchTasks" oninput="searchTasks()" class="searchbar__input" type="text" placeholder="Find Task">
                         <div class="searchbar__divider"></div>
-                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg"
-                                alt="search icon"></button>
+                        <button class="btn_glass" onclick="searchTasks()">
+                            <img class="searchbar__icon" src="/assets/icons/search.svg"
+                                alt="search icon">
+                        </button>
                     </div>
 
-                    <button onclick="renderAddTaskOverlay('toDo')" class="btn btn-primary" type="button">Add Task
-                        +</button>
+                    <button onclick="renderAddTaskOverlay('toDo')" class="btn btn-primary" type="button">
+                        <span class="board_add_task_button_text">Add Task&nbsp;</span>+
+                    </button>
                 </div>
             </div>
 

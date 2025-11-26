@@ -77,7 +77,7 @@ a {
     box-shadow: 4px 0 6px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
-    padding: 32px 52px 0px 52px;
+    padding: 32px 16px 0px 52px;
     overflow-y: scroll;
 }
 
@@ -91,6 +91,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
     gap: 16px;
     padding: 16px 24px;
     background-color: #2A3647;
@@ -185,15 +186,23 @@ a {
 }
 
 .contact-list-name {
-    font-size: 20px;
-    margin-bottom: 5px;
+    flex-grow: 1;
+    max-width: 159px;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
 }
 
 .contact-list-email {
-    overflow-x: hidden;
-    white-space: nowrap;
+    flex-grow: 1;
+    max-width: 159px;
+    min-width: 0;
+    overflow: hidden;
     text-overflow: ellipsis;
-    width: 200px;
+    white-space: nowrap;
+    display: block;
 }
 
 .contact-large {
@@ -263,6 +272,11 @@ a {
 
 .contact-name-large {
     font-size: 47px;
+    line-height: 1.1;
+    display: block;
+    max-width: 70%;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .user-circle-large {
@@ -465,6 +479,7 @@ a {
 
 .go_back {
     display: none;
+    cursor: pointer;
 }
 
 .tile_summary_2 {
@@ -515,6 +530,8 @@ a {
 
 
 
+
+
 @media(max-width: 1400px) {
 
     /* CONTACTS.html */
@@ -543,14 +560,18 @@ a {
     }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1200px) {
+    .header-left {
+        margin-left: 250px;
+    }
+
     .contacts-wrapper {
         margin: 80px 0 0 232px;
         height: calc(100vh - 80px);
         overflow: hidden;
     }
 
-    .title_mobile{
+    .title_mobile {
         padding-left: 16px;
     }
 
@@ -749,7 +770,7 @@ a {
     }
 
     .mobile-contact-menu.show {
-        right: 20px;
+        right: 16px;
     }
 
     .mobile-contact-menu button {
@@ -768,7 +789,7 @@ a {
     }
 
     #contactEditDeleteModal {
-        position: ;
+        position: fixed;
         top: 120%;
         left: 50%;
         transform: translate(-50%, -60%);
@@ -817,6 +838,8 @@ a {
     .overlay_form,
     .contact-form {
         width: 100%;
+        gap: 8px;
+        height: auto;
         align-items: center;
     }
 
@@ -841,9 +864,9 @@ a {
         display: none;
     }
 
-
-
-
+    .popup {
+        left: 50%;
+    }
 
     @keyframes floatFromBottomOverlay {
         0% {
@@ -863,6 +886,10 @@ a {
 }
 
 @media (max-width: 768px) {
+    .header-left {
+        margin-left: 0;
+    }
+
     .contact-large {
         position: fixed;
         top: 80px;
@@ -878,6 +905,14 @@ a {
         gap: 16px;
         overflow-y: auto;
         animation: none;
+    }
+
+    .popup {
+        left: 50%;
+    }
+
+    .contact-form {
+        gap: 8px;
     }
 
     .contacts-wrapper {
@@ -896,12 +931,22 @@ a {
         height: calc(100svh - 80px);
     }
 
-    .user-circle-large{
+    .user-circle-large_edit {
+        height: 80px;
+        width: 80px;
+        transform: translateY(-40px);
+    }
+
+    .user-circle-large {
         min-height: 80px;
         min-width: 80px;
     }
 
-    .edit_cirle_name{
+    .user_idle_add_task {
+        transform: translateY(-40px);
+    }
+
+    .edit_cirle_name {
         flex-direction: column;
         gap: 24px;
     }
@@ -920,17 +965,35 @@ a {
     .contact-form {
         width: 100%;
         align-items: center;
-        margin: 0 16px;
+    }
+
+    .mobile_input {
+        width: 100%;
     }
 
     .input-field {
         width: 90%;
+    }
+
+    .name_contact {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
     }
 }
 
 @media (max-width: 370px) {
     .contact-list-letter {
         padding: 0;
+    }
+
+    .name_contact,
+    .contact-name-large {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
     }
 
 
