@@ -353,6 +353,10 @@ footer a:hover {
         margin-top: 37px;
     }
 
+    .logo-overlay{
+        display: none;
+    }
+
     .header-left-img {
         width: 64px;
         height: 78.03px;
