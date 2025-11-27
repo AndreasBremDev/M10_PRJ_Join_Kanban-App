@@ -201,7 +201,7 @@ body {
 }
 
 .drag-item {
-    width: 100%;
+    min-width: 240px;
     background-color: #fff;
     border-radius: 24px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -286,6 +286,7 @@ body {
 }
 
 .empty-task-box {
+    min-width: 240px;
     border-radius: 24px;
     border: 1px dotted #A8A8A8;
     background-color: #E7E7E7;
@@ -846,20 +847,34 @@ textarea {
 
 @media (max-width: 768px) {
     .board-header {
+        padding: 48px 16px 92px;
+    }
+    
+    .board-header {
         top: 80px;
         left: 16px;
     }
 
-    .board-header {
-        padding: 80px 16px 0 0;
+    .draggable {
+        margin-top: 12px;
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        scrollbar-width: thin;
+
     }
 
-}
+    .drag-item {
+        min-width: 240px;
+        width: 240px;
+        margin-bottom: 5px;
+    }
 
-@media (max-width: 556px) {
     .category-block {
+        display: block;
         width: 100%;
-    } 
+    }
+
     .category {
         width: 100%;
     }

@@ -68,14 +68,14 @@ function passwordVisible(inputId, iconId, event) {
     let input = document.getElementById(`${inputId}`);
     let icon = document.getElementById(`${iconId}`);
     let cursorPosition = input.selectionStart;
-    checkIconPathAndSetNewIconAndInputType (icon, input);
+    checkIconPathAndSetNewIconAndInputType(icon, input);
     setTimeout(() => {
         input.focus();
         input.setSelectionRange(cursorPosition, cursorPosition)
     }, 0);
 }
 
-function checkIconPathAndSetNewIconAndInputType (icon, input) {
+function checkIconPathAndSetNewIconAndInputType(icon, input) {
     if (icon.src.endsWith('lock.png')) {
         return
     }
@@ -177,8 +177,15 @@ function guestLogin() {
 function animateLogoFirstVisit() {
     let logoOverlay = document.getElementById('logoOverlay');
     let logo = document.getElementById('logo');
-
-    logoOverlay.classList.add('animate-out');
+    let animatedImg = document.getElementById('animatedImg');
+    if (window.innerWidth <= 768) {
+        animatedImg.src = './assets/icons/Join_light.png';
+        logoOverlay.classList.add('animate-out');
+        setTimeout(() => {
+            animatedImg.src = './assets/icons/Join_dark.png';
+            animatedImg.alt = 'Join Logo Light Animation';
+        }, 300);
+    }
     setTimeout(() => {
         logoOverlay.style.display = 'none';
         logo.style.opacity = 1;

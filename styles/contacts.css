@@ -187,7 +187,7 @@ a {
 
 .contact-list-name {
     flex-grow: 1;
-    max-width: 159px;
+    max-width: 300px;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -197,7 +197,7 @@ a {
 
 .contact-list-email {
     flex-grow: 1;
-    max-width: 159px;
+    max-width: 300px;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -654,6 +654,7 @@ a {
 
     .add-contact-btn-mobile {
         display: flex;
+        margin-right: 30px;
     }
 
     .button_add_contact {
@@ -971,6 +972,14 @@ a {
 
     }
 
+    .contact-list-name {
+    max-width: 160px;
+    }
+
+    .contact-list-email {
+    max-width: 160px;
+    }
+
     .contact-list-card-active {
         gap: 10px;
         padding: 10px 2px;
@@ -995,12 +1004,13 @@ a {
         align-items: center;
         width: 100%;
     }
-}
-
-@media (max-width: 370px) {
+    
     .contact-list-letter {
         padding: 0;
     }
+}
+
+@media (max-width: 370px) {
 
     .name_contact,
     .contact-name-large {
