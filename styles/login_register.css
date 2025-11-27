@@ -88,14 +88,15 @@ header {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 240px;
+    width: 274px;
     height: 334px;
+    backdrop-filter: blur(2px);
     transition: all 0.8s ease-in-out;
 }
 
 .logo-overlay.animate-out {
     background-color: transparent;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(0px);
 }
 
 .logo-overlay.animate-out img {
@@ -375,7 +376,7 @@ footer a:hover {
 
     .logo-overlay.animate-out {
         background-color: transparent;
-        backdrop-filter: blur(2px);
+        backdrop-filter: blur(0px);
     }
 
     .header-left-img {

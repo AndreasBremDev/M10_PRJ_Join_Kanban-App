@@ -185,11 +185,13 @@ function animateLogoFirstVisit() {
             animatedImg.src = './assets/icons/Join_dark.png';
             animatedImg.alt = 'Join Logo Light Animation';
         }, 300);
+    } else {
+        logoOverlay.classList.add('animate-out');
+        setTimeout(() => {
+            logoOverlay.style.display = 'none';
+            logo.style.opacity = 1;
+        }, 800);
     }
-    setTimeout(() => {
-        logoOverlay.style.display = 'none';
-        logo.style.opacity = 1;
-    }, 800);
 }
 
 function saveToLocalStorage(activeUserId) {
