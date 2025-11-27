@@ -72,6 +72,10 @@ async function loadAndRenderContacts(divId, useAtPage) {
     let sortedContacts = await fetchAndSortContacts(containerId);
     containerId.innerHTML = '';
     if (useAtPage === 'addTask') {
+        if (sortedContacts.length === 0) {
+            containerId.innerHTML = contactsLoadingIssueHTML();
+            return;
+        }
         const html = sortedContacts.map((contact, i) => contactRowHTML(contact, i)).join('');
         containerId.innerHTML = html;
     } else if (useAtPage === 'contacts') {

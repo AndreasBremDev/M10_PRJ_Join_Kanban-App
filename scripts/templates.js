@@ -82,6 +82,12 @@ function emptyContactsHtml() {
     `
 }
 
+function contactsLoadingIssueHTML() {
+    return `
+   <div>Error loading contacts.</div>
+     `
+}
+
 function getAddTaskOverlayTemplate(board) {
     const todayStr = new Date().toISOString().split('T')[0];
 
@@ -228,7 +234,7 @@ function getTaskDetailOverlayTemplate(task) {
 
                 <div class="task-detail-spacer"></div>
 
-                <div onclick="renderEditTaskDetail()" class="task-detail-edit-button">
+                <div onclick="renderEditTaskDetail('${task.id}')" class="task-detail-edit-button">
                 <div class="task-edit-icon"></div>
                 </div>
             </div>
@@ -240,7 +246,7 @@ function getTaskDetailOverlayTemplate(task) {
     `
 }
 
-function editTaskDetailOverlayTemplate() {
+function editTaskDetailOverlayTemplate(task) {
     const todayStr = new Date().toISOString().split('T')[0];
     return `
     <div class="task-detail-overlay">   
@@ -261,15 +267,15 @@ function editTaskDetailOverlayTemplate() {
 
                     <label><b>Priority</b></label>
                     <div class="priority-buttons">
-                        <button type="button" class="priority-btn urgent">
+                        <button type="button" class="priority-btn urgent" id="prio-urgent" onclick="setEditPrio('urgent')">
                             Urgent
                             <img src="/assets/icons/prio_urgent_icon.svg" alt="urgent icon">
                         </button>
-                        <button type="button" class="priority-btn medium active">
+                        <button type="button" class="priority-btn medium active" id="prio-medium" onclick="setEditPrio('medium')">
                             Medium
                             <img src="/assets/icons/prio_medium_icon.svg" alt="medium icon">
                         </button>
-                        <button type="button" class="priority-btn low">
+                        <button type="button" class="priority-btn low" id="prio-low" onclick="setEditPrio('low')">
                             Low
                             <img src="/assets/icons/prio_low_icon.svg" alt="low icon">
                         </button>
@@ -277,28 +283,34 @@ function editTaskDetailOverlayTemplate() {
 
                     <label for="assigned">Assigned to</label>
                     <div class="custom-select-container">
-                        <div id="assigned-display" class="select-display" onclick="toggleContactDropdown()">
+                        <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()">
                             Select contacts to assign
                         </div>
 
-                        <div id="assigned-dropdown" class="select-dropdown" style="display: block;">
+                        <div id="assigned-dropdown-edit" class="select-dropdown" style="display: block;">
                         </div>
                     </div>
 
-                    <div id="user-circle-assigned-edit-overlay">${checkForAndDisplayUserCircles()}</div>
+                    <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay"></div>
                     
                     <label for="subtask">Subtasks</label>
-                    <input type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
 
-                    <div class="subtask-list-edit">
-                        <ul id="subtask-list-edit-ul">
-                        -Subtasks will be listed here-
-                        </ul>
-                    </div> 
-            </div>  
+                        <div class="subtask-input-wrapper">
+                            <input type="text" id="subtask-input-edit" class="subtask-input-field" 
+                                placeholder="Add new subtask" 
+                                onfocus="showMainSubtaskIcons()"
+                                onkeydown="handleSubtaskKey(event)">
+                            
+                            <div id="main-subtask-icons" class="input-action-icons">
+                        
+                            </div>
+                                </div>
+
+                                <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;"></ul>
+                  </div>  
 
             <div class="task-detail-edit-footer">
-                <button onclick="handleCreateTask()" class="btn btn-primary">
+                <button onclick="saveEditedTask('${task.id}')" class="btn btn-primary">
                 Ok
                 <img src="/assets/icons/check.svg" alt="check">
                 </button>
@@ -306,6 +318,54 @@ function editTaskDetailOverlayTemplate() {
                 
     </div>
     `;
+}
+
+function showMainSubtaskIcons() {
+    let container = document.getElementById('main-subtask-icons');
+    container.innerHTML = `
+        <div onmousedown="cancelMainSubtaskInput()" class="subtask-icon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A3647" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <div class="separator-vertical"></div>
+        <div onmousedown="addSubtaskEdit()" class="subtask-icon" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2A3647" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+    `;
+}
+
+function renderSubtasksEditMode() {
+    let list = document.getElementById('subtask-list-edit-ul');
+    list.innerHTML = '';
+
+    editSubtasks.forEach((st, i) => {
+        if (i === editingSubtaskIndex) {
+            list.innerHTML +=`
+            <li class="subtask-edit-row-editing">
+                <input id="edit-subtask-input-${i}" class="subtask-row-input" type="text" value="${st.title}">
+                
+                <div class="subtask-icons-container" style="display: flex;"> <img src="/assets/icons/delete.svg" class="subtask-icon" onmousedown="deleteSubtaskEdit(${i})">
+                    
+                    <div class="separator-vertical"></div>
+                    
+                    <img src="/assets/icons/check.svg" class="subtask-icon" onmousedown="saveEditedSubtask(${i})">
+                </div>
+            </li>`;
+
+        } else {
+            list.innerHTML +=`
+            <li class="subtask-edit-row" ondblclick="editSubtask(${i})">
+               <span onclick="editSubtask(${i})" style="cursor:text; flex-grow:1;">• ${st.title}</span>
+                
+                <div class="subtask-icons-container">
+                    <img src="/assets/icons/edit.svg" class="subtask-icon" onclick="editSubtask(${i})">
+                    
+                    <div class="separator-vertical"></div>
+                    
+                    <img src="/assets/icons/delete.svg" class="subtask-icon" onclick="deleteSubtaskEdit(${i})">
+                </div>
+            </li>`;
+        }
+    });
 }
 
 function renderContactLargeHtml(contact, color) {

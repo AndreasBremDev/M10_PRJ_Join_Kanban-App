@@ -425,7 +425,6 @@ body {
     box-sizing: border-box;
     align-items: center;
     padding: 12px 21px;
-    width: 440px;
     height: 48px;
     background: #FFFFFF;
     border: 1px solid #D1D1D1;
@@ -831,6 +830,11 @@ textarea {
     transition: background-color 0.1s ease;
 }
 
+.assigned-circles-edit-overlay {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 
 
 @media (max-width: 1000px) {
@@ -863,4 +867,82 @@ textarea {
     .category {
         width: 100%;
     }
+} 
+
+
+
+
+
+
+.subtask-input-wrapper {
+    display: flex;            
+    align-items: center;       
+    background-color: white;
+    padding: 4px 8px;
+    margin-bottom: 16px; 
+}
+
+
+
+.input-action-icons {
+    display: flex;
+    gap: 4px;
+    cursor: pointer;
+}
+
+#subtask-list-edit-ul {
+    list-style: none; 
+    padding: 0;
+    margin: 0;
+}
+
+.subtask-edit-row {
+    display: flex;           
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background-color 0.1s;
+}
+
+
+.subtask-icons-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subtask-edit-row:hover .subtask-icons-container {
+    display: flex;
+}
+
+.subtask-edit-row-editing {
+    display: flex;          
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #29ABE2;
+    background-color: white;
+    margin-bottom: 4px;
+}
+
+.subtask-row-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 4px 8px;
+}
+
+.subtask-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    padding: 2px;
+}
+.separator-vertical {
+    width: 1px;
+    height: 20px;
+    background-color: #D1D1D1;
+    margin: 0 4px;
 }
