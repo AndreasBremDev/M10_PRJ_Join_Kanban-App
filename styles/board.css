@@ -425,7 +425,6 @@ body {
     box-sizing: border-box;
     align-items: center;
     padding: 12px 21px;
-    width: 440px;
     height: 48px;
     background: #FFFFFF;
     border: 1px solid #D1D1D1;
@@ -878,7 +877,6 @@ textarea {
 .subtask-input-wrapper {
     display: flex;            
     align-items: center;       
-    border-bottom: 1px solid #29ABE2; 
     background-color: white;
     padding: 4px 8px;
     margin-bottom: 16px; 
