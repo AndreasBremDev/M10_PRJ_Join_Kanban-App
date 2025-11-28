@@ -52,6 +52,7 @@ body {
     flex-direction: column;
     height: 100vh;
 }
+
 /*----------End Region----------*/
 
 /*----------Header----------*/
@@ -124,7 +125,7 @@ header {
 
 /**----------Login----------*/
 .btn_login_header {
-    width: 99px;
+    width: 91px;
     height: 48px;
     outline: none;
     border: none;
@@ -138,7 +139,7 @@ header {
 
 .btn_login_header:focus,
 .btn_login_header:hover {
-    background-color: #29ABE2;
+    background-color: var(--primary-hover);
     box-shadow: var(--shadow-hover);
     cursor: pointer;
 }
@@ -158,11 +159,9 @@ header {
 
 .btn_log_in:focus,
 .btn_log_in:hover {
-    background-color: #29ABE2;
+    background-color: var(--primary-hover);
     box-shadow: var(--shadow-hover);
-    /* transform: ; */
     cursor: pointer;
-    transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -181,13 +180,13 @@ header {
 
 .btn_guest_log_in:focus,
 .btn_guest_log_in:hover {
-    outline-color: #29ABE2;
-    color: #29ABE2;
+    outline-color: var(--primary-hover);
+    color: var(--primary-hover);
     box-shadow: var(--shadow-hover);
     cursor: pointer;
-    transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
 /*----------End Region----------*/
 
 /*----------Main inner Wrapper----------*/
@@ -213,6 +212,7 @@ header {
 .login_h2 {
     margin: 40px auto 24px;
     font-size: 61px;
+    font-weight: 700;
 }
 
 .login-register hr,
@@ -257,7 +257,7 @@ header {
     height: 100%;
     display: flex;
     align-items: center;
-    padding-right: 8px;
+    padding-right: 12px;
 }
 
 .error-msg {
@@ -278,6 +278,7 @@ header {
     display: flex;
     gap: 35px;
 }
+
 /*----------End Region----------*/
 
 /*----------Footer----------*/
@@ -298,6 +299,7 @@ footer a:hover {
     font-weight: 700;
     color: var(--primary-hover);
 }
+
 /*----------End Region----------*/
 
 /*--------------------register.html--------------------*/
@@ -338,8 +340,8 @@ footer a:hover {
 }
 
 .go_back img {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
 }
 
 .left_arrow {
@@ -354,7 +356,7 @@ footer a:hover {
 }
 
 .register_h2 {
-    font-size: 48px;
+    font-size: 61px;
     font-weight: 700;
     margin: 0;
     text-align: center;
@@ -368,6 +370,7 @@ footer a:hover {
 
 .register_checkbox {
     margin-right: 10px;
+    text-decoration: none;
 }
 
 .register_sign_up {
@@ -406,9 +409,9 @@ footer a:hover {
     cursor: pointer;
 }
 
+#signUp:not(:disabled):focus,
 #signUp:not(:disabled):hover {
-    background-color:var(--primary-hove);
-    /* transform: scale(1.05); */
+    background-color: var(--primary-hover);
     box-shadow: var(--shadow-hover);
 }
 
@@ -490,10 +493,13 @@ footer a:hover {
             background-color: var(--primary);
             backdrop-filter: blur(2px);
         }
+
         50% {
-            background-color: var(--bg-color); /* Hier wird der Hintergrund transparent */
+            background-color: var(--bg-color);
+            /* Hier wird der Hintergrund transparent */
             backdrop-filter: blur(1px);
         }
+
         100% {
             background-color: transparent;
             backdrop-filter: blur(0px);
@@ -506,6 +512,7 @@ footer a:hover {
             left: 50%;
             transform: translate(-50%, -50%);
         }
+
         100% {
             top: 37px;
             left: 38px;
@@ -569,7 +576,7 @@ footer a:hover {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        gap: 21px;
     }
 
     .btn_log_in:active,
@@ -583,8 +590,8 @@ footer a:hover {
 
     .btn_guest_log_in:active {
         background-color: var(--white);
-        color: var(--primary-active) ;
-        outline: 1px solid var(--primary-active) ;
+        color: var(--primary-active);
+        outline: 1px solid var(--primary-active);
         box-shadow: none;
         transform: none;
     }

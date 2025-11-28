@@ -60,6 +60,7 @@ body {
 
 .numbers_txt p {
   margin: 0;
+  font-size: 20px;
   text-align: center;
 }
 
@@ -67,6 +68,7 @@ body {
   display: flex;
   flex-direction: column;
   top: 335px;
+  width: 560px;
 }
 
 .to_to_container {
@@ -80,6 +82,7 @@ body {
 .to_do,
 .done {
   height: 168px;
+  width: 264px;
   max-width: 264px;
   flex: 1 1 220px;
   background-color: white;
@@ -89,7 +92,7 @@ body {
   justify-content: center;
   gap: 25px;
   cursor: pointer;
-  transition: all 120ms ease-in-out;
+  transition: all 80ms ease-out;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -117,7 +120,7 @@ body {
   flex-direction: row;
   gap: 25px;
   cursor: pointer;
-  transition: all 120ms ease-in-out;
+  transition: all 80ms ease-out;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
   margin-top: 30px;
   margin-bottom: 30px;
@@ -172,7 +175,7 @@ body {
 }
 
 #greeting_name {
-  font-size: 47px;
+  font-size: 64px;
   font-weight: 700;
   color: #29ABE2;
   margin: 0;
@@ -239,7 +242,7 @@ body {
   justify-content: center;
   gap: 25px;
   cursor: pointer;
-  transition: all 120ms ease-in-out;
+  transition: all 80ms ease-out;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -353,6 +356,10 @@ body {
     margin-bottom: 0;
     width: 80%;
     margin-top: 160px;
+  }
+
+  .to_do_summary {
+    width: unset;
   }
 
   .summary_content {

@@ -48,6 +48,7 @@ function checkAllValidations() {
     if (allBoolEqualOne) {
         signUpBtn.disabled = false;
         signUpBtn.ariaDisabled = false;
+        signUpBtn.tabIndex = '1';
     } else {
         signUpBtn.disabled = true;
         signUpBtn.ariaDisabled = true;
@@ -179,7 +180,6 @@ function animateLogoFirstVisit() {
     let logo = document.getElementById('logo');
     let animatedImgMobile = document.getElementById('animatedImgMobile');
     if (window.innerWidth <= 768) {
-        // animatedImg.src = './assets/icons/Join_light.png';
         logoOverlay.classList.add('animate-out-mobile');
         setTimeout(() => {
             animatedImgMobile.src = './assets/icons/Join_dark.png';

@@ -124,8 +124,7 @@ nav {
     flex: 1;
 }
 
-.nav_navigation,
-.login_nav_navigation {
+.nav_navigation {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -144,16 +143,14 @@ nav {
     text-decoration: none;
 }
 
-.nav_policy,
-.login_nav_policy {
+.nav_policy {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-bottom: 24px;
 }
 
-.nav_policy a,
-.login_nav_policy a {
+.nav_policy a {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -214,8 +211,7 @@ nav {
     cursor: default;
 }
 
-.nav_policy a.active,
-.login_nav_policy a.active {
+.nav_policy a.active {
     background-color: var(--primary-active);
     color: var(--A8A8A8);
     cursor: default;
@@ -259,7 +255,7 @@ header {
 
 .header-left-img {
     display: none;
-    height: 39.02px;
+    height: 39px;
     width: 32px;
 }
 
@@ -293,9 +289,9 @@ header {
     font-size: 20px;
 }
 
+.user-circle:focus,
 .user-circle:hover {
     background-color: #c4c5c64a;
-
 }
 
 /* Headerbar Hover */
