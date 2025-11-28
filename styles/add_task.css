@@ -256,6 +256,8 @@ select:focus {
 }
 
 .select-display {
+    display: flex;
+    justify-content: space-between;
     border: 1px solid #D1D1D1;
     border-radius: 8px;
     padding: 12px;
@@ -351,6 +353,44 @@ select:focus {
     width: 0px;
     border: 1px solid #D1D1D1;
     height: 24px;
+}
+
+.subtask-icons-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.subtask-edit-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: background-color 0.1s;
+}
+
+.subtask-edit-row:hover .subtask-icons-container {
+    display: flex;
+}
+
+.subtask-edit-row-editing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #29ABE2;
+    background-color: #f5f6f7;
+    margin-bottom: 4px;
+}
+
+.subtask-row-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    background-color: #f5f6f7;
+    font-size: 16px;
+    padding: 4px 8px;
 }
 
 
