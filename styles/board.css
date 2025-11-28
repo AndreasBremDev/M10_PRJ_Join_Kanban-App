@@ -425,7 +425,7 @@ body {
     box-sizing: border-box;
     align-items: center;
     padding: 12px 21px;
-    height: 48px;
+    resize: vertical;
     background: #FFFFFF;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
