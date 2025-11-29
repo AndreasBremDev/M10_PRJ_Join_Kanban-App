@@ -418,14 +418,12 @@ select:focus {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 10px;
-    min-height: 42px; /* Wichtig: Reserviert Platz */
 }
-/* Falls noch nicht vorhanden: */
+
 .user-circle-intials {
     width: 40px; height: 40px; 
     border-radius: 50%; color: white; 
     display: flex; justify-content: center; align-items: center;
     border: 2px solid white;
-    margin: 0; /* Wichtig! */
+    margin: 0;
 }

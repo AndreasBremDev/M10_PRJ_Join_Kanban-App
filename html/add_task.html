@@ -16,7 +16,7 @@
     <script src="/scripts/templates.js" defer></script>
     <script src="/scripts/board.js" defer></script>
     <script src="/scripts/add_task.js" defer></script>
-    
+
 </head>
 
 <body onload="initAddTask(); eachPageSetCurrentUserInitials()">
@@ -95,76 +95,76 @@
 
                 <div class="form-right">
                     <label>Priority</label>
-                        <div class="priority-buttons">
-                            <button type="button" id="prio-urgent" class="priority-btn urgent" onclick="setEditPrio('urgent')">
-                                Urgent <img src="/assets/icons/prio_urgent_icon.svg">
-                            </button>
-                            <button type="button" id="prio-medium" class="priority-btn medium active" onclick="setEditPrio('medium')">
-                                Medium <img src="/assets/icons/prio_medium_icon.svg">
-                            </button>
-                            <button type="button" id="prio-low" class="priority-btn low" onclick="setEditPrio('low')">
-                                Low <img src="/assets/icons/prio_low_icon.svg">
-                            </button>
-                        </div>
+                    <div class="priority-buttons">
+                        <button type="button" id="prio-urgent" class="priority-btn urgent"
+                            onclick="setEditPrio('urgent')">
+                            Urgent <img src="/assets/icons/prio_urgent_icon.svg">
+                        </button>
+                        <button type="button" id="prio-medium" class="priority-btn medium active"
+                            onclick="setEditPrio('medium')">
+                            Medium <img src="/assets/icons/prio_medium_icon.svg">
+                        </button>
+                        <button type="button" id="prio-low" class="priority-btn low" onclick="setEditPrio('low')">
+                            Low <img src="/assets/icons/prio_low_icon.svg">
+                        </button>
+                    </div>
 
                     <label for="assigned">Assigned to</label>
-                                <div class="custom-select-container">
-                                    <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()">
-                                        Select contacts to assign <img onclick="" src="/assets/icons/arrow_drop_down.svg">
-                                    </div>
-                                    <div id="assigned-dropdown-edit" class="select-dropdown" style="display: none;"></div>
-                                </div>
+                    <div class="custom-select-container">
+                        <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()">
+                            Select contacts to assign <img onclick="" src="/assets/icons/arrow_drop_down.svg">
+                        </div>
+                        <div id="assigned-dropdown-edit" class="select-dropdown" style="display: none;"></div>
+                    </div>
 
-                                <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay"></div>
-
-
+                    <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay"></div>
 
 
 
+                    <label for="category" class="form-headline-text">Category<span
+                            class="required-marker">*</span></label>
+                    <select id="category" required>
+                        <option value="" disabled selected>Select task category</option>
+                        <option value="technical">Technical Task</option>
+                        <option value="user-story">User Story</option>
+                    </select>
 
-                                      <label for="category" class="form-headline-text">Category<span class="required-marker">*</span></label>
-                                <select id="category" required>
-                                <option value="" disabled selected>Select task category</option>
-                                <option value="technical">Technical Task</option>
-                                <option value="user-story">User Story</option>
-                                </select> 
 
 
+                    <label for="subtask">Subtasks</label>
+                    <div class="subtask-input-wrapper">
+                        <input type="text" id="subtask-input-edit" class="subtask-input-field"
+                            placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
+                            onkeydown="handleSubtaskKey(event)">
+                        <div id="main-subtask-icons" class="input-action-icons"></div>
+                    </div>
 
-                                <label for="subtask">Subtasks</label>
-                                <div class="subtask-input-wrapper">
-                                    <input type="text" id="subtask-input-edit" class="subtask-input-field"
-                                        placeholder="Add new subtask" 
-                                        onclick="showMainSubtaskIcons()" 
-                                        onkeydown="handleSubtaskKey(event)">
-                                    <div id="main-subtask-icons" class="input-action-icons"></div>
-                                </div>
-
-                                <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;"></ul>
+                    <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;"></ul>
             </form>
 
-           
+
 
 
         </section>
 
-         <div class="form-footer">
+        <div class="form-footer">
 
-                <p class="form-hint">
-                    <span class="required-marker">*</span>This field is required
-                </p>
-
-
-                <div class="form-actions">
-                    <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
-                    <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task
-                        ✔</button>
-                </div>
+            <p class="form-hint">
+                <span class="required-marker">*</span>This field is required
+            </p>
 
 
+            <div class="form-actions">
+                <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
+                <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task
+                    ✔</button>
             </div>
+
+
+        </div>
     </main>
 
 </body>
 
 </html>
+

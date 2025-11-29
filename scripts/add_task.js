@@ -78,6 +78,7 @@ function clearForm() {
 /** Post data to backend */
 async function putData(path = "", data = {}) {
     try {
+
         let response = await fetch(BASE_URL + path + ".json", {
             method: "PUT",
             headers: {
