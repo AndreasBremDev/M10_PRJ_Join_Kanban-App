@@ -66,12 +66,14 @@ async function handleCreateTask(boardCategory) {
 
 /** Clear form */
 function clearForm() {
-    document.getElementById("task-form").reset();
-    document.querySelectorAll(".priority-btn").forEach(btn => btn.classList.remove("active"));
-    document.querySelector(".priority-btn.medium").classList.add("active");
+   document.getElementById("task-form").reset();
+    editSubtasks = [];
+    editAssignedIds = [];
+    editPriority = 'medium';
+    renderAssignedEditCircles(); 
+    renderSubtasksEditMode();
+    setCheckboxesById();
 }
-
-
 
 /** Post data to backend */
 async function putData(path = "", data = {}) {
@@ -105,17 +107,16 @@ function renderAddTAskOverlay() {
     overlay.innerHTML = getAddTaskOverlayTemplate();
 }
 
-
-
 function renderAssignedEditCircles() {
     let container = document.getElementById('user-circle-assigned-edit-overlay');
+    if (!container) return;
     container.innerHTML = '';
     if (editAssignedIds.length > 5) {
         for (let i = 0; i < 5; i++) {
             let userId = editAssignedIds[i];
-            let contact = contacts.find(c => c.id === userId);
+            let contact = contacts.find(c => c.id == userId); 
             if (contact) {
-                container.innerHTML += renderContactCircle(contact, contact.id);
+                container.innerHTML += renderContactCircle(contact);
             }
         }
         let remainingCount = editAssignedIds.length - 5;
@@ -125,14 +126,15 @@ function renderAssignedEditCircles() {
             </div>`;
     } else {
         editAssignedIds.forEach(userId => {
-            let contact = contacts.find(c => c.id === userId);
+            let contact = contacts.find(c => c.id == userId);
             if (contact) {
-                container.innerHTML += renderContactCircle(contact, contact.id);
+                container.innerHTML += renderContactCircle(contact);
+            } else {
+                console.warn("Kontakt nicht gefunden für ID:", userId);
             }
         });
     }
 }
-
 
 
 async function saveEditedTask(taskId) {

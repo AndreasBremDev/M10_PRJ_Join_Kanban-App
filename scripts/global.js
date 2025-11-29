@@ -70,12 +70,9 @@ async function putData(path = "", data = {}) {
 async function loadAndRenderContacts(divId, useAtPage) {
     const containerId = document.getElementById(divId);
     let sortedContacts = await fetchAndSortContacts(containerId);
+    contacts = sortedContacts;
     containerId.innerHTML = '';
     if (useAtPage === 'addTask') {
-        if (sortedContacts.length === 0) {
-            containerId.innerHTML = contactsLoadingIssueHTML();
-            return;
-        }
         const html = sortedContacts.map((contact, i) => contactRowHTML(contact, i)).join('');
         containerId.innerHTML = html;
     } else if (useAtPage === 'contacts') {
