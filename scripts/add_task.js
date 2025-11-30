@@ -56,6 +56,7 @@ async function handleCreateTask(boardCategory) {
         let nextTaskId = await calcNextId(taskPath);
         await putData(`${taskPath}/${nextTaskId}`, newTask);
         clearForm(); 
+        showSuccessImageAnimation()
     } catch (error) {
         console.error("Error creating task:", error);
     }
@@ -254,4 +255,20 @@ function handleSubtaskKey(event) {
         event.preventDefault(); 
         addSubtaskEdit();       
     }
+}
+
+
+function showSuccessImageAnimation() {
+    let toastImg = document.getElementById('success-toast-img');
+    if (!toastImg) {
+        window.location.href = 'board.html';
+        return;
+    }
+    toastImg.classList.remove('d-none');
+    setTimeout(() => {
+        toastImg.classList.add('animate-toast-slide-in'); 
+    }, 10);
+    setTimeout(() => {
+        window.location.href = 'board.html';
+    }, 2000); 
 }

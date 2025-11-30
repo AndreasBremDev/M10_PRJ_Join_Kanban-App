@@ -156,15 +156,17 @@
 
             <div class="form-actions">
                 <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
-                <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task
+                <button type="button" onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task
                     ✔</button>
             </div>
 
 
         </div>
+
+        <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board"
+            role="alert" class="success-toast-img d-none">
     </main>
 
 </body>
 
 </html>
-
