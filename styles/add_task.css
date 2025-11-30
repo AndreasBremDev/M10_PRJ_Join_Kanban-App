@@ -61,8 +61,14 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 32px;
+    max-height: 600px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.description-box{
+    min-height: 86px;
+    max-height: 200px;
 }
 
 
@@ -85,6 +91,7 @@ select {
     align-items: flex-start;
     gap: 48px;
     width: 100%;
+    overflow-y: scroll;
     margin-top: 16px;
     max-width: 1200px;
 }
