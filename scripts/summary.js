@@ -174,3 +174,15 @@ function handleResizeOverlay() {
     overlay.classList.remove("fade-out");
   }
 }
+
+/**
+ * Keyboard event handler for summary page links
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} url - The URL to navigate to
+ */
+function handleSummaryLinkKeydown(event, url) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        window.location.href = url;
+    }
+}

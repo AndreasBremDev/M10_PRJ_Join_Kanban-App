@@ -417,6 +417,9 @@ window.addEventListener('resize', positionSearchField);
 function positionSearchField() {
     let searchDesktopRef = document.getElementById('searchPositionDesktop');
     let searchMobileRef = document.getElementById('searchPositionMobile');
+    if (!searchDesktopRef || !searchMobileRef) {
+        return;
+    }
     const currentSearchInput = document.getElementById('searchTasks');
     const currentValue = currentSearchInput ? currentSearchInput.value : '';
     const wasFocused = document.activeElement && document.activeElement.id === 'searchTasks';

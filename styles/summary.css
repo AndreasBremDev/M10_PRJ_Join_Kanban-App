@@ -343,6 +343,24 @@ body {
   transition: all 125ms ease-in-out;
 }
 
+/* WCAG/WAI-ARIA */
+
+/* Enhanced focus styles for summary links */
+.to_do:focus-visible,
+.done:focus-visible,
+.urgent_container:focus-visible,
+.tasks_in_board:focus-visible,
+.tasks_in_progress:focus-visible,
+.awaiting_feedback:focus-visible {
+    outline: 3px solid #29ABE2;
+    outline-offset: 3px;
+}
+
+/* Ensure greeting overlay accessibility */
+#greeting_overlay[aria-modal="false"] {
+    pointer-events: auto;
+}
+
 @media (max-width: 1200px) {
   .main_summary {
     position: relative;

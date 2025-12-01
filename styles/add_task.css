@@ -244,9 +244,9 @@ button.clear:hover {
 
 /* Enhanced focus styles for accessibility */
 .priority-btn:focus {
-    outline: 2px solid #4589ff;
+    outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
-    border-color: #4589ff;
+    border-color: var(--primary-hover);
 }
 
 .priority-btn:focus:not(:focus-visible) {
@@ -255,13 +255,13 @@ button.clear:hover {
 }
 
 .priority-btn:focus-visible {
-    outline: 2px solid #4589ff;
+    outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
-    border-color: #4589ff;
+    border-color: var(--primary-hover);
 }
 
 button:focus-visible {
-    outline: 2px solid #4589ff;
+    outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
 }
 
@@ -297,7 +297,7 @@ select::placeholder {
 input:focus,
 textarea:focus,
 select:focus {
-    border-color: #4fb9e7;
+    border-color: var(--primary-hover);
     outline: none;
     box-shadow: none;
 }
@@ -320,7 +320,7 @@ select:focus {
 }
 
 .select-display:hover {
-    border-color: #4fb9e7;
+    border-color: var(--primary-hover);
 }
 
 .select-dropdown {
