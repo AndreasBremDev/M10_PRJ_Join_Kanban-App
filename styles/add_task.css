@@ -511,13 +511,12 @@ select:focus {
 }
 
 .input-error {
-    border: 1px solid #FF8190;
+    border: 1px solid #E60026;
 }
 
 .error-text {
-    color: #FF8190;
-    font-size: 12px;
-    margin-top: 4px;
+    color: #E60026;
+    font-size: 16px;
     display: none;
 }
 
