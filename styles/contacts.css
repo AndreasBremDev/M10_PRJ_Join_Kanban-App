@@ -297,6 +297,9 @@ a {
     align-items: center;
     border: none;
     background-color: unset;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
 }
 
 .contacts-edit-delete-buttons:hover {
@@ -537,6 +540,104 @@ a {
 }
 
 
+
+/*************************** NEU (für ScreenReader) ***********************/
+/* Screen reader only class for accessibility */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Contact info groups for better structure */
+.contact-info-group {
+    margin-bottom: 16px;
+}
+
+.contact-info-group p {
+    margin: 4px 0;
+}
+
+/* Mobile menu accessibility improvements */
+.mobile-contact-menu[aria-hidden="true"] {
+    display: none !important;
+}
+
+.mobile-contact-menu[aria-hidden="false"] {
+    display: flex !important;
+}
+
+/* Focus improvements for buttons */
+.contacts-edit-delete-buttons:focus-visible,
+.mobile-actions-btn:focus-visible {
+    outline: 2px solid #2A3647;
+    outline-offset: 2px;
+}
+
+/* Additional focus styles for better visibility */
+.go_back:focus-visible,
+.go_back:focus {
+    outline: 2px solid #2A3647;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Menu item focus styles */
+.mobile-contact-menu button:focus-visible {
+    outline: 2px solid #2A3647;
+    outline-offset: 1px;
+    background-color: #f0f0f0;
+}
+
+/* Focus styles for edit/delete buttons */
+.contacts-edit-delete-buttons:focus-visible {
+    outline: 2px solid #2A3647;
+    outline-offset: 2px;
+    background-color: rgba(42, 54, 71, 0.1);
+}
+
+.contacts-edit-delete-buttons:focus {
+    outline: 2px solid #2A3647;
+    outline-offset: 2px;
+    background-color: rgba(42, 54, 71, 0.1);
+}
+
+/* Form validation improvements */
+.input-field input[aria-invalid="true"] {
+    border-color: #ff4444;
+    background-color: #fff5f5;
+}
+
+.input-field input[aria-invalid="false"] {
+    border-color: #D1D1D1;
+}
+
+/* Focus improvements for dialog */
+.add_contact_overlay input:focus {
+    outline: 2px solid #2A3647;
+    outline-offset: 1px;
+}
+
+.add_contact_overlay button:focus-visible {
+    outline: 2px solid #2A3647;
+    outline-offset: 2px;
+}
+
+/* Enhanced focus for high contrast accessibility */
+@media (prefers-contrast: high) {
+    .contacts-edit-delete-buttons:focus-visible,
+    .contacts-edit-delete-buttons:focus {
+        outline: 3px solid #000000;
+        outline-offset: 3px;
+        background-color: #ffffff;
+    }
+}
 
 
 

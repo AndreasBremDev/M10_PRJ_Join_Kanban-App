@@ -19,60 +19,85 @@
 </head>
 
 <body onload="animateLogoFirstVisit()">
-    <section class="animated_logo">
-        <div id="logoOverlay" class="logo-overlay" aria-hidden="true" aria-label="logo-animation">
-            <img id="animatedImg" src="./assets/icons/Join_dark.svg" alt="Join Logo Animation">
-            <img id="animatedImgMobile" src="./assets/icons/Join_light.svg" alt="Join Logo Animation">
+    <div class="animated_logo" aria-hidden="true">
+        <div id="logoOverlay" class="logo-overlay" aria-hidden="true">
+            <img id="animatedImg" src="./assets/icons/Join_dark.svg" alt="" aria-hidden="true">
+            <img id="animatedImgMobile" src="./assets/icons/Join_light.svg" alt="" aria-hidden="true">
         </div>
-    </section>
+    </div>
 
     <div class="wrapper">
         <header>
-            <img id="logo" class="logo" src="./assets/icons/Join_dark.png" alt="Join Logo" style="opacity: 0;">
+            <img id="logo" class="logo" src="./assets/icons/Join_dark.png" alt="Join - Task Management Application" style="opacity: 0;">
             <div class="header_right">
                 <span class="span_header">Not a Join user?</span>
-                <button class="btn_login_header"><a class="a_sign_up" href="./html/register.html">Sign up</a></button>
+                <button class="btn_login_header" type="button">
+                    <a class="a_sign_up" href="./html/register.html" aria-label="Go to registration page">Sign up</a>
+                </button>
             </div>
         </header>
 
         <main class="inner-wrapper">
             <div class="login-register">
-                <h2 class="login_h2">Log In</h2>
-                <hr>
-                <form class="login-form" onsubmit="login(); return false;">
+                <h1 class="login_h2">Log In</h1>
+                <hr aria-hidden="true">
+                <form class="login-form" onsubmit="login(); return false;" novalidate>
                     <div class="input-field">
+                        <label for="emailLogin" class="sr-only">Email Address</label>
                         <input class="input_login" type="email" id="emailLogin"
                             oninput="validateField('emailLogin', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', false)"
-                            tabindex="1" placeholder="Email">
+                            tabindex="0" 
+                            placeholder="Email"
+                            aria-required="true"
+                            aria-describedby="errMsgEmail"
+                            aria-invalid="false"
+                            autocomplete="email">
                         <div class="icon-div">
-                            <img src="../assets/icons/mail.png" alt="email icon">
+                            <img src="../assets/icons/mail.png" alt="email icon" aria-hidden="true">
                         </div>
                     </div>
-                    <div id="errMsgEmail" class="error-msg" style="display: none;"></div>
+                    <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite" style="display: none;"></div>
 
                     <div class="input-field">
+                        <label for="passwordLogin" class="sr-only">Password</label>
                         <input class="input_login" type="password" id="passwordLogin"
                             onfocus="changePasswordIcon('passwordIcon')"
                             oninput="validateField('passwordLogin', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]', false)"
-                            tabindex="1" placeholder="Password" minlength="12">
+                            tabindex="0" 
+                            placeholder="Password" 
+                            minlength="12"
+                            aria-required="true"
+                            aria-describedby="errMsgPassword"
+                            aria-invalid="false"
+                            autocomplete="current-password">
                         <div class="icon-div">
-                            <img id="passwordIcon" src="../assets/icons/lock.png" alt="lock icon" onclick="passwordVisible('passwordLogin','passwordIcon')">
+                            <img id="passwordIcon" 
+                                src="../assets/icons/lock.png" 
+                                alt="toggle password visibility" 
+                                onclick="passwordVisible('passwordLogin','passwordIcon')"
+                                tabindex="0"
+                                role="button"
+                                aria-label="Show or hide password"
+                                onkeydown="if(event.key==='Enter'||event.key===' '){passwordVisible('passwordLogin','passwordIcon'); event.preventDefault();}">
                         </div>
                     </div>
-                    <div id="errMsgPassword" class="error-msg" style="display: none;"></div>
-
+                    <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite" style="display: none;"></div>
 
                     <div class="two-buttons">
-                        <button class="btn_log_in" type="submit" class="btn_std" tabindex="1">Log in</button>
-                        <button class="btn_guest_log_in" onclick="guestLogin(); return false;" tabindex="1">Guest Login
-                        </button>
+                        <button class="btn_log_in btn_std" type="submit" tabindex="0">Log in</button>
+                        <button class="btn_guest_log_in" 
+                                type="button"
+                                onclick="guestLogin(); return false;" 
+                                tabindex="0">Guest Login</button>
                     </div>
                 </form>
             </div>
 
             <div class="header_right_mobile">
                 <span class="span_header">Not a Join user?</span>
-                <button class="btn_login_header"><a class="a_sign_up" href="./html/register.html">Sign up</a></button>
+                <button class="btn_login_header" type="button">
+                    <a class="a_sign_up" href="./html/register.html" aria-label="Go to registration page">Sign up</a>
+                </button>
             </div>
         </main>
 

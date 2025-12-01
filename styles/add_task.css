@@ -179,6 +179,36 @@ button.clear:hover {
     margin-right: 4px;
 }
 
+/* Accessibility and Error Handling Styles */
+.error-message {
+    color: #FF3B30;
+    font-size: 12px;
+    margin-top: 4px;
+    margin-left: 4px;
+    min-height: 16px;
+    display: block;
+}
+
+.edit-form-section {
+    margin-bottom: 24px;
+}
+
+.priority-fieldset {
+    margin-bottom: 24px;
+}
+
+.description-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 32px;
+}
+
 .priority-buttons {
     display: flex;
     gap: 12px;
@@ -210,6 +240,29 @@ button.clear:hover {
 .priority-btn:hover {
     opacity: 0.9;
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Enhanced focus styles for accessibility */
+.priority-btn:focus {
+    outline: 2px solid #4589ff;
+    outline-offset: 2px;
+    border-color: #4589ff;
+}
+
+.priority-btn:focus:not(:focus-visible) {
+    outline: none;
+    border-color: transparent;
+}
+
+.priority-btn:focus-visible {
+    outline: 2px solid #4589ff;
+    outline-offset: 2px;
+    border-color: #4589ff;
+}
+
+button:focus-visible {
+    outline: 2px solid #4589ff;
+    outline-offset: 2px;
 }
 
 .priority-btn.active.urgent {

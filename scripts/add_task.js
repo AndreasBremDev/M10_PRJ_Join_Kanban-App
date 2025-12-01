@@ -102,6 +102,278 @@ function toggleContactDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
+//////////////////// understand + remove comments (later) ////////////////////
+function toggleContactDropdown() {
+    let dropdown = document.getElementById('assigned-dropdown');
+    let display = document.getElementById('assigned-display');
+    
+    if (dropdown.style.display === 'none') {
+        dropdown.style.display = 'block';
+        display.setAttribute('aria-expanded', 'true');
+        
+        // Fokus auf erste Checkbox setzen
+        setTimeout(() => {
+            let firstCheckbox = dropdown.querySelector('input[type="checkbox"]');
+            if (firstCheckbox) {
+                firstCheckbox.focus();
+            }
+        }, 100);
+    } else {
+        dropdown.style.display = 'none';
+        display.setAttribute('aria-expanded', 'false');
+        display.focus(); // Fokus zurück zum Button
+    }
+}
+
+function handlePriorityKeydown(event, priority) {
+    const priorities = ['urgent', 'medium', 'low'];
+    const currentIndex = priorities.indexOf(priority);
+    
+    switch(event.key) {
+        case 'ArrowLeft':
+        case 'ArrowUp':
+            event.preventDefault();
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : priorities.length - 1;
+            document.getElementById(`prio-${priorities[prevIndex]}`).focus();
+            break;
+            
+        case 'ArrowRight':
+        case 'ArrowDown':
+            event.preventDefault();
+            const nextIndex = currentIndex < priorities.length - 1 ? currentIndex + 1 : 0;
+            document.getElementById(`prio-${priorities[nextIndex]}`).focus();
+            break;
+            
+        case 'Enter':
+        case ' ':
+            event.preventDefault();
+            setPriority(priority);
+            break;
+    }
+}
+
+function handleAssignedDropdownKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactDropdown();
+    } else if (event.key === 'Escape') {
+        let dropdown = document.getElementById('assigned-dropdown');
+        if (dropdown.style.display === 'block') {
+            toggleContactDropdown();
+        }
+    }
+}
+
+function handleCloseKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        closeAddTaskOverlay();
+    }
+}
+
+function handleAssignedDropdownKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactDropdown();
+    } else if (event.key === 'Escape') {
+        let dropdown = document.getElementById('assigned-dropdown');
+        if (dropdown.style.display === 'block') {
+            toggleContactDropdown();
+        }
+    }
+}
+
+function handleAssignedDropdownEditKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactDropdownEdit();
+    } else if (event.key === 'Escape') {
+        let dropdown = document.getElementById('assigned-dropdown-edit');
+        if (dropdown.style.display === 'block') {
+            toggleContactDropdownEdit();
+        }
+    }
+}
+
+function handleSaveKeydown(event, taskId) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        saveEditedTask(taskId);
+    }
+}
+
+function handleSubtaskCancelKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        cancelMainSubtaskInput();
+    }
+}
+
+function handleSubtaskAddKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        addSubtaskEdit();
+    }
+}
+
+function handleSubtaskEditKeydown(event, index) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        saveEditedSubtask(index);
+    } else if (event.key === 'Escape') {
+        event.preventDefault();
+        editingSubtaskIndex = -1;
+        renderSubtasksEditMode();
+    }
+}
+
+function handleSubtaskDeleteKeydown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        deleteSubtaskEdit(index);
+    }
+}
+
+function handleSubtaskSaveKeydown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        saveEditedSubtask(index);
+    }
+}
+
+function handleSubtaskRowKeydown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        editSubtask(index);
+    }
+}
+
+function handleSubtaskEditActionKeydown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        editSubtask(index);
+    }
+}
+
+////////////////// check here - against my validation function (register/login) //////////////////
+/**
+ * Validates the edit task form and shows error messages
+ * @returns {boolean} true if form is valid
+ */
+function validateEditTaskForm() {
+    let isValid = true;
+    
+    // Validate title
+    const titleInput = document.getElementById('edit-title');
+    const titleError = document.getElementById('edit-title-error');
+    if (titleInput && titleError) {
+        if (!titleInput.value.trim()) {
+            titleError.textContent = 'Title is required';
+            titleInput.setAttribute('aria-invalid', 'true');
+            isValid = false;
+        } else {
+            titleError.textContent = '';
+            titleInput.setAttribute('aria-invalid', 'false');
+        }
+    }
+    
+    // Validate due date
+    const dateInput = document.getElementById('edit-due-date');
+    const dateError = document.getElementById('edit-due-date-error');
+    if (dateInput && dateError) {
+        if (!dateInput.value) {
+            dateError.textContent = 'Due date is required';
+            dateInput.setAttribute('aria-invalid', 'true');
+            isValid = false;
+        } else {
+            const selectedDate = new Date(dateInput.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate < today) {
+                dateError.textContent = 'Due date cannot be in the past';
+                dateInput.setAttribute('aria-invalid', 'true');
+                isValid = false;
+            } else {
+                dateError.textContent = '';
+                dateInput.setAttribute('aria-invalid', 'false');
+            }
+        }
+    }
+    
+    return isValid;
+}
+
+/**
+ * Sets up real-time validation for edit form inputs
+ */
+function setupEditFormValidation() {
+    const titleInput = document.getElementById('edit-title');
+    if (titleInput) {
+        titleInput.addEventListener('blur', () => validateEditTaskForm());
+        titleInput.addEventListener('input', () => {
+            // Clear error on input
+            const titleError = document.getElementById('edit-title-error');
+            if (titleError && titleInput.value.trim()) {
+                titleError.textContent = '';
+                titleInput.setAttribute('aria-invalid', 'false');
+            }
+        });
+    }
+    
+    const dateInput = document.getElementById('edit-due-date');
+    if (dateInput) {
+        dateInput.addEventListener('blur', () => validateEditTaskForm());
+        dateInput.addEventListener('change', () => validateEditTaskForm());
+    }
+}
+
+/**
+ * Initializes accessibility features for the edit task form
+ * Should be called after the edit overlay is rendered
+ */
+function initializeEditTaskAccessibility() {
+    // Set up form validation
+    setupEditFormValidation();
+    
+    // Ensure focus management for dialog
+    const editTitle = document.getElementById('edit-title');
+    if (editTitle) {
+        // Focus the first input when dialog opens
+        setTimeout(() => editTitle.focus(), 100);
+    }
+    
+    // Set up keyboard trap for dialog (basic implementation)
+    const dialog = document.querySelector('[role="dialog"]');
+    if (dialog) {
+        const focusableElements = dialog.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        dialog.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                if (e.shiftKey && document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                } else if (!e.shiftKey && document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            } else if (e.key === 'Escape') {
+                closeAddTaskOverlay();
+            }
+        });
+    }
+    
+    // Update dropdown ARIA state correctly
+    const assignedDisplay = document.getElementById('assigned-display-edit');
+    if (assignedDisplay) {
+        assignedDisplay.setAttribute('aria-expanded', 'false');
+    }
+}
 
 function renderAddTAskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
@@ -139,9 +411,19 @@ function renderAssignedEditCircles() {
 
 
 async function saveEditedTask(taskId) {
-    let title = document.getElementById('title').value;
-    let description = document.getElementById('description').value;
-    let dueDate = document.getElementById('due-date').value;
+    // Validate form before saving
+    if (!validateEditTaskForm()) {
+        // Announce validation errors to screen readers
+        const firstError = document.querySelector('.error-message:not(:empty)');
+        if (firstError) {
+            firstError.focus();
+        }
+        return;
+    }
+
+    let title = document.getElementById('edit-title').value;
+    let description = document.getElementById('edit-description').value;
+    let dueDate = document.getElementById('edit-due-date').value;
     let oldTask = tasks.find(t => t.id === taskId);
     let updatedTask = {
         ...oldTask,             
@@ -164,10 +446,35 @@ async function saveEditedTask(taskId) {
 
 function setEditPrio(newPrio) {
     editPriority = newPrio;
+    
+    // Update visual classes and ARIA attributes
     ['urgent', 'medium', 'low'].forEach(p => {
-        document.getElementById('prio-' + p).classList.remove('active');
+        const button = document.getElementById('prio-' + p);
+        if (button) {
+            button.classList.remove('active');
+            button.setAttribute('aria-checked', 'false');
+        }
     });
-    document.getElementById('prio-' + newPrio).classList.add('active');
+    
+    const activeButton = document.getElementById('prio-' + newPrio);
+    if (activeButton) {
+        activeButton.classList.add('active');
+        activeButton.setAttribute('aria-checked', 'true');
+        
+        // Announce the change to screen readers
+        const announcement = document.createElement('div');
+        announcement.setAttribute('aria-live', 'polite');
+        announcement.className = 'sr-only';
+        announcement.textContent = `Priority changed to ${newPrio}`;
+        document.body.appendChild(announcement);
+        
+        // Remove the announcement after it's been read
+        setTimeout(() => {
+            if (announcement.parentNode) {
+                announcement.parentNode.removeChild(announcement);
+            }
+        }, 1000);
+    }
 }
 
 function toggleEditAssign(userId) {

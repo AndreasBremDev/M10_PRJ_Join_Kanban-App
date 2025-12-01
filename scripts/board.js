@@ -32,6 +32,13 @@ async function renderTasks(tasks) {
     });
 }
 
+function handleTaskCardKeydown(event, taskJson) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        renderTaskDetail(taskJson);
+    }
+}
+
 async function fetchAndAddIdAndRemoveUndefinedContacts() {
     let tasksObj = await fetchData(`/${activeUserId}/tasks`);
     let tasksWithId = Object.entries(tasksObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
@@ -108,7 +115,7 @@ function createInitialCircle(arrAssigned, i, html) {
     const color = contactCircleColor[arrAssigned[i] % contactCircleColor.length];
     if (contactIndex !== -1) {
         let initials = getInitials(contacts[contactIndex].name);
-        html += renderTaskCardAssignedSectionInitials(initials, color);
+        html += renderTaskCardAssignedSectionInitials(initials, color, contactIndex);
     } else {
         html += '';
     }
@@ -171,9 +178,9 @@ async function renderAddTaskOverlay(board = "toDo") {
     setupPriorityButtons();
     setTimeout(() => {
         let section = overlay.querySelector('.add-task-section');
-        if (section) {
-            section.classList.add('slide-in');
-        }
+        if (section) {section.classList.add('slide-in');}
+        let titleInput = document.getElementById('title');
+        if (titleInput) {titleInput.focus();}
     }, 50);
 }
 
@@ -261,17 +268,25 @@ async function deleteTaskfromBoard(taskId) {
 async function renderEditTaskDetail(taskId) {
     let task = tasks.find(t => t.id === taskId);
     if (!task) return;
+
+    // 1. WICHTIG: Daten in die globalen Variablen laden
     editAssignedIds = [...(task.assigned || [])]; // Kopie der IDs erstellen
     editSubtasks = JSON.parse(JSON.stringify(task.subtasks || []));
     editPriority = task.priority;
+
+    // 2. Template laden
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = editTaskDetailOverlayTemplate(task);
+    overlay.innerHTML = editTaskDetailOverlayTemplate(task); // task übergeben!
     overlay.classList.remove('d-none');
-    document.getElementById('title').value = task.title;
-    document.getElementById('description').value = task.description;
-    document.getElementById('due-date').value = task.dueDate;
+
+    // 3. Inputs füllen
+    document.getElementById('edit-title').value = task.title;
+    document.getElementById('edit-description').value = task.description;
+    document.getElementById('edit-due-date').value = task.dueDate;
     renderSubtasksEditMode();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
+
+    // 5. Kreise malen (Jetzt kennt er die Variable!)
     renderAssignedEditCircles();
     setCheckboxesById()
 }
@@ -402,14 +417,131 @@ window.addEventListener('resize', positionSearchField);
 function positionSearchField() {
     let searchDesktopRef = document.getElementById('searchPositionDesktop');
     let searchMobileRef = document.getElementById('searchPositionMobile');
+    const currentSearchInput = document.getElementById('searchTasks');
+    const currentValue = currentSearchInput ? currentSearchInput.value : '';
+    const wasFocused = document.activeElement && document.activeElement.id === 'searchTasks';
     if (window.innerWidth > 1074) {
-        searchMobileRef.innerHTML = '';
-        searchDesktopRef.innerHTML = displaySearchInBoardHtml();
-        searchMobileRef.style.marginTop = "0px"
+        searchFieldPositionInclusiveWcagAriaConformityA(searchMobileRef, searchDesktopRef, currentValue, wasFocused);
+        
     } else {
-        searchDesktopRef.innerHTML = '';
-        searchMobileRef.innerHTML = displaySearchInBoardHtml();
-        searchMobileRef.style.marginTop = "40px"
+        searchFieldPositionInclusiveWcagAriaConformityB(searchDesktopRef, searchMobileRef, currentValue, wasFocused);
     }
 }
+
+function searchFieldPositionInclusiveWcagAriaConformityA(searchMobileRef, searchDesktopRef, currentValue, wasFocused) {
+    searchMobileRef.innerHTML = '';
+    searchMobileRef.setAttribute('aria-hidden', 'true');
+    searchDesktopRef.innerHTML = displaySearchInBoardHtml();
+    searchDesktopRef.removeAttribute('aria-hidden');
+    searchMobileRef.style.marginTop = "0px";
+    const newSearchInput = document.getElementById('searchTasks');
+    if (newSearchInput) {
+        newSearchInput.value = currentValue;
+        if (wasFocused) {
+            setTimeout(() => newSearchInput.focus(), 50);
+        }
+    }
+}
+
+function searchFieldPositionInclusiveWcagAriaConformityB(searchDesktopRef, searchMobileRef, currentValue, wasFocused) {
+    searchDesktopRef.innerHTML = '';
+    searchDesktopRef.setAttribute('aria-hidden', 'true');
+    searchMobileRef.innerHTML = displaySearchInBoardHtml();
+    searchMobileRef.removeAttribute('aria-hidden');
+    searchMobileRef.style.marginTop = "40px";
+    const newSearchInput = document.getElementById('searchTasks');
+    if (newSearchInput) {
+        newSearchInput.value = currentValue;
+        if (wasFocused) {
+            setTimeout(() => newSearchInput.focus(), 50);
+        }
+    }
+}
+
+// #endregion
+
+// #region Keyboard Accessibility Functions
+
+/**
+ * Keyboard event handler for task card navigation
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} taskJson - Base64 encoded task JSON
+ */
+function handleTaskCardKeydown(event, taskJson) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        renderTaskDetail(taskJson);
+    }
+}
+
+/**
+ * Keyboard event handler for delete task button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} taskId - The ID of the task to delete
+ */
+function handleDeleteTaskKeydown(event, taskId) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        deleteTaskfromBoard(taskId);
+    }
+}
+
+/**
+ * Keyboard event handler for edit task button  
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} taskId - The ID of the task to edit
+ */
+function handleEditTaskKeydown(event, taskId) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        renderEditTaskDetail(taskId);
+    }
+}
+
+/**
+ * Keyboard event handler for subtask toggle
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} taskId - The task ID
+ * @param {number} index - The subtask index
+ */
+function handleSubtaskToggleKeydown(event, taskId, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleSubtask(taskId, index);
+    }
+}
+
+/**
+ * Keyboard event handler for search input
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleSearchKeydown(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        searchTasks();
+    }
+}
+
+/**
+ * Keyboard event handler for search button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleSearchButtonKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        searchAndClearSearchField();
+    }
+}
+
+/**
+ * Keyboard event handler for close dialog buttons
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleCloseKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        closeAddTaskOverlay();
+    }
+}
+
 // #endregion

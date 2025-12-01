@@ -20,151 +20,170 @@
 </head>
 
 <body onload="initAddTask(); eachPageSetCurrentUserInitials()">
-    <nav>
+    <nav role="navigation" aria-label="Main navigation">
         <div class="sidenav">
             <div class="nav_icon">
-                <img src="/assets/icons/Join_light.png" alt="">
+                <img src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true">
             </div>
             <section class="menu">
                 <div class="nav_navigation">
-                    <a class="nav_summary" href="/html/summary.html">
-                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
+                    <a class="nav_summary" href="/html/summary.html" aria-label="Go to Summary page">
+                        <img src="/assets/icons/Prop_summary.svg" height="30" width="30" alt="" aria-hidden="true">
                         <p class="nav_p">Summary</p>
                     </a>
-                    <a class="nav_add_task active" href="/html/add_task.html">
-                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
+                    <a class="nav_add_task active" href="/html/add_task.html" aria-current="page"
+                        aria-label="Add Task page - currently selected">
+                        <img src="/assets/icons/Prop_add_task.svg" height="30" width="30" alt="" aria-hidden="true">
                         <p class="nav_p">Add Task</p>
                     </a>
-                    <a class="nav_board" href="/html/board.html">
-                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
+                    <a class="nav_board" href="/html/board.html" aria-label="Go to Board page">
+                        <img src="/assets/icons/Prop_board.svg" height="30" width="30" alt="" aria-hidden="true">
                         <p class="nav_p">Board</p>
                     </a>
-                    <a class="nav_contacts" href="/html/contacts.html">
-                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
+                    <a class="nav_contacts" href="/html/contacts.html" aria-label="Go to Contacts page">
+                        <img src="/assets/icons/Prop_contacts.svg" height="30" width="30" alt="" aria-hidden="true">
                         <p class="nav_p">Contacts</p>
                     </a>
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy" href="privacy_policy.html">Privacy Policy</a>
-                    <a class="legal_notes" href="legal_notice.html">Legal notice</a>
+                    <a class="privacy_policy" href="privacy_policy.html" aria-label="Read our privacy policy">Privacy
+                        Policy</a>
+                    <a class="legal_notes" href="legal_notice.html" aria-label="Read our legal notice">Legal notice</a>
                 </div>
             </section>
         </div>
     </nav>
 
-    <header>
+    <header role="banner">
         <div class="header-left">
             <h2 class="header_h2">Kanban Project Management Tool</h2>
-            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
         </div>
         <div class="header-right">
-            <a class="a_help_summary" href="/html/help.html">
-                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
+            <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
+                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
             </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials" tabindex="1"></div>
+            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials" tabindex="0" role="button"
+                aria-expanded="false" aria-haspopup="menu" aria-label="User menu" aria-controls="user-menu"
+                onkeydown="if(event.key==='Enter'||event.key===' '){toggleDropDownMenu(); event.preventDefault();}">
+            </div>
 
-            <div class="user-menu" id="user-menu">
-                <a class="user-menu-help" href="/html/help.html">Help</a>
-                <a class="user-menu-legal-notice" href="/html/legal_notice.html">Legal Notice</a>
-                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html">Privacy Policy</a>
-                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
+                <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
+                <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
+                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
+                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log
+                    out</a>
             </div>
         </div>
     </header>
 
-    <main class="main-add-task">
+    <main class="main-add-task" role="main">
+        <section class="add-task-section" aria-labelledby="add-task-heading">
+            <h1 id="add-task-heading">Add Task</h1>
 
-        <section class="add-task-section">
-            <h1>Add Task</h1>
-
-            <form id="task-form" class="task-form">
+            <form id="task-form" class="task-form" novalidate>
                 <div class="form-left">
-                    <label for="title">Title<span class="required-marker">*</span></label>
-                    <input id="title" type="text" placeholder="Enter a title">
+                    <label for="title">Title<span class="required-marker" aria-label="required">*</span></label>
+                    <input id="title" type="text" placeholder="Enter a title" aria-required="true"
+                        aria-describedby="title-error" aria-invalid="false">
+                    <div id="title-error" class="error-message sr-only" role="alert" aria-live="polite"></div>
 
                     <label for="description">Description</label>
-                    <textarea id="description" placeholder="Enter a Description"></textarea>
+                    <textarea id="description" placeholder="Enter a Description"
+                        aria-describedby="description-hint"></textarea>
+                    <div id="description-hint" class="sr-only">Optional field for task description</div>
 
-                    <label for="due-date">Due date<span class="required-marker">*</span></label>
-                    <input id="due-date" type="date" min="" required>
-
+                    <label for="due-date">Due date<span class="required-marker" aria-label="required">*</span></label>
+                    <input id="due-date" type="date" min="" required aria-required="true" aria-describedby="date-error"
+                        aria-invalid="false">
+                    <div id="date-error" class="error-message sr-only" role="alert" aria-live="polite"></div>
                 </div>
 
-                <div class="divider"></div>
+                <div class="divider" role="presentation" aria-hidden="true"></div>
 
                 <div class="form-right">
-                    <label>Priority</label>
-                    <div class="priority-buttons">
-                        <button type="button" id="prio-urgent" class="priority-btn urgent"
-                            onclick="setEditPrio('urgent')">
-                            Urgent <img src="/assets/icons/prio_urgent_icon.svg">
-                        </button>
-                        <button type="button" id="prio-medium" class="priority-btn medium active"
-                            onclick="setEditPrio('medium')">
-                            Medium <img src="/assets/icons/prio_medium_icon.svg">
-                        </button>
-                        <button type="button" id="prio-low" class="priority-btn low" onclick="setEditPrio('low')">
-                            Low <img src="/assets/icons/prio_low_icon.svg">
-                        </button>
-                    </div>
+                    <fieldset style="border: none; padding: 0; margin: 0;">
+                        <legend class="sr-only">Task Priority</legend>
+                        <label>Priority</label>
+                        <div class="priority-buttons" role="group" aria-label="Select task priority">
+                            <button type="button" id="prio-urgent" class="priority-btn urgent"
+                                onclick="setEditPrio('urgent')" role="radio" aria-checked="false"
+                                aria-label="High priority">
+                                Urgent <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+                            </button>
+                            <button type="button" id="prio-medium" class="priority-btn medium active"
+                                onclick="setEditPrio('medium')" role="radio" aria-checked="true"
+                                aria-label="Medium priority">
+                                Medium <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+                            </button>
+                            <button type="button" id="prio-low" class="priority-btn low" onclick="setEditPrio('low')"
+                                role="radio" aria-checked="false" aria-label="Low priority">
+                                Low <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+                            </button>
+                        </div>
+                    </fieldset>
 
                     <label for="assigned">Assigned to</label>
                     <div class="custom-select-container">
-                        <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()">
-                            Select contacts to assign <img onclick="" src="/assets/icons/arrow_drop_down.svg">
-                        </div>
-                        <div id="assigned-dropdown-edit" class="select-dropdown" style="display: none;"></div>
+                        <button type="button" id="assigned-display-edit" class="select-display"
+                            onclick="toggleContactDropdownEdit()" aria-expanded="false" aria-haspopup="listbox"
+                            aria-controls="assigned-dropdown-edit" aria-label="Select contacts to assign">
+                            Select contacts to assign
+                            <img src="/assets/icons/arrow_drop_down.svg" alt="" aria-hidden="true">
+                        </button>
+                        <div id="assigned-dropdown-edit" class="select-dropdown" role="listbox"
+                            aria-labelledby="assigned" style="display: none;"></div>
                     </div>
 
-                    <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay"></div>
+                    <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay" role="group"
+                        aria-label="Currently assigned contacts" aria-live="polite"></div>
 
-
-
-                    <label for="category" class="form-headline-text">Category<span
-                            class="required-marker">*</span></label>
-                    <select id="category" required>
+                    <label for="category" class="form-headline-text">Category<span class="required-marker"
+                            aria-label="required">*</span></label>
+                    <select id="category" required aria-required="true" aria-describedby="category-error"
+                        aria-invalid="false">
                         <option value="" disabled selected>Select task category</option>
                         <option value="technical">Technical Task</option>
                         <option value="user-story">User Story</option>
                     </select>
-
-
+                    <div id="category-error" class="error-message sr-only" role="alert" aria-live="polite"></div>
 
                     <label for="subtask">Subtasks</label>
                     <div class="subtask-input-wrapper">
                         <input type="text" id="subtask-input-edit" class="subtask-input-field"
                             placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
-                            onkeydown="handleSubtaskKey(event)">
+                            onkeydown="handleSubtaskKey(event)" aria-describedby="subtask-hint">
                         <div id="main-subtask-icons" class="input-action-icons"></div>
                     </div>
+                    <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons
+                        to save or cancel</div>
 
-                    <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;"></ul>
+                    <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;" role="list"
+                        aria-label="Subtask list"></ul>
+                </div>
             </form>
-
-
-
-
         </section>
 
         <div class="form-footer">
-
             <p class="form-hint">
                 <span class="required-marker">*</span>This field is required
             </p>
 
-
-            <div class="form-actions">
-                <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
-                <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task
-                    ✔</button>
+            <div class="form-actions" role="group" aria-label="Form actions">
+                <button onclick="clearForm()" id="clear-btn" type="button" class="clear"
+                    aria-label="Clear all form fields">
+                    Clear ✖
+                </button>
+                <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create"
+                    aria-label="Create new task">
+                    Create Task ✔
+                </button>
             </div>
-
-
         </div>
     </main>
 
 </body>
 
 </html>
-

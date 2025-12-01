@@ -180,3 +180,38 @@ document.addEventListener('click', function (event) {
         dropdown.style.display = 'none';
     }
 });
+
+/**
+ * Keyboard event handler for subtask toggle
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} taskId - The ID of the task
+ * @param {number} index - The subtask index
+ */
+function handleSubtaskToggleKeydown(event, taskId, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleSubtask(taskId, index);
+    }
+}
+
+/**
+ * Keyboard event handler for search input
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleSearchKeydown(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        searchTasks();
+    }
+}
+
+/**
+ * Keyboard event handler for search button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleSearchButtonKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        searchAndClearSearchField();
+    }
+}

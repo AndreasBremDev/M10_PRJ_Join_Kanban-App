@@ -1,4 +1,3 @@
-
 bool = [0, 0];
 
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
@@ -59,6 +58,46 @@ function renderContactLarge(contact, color) {
     contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
 }
 
+function handleContactKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        contactsLargeSlideIn(event, contactJson, color);
+    }
+}
+
+function handleContactCloseKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        contactCancel(event);
+    }
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        contactCancel(event);
+    }
+}
+
+function handleContactCancelKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        contactCancel(event);
+    }
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        contactCancel(event);
+    }
+}
+
+function handleContactSubmitKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        // Trigger the form submission
+        const form = event.target.closest('form');
+        if (form) {
+            form.dispatchEvent(new Event('submit'));
+        }
+    }
+}
+
 function checkContactForPhoneHtml(contact) {
     if (contact?.phone) {
         return `<a href="tel:${contact.phone}">${contact.phone}</a>`
@@ -85,11 +124,16 @@ function groupContactsByLetter(contacts) {
     return grouped;
 }
 
+let lastFocusedContact = null;
+
 function contactsLargeSlideIn(ev, contactJson, color) {
     let contactLargeRef = document.getElementById('contactDisplayLarge');
     contactLargeRef.style.display = 'none';
     contactLargeRef.innerHTML = '';
     let contact = JSON.parse(contactJson);
+
+    lastFocusedContact = ev.currentTarget;
+    
     let contactCardsActive = document.querySelectorAll('.contact-list-card-active');
     for (let i = 0; i < contactCardsActive.length; i++) {
         contactCardsActive[i].classList.remove('contact-list-card-active');
@@ -98,7 +142,27 @@ function contactsLargeSlideIn(ev, contactJson, color) {
     ev.currentTarget.classList.remove('contact-list-card');
     ev.currentTarget.classList.add('contact-list-card-active');
     contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
-    setTimeout(() => { contactLargeRef.style.display = 'block'; }, 10);
+    
+    setTimeout(() => { 
+        contactLargeRef.style.display = 'block'; 
+        contactLargeRef.setAttribute('aria-hidden', 'false');
+        
+        // Focus management - set focus to Edit-Button
+        const editButton = contactLargeRef.querySelector('#edit-contact-btn');
+        if (editButton) {
+            editButton.focus();
+        }
+        
+        // Escape key handler for contact details
+        const handleEscapeKey = (event) => {
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                closeContactOverlay();
+                document.removeEventListener('keydown', handleEscapeKey);
+            }
+        };
+        document.addEventListener('keydown', handleEscapeKey);
+    }, 10);
 }
 
 async function showDialogCreateContact(id, ev) {
@@ -113,6 +177,17 @@ async function showDialogCreateContact(id, ev) {
 
     checkAllCreateContactValidations('contactCreateBtn');
     await loadAndRenderContacts('contactList', 'contacts');;
+}
+
+function handleContactCloseKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        contactCancel(event);
+    }
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        contactCancel(event);
+    }
 }
 
 async function showDialogContact(id, contactJson, color, ev, option) {
@@ -174,10 +249,12 @@ function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldC
     let errMsgElem = document.getElementById(errMsgId);
     if (validateFn(input.value)) {
         errMsgElem.style.display = 'none';
+        input.setAttribute('aria-invalid', 'false');
         bool[boolIndex] = 1;
     } else {
         errMsgElem.style.display = 'block';
         errMsgElem.innerText = errMsg;
+        input.setAttribute('aria-invalid', 'true');
         bool[boolIndex] = 0;
     }
     if (shouldCheckAll) { checkAllCreateContactValidations('contactCreateBtn') };
@@ -230,28 +307,51 @@ function contactCancel(ev) {
 
 function closeContactOverlay() {
     const overlay = document.getElementById('contactDisplayLarge');
-
+    
     overlay.classList.remove('open');
     overlay.style.display = 'none';
-
+    overlay.setAttribute('aria-hidden', 'true');
+    
     document.body.classList.remove('no-scroll');
+    
+    // Return focus to last focused contact in the list
+    if (lastFocusedContact) {
+        lastFocusedContact.focus();
+        lastFocusedContact = null;
+    }
 }
 
+/////////// overlength (2b updated) /////////////////
 function toggleMobileContactMenu() {
     const menu = document.getElementById('mobileContactMenu');
+    const button = document.querySelector('.mobile-actions-btn');
 
     const isOpen = menu.classList.contains('show');
 
     if (isOpen) {
         menu.classList.remove('show');
+        menu.setAttribute('aria-hidden', 'true');
+        button.setAttribute('aria-expanded', 'false');
         document.body.onclick = null;
     } else {
         menu.classList.add('show');
+        menu.setAttribute('aria-hidden', 'false');
+        button.setAttribute('aria-expanded', 'true');
+        
+        // Focus management for menu items
+        const firstMenuItem = menu.querySelector('button[role="menuitem"]');
+        if (firstMenuItem) {
+            firstMenuItem.focus();
+        }
+        
         setTimeout(() => {
             document.body.onclick = (ev) => {
                 if (!menu.contains(ev.target) &&
-                    !document.querySelector('.mobile-actions-btn').contains(ev.target)) {
+                    !button.contains(ev.target)) {
                     menu.classList.remove('show');
+                    menu.setAttribute('aria-hidden', 'true');
+                    button.setAttribute('aria-expanded', 'false');
+                    button.focus(); // Return focus to button
                     document.body.onclick = null;
                 }
             }
@@ -267,4 +367,95 @@ function openEditContact(contactJson, color) {
 function openDeleteContact(contactJson, color) {
     toggleMobileContactMenu();
     showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Delete');
+}
+
+function handleContactBackKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        closeContactOverlay();
+    }
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        closeContactOverlay();
+    }
+}
+
+function handleContactEditKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Edit');
+    }
+}
+
+function handleContactDeleteKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Delete');
+    }
+}
+
+function handleMobileMenuKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleMobileContactMenu();
+    }
+    if (event.key === 'Escape') {
+        const menu = document.getElementById('mobileContactMenu');
+        if (menu.classList.contains('show')) {
+            menu.classList.remove('show');
+        }
+    }
+}
+
+function handleMobileEditKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openEditContact(contactJson, color);
+    }
+}
+
+function handleMobileDeleteKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openDeleteContact(contactJson, color);
+    }
+}
+
+/////////////////// NEU /////////////////////////U
+// Update the toggleMobileContactMenu function to manage ARIA states
+function toggleMobileContactMenu() {
+    const menu = document.getElementById('mobileContactMenu');
+    const button = document.querySelector('.mobile-actions-btn');
+
+    const isOpen = menu.classList.contains('show');
+
+    if (isOpen) {
+        menu.classList.remove('show');
+        menu.setAttribute('aria-hidden', 'true');
+        button.setAttribute('aria-expanded', 'false');
+        document.body.onclick = null;
+    } else {
+        menu.classList.add('show');
+        menu.setAttribute('aria-hidden', 'false');
+        button.setAttribute('aria-expanded', 'true');
+        
+        // Focus management for menu items
+        const firstMenuItem = menu.querySelector('button[role="menuitem"]');
+        if (firstMenuItem) {
+            firstMenuItem.focus();
+        }
+        
+        setTimeout(() => {
+            document.body.onclick = (ev) => {
+                if (!menu.contains(ev.target) &&
+                    !button.contains(ev.target)) {
+                    menu.classList.remove('show');
+                    menu.setAttribute('aria-hidden', 'true');
+                    button.setAttribute('aria-expanded', 'false');
+                    button.focus(); // Return focus to button
+                    document.body.onclick = null;
+                }
+            }
+        }, 0);
+    }
 }
