@@ -313,7 +313,6 @@ function updateContactRowVisuals(contactId) {
 function toggleCategoryDropdown() {
     let dropdown = document.getElementById('category-options');
     let arrow = document.getElementById('category-arrow');
-    console.log("Pfeil gefunden?", arrow);
     if (dropdown.style.display === 'block') {
         dropdown.style.display = 'none';
         arrow.classList.remove('rotate-180');
