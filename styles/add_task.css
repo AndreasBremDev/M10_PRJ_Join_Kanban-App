@@ -66,7 +66,7 @@ h1 {
     margin: 0 auto;
 }
 
-.description-box{
+.description-box {
     min-height: 86px;
     max-height: 200px;
 }
@@ -258,7 +258,7 @@ select:focus {
 }
 
 .custom-select-container {
-    position: relative; 
+    position: relative;
     width: 100%;
     margin-bottom: 16px;
 }
@@ -308,7 +308,7 @@ select:focus {
 
 .contact-item input[type="checkbox"] {
     margin-right: 12px;
-    width: 18px; 
+    width: 18px;
     height: 18px;
 }
 
@@ -316,29 +316,32 @@ select:focus {
 
 
 .contact-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
 }
+
 .left-info {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
+
 .user-circle-intials {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  font-weight: bold;
-  font-size: 16px;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 16px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
 }
+
 .contact-name {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 
@@ -352,7 +355,7 @@ select:focus {
     border-color: #4fb9e7;
 }
 
-.input-action-icons{
+.input-action-icons {
     display: flex;
     gap: 4px;
 }
@@ -429,9 +432,13 @@ select:focus {
 }
 
 .user-circle-intials {
-    width: 40px; height: 40px; 
-    border-radius: 50%; color: white; 
-    display: flex; justify-content: center; align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border: 2px solid white;
     margin: 0;
 }
@@ -460,7 +467,6 @@ select:focus {
     padding: 7px 16px;
     border-radius: 10px;
     cursor: pointer;
-    height: 56px;
     margin-bottom: 2px;
     transition: all 0.1s ease-in-out;
 }
@@ -487,4 +493,19 @@ select:focus {
 .contact-checkbox-icon {
     width: 24px;
     height: 24px;
+}
+
+.dropdown-icon {
+    transition: transform 125ms ease-in-out;
+    cursor: pointer;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+.dropdown-icon:hover {
+    background-color: #F5F6F7;
+    padding: 6px 8px;
+    border-radius: 12px;
 }

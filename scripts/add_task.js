@@ -210,14 +210,19 @@ function addSubtaskEdit() {
 
 function toggleContactDropdownEdit() {
     let dropdown = document.getElementById('assigned-dropdown-edit');
-    
+    let arrow = document.getElementById('arrow-icon-edit'); 
     if (dropdown.style.display === 'block') {
         dropdown.style.display = 'none';
+        if (arrow) {
+            arrow.classList.remove('rotate-180');
+        }
     } else {
         dropdown.style.display = 'block';
+        if (arrow) {
+            arrow.classList.add('rotate-180');
+        }
     }
 }
-//
 
 function setCheckboxesById() {
     let container = document.getElementById('assigned-dropdown-edit');
@@ -303,4 +308,23 @@ function updateContactRowVisuals(contactId) {
         row.classList.remove('selected');
         row.querySelector('.contact-checkbox-icon').innerHTML = getCheckboxEmptySvg();
     }
+}
+
+function toggleCategoryDropdown() {
+    let dropdown = document.getElementById('category-options');
+    let arrow = document.getElementById('category-arrow');
+    console.log("Pfeil gefunden?", arrow);
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        arrow.classList.remove('rotate-180');
+    } else {
+        dropdown.style.display = 'block';
+        arrow.classList.add('rotate-180');
+    }
+}
+
+function selectCategory(category) {
+    document.getElementById('category-text').innerHTML = category;
+    document.getElementById('category').value = category;
+    toggleCategoryDropdown();
 }

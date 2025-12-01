@@ -112,7 +112,8 @@
                     <label for="assigned">Assigned to</label>
                     <div class="custom-select-container">
                         <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()">
-                            Select contacts to assign <img onclick="" src="/assets/icons/arrow_drop_down.svg">
+                            Select contacts to assign <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg"
+                                alt="arrow" class="dropdown-icon">
                         </div>
                         <div id="assigned-dropdown-edit" class="select-dropdown" style="display: none;"></div>
                     </div>
@@ -121,14 +122,24 @@
 
 
 
-                    <label for="category" class="form-headline-text">Category<span
-                            class="required-marker">*</span></label>
-                    <select id="category" required>
-                        <option value="" disabled selected>Select task category</option>
-                        <option value="technical">Technical Task</option>
-                        <option value="user-story">User Story</option>
-                    </select>
+                    <label for="category">Category<span class="required-marker">*</span></label>
 
+                    <div class="custom-select-container">
+
+                        <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()">
+                            <span id="category-text">Select task category</span>
+                            <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow Down"
+                                class="dropdown-icon">
+                        </div>
+
+                        <div id="category-options" class="select-dropdown" style="display: none;">
+                            <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task</div>
+                            <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
+                        </div>
+
+                        <input type="hidden" id="category" value="">
+
+                    </div>
 
 
                     <label for="subtask">Subtasks</label>
@@ -149,22 +160,26 @@
 
         <div class="form-footer">
 
-            <p class="form-hint">
-                <span class="required-marker">*</span>This field is required
-            </p>
+            <div>
+                <p class="form-hint">
+                    <span class="required-marker">*</span>This field is required
+                </p>
+            </div>
 
 
             <div class="form-actions">
                 <button onclick="clearForm()" id="clear-btn" type="button" class="clear">Clear ✖</button>
-                <button type="button" onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create">Create Task
+                <button type="button" onclick="handleCreateTask('toDo')" id="create-btn" type="button"
+                    class="create">Create
+                    Task
                     ✔</button>
             </div>
 
 
         </div>
 
-        <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board"
-            role="alert" class="success-toast-img d-none">
+        <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board" role="alert"
+            class="success-toast-img d-none">
     </main>
 
 </body>
