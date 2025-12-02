@@ -77,8 +77,7 @@ function clearForm() {
 async function putData(path = "", data = {}) {
     try {
         let response = await fetch(BASE_URL + path + ".json", {
-            method: "PUT",
-            headers: {
+            method: "PUT", headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
@@ -106,29 +105,40 @@ function renderAssignedEditCircles() {
     let container = document.getElementById('user-circle-assigned-edit-overlay');
     if (!container) return;
     container.innerHTML = '';
+
     if (editAssignedIds.length > 5) {
-        for (let i = 0; i < 5; i++) {
-            let userId = editAssignedIds[i];
-            let contact = contacts.find(c => c.id == userId);
-            if (contact) {
-                container.innerHTML += renderContactCircle(contact);
-            }
-        }
-        let remainingCount = editAssignedIds.length - 5;
-        container.innerHTML += `
-            <div class="user-circle-intials" style="background-color: #2A3647; color: white;">
-                +${remainingCount}
-            </div>`;
+        renderLimitedCircles(container);
     } else {
-        editAssignedIds.forEach(userId => {
-            let contact = contacts.find(c => c.id == userId);
-            if (contact) {
-                container.innerHTML += renderContactCircle(contact);
-            } else {
-                console.warn("Kontakt nicht gefunden für ID:", userId);
-            }
-        });
+        renderAllCircles(container);
     }
+}
+
+function renderAllCircles(container) {
+    editAssignedIds.forEach(userId => {
+        renderSingleCircle(container, userId);
+    });
+}
+
+function renderLimitedCircles(container) {
+    for (let i = 0; i < 5; i++) {
+        renderSingleCircle(container, editAssignedIds[i]);
+    }
+    let remainingCount = editAssignedIds.length - 5;
+    renderPlusCircle(container, remainingCount);
+}
+
+function renderSingleCircle(container, userId) {
+    let contact = contacts.find(c => c.id == userId);
+    if (contact) {
+        container.innerHTML += renderContactCircle(contact);
+    }
+}
+
+function renderPlusCircle(container, count) {
+    container.innerHTML += `
+        <div class="user-circle-intials" style="background-color: #2A3647; color: white;">
+            +${count}
+        </div>`;
 }
 
 async function saveEditedTask(taskId) {
