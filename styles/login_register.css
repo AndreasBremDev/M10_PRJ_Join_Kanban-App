@@ -660,6 +660,14 @@ footer a:hover {
     }
 }
 
+@media  (max-height: 850px) {
+    .login-register,
+    .register-login{
+        margin: 50px 0 0 0;
+    }
+    
+}
+
 .password-toggle-btn {
     background: none;
     border: none;
