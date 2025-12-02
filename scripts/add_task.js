@@ -142,27 +142,32 @@ function renderPlusCircle(container, count) {
 }
 
 async function saveEditedTask(taskId) {
-    let title = document.getElementById('title').value;
-    let description = document.getElementById('description').value;
-    let dueDate = document.getElementById('due-date').value;
-    let oldTask = tasks.find(t => t.id === taskId);
-    let updatedTask = {
+    const oldTask = tasks.find(t => t.id === taskId);
+    const updatedTask = getMergedTaskData(oldTask);
+    try {
+        await putData(`/${activeUserId}/tasks/${taskId}`, updatedTask);
+        await refreshBoardAfterEdit();
+    } catch (error) {
+        console.error("Save failed:", error);
+    }
+}
+
+function getMergedTaskData(oldTask) {
+    return {
         ...oldTask,
-        title: title,
-        description: description,
-        dueDate: dueDate,
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        dueDate: document.getElementById('due-date').value,
         priority: editPriority,
         assigned: editAssignedIds,
         subtasks: editSubtasks
     };
-    try {
-        await putData(`/${activeUserId}/tasks/${taskId}`, updatedTask);
-        closeAddTaskOverlay();
-        tasks = await fetchAndAddIdAndRemoveUndefinedContacts();
-        await renderTasks(tasks);
-    } catch (error) {
-        console.error("Can't save:", error);
-    }
+}
+
+async function refreshBoardAfterEdit() {
+    closeAddTaskOverlay();
+    tasks = await fetchAndAddIdAndRemoveUndefinedContacts();
+    renderTasks(tasks);
 }
 
 function setEditPrio(newPrio) {
@@ -349,22 +354,41 @@ function clearError(id) {
 
 function clearForm() {
     document.getElementById("task-form").reset();
+    resetGlobalVariables();
+    resetCustomUIComponents();
+    resetCategoryInput();
+    resetValidationVisuals();
+}
+
+function resetGlobalVariables() {
     editSubtasks = [];
     editAssignedIds = [];
     editPriority = 'medium';
+}
+
+function resetCustomUIComponents() {
     renderAssignedEditCircles();
     renderSubtasksEditMode();
     setCheckboxesById();
     updatePrioUI('medium');
-    let categoryText = document.getElementById('category-text');
+    resetMainSubtaskIcons();
+}
+
+
+function resetCategoryInput() {
+    const categoryText = document.getElementById('category-text');
+    const categoryInput = document.getElementById('category');
+
     if (categoryText) categoryText.innerHTML = 'Select task category';
-    let categoryInput = document.getElementById('category');
     if (categoryInput) categoryInput.value = '';
-    let errorInputs = document.querySelectorAll('.input-error');
-    errorInputs.forEach(input => input.classList.remove('input-error'));
-    let errorTexts = document.querySelectorAll('.error-text.visible');
-    errorTexts.forEach(msg => msg.classList.remove('visible'));
-    let btn = document.getElementById('create-btn');
+}
+
+function resetValidationVisuals() {
+    document.querySelectorAll('.input-error')
+        .forEach(el => el.classList.remove('input-error'));
+    document.querySelectorAll('.visible')
+        .forEach(el => el.classList.remove('visible'));
+    const btn = document.getElementById('create-btn');
     if (btn) btn.disabled = false;
 }
 
