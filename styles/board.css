@@ -230,6 +230,15 @@ body {
     gap: 12px;
 }
 
+.card-inner h3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .turquoise,
 .blue {
     color: #fff;
@@ -308,27 +317,26 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    overflow-y: hidden;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
 .overlay-add-task {
+    z-index: 20;
     position: relative;
     width: 1116px;
-    height: 870px;
+    height: 870px; 
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
+    overflow: hidden;
 }
 
 
-.overlay-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 1px;
-    position: absolute;
-    width: 466px;
+.overlay-header {   
+    margin: 60px 0 48px 60px;
     height: 78px;
     left: 74px;
     top: 64px;
@@ -365,29 +373,33 @@ body {
 }
 
 .form-left-overlay {
+    margin: 0 0 0 60px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     padding: 0px;
     gap: 16px;
-    position: absolute;
     width: 440px;
-    height: 392px;
-    left: 74px;
-    top: 174px;
+    border: 1px solid green;
+}
 
+.form-left-overlay> input,
+.form-left-overlay> textarea {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .form-right-overlay {
-    display: flex;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 24px;
-    position: absolute;
+    /* display: flex; */
+    /* align-items: flex-start; */
+    /* padding: 0px;
+    gap: 24px; */
+    /* position: absolute; */
     width: 440px;
-    height: 400px;
+    /* height: 400px;
     left: 610.25px;
-    top: 174px;
+    top: 174px; */
+    border: 1px solid blue;
 }
 
 .form-actions-overlay {
@@ -457,45 +469,18 @@ body {
 
 }
 
-.description-overlay {
+.overlay-add-task-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 8px;
-    width: 440px;
-    height: 168px;
-    flex: none;
-    align-self: stretch;
-    flex-grow: 0;
-}
-
-.overlay-add-task-div {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 8px;
-    width: 440px;
-    height: 96px;
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0
+    border: 1px solid red;
 }
 
 .form-headline-text {
-    width: 440px;
     height: 24px;
     font-family: 'Inter';
-    font-style: normal;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 120%;
-    flex: none;
     order: 0;
-    align-self: stretch;
-    flex-grow: 0;
 }
 
 .title-input-container-overlay {
@@ -525,11 +510,12 @@ body {
 }
 
 .divider-overlay {
-    position: absolute;
+    margin: 0 48px; 
+    /* position: absolute;
     width: 0px;
     height: 424px;
     left: 562.25px;
-    top: 174px;
+    top: 174px; */
     border: 1px solid #D1D1D1;
 }
 
@@ -594,18 +580,31 @@ body {
     outline-offset: 2px;
 }
 
+.subtask-input-wrapper:focus-within {
+    border-color: var(--primary-hover);
+    outline: 2px solid #29ABE2;
+    outline-offset: 2px;
+}
+
 textarea {
     resize: none;
 }
 
-.add-task-section {
-    transition: transform 0.4s ease-in-out;
-    transform: translateX(140%);
-    z-index: 2000;
-}
 
 .slide-in {
-    transform: translateX(0%);
+    animation: slideInFromRight 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 .task-detail-overlay {
@@ -627,8 +626,8 @@ textarea {
     width: min(90%, 445px);
     box-sizing: border-box;
     overflow-y: auto;
-    position: relative;
     margin: auto;
+    scrollbar-width: thin;
 }
 
 .task-detail-delete-edit-button-container,
@@ -644,6 +643,7 @@ textarea {
 .task-detail-header {
     margin: 48px auto 0;
 }
+
 .task-detail-delete-edit-button-container {
     margin: 0 auto 48px;
 }
@@ -658,7 +658,7 @@ textarea {
     overflow-x: hidden;
     font-size: 61px;
     line-height: 120%;
-    /* margin-top: 36px; */
+    scrollbar-width: thin;
 }
 
 .overlay-task-category {
@@ -686,6 +686,9 @@ textarea {
     order: 2;
     font-size: 20px;
     font-weight: 400;
+    max-height: 147px;
+    overflow-x: hidden;
+    scrollbar-width: thin;
 }
 
 .task-detail-due-date {
@@ -723,7 +726,6 @@ textarea {
 }
 
 .task-detail-delete-edit-button-container {
-    /* position: fixed; */
     background-color: var(--white);
     bottom: 5vh;
     display: flex;
@@ -738,16 +740,20 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0);
 }
 
-.task-detail-delete-button:hover {
-    cursor: pointer;
-    color: #4fbae8;
+.task-detail-delete-button:focus,
+.task-detail-edit-button:focus {
+    outline: 2px solid var(--primary-hover);
+    outline-offset: 2px;
+    border-radius: 8px;
 }
 
+.task-detail-delete-button:hover,
 .task-detail-edit-button:hover {
     cursor: pointer;
-    color: #4fbae8;
+    color: var(--primary-hover);
 }
 
 .task-edit-icon {
@@ -777,6 +783,7 @@ textarea {
     gap: 8px;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .task-detail-spacer {
@@ -792,24 +799,13 @@ textarea {
     border-radius: 50%;
 }
 
-.task-detail-edit-main {
-    max-height: 697px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    align-self: stretch;
-    gap: 24px;
-    padding-left: 48px;
-    padding-right: 48px;
-}
-
 .task-detail-edit-footer {
     display: flex;
     justify-content: flex-end;
-    padding-right: 48px;
     align-items: center;
+    width: min(90%, 445px);
+    box-sizing: border-box;
+    margin: auto;
 }
 
 .pd-bottom-16 {
@@ -860,10 +856,6 @@ textarea {
     transition: background-color 0.1s ease;
 }
 
-.assigned-circles-edit-overlay {
-    display: flex;
-    flex-wrap: wrap;
-}
 
 
 
@@ -923,7 +915,7 @@ textarea {
 }
 
 @media (max-width: 350px) {
-    .board-header__top{
+    .board-header__top {
         gap: 0;
     }
 }
@@ -940,13 +932,15 @@ textarea {
     align-items: center;
     background-color: white;
     padding: 2px 4px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     border: 1px solid #D1D1D1;
     width: 100%;
+    max-width: 100%;
     border-radius: 10px;
-    width: 412px;
     justify-content: space-between;
     cursor: pointer;
+    box-sizing: border-box;
+    min-width: 0;
 }
 
 
@@ -956,29 +950,48 @@ textarea {
     padding-right: 12px;
     gap: 4px;
     cursor: pointer;
+    flex-shrink: 0;
+    min-width: 48px;
+}
+
+#subtask-input-edit,
+.subtask-input-field {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 8px 12px;
+    min-width: 0;
+    background: transparent;
 }
 
 #subtask-list-edit-ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    overflow-x: hidden;
+    scrollbar-width: thin;
 }
 
 .subtask-edit-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    width: 440px;
-    padding: 6px 8px;
+    width: 100%;
+    max-width: 425px;
+    padding: 4px 0;
     border-radius: 8px;
     transition: background-color 0.1s;
+    justify-content: space-between;
 }
 
 
 .subtask-icons-container {
-    display: none;
+    display: flex;
     align-items: center;
     gap: 8px;
+    padding-right: 8px;
+    min-width: 72px;
+    flex-shrink: 0;
 }
 
 .subtask-edit-row:hover .subtask-icons-container {
@@ -990,10 +1003,15 @@ textarea {
     justify-content: space-between;
     align-items: center;
     padding: 4px 0;
-    width: 440px;
+    width: 100%;
     border-bottom: 1px solid #29ABE2;
     background-color: white;
     margin-bottom: 4px;
+    border-radius: 8px;
+}
+
+.subtask-edit-row-editing input {
+    width: 100%;
 }
 
 .subtask-row-input {
@@ -1004,11 +1022,35 @@ textarea {
     padding: 4px 8px;
 }
 
+.subtask-edit-element-one {
+    flex: 1;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding-left: 16px;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .subtask-icon {
     width: 20px;
     height: 20px;
     cursor: pointer;
     padding: 2px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.subtask-icon img {
+    width: 20px;
+    height: 20px;
+    display: block;
 }
 
 .separator-vertical {

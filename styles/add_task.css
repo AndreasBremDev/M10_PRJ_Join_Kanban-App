@@ -68,7 +68,7 @@ h1 {
 
 .description-box {
     min-height: 86px;
-    max-height: 200px;
+    max-height: 112px;
 }
 
 
@@ -121,7 +121,7 @@ select {
 label {
     font-size: 16px;
     font-weight: 500;
-    color: #2A3647;
+    color: var(--black);
     ;
 }
 
@@ -187,18 +187,13 @@ button.clear:hover {
     margin-right: 4px;
 }
 
-/* Accessibility and Error Handling Styles */
-.error-message {
-    color: #FF3B30;
-    font-size: 12px;
-    margin-top: 4px;
-    margin-left: 4px;
-    min-height: 16px;
-    display: block;
-}
+/* WCAG/WAI-ARIA Accessibility and Error Handling Styles */
 
 .edit-form-section {
-    margin-bottom: 24px;
+    width: 100%;
+    display:flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .priority-fieldset {
@@ -207,7 +202,8 @@ button.clear:hover {
 
 .description-textarea {
     resize: vertical;
-    min-height: 80px;
+    max-height: 147px;
+    min-height: 98px;
 }
 
 .form-actions {
@@ -251,21 +247,16 @@ button.clear:hover {
 }
 
 /* Enhanced focus styles for accessibility */
+.priority-btn:focus-visible,
 .priority-btn:focus {
     outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
-    border-color: var(--primary-hover);
+    /* border-color: var(--primary-hover); */
 }
 
 .priority-btn:focus:not(:focus-visible) {
     outline: none;
     border-color: transparent;
-}
-
-.priority-btn:focus-visible {
-    outline: 2px solid var(--primary-hover);
-    outline-offset: 2px;
-    border-color: var(--primary-hover);
 }
 
 button:focus-visible {
@@ -329,6 +320,11 @@ select:focus {
 
 .select-display:hover {
     border-color: var(--primary-hover);
+}
+
+.select-display:focus {
+    outline: 2px solid #29ABE2;
+    outline-offset: 2px;
 }
 
 .select-dropdown {
@@ -435,9 +431,10 @@ select:focus {
 
 .subtask-edit-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 6px 8px;
+    width: 100%;
+    max-width: 425px;
+    padding: 4px 0;
     border-radius: 8px;
     transition: background-color 0.1s;
 }
@@ -451,9 +448,15 @@ select:focus {
     justify-content: space-between;
     align-items: center;
     padding: 4px 0;
+    width: 100%;
     border-bottom: 1px solid #29ABE2;
     background-color: #f5f6f7;
     margin-bottom: 4px;
+    border-radius: 8px;
+}
+
+.subtask-edit-row-editing input {
+    width: 100%;
 }
 
 .subtask-row-input {
@@ -471,11 +474,13 @@ select:focus {
     align-items: center;
     background-color: white;
     padding: 2px 4px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
     justify-content: space-between;
     cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .assigned-circles-edit-overlay {
@@ -559,7 +564,7 @@ select:focus {
 
 .dropdown-icon:hover {
     background-color: #F5F6F7;
-    padding: 6px 8px;
+    padding: 6px 0px;
     border-radius: 12px;
 }
 
@@ -575,4 +580,11 @@ select:focus {
 
 .error-text.visible {
     display: block; 
+}
+
+@media (max-width: 430px) {
+    .priority-buttons {
+    flex-direction: column;
+    gap: 4px;
+}
 }

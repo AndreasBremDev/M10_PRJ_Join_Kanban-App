@@ -138,7 +138,7 @@ function getAddTaskOverlayTemplate(board) {
     const todayStr = new Date().toISOString().split('T')[0];
 
     return /* html */`
-        <section class="add-task-section overlay-add-task" role="dialog" aria-labelledby="overlay-title" aria-modal="true">
+        <section class="overlay-add-task" role="dialog" aria-labelledby="overlay-title" aria-modal="true">
             <div class="overlay-header">
                 <h1 id="overlay-title" class="overlay-headline">Add Task</h1>
             </div>
@@ -148,107 +148,109 @@ function getAddTaskOverlayTemplate(board) {
                 class="close-add-task-overlay" 
                 aria-label="Close add task dialog"
                 tabindex="0"
-                style="border: none; cursor: pointer; padding: 0;">
+                style="border: none; cursor: pointer; padding: 0;"
+                autofocus>
                 <img src="/assets/icons/close.svg" alt="" aria-hidden="true">
             </button>
             <form id="task-form" class="task-form" novalidate>
                 <div class="form-left form-left-overlay">
-                    <div class="overlay-add-task-div">
-                        <label for="title" class="form-headline-text">
-                            Title<span class="required-marker" aria-hidden="true">*</span>
-                        </label>
-                        <div class="title-input-container-overlay">
-                            <input 
-                                id="title" 
-                                class="title-input-overlay" 
-                                type="text" 
-                                placeholder="Enter a title"
-                                aria-required="true"
-                                aria-describedby="title-error"
-                                autofocus>
-                        </div>
-                        <div id="title-error" class="error-message" aria-live="polite"></div>
-                    </div>
+                    <label for="title">Title<span class="required-marker"  aria-label="required">*</span></label>
+                    <input id="title" type="text" placeholder="Enter a title" onblur="validateField('title')"
+                    oninput="clearError('title')" aria-required="true"  aria-describedby="title-error" aria-invalid="false" autofocus>
+                    <div id="title-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
+                    
 
-                    <div class="description-overlay">
-                        <label for="description" class="form-headline-text">Description</label>
-                        <textarea 
-                            id="description" 
-                            class="description-input-overlay title-input-overlay" 
-                            placeholder="Enter a Description"
-                            aria-describedby="description-hint">
-                        </textarea>
-                        <div id="description-hint" class="sr-only">Optional field for task description</div>
-                    </div>
 
-                    <label for="due-date" class="form-headline-text">
-                        Due date<span class="required-marker" aria-hidden="true">*</span>
-                    </label>
-                    <div class="date-overlay">
-                        <input 
-                            id="due-date" 
-                            class="due-date-overlay" 
-                            min="${todayStr}" 
-                            type="date" 
-                            aria-required="true"
-                            aria-describedby="date-error">
-                    </div>
-                    <div id="date-error" class="error-message" aria-live="polite"></div>
+                    <label for="description">Description</label>
+                    <textarea class="description-box" id="description"
+                        class="description-input-overlay title-input-overlay" placeholder="Enter a Description"
+                        tabindex="0" aria-describedby="description-hint"></textarea>
+                    <div id="description-hint" class="sr-only">Optional field for task description</div>
+
+                    <label for="due-date">Due date<span class="required-marker" aria-label="required">*</span></label>
+                    <input id="due-date" type="date" required onblur="validateField('due-date')"
+                        oninput="clearError('due-date')" tabindex="0" aria-required="true" aria-describedby="date-error"
+                        aria-invalid="false">
+                    <div id="due-date-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
                 </div>
 
                 <div class="divider divider-overlay"></div>
 
                 <div class="form-right form-right-overlay">
-                    <fieldset class="priority-fieldset" style="border: none; padding: 0; margin: 0;">
-                        <legend class="form-headline-text" style="padding: 0; margin-bottom: 0.5rem;">Priority</legend>
-                        <div class="priority-buttons priority-buttons-overlay" role="group" aria-labelledby="priority-legend">
-                            <button type="button" class="priority-btn urgent" role="radio" aria-checked="false" onclick="setPriority('urgent')" onkeydown="handlePriorityKeydown(event, 'urgent')">
-                                Urgent
-                                <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+                    <fieldset style="border: none; padding: 0; margin: 0;">
+                        <legend class="sr-only">Task Priority</legend>
+                        <label>Priority</label>
+                        <div class="priority-buttons" role="group" aria-label="Select task priority">
+                            <button type="button" id="prio-urgent" class="priority-btn urgent"
+                                onclick="setEditPrio('urgent')" role="radio" aria-checked="false"
+                                aria-label="High priority">
+                                Urgent <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
                             </button>
-                            <button type="button" class="priority-btn medium active" role="radio" aria-checked="true" onclick="setPriority('medium')" onkeydown="handlePriorityKeydown(event, 'medium')">
-                                Medium
-                                <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+                            <button type="button" id="prio-medium" class="priority-btn medium active"
+                                onclick="setEditPrio('medium')" role="radio" aria-checked="true"
+                                aria-label="Medium priority">
+                                Medium <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
                             </button>
-                            <button type="button" class="priority-btn low" role="radio" aria-checked="false" onclick="setPriority('low')" onkeydown="handlePriorityKeydown(event, 'low')">
-                                Low
-                                <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+                            <button type="button" id="prio-low" class="priority-btn low" onclick="setEditPrio('low')"
+                                role="radio" aria-checked="false" aria-label="Low priority">
+                                Low <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
                             </button>
                         </div>
                     </fieldset>
                     
 
-                    <label id="assigned-label" for="assigned" class="form-headline-text">Assigned to</label>
+                    <label id="assigned-label" for="assigned">Assigned to</label>
                     <div class="custom-select-container">
-                        <div id="assigned-display" 
-                            class="select-display" 
-                            role="button"
-                            tabindex="0"
-                            aria-expanded="false"
-                            aria-haspopup="listbox"
-                            aria-labelledby="assigned-label"
-                            onclick="toggleContactDropdown()"
-                            onkeydown="handleAssignedDropdownKeydown(event)">
-                            Select contacts to assign
+                        <div id="assigned-display" class="select-display" onclick="toggleContactDropdownEdit()"
+                            role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox"
+                            aria-labelledby="assigned-label" aria-haspopup="listbox"
+                            aria-controls="assigned-dropdown-edit" aria-label="Select contacts to assign"
+                            onkeydown="handleAssignedDropdownEditKeydown(event)">
+                            Select contacts to assign <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg"
+                                alt="arrow" class="dropdown-icon" aria-hidden="true">
                         </div>
-
-                        <div id="assigned-dropdown" class="select-dropdown" style="display: none;">
-                        </div>
+                        <div id="assigned-dropdown-edit" class="select-dropdown" role="listbox"
+                            aria-labelledby="assigned" style="display: none;"></div>
                     </div>
 
+                    <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay" role="group"
+                        aria-label="Currently assigned contacts" aria-live="polite"></div>
                     
                     
-                        <label for="category" class="form-headline-text">Category<span class="required-marker">*</span></label>
-                            <select id="category">
-                            <option value="" disabled selected>Select task category</option>
-                            <option value="Technical Task">Technical Task</option>
-                            <option value="User Story">User Story</option>
-                            </select>
+                    <label for="category">Category<span class="required-marker" aria-label="required">*</span></label>
 
-                            <label for="subtask" class="form-headline-text">Subtasks</label>
-                        <div class="subtask-overlay">
-                            <input  type="text" id="subtask" class="title-input-overlay" placeholder="Add new subtask">
+                    <div class="custom-select-container">
+
+                        <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()" required aria-required="true" aria-describedby="category-error"
+                        aria-invalid="false" tabindex="0">
+
+                            <span id="category-text">Select task category</span>
+
+                            <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow"
+                                class="dropdown-icon">
                         </div>
+                        <div id="category-options" class="select-dropdown" style="display: none;">
+                            <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task</div>
+                            <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
+                        </div>
+
+                        <input type="hidden" id="category" value="">
+
+                    </div>
+                    <div id="category-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
+
+                    <label for="subtask">Subtasks</label>
+                    <div class="subtask-input-wrapper">
+                        <input type="text" id="subtask-input-edit" class="subtask-input-field"
+                            placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
+                            onkeydown="handleSubtaskKey(event)" tabindex="0" aria-describedby="subtask-hint">
+                        <div id="main-subtask-icons" class="input-action-icons"></div>
+                    </div>
+                    <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons
+                        to save or cancel</div>
+
+                    <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;" role="list"
+                        aria-label="Subtask list"></ul>
 
                 </div>
             </form>
@@ -290,12 +292,12 @@ function getTaskDetailOverlayTemplate(task) {
             aria-labelledby="task-detail-title"
             aria-describedby="task-detail-description">
             <div class="task-detail-header">
-                <p class="${categoryColor(task)}">${task.category}</p>
+                <p class="${categoryColor(task)}" role="text" aria-label="Category: ${task.category}">${task.category}</p>
                 <button onclick="closeAddTaskOverlay()" 
                         onkeydown="handleCloseKeydown(event)"
                         class="close-board-info-overlay" 
-                        aria-label="Close"
-                        tabindex="0"
+                        aria-label="Close task details dialog"
+                        tabindex="1"
                         style="border: none; background: none; cursor: pointer; padding: 4px;">
                     <img src="/assets/icons/close.svg" alt="" aria-hidden="true">
                 </button>
@@ -303,58 +305,61 @@ function getTaskDetailOverlayTemplate(task) {
         <div class="task-overlay-wrapper">
 
             <div class="task-detail-headline">
-                <h2 id="task-detail-title" class="task-detail-title">${task.title}</h2>
+                <h1 id="task-detail-title" class="task-detail-title" role="heading" aria-level="1">${task.title}</h1>
             </div>
 
             <div class="task-detail-description">
-                <p id="task-detail-description">${task.description}</p>
+                <h2 class="sr-only">Description</h2>
+                <p id="task-detail-description" role="text">${task.description}</p>
             </div>
 
-            <div class="task-detail-due-date">
-                    <div>Due Date:</div>
-                    <div>${task.dueDate}</div>
+            <div class="task-detail-due-date" role="text" aria-label="Due date: ${task.dueDate}">
+                <div>Due Date:</div>
+                <div>${task.dueDate}</div>
             </div>
             
-            <div class="task-detail-priority">
+            <div class="task-detail-priority" role="text" aria-label="Priority: ${task.priority}">
                 <div style="font-size: 18px;">Priority:</div>
                 <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>
-                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority">
+                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority icon" aria-hidden="true">
             </div>
 
             <div class="task-detail-assigned">
-                <div style="font-size: 18px;">Assigned to:</div>
-                <div id="overlayContactContainer" class="contact-circle-container"></div>
+                <h2 class="sr-only">Assigned Contacts</h2>
+                <div style="font-size: 18px;" role="text">Assigned to:</div>
+                <div id="overlayContactContainer" class="contact-circle-container" role="list" aria-label="Assigned contacts"></div>
             </div>
 
-            <div class="task-detail-subtasks">
-                <div style="font-size: 18px;">Subtasks:</div>
-                <div>
+            <div class="task-detail-subtasks" id="subtasks-section">
+                <h2 class="sr-only">Subtasks</h2>
+                <div style="font-size: 18px;" role="text">Subtasks:</div>
+                <div role="group" aria-label="Subtasks list" id="subtasks-container">
                     ${renderSubtasksForOverlay(task)}
                 </div>
             </div>
 
         </div>
-        <div class="task-detail-delete-edit-button-container">
+        <div class="task-detail-delete-edit-button-container" role="toolbar" aria-label="Task actions">
             <button onclick="deleteTaskfromBoard('${task.id}')" 
                     onkeydown="handleDeleteTaskKeydown(event, '${task.id}')"
                     class="task-detail-delete-button"
-                    aria-label="Delete"
+                    aria-label="Delete task: ${task.title}"
                     tabindex="0"
                     style="border: none; cursor: pointer;">
                 <div class="task-delete-icon" aria-hidden="true"></div>
-                <span class="sr-only">Delete</span>
+                <span class="sr-only">Delete Task</span>
             </button>
 
-            <div class="task-detail-spacer"></div>
+            <div class="task-detail-spacer" aria-hidden="true"></div>
 
             <button onclick="renderEditTaskDetail('${task.id}')" 
                     onkeydown="handleEditTaskKeydown(event, '${task.id}')"
                     class="task-detail-edit-button"
-                    aria-label="Edit"
+                    aria-label="Edit task: ${task.title}"
                     tabindex="0"
                     style="border: none; cursor: pointer;">
                 <div class="task-edit-icon" aria-hidden="true"></div>
-                <span class="sr-only">Edit</span>
+                <span class="sr-only">Edit Task</span>
             </button>
         </div>
 
@@ -383,162 +388,158 @@ function editTaskDetailOverlayTemplate(task) {
             </button>
         </div>
         <div class="task-overlay-wrapper">
-            <div class="task-detail-edit-main">
-                <h1 id="edit-task-title" class="sr-only">Edit Task</h1>
-                <div id="edit-task-description" class="sr-only">Edit task form with title, description, due date, priority, assigned contacts, and subtasks</div>
-                
-                <div class="edit-form-section">
-                    <label for="edit-title" class="form-headline-text">
-                        Title<span class="required-marker" aria-hidden="true">*</span>
-                    </label>
+            <h1 id="edit-task-title" class="sr-only">Edit Task</h1>
+            <div id="edit-task-description" class="sr-only">Edit task form with title, description, due date, priority, assigned contacts, and subtasks</div>
+            
+            <div class="edit-form-section">
+                <label for="edit-title" class="form-headline-text">
+                    Title<span class="required-marker" aria-hidden="true">*</span>
+                </label>
+                <input 
+                    id="edit-title" 
+                    type="text" 
+                    class="title-input-overlay" 
+                    placeholder="Enter a title"
+                    aria-required="true"
+                    aria-describedby="edit-title-error title-hint"
+                    autofocus>
+                <div id="title-hint" class="sr-only">Enter a descriptive title for the task</div>
+                <div id="edit-title-error" class="error-text" aria-live="polite"></div>
+            </div>
+
+            <div class="edit-form-section">
+                <label for="edit-description" class="form-headline-text">Description</label>
+                <textarea 
+                    id="edit-description" 
+                    class="title-input-overlay description-textarea" 
+                    placeholder="Enter a Description"
+                    aria-describedby="description-hint"
+                    rows="4"></textarea>
+                <div id="description-hint" class="sr-only">Optional detailed description of the task</div>
+            </div>
+
+            <div class="edit-form-section">
+                <label for="edit-due-date" class="form-headline-text">
+                    Due date<span class="required-marker" aria-hidden="true">*</span>
+                </label>
+                <input 
+                    id="edit-due-date" 
+                    class="title-input-overlay" 
+                    min="${todayStr}" 
+                    type="date" 
+                    aria-required="true"
+                    aria-describedby="edit-due-date-error date-hint">
+                <div id="date-hint" class="sr-only">Select the deadline for this task</div>
+                <div id="edit-due-date-error" class="error-message" aria-live="polite"></div>
+            </div>
+
+            <fieldset class="priority-fieldset edit-form-section" style="border: none; padding: 0; margin: 0;">
+                <legend class="form-headline-text" style="padding: 0; margin-bottom: 0.5rem;">Priority</legend>
+                <div class="priority-buttons">
+                    <button 
+                        type="button" 
+                        class="priority-btn urgent" 
+                        id="prio-urgent" 
+                        role="radio" 
+                        aria-checked="false"
+                        onclick="setEditPrio('urgent')"
+                        onkeydown="handlePriorityKeydown(event, 'urgent')"
+                        aria-describedby="urgent-hint">
+                        Urgent
+                        <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+                    </button>
+                    <button 
+                        type="button" 
+                        class="priority-btn medium active" 
+                        id="prio-medium" 
+                        role="radio" 
+                        aria-checked="true"
+                        onclick="setEditPrio('medium')"
+                        onkeydown="handlePriorityKeydown(event, 'medium')"
+                        aria-describedby="medium-hint">
+                        Medium
+                        <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+                    </button>
+                    <button 
+                        type="button" 
+                        class="priority-btn low" 
+                        id="prio-low" 
+                        role="radio" 
+                        aria-checked="false"
+                        onclick="setEditPrio('low')"
+                        onkeydown="handlePriorityKeydown(event, 'low')"
+                        aria-describedby="low-hint">
+                        Low
+                        <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+                    </button>
+                </div>
+                <div id="urgent-hint" class="sr-only">High priority task that requires immediate attention</div>
+                <div id="medium-hint" class="sr-only">Standard priority task</div>
+                <div id="low-hint" class="sr-only">Lower priority task that can be addressed when time permits</div>
+            </fieldset>
+
+            <div class="edit-form-section">
+                <label id="assigned-edit-label" class="form-headline-text">Assigned to</label>
+                <div class="custom-select-container">
+                    <div id="assigned-display-edit" 
+                        class="select-display" 
+                        role="combobox"
+                        tabindex="0"
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        aria-labelledby="assigned-edit-label"
+                        aria-controls="assigned-dropdown-edit"
+                        aria-describedby="assigned-hint"
+                        onclick="toggleContactDropdownEdit()"
+                        onkeydown="handleAssignedDropdownEditKeydown(event)">
+                        Select contacts to assign
+                    </div>
+
+                    <div id="assigned-dropdown-edit" 
+                        class="select-dropdown" 
+                        role="listbox"
+                        aria-labelledby="assigned-edit-label"
+                        style="display: none;">
+                    </div>
+                </div>
+                <div id="assigned-hint" class="sr-only">Use arrow keys to navigate options, Enter to select</div>
+
+                <div id="user-circle-assigned-edit-overlay" 
+                    class="assigned-circles-edit-overlay"
+                    role="status"
+                    aria-live="polite"></div>
+            </div>
+            
+            <div class="edit-form-section">
+                <label for="subtask-input-edit" class="form-headline-text">Subtasks</label>
+                <div class="subtask-input-wrapper">
                     <input 
-                        id="edit-title" 
                         type="text" 
-                        class="title-input-overlay" 
-                        placeholder="Enter a title"
-                        aria-required="true"
-                        aria-describedby="edit-title-error title-hint"
-                        autofocus>
-                    <div id="title-hint" class="sr-only">Enter a descriptive title for the task</div>
-                    <div id="edit-title-error" class="error-message" aria-live="polite"></div>
+                        id="subtask-input-edit" 
+                        class="subtask-input-field select-display"
+                        placeholder="Add new subtask" 
+                        aria-describedby="subtask-hint"
+                        onclick="showMainSubtaskIcons()" 
+                        onkeydown="handleSubtaskKey(event)">
+                    <div id="main-subtask-icons" class="input-action-icons"></div>
                 </div>
+                <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons to save or cancel</div>
 
-                <div class="edit-form-section">
-                    <label for="edit-description" class="form-headline-text">Description</label>
-                    <textarea 
-                        id="edit-description" 
-                        class="title-input-overlay description-textarea" 
-                        placeholder="Enter a Description"
-                        aria-describedby="description-hint"
-                        rows="4"></textarea>
-                    <div id="description-hint" class="sr-only">Optional detailed description of the task</div>
-                </div>
-
-                <div class="edit-form-section">
-                    <label for="edit-due-date" class="form-headline-text">
-                        Due date<span class="required-marker" aria-hidden="true">*</span>
-                    </label>
-                    <input 
-                        id="edit-due-date" 
-                        class="title-input-overlay" 
-                        min="${todayStr}" 
-                        type="date" 
-                        aria-required="true"
-                        aria-describedby="edit-due-date-error date-hint">
-                    <div id="date-hint" class="sr-only">Select the deadline for this task</div>
-                    <div id="edit-due-date-error" class="error-message" aria-live="polite"></div>
-                </div>
-
-                <fieldset class="priority-fieldset edit-form-section" style="border: none; padding: 0; margin: 0;">
-                    <legend class="form-headline-text" style="padding: 0; margin-bottom: 0.5rem;">Priority</legend>
-                    <div class="priority-buttons">
-                        <button 
-                            type="button" 
-                            class="priority-btn urgent" 
-                            id="prio-urgent" 
-                            role="radio" 
-                            aria-checked="false"
-                            onclick="setEditPrio('urgent')"
-                            onkeydown="handlePriorityKeydown(event, 'urgent')"
-                            aria-describedby="urgent-hint">
-                            Urgent
-                            <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
-                        </button>
-                        <button 
-                            type="button" 
-                            class="priority-btn medium active" 
-                            id="prio-medium" 
-                            role="radio" 
-                            aria-checked="true"
-                            onclick="setEditPrio('medium')"
-                            onkeydown="handlePriorityKeydown(event, 'medium')"
-                            aria-describedby="medium-hint">
-                            Medium
-                            <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
-                        </button>
-                        <button 
-                            type="button" 
-                            class="priority-btn low" 
-                            id="prio-low" 
-                            role="radio" 
-                            aria-checked="false"
-                            onclick="setEditPrio('low')"
-                            onkeydown="handlePriorityKeydown(event, 'low')"
-                            aria-describedby="low-hint">
-                            Low
-                            <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
-                        </button>
-                    </div>
-                    <div id="urgent-hint" class="sr-only">High priority task that requires immediate attention</div>
-                    <div id="medium-hint" class="sr-only">Standard priority task</div>
-                    <div id="low-hint" class="sr-only">Lower priority task that can be addressed when time permits</div>
-                </fieldset>
-
-                <div class="edit-form-section">
-                    <label id="assigned-edit-label" class="form-headline-text">Assigned to</label>
-                    <div class="custom-select-container">
-                        <div id="assigned-display-edit" 
-                            class="select-display" 
-                            role="combobox"
-                            tabindex="0"
-                            aria-expanded="false"
-                            aria-haspopup="listbox"
-                            aria-labelledby="assigned-edit-label"
-                            aria-controls="assigned-dropdown-edit"
-                            aria-describedby="assigned-hint"
-                            onclick="toggleContactDropdownEdit()"
-                            onkeydown="handleAssignedDropdownEditKeydown(event)">
-                            Select contacts to assign
-                        </div>
-
-                        <div id="assigned-dropdown-edit" 
-                            class="select-dropdown" 
-                            role="listbox"
-                            aria-labelledby="assigned-edit-label"
-                            style="display: none;">
-                        </div>
-                    </div>
-                    <div id="assigned-hint" class="sr-only">Use arrow keys to navigate options, Enter to select</div>
-
-                    <div id="user-circle-assigned-edit-overlay" 
-                        class="assigned-circles-edit-overlay"
-                        role="status"
-                        aria-live="polite"></div>
-                </div>
-                
-                <div class="edit-form-section">
-                    <label for="subtask-input-edit" class="form-headline-text">Subtasks</label>
-                    <div class="subtask-input-wrapper">
-                        <input 
-                            type="text" 
-                            id="subtask-input-edit" 
-                            class="subtask-input-field"
-                            placeholder="Add new subtask" 
-                            aria-describedby="subtask-hint"
-                            onclick="showMainSubtaskIcons()" 
-                            onkeydown="handleSubtaskKey(event)">
-                        <div id="main-subtask-icons" class="input-action-icons"></div>
-                    </div>
-                    <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons to save or cancel</div>
-
-                    <ul id="subtask-list-edit-ul" 
-                        role="list" 
-                        aria-label="Subtask list"
-                        style="padding: 0; list-style: none;"></ul>
-                </div>
-            </div>  
+                <ul id="subtask-list-edit-ul" 
+                    role="list" 
+                    aria-label="Subtask list"
+                    style="padding: 0; list-style: none;"></ul>
+            </div>
         </div>
         <div class="task-detail-edit-footer">
-            <div class="form-actions">
                 <button 
                     onclick="saveEditedTask('${task.id}')" 
                     onkeydown="handleSaveKeydown(event, '${task.id}')"
-                    class="btn btn-primary"
+                    class="btn"
                     aria-describedby="save-hint">
-                    Save Changes
+                    Save Changes&nbsp;&nbsp;
                     <img src="/assets/icons/check.svg" alt="" aria-hidden="true">
                 </button>
-            </div>
             <div id="save-hint" class="sr-only">Save all changes and close the edit dialog</div>
         </div>  
             
@@ -634,11 +635,10 @@ function renderSubtasksEditMode() {
             <li class="subtask-edit-row">
                 <button 
                     type="button"
-                    class="subtask-row-button"
                     aria-label="Subtask: ${st.title}. Press to edit this subtask"
                     onclick="editSubtask(${i})"
                     onkeydown="handleSubtaskRowKeydown(event, ${i})"
-                    style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: space-between;">
+                    class="subtask-edit-element-one">
                     
                     <span style="flex-grow:1; text-align: left;">• ${st.title}</span>
                     
@@ -672,14 +672,11 @@ function renderSubtasksEditMode() {
         }
     });
 
-    // Fokus auf das Input-Feld setzen, wenn ein Subtask bearbeitet wird
     if (editingSubtaskIndex >= 0) {
-        // Kurzer Delay um sicherzustellen, dass das DOM aktualisiert wurde
         setTimeout(() => {
             const editInput = document.getElementById(`edit-subtask-input-${editingSubtaskIndex}`);
             if (editInput) {
                 editInput.focus();
-                // Cursor am Ende des Textes positionieren
                 editInput.setSelectionRange(editInput.value.length, editInput.value.length);
             }
         }, 10);
@@ -1122,7 +1119,6 @@ function renderEditContactOverlayHtml(contact, color, option) {
         `
 }
 
-
 function contactRowHTML(contact, index) {
     let isSelected = editAssignedIds.includes(contact.id);
     let cssClass = isSelected ? 'contact-item selected' : 'contact-item';
@@ -1141,26 +1137,29 @@ function contactRowHTML(contact, index) {
     `;
 }
 
-// to be reviewed later !!!
 function renderContactCircle(contact, index) {
     const color = contactCircleColor[contact.id % contactCircleColor.length];
     const initials = getInitials(contact.name);
     return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
 }
 
-function generateSubtaskRowHtml(taskId, index, title, icon, isChecked) {
+function generateSubtaskRowHtml(taskId, index, title, icon, isChecked, tabIndex = 0) {
     return `
         <div class="subtask-row" 
-            role="button" 
-            tabindex="0"
-            aria-label="Toggle subtask: ${title}. Currently ${isChecked ? 'completed' : 'incomplete'}"
-            onclick="toggleSubtask('${taskId}', ${index})"
+            role="checkbox" 
+            aria-checked="${isChecked}"
+            tabindex="${tabIndex}"
+            aria-label="Subtask: ${title}"
+            onclick="toggleSubtaskWithScrollPreservation('${taskId}', ${index})"
             onkeydown="handleSubtaskToggleKeydown(event, '${taskId}', ${index})">
             <div class="subtask-icon" aria-hidden="true">
                 ${icon}
             </div>
-            <span class="subtask-text ${isChecked ? 'text-done' : ''}" aria-hidden="true">
+            <span class="subtask-text ${isChecked ? 'text-done' : ''}" aria-describedby="subtask-status-${taskId}-${index}">
                 ${title}
+            </span>
+            <span id="subtask-status-${taskId}-${index}" class="sr-only">
+                ${isChecked ? 'Completed' : 'Not completed'}
             </span>
         </div>
     `;

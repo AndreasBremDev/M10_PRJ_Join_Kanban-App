@@ -736,12 +736,10 @@ function validateField(id) {
     let input = document.getElementById(id);
     let errorMsg = document.getElementById(id + '-error');
     if (!input.value.trim()) {
-        // Fehler
         input.classList.add('input-error');
         errorMsg.classList.add('visible');
         return false;
     } else {
-        // OK
         input.classList.remove('input-error');
         errorMsg.classList.remove('visible');
         return true;

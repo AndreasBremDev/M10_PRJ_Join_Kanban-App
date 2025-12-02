@@ -223,30 +223,39 @@ async function moveTo(category) {
  */
 async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = getAddTaskOverlayTemplate(board);
     overlay.classList.remove('d-none');
+    overlay.innerHTML = getAddTaskOverlayTemplate(board);
     await loadAndRenderContacts('assigned-dropdown', 'addTask');
     setupPriorityButtons();
     setTimeout(() => {
         let section = overlay.querySelector('.add-task-section');
-        if (section) {section.classList.add('slide-in');}
+        if (section) {
+            section.classList.add('slide-in');
+        }
         let titleInput = document.getElementById('title');
-        if (titleInput) {titleInput.focus();}
-    }, 50);
+        if (titleInput) {
+            setTimeout(() => titleInput.focus(), 150);
+        }
+    }, 20);
 }
 
 /**
- * Closes the add task overlay with slide-out animation
+ * Closes the add task overlay with slide-out animation and updates board
+ * Update board after overlay close to reflect any changes made during modal interaction
  */
-function closeAddTaskOverlay() {
+async function closeAddTaskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     let section = overlay.querySelector('.add-task-section');
-    if (section) {
-        section.classList.remove('slide-in');
-    }
-    setTimeout(() => {
+    if (section) { section.classList.remove('slide-in')}
+    setTimeout(async () => {
         overlay.classList.add('d-none');
         overlay.innerHTML = '';
+        try {
+            let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
+            renderTasks(tasksRefetch);
+        } catch (error) {
+            console.error("Error updating board after overlay close:", error);
+        }
     }, 400);
 }
 
@@ -326,27 +335,32 @@ async function deleteTaskfromBoard(taskId) {
 async function renderEditTaskDetail(taskId) {
     let task = tasks.find(t => t.id === taskId);
     if (!task) return;
-
-    // 1. WICHTIG: Daten in die globalen Variablen laden
-    editAssignedIds = [...(task.assigned || [])]; // Kopie der IDs erstellen
-    editSubtasks = JSON.parse(JSON.stringify(task.subtasks || []));
-    editPriority = task.priority;
-
-    // 2. Template laden
-    let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = editTaskDetailOverlayTemplate(task); // task übergeben!
-    overlay.classList.remove('d-none');
-
-    // 3. Inputs füllen
-    document.getElementById('edit-title').value = task.title;
-    document.getElementById('edit-description').value = task.description;
-    document.getElementById('edit-due-date').value = task.dueDate;
+    loadTaskVariableGlobally(task);
+    loadEditTaskDetailOverlay(task);
+    loadFillInputFields(task);
     renderSubtasksEditMode();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
 
-    // 5. Kreise malen (Jetzt kennt er die Variable!)
     renderAssignedEditCircles();
     setCheckboxesById()
+}
+
+function loadTaskVariableGlobally(task) {
+    editAssignedIds = [...(task.assigned || [])];
+    editSubtasks = JSON.parse(JSON.stringify(task.subtasks || []));
+    editPriority = task.priority;
+}
+
+function loadEditTaskDetailOverlay(task) {
+    let overlay = document.getElementById("add-task-overlay");
+    overlay.innerHTML = editTaskDetailOverlayTemplate(task);
+    overlay.classList.remove('d-none');
+}
+
+function loadFillInputFields(task) {
+    document.getElementById('edit-title').value = task.title;
+    document.getElementById('edit-description').value = task.description;
+    document.getElementById('edit-due-date').value = task.dueDate;
 }
 
 /**
@@ -356,9 +370,9 @@ async function renderEditTaskDetail(taskId) {
  */
 function renderSubtasksForOverlay(task) {
     if (!task.subtasks || task.subtasks.length === 0) {
-        return '<div>No subtasks</div>';
+        return '<div role="text" aria-label="No subtasks available">No subtasks</div>';
     }
-    let html = '<div class="subtask-list-overlay">';
+    let html = '<div class="subtask-list-overlay" role="group" aria-label="Subtasks list">';
     for (let i = 0; i < task.subtasks.length; i++) {
         let subtask = task.subtasks[i];
         if (!subtask) continue;
@@ -391,6 +405,76 @@ async function toggleSubtask(taskId, subtaskIndex) {  //taskId = place to save  
         renderTasks(tasksRefetch);
     } catch (error) {
         console.error("Update failed:", error);
+    }
+}
+
+/**
+ * Toggles subtask status while preserving scroll position
+ * @param {string} taskId - The ID of the task containing the subtask
+ * @param {number} subtaskIndex - The index of the subtask to toggle
+ */
+async function toggleSubtaskWithScrollPreservation(taskId, subtaskIndex) {
+    let task = tasks.find(t => t.id === taskId);
+    if (!task || !task.subtasks) return;
+    
+    // Toggle status in memory
+    let currentStatus = task.subtasks[subtaskIndex].done === true || task.subtasks[subtaskIndex].done === 'true';
+    let newStatus = !currentStatus;
+    task.subtasks[subtaskIndex].done = newStatus;
+    
+    try {
+        // Update Firebase
+        await putData(`/${activeUserId}/tasks/${taskId}/subtasks/${subtaskIndex}/done`, newStatus);
+        
+        // Update only the specific subtask element in DOM (no full re-render)
+        updateSubtaskElementInDOM(taskId, subtaskIndex, newStatus);
+        
+        // Update tasks array silently for board consistency
+        let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
+        tasks = tasksRefetch; // Update global tasks without re-rendering
+        
+    } catch (error) {
+        console.error("Update failed:", error);
+        // Revert local change on error
+        task.subtasks[subtaskIndex].done = currentStatus;
+    }
+}
+
+/**
+ * Updates a single subtask element in the DOM without full re-render
+ * @param {string} taskId - The task ID
+ * @param {number} subtaskIndex - The subtask index
+ * @param {boolean} newStatus - The new completion status
+ */
+function updateSubtaskElementInDOM(taskId, subtaskIndex, newStatus) {
+    const subtaskRows = document.querySelectorAll('.subtask-row');
+    if (subtaskRows[subtaskIndex]) {
+        const row = subtaskRows[subtaskIndex];
+        const icon = row.querySelector('.subtask-icon');
+        const text = row.querySelector('.subtask-text');
+        const statusSpan = row.querySelector('.sr-only');
+        
+        // Update aria-checked attribute
+        row.setAttribute('aria-checked', newStatus.toString());
+        
+        // Update icon
+        if (icon) {
+            icon.innerHTML = newStatus ? getCheckIcon() : getUncheckIcon();
+        }
+        
+        // Update text styling
+        if (text) {
+            if (newStatus) {
+                text.classList.add('text-done');
+            } else {
+                text.classList.remove('text-done');
+            }
+        }
+        
+        // Update screen reader text
+        if (statusSpan) {
+            statusSpan.textContent = newStatus ? 'Completed' : 'Not completed';
+        }
     }
 }
 

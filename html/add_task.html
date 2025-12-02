@@ -87,7 +87,7 @@
                     <label for="title">Title<span class="required-marker"  aria-label="required">*</span></label>
                     <input id="title" type="text" placeholder="Enter a title" onblur="validateField('title')"
                         oninput="clearError('title')" aria-required="true"  aria-describedby="title-error" aria-invalid="false">
-                    <div id="title-error" class="error-text error-message sr-only" role="alert" aria-live="polite">This field is required</div>
+                    <div id="title-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
 
                     <label for="description">Description</label>
                     <textarea class="description-box" id="description"
@@ -99,7 +99,7 @@
                     <input id="due-date" type="date" required onblur="validateField('due-date')"
                         oninput="clearError('due-date')" tabindex="0" aria-required="true" aria-describedby="date-error"
                         aria-invalid="false">
-                    <div id="due-date-error" class="error-text error-message sr-only" role="alert" aria-live="polite">This field is required</div>
+                    <div id="due-date-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
 
                 </div>
 
@@ -131,7 +131,8 @@
                     <div class="custom-select-container">
                         <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()"
                             tabindex="0" aria-expanded="false" aria-haspopup="listbox"
-                            aria-controls="assigned-dropdown-edit" aria-label="Select contacts to assign">
+                            aria-controls="assigned-dropdown-edit" aria-label="Select contacts to assign"
+                            onkeydown="handleAssignedDropdownKeydown(event)">
                             Select contacts to assign <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg"
                                 alt="arrow" class="dropdown-icon" aria-hidden="true">
                         </div>
@@ -147,7 +148,7 @@
                     <div class="custom-select-container">
 
                         <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()" required aria-required="true" aria-describedby="category-error"
-                        aria-invalid="false">
+                        aria-invalid="false" tabindex="0">
 
                             <span id="category-text">Select task category</span>
 
@@ -162,7 +163,7 @@
                         <input type="hidden" id="category" value="">
 
                     </div>
-                    <div id="category-error" class="error-text error-message sr-only" role="alert" aria-live="polite">This field is required</div>
+                    <div id="category-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
 
 
                     <label for="subtask">Subtasks</label>
