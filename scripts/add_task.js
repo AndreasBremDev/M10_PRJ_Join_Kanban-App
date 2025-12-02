@@ -28,33 +28,48 @@ function setupPriorityButtons() {
     });
 }
 
-/** Handle create task */
 async function handleCreateTask(boardCategory, event) {
     if (event) event.preventDefault();
-    let isTitleValid = validateField('title');
-    let isDateValid = validateField('due-date');
-    let isCategoryValid = validateCategory();
-    if (!isTitleValid || !isDateValid || !isCategoryValid) {
-        return;
-    }
-    let title = document.getElementById('title').value.trim();
-    let description = document.getElementById('description').value.trim();
-    let dueDate = document.getElementById('due-date').value;
-    let category = document.getElementById('category').value;
-    let newTask = {
-        title: title, description: description, dueDate: dueDate, category: category,
-        priority: editPriority, assigned: editAssignedIds, subtasks: editSubtasks,
-        board: boardCategory, createdAt: new Date().getTime()
-    };
+    if (!validateTaskForm()) return;
+    const newTask = createTaskObject(boardCategory);
     try {
-        let taskPath = `/${activeUserId}/tasks`;
-        let nextTaskId = await calcNextId(taskPath);
-        await putData(`${taskPath}/${nextTaskId}`, newTask);
-        clearForm();
-        showSuccessImageAnimation();
+        await saveTaskToServer(newTask);
+        finalizeTaskCreation();
     } catch (error) {
-        console.error(error);
+        console.error("Task creation failed:", error);
     }
+}
+
+function validateTaskForm() {
+    const isTitleValid = validateField('title');
+    const isDateValid = validateField('due-date');
+    const isCategoryValid = validateCategory();
+    return isTitleValid && isDateValid && isCategoryValid;
+}
+
+function createTaskObject(boardCategory) {
+    return {
+        title: document.getElementById('title').value.trim(),
+        description: document.getElementById('description').value.trim(),
+        dueDate: document.getElementById('due-date').value,
+        category: document.getElementById('category').value,
+        priority: editPriority,
+        assigned: editAssignedIds,
+        subtasks: editSubtasks,
+        board: boardCategory,
+        createdAt: new Date().getTime()
+    };
+}
+
+async function saveTaskToServer(task) {
+    const taskPath = `/${activeUserId}/tasks`;
+    const nextTaskId = await calcNextId(taskPath);
+    await putData(`${taskPath}/${nextTaskId}`, task);
+}
+
+function finalizeTaskCreation() {
+    clearForm();
+    showSuccessImageAnimation();
 }
 
 /** Clear form */
