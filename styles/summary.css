@@ -8,7 +8,7 @@ body {
   left: 328px;
   right: 0;
   bottom: 0;
-  overflow: hidden;
+  overflow: overlay;
 }
 
 .container_information {
@@ -687,5 +687,12 @@ body {
   .awaiting_feedback {
     width: 116px;
     height: 116px;
+  }
+}
+
+@media (max-height: 850px) {
+  .main_summary{
+    overflow: scroll;
+    margin-bottom: 16px;
   }
 }

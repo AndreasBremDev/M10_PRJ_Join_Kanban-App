@@ -182,8 +182,6 @@ function toggleContactDropdown() {
     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
-
-
 /**
  * Handles keyboard events for close button
  * @param {KeyboardEvent} event - The keyboard event
@@ -497,9 +495,9 @@ async function saveEditedTask(taskId) {
 function getMergedTaskData(oldTask) {
     return {
         ...oldTask,
-        title: document.getElementById('title').value,
-        description: document.getElementById('description').value,
-        dueDate: document.getElementById('due-date').value,
+        title: document.getElementById('edit-title').value,
+        description: document.getElementById('edit-description').value,
+        dueDate: document.getElementById('edit-due-date').value,
         priority: editPriority,
         assigned: editAssignedIds,
         subtasks: editSubtasks

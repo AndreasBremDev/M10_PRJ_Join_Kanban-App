@@ -1017,6 +1017,10 @@ a {
         margin-left: 0;
     }
 
+    #contactList{
+        margin-bottom: 80px;
+    }
+
     .contact-large {
         position: fixed;
         top: 80px;
@@ -1132,5 +1136,12 @@ a {
         align-items: center;
     }
 
+
+}
+
+@media (max-height: 700px) {
+    .button_add_contact{
+        top: 72%;
+    }
 
 }
