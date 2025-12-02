@@ -355,7 +355,7 @@ function clearForm() {
     let errorTexts = document.querySelectorAll('.error-text.visible');
     errorTexts.forEach(msg => msg.classList.remove('visible'));
     let btn = document.getElementById('create-btn');
-    if (btn) btn.disabled = true;
+    if (btn) btn.disabled = false;
 }
 
 function selectCategory(category) {
