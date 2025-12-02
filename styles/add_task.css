@@ -4,17 +4,14 @@ body {
     height: 100vh;
 }
 
-
-
-
 .main-add-task {
     margin-left: 232px;
     margin-top: 96px;
-    min-height: calc(100vh - 96px);
-    padding: 48px 64px;
     overflow: hidden;
     box-sizing: border-box;
-
+    padding-right: 135.75px;
+    padding-left: 96px;
+    padding-top: 110px;
 }
 
 .content {
@@ -52,35 +49,44 @@ main {
 }
 
 h1 {
-    font-size: 48px;
-    font-weight: 700;
+    font-size: 61px;
 }
 
 .add-task-section {
     background: #F5F6F7;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 48px;
     max-height: 600px;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .description-box {
-    min-height: 86px;
+    min-height: 120px;
     max-height: 200px;
 }
 
+.padding-bottom-32{
+    padding-bottom:36px;
+}
+
+.padding-bottom-24{
+    padding-bottom: 24px;
+}
 
 input,
 textarea,
 select {
     border: 1px solid #D1D1D1;
     border-radius: 8px;
-    padding: 12px;
     resize: vertical;
+    width: 440px;
+    height: 48px;
     font-size: 16px;
     cursor: pointer;
+    padding: 16px;
+    box-sizing: border-box;
     font-family: 'Inter', sans-serif;
     scrollbar-width: none;
 }
@@ -89,18 +95,16 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 48px;
     width: 100%;
+    height: 424px;
     overflow-x: hidden;
     overflow-y: scroll;
-    margin-top: 16px;
     max-width: 1200px;
 }
 
 .divider {
     width: 1px;
     background-color: #D1D1D1;
-    margin: 0 24px;
     height: 424px;
 }
 
@@ -108,8 +112,17 @@ select {
 .form-right {
     display: flex;
     flex-direction: column;
-    gap: 16px;
     width: 440px;
+}
+
+.add-task-label-box-sizing{
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.padding-bottom-32{
+    padding-bottom: 32px;
 }
 
 .form-footer {
@@ -132,6 +145,8 @@ label {
     margin-top: 48px;
     margin-right: 64px;
 }
+
+
 
 button.clear {
     background: transparent;
@@ -223,15 +238,16 @@ button.clear:hover {
 }
 
 .priority-btn {
-    flex: 1;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 10px 16px;
-    min-width: 48px;
+    width: 136px;
+    height: 56px;
+    padding: 16px 10px;
     border: 1px solid transparent;
-    border-radius: 8px;
+    border-radius: 10px;
     background-color: #fff;
     font-weight: 500;
     font-size: 16px;
@@ -313,7 +329,6 @@ select:focus {
 .custom-select-container {
     position: relative;
     width: 100%;
-    margin-bottom: 16px;
 }
 
 .select-display {
@@ -322,9 +337,11 @@ select:focus {
     border: 1px solid #D1D1D1;
     border-radius: 8px;
     padding: 12px;
+    height: 48px;
     font-size: 16px;
     cursor: pointer;
     background-color: white;
+    box-sizing: border-box;
 }
 
 .select-display:hover {
@@ -397,9 +414,6 @@ select:focus {
     font-size: 16px;
 }
 
-
-
-
 .subtask-input-field {
     border: none;
 }
@@ -470,8 +484,6 @@ select:focus {
     display: flex;
     align-items: center;
     background-color: white;
-    padding: 2px 4px;
-    margin-bottom: 16px;
     border: 1px solid #D1D1D1;
     border-radius: 10px;
     justify-content: space-between;
@@ -551,6 +563,9 @@ select:focus {
 .dropdown-icon {
     transition: transform 125ms ease-in-out;
     cursor: pointer;
+    padding: 6px 8px;
+    width: 7px;
+    height: 5px;
 }
 
 .rotate-180 {

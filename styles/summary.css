@@ -9,7 +9,6 @@ body {
   right: 0;
   bottom: 0;
   overflow: hidden;
-  height: calc(100vh - 96px);
 }
 
 .container_information {
