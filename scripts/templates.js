@@ -1123,17 +1123,19 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
 
 function contactRowHTML(contact, index) {
-    return `
-    <div class="contact-row">
-        <div class="left-info">
-            ${renderContactCircle(contact, index)}
+    let isSelected = editAssignedIds.includes(contact.id);
+    let cssClass = isSelected ? 'contact-item selected' : 'contact-item';
+    let icon = isSelected ? getCheckboxCheckedSvg() : getCheckboxEmptySvg();
+    return`
+    <div id="contact-row-${contact.id}" class="${cssClass}" onclick="toggleContactSelection('${contact.id}')">
+        <div class="contact-item-left">
+            ${renderContactCircle(contact)}
             <span class="contact-name">${contact.name}</span>
         </div>
-        <input 
-            type="checkbox" 
-            value="${contact.id}"
-            aria-label="Select ${contact.name} for task assignment"
+        <div class="contact-checkbox-icon" aria-label="Select ${contact.name} for task assignment"
             tabindex="0">
+            ${icon}
+        </div>
     </div>
     `;
 }
@@ -1161,6 +1163,20 @@ function generateSubtaskRowHtml(taskId, index, title, icon, isChecked) {
             </span>
         </div>
     `;
+}
+
+
+function getCheckboxEmptySvg() {
+    return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="16" height="16" rx="3" stroke="#2A3647" stroke-width="2"/>
+            </svg>`;
+}
+
+function getCheckboxCheckedSvg() {
+    return `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="16" height="16" rx="3" stroke="white" stroke-width="2"/>
+            <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`;
 }
 
 function getUncheckIcon() {

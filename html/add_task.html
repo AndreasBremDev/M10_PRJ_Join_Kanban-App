@@ -84,20 +84,23 @@
 
             <form id="task-form" class="task-form" novalidate>
                 <div class="form-left">
-                    <label for="title">Title<span class="required-marker" aria-label="required">*</span></label>
-                    <input id="title" type="text" placeholder="Enter a title" aria-required="true"
-                        aria-describedby="title-error" aria-invalid="false">
-                    <div id="title-error" class="error-message sr-only" role="alert" aria-live="polite"></div>
+                    <label for="title">Title<span class="required-marker"  aria-label="required">*</span></label>
+                    <input id="title" type="text" placeholder="Enter a title" onblur="validateField('title')"
+                        oninput="clearError('title')" aria-required="true"  aria-describedby="title-error" aria-invalid="false">
+                    <div id="title-error" class="error-text error-message sr-only" role="alert" aria-live="polite">This field is required</div>
 
                     <label for="description">Description</label>
-                    <textarea id="description" placeholder="Enter a Description"
-                        aria-describedby="description-hint"></textarea>
+                    <textarea class="description-box" id="description"
+                        class="description-input-overlay title-input-overlay" placeholder="Enter a Description"
+                        tabindex="0" aria-describedby="description-hint"></textarea>
                     <div id="description-hint" class="sr-only">Optional field for task description</div>
 
                     <label for="due-date">Due date<span class="required-marker" aria-label="required">*</span></label>
-                    <input id="due-date" type="date" min="" required aria-required="true" aria-describedby="date-error"
+                    <input id="due-date" type="date" required onblur="validateField('due-date')"
+                        oninput="clearError('due-date')" tabindex="0" aria-required="true" aria-describedby="date-error"
                         aria-invalid="false">
-                    <div id="date-error" class="error-message sr-only" role="alert" aria-live="polite"></div>
+                    <div id="due-date-error" class="error-text error-message sr-only" role="alert" aria-live="polite">This field is required</div>
+
                 </div>
 
                 <div class="divider" role="presentation" aria-hidden="true"></div>
@@ -126,12 +129,12 @@
 
                     <label for="assigned">Assigned to</label>
                     <div class="custom-select-container">
-                        <button type="button" id="assigned-display-edit" class="select-display"
-                            onclick="toggleContactDropdownEdit()" aria-expanded="false" aria-haspopup="listbox"
+                        <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()"
+                            tabindex="0" aria-expanded="false" aria-haspopup="listbox"
                             aria-controls="assigned-dropdown-edit" aria-label="Select contacts to assign">
-                            Select contacts to assign
-                            <img src="/assets/icons/arrow_drop_down.svg" alt="" aria-hidden="true">
-                        </button>
+                            Select contacts to assign <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg"
+                                alt="arrow" class="dropdown-icon" aria-hidden="true">
+                        </div>
                         <div id="assigned-dropdown-edit" class="select-dropdown" role="listbox"
                             aria-labelledby="assigned" style="display: none;"></div>
                     </div>
@@ -139,21 +142,34 @@
                     <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay" role="group"
                         aria-label="Currently assigned contacts" aria-live="polite"></div>
 
-                    <label for="category" class="form-headline-text">Category<span class="required-marker"
-                            aria-label="required">*</span></label>
-                    <select id="category" required aria-required="true" aria-describedby="category-error"
+                    <label for="category">Category<span class="required-marker" aria-label="required">*</span></label>
+
+                    <div class="custom-select-container">
+
+                        <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()" required aria-required="true" aria-describedby="category-error"
                         aria-invalid="false">
-                        <option value="" disabled selected>Select task category</option>
-                        <option value="technical">Technical Task</option>
-                        <option value="user-story">User Story</option>
-                    </select>
-                    <div id="category-error" class="error-message sr-only" role="alert" aria-live="polite"></div>
+
+                            <span id="category-text">Select task category</span>
+
+                            <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow"
+                                class="dropdown-icon">
+                        </div>
+                        <div id="category-options" class="select-dropdown" style="display: none;">
+                            <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task</div>
+                            <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
+                        </div>
+
+                        <input type="hidden" id="category" value="">
+
+                    </div>
+                    <div id="category-error" class="error-text error-message sr-only" role="alert" aria-live="polite">This field is required</div>
+
 
                     <label for="subtask">Subtasks</label>
                     <div class="subtask-input-wrapper">
                         <input type="text" id="subtask-input-edit" class="subtask-input-field"
                             placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
-                            onkeydown="handleSubtaskKey(event)" aria-describedby="subtask-hint">
+                            onkeydown="handleSubtaskKey(event)" tabindex="0" aria-describedby="subtask-hint">
                         <div id="main-subtask-icons" class="input-action-icons"></div>
                     </div>
                     <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons
@@ -166,21 +182,25 @@
         </section>
 
         <div class="form-footer">
-            <p class="form-hint">
-                <span class="required-marker">*</span>This field is required
-            </p>
+
+            <div>
+                <p class="form-hint">
+                    <span class="required-marker">*</span>This field is required
+                </p>
+            </div>
+
 
             <div class="form-actions" role="group" aria-label="Form actions">
-                <button onclick="clearForm()" id="clear-btn" type="button" class="clear"
-                    aria-label="Clear all form fields">
-                    Clear ✖
-                </button>
-                <button onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create"
-                    aria-label="Create new task">
-                    Create Task ✔
-                </button>
+                <button onclick="clearForm()" id="clear-btn" type="button" class="clear" aria-label="Clear all form fields">Clear ✖</button>
+                <button type="button" onclick="handleCreateTask('toDo')" id="create-btn" type="button"
+                    class="create" aria-label="Create new task">Create
+                    Task
+                    ✔</button>
             </div>
         </div>
+
+        <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board" role="alert"
+            class="success-toast-img d-none">
     </main>
 
 </body>
