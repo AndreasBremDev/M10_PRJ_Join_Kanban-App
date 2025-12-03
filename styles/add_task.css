@@ -413,8 +413,10 @@ select:focus {
     border: none;
 }
 
+.subtask-input-wrapper:focus-within,
 .subtask-input-wrapper:hover {
-    border-color: #4fb9e7;
+    outline: 2px solid var(--primary-hover);
+    outline-offset: 2px;
 }
 
 .input-action-icons {

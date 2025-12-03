@@ -338,41 +338,28 @@ function handleMenuEscapeKey(event) {
 document.addEventListener('click', function (event) {
     let dropdown = document.getElementById('assigned-dropdown');
     let displayElement = document.getElementById('assigned-display');
-    checkIfElementIsNotDropdownOrDisplayElement(dropdown, event, displayElement);
-    handleEditDropdown(event);
+    handleDropdown(event, dropdown, displayElement);
+    
+    let dropdownEdit = document.getElementById('assigned-dropdown-edit');
+    let displayElementEdit = document.getElementById('assigned-display-edit');
+    handleDropdown(event, dropdownEdit, displayElementEdit);
+    
+    let categoryDropdown = document.getElementById('category-options');
+    let categoryDisplay = document.getElementById('category-display');
+    handleDropdown(event, categoryDropdown, categoryDisplay);
 });
 
 /**
- * Handles edit dropdown events
+ * Unified dropdown handler for outside clicks
  * @param {Event} event - The triggering event
- */
-function handleEditDropdown(event) {
-    let dropdownEdit = document.getElementById('assigned-dropdown-edit');
-    let displayElementEdit = document.getElementById('assigned-display-edit');
-
-    if (dropdownEdit && dropdownEdit.style.display === 'block' &&
-        !dropdownEdit.contains(event.target) &&
-        !displayElementEdit?.contains(event.target)) {
-        dropdownEdit.style.display = 'none';
-        if (displayElementEdit) {
-            displayElementEdit.setAttribute('aria-expanded', 'false');
-        }
-    }
-}
-
-/**
- * Checks if clicked element is not dropdown or display element
  * @param {HTMLElement} dropdown - The dropdown element
- * @param {Event} event - The click event
  * @param {HTMLElement} displayElement - The display element
  */
-function checkIfElementIsNotDropdownOrDisplayElement(dropdown, event, displayElement) {
+function handleDropdown(event, dropdown, displayElement) {
     if (dropdown && dropdown.style.display === 'block' &&
         !dropdown.contains(event.target) &&
-        !displayElement.contains(event.target)) {
+        !displayElement?.contains(event.target)) {
         dropdown.style.display = 'none';
-
-        // Update ARIA states for accessibility
         if (displayElement) {
             displayElement.setAttribute('aria-expanded', 'false');
         }
@@ -422,5 +409,111 @@ function handleUserMenuKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         toggleDropDownMenu();
+    }
+}
+
+/**
+ * Keyboard event handler for assigned dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleAssignedDropdownKeydown(event) {
+    const dropdown = document.getElementById('assigned-dropdown');
+    const displayElement = document.getElementById('assigned-display');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleAssignedDropdown();
+    } else if (event.key === 'Escape') {
+        if (dropdown && dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for category dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleCategoryDropdownKeydown(event) {
+    const dropdown = document.getElementById('category-options');
+    const displayElement = document.getElementById('category-display');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleCategoryDropdown();
+    } else if (event.key === 'Escape') {
+        if (dropdown && dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
+    }
+}
+
+/**
+ * Toggle function for assigned dropdown
+ */
+function toggleAssignedDropdown() {
+    const dropdown = document.getElementById('assigned-dropdown');
+    const displayElement = document.getElementById('assigned-display');
+    
+    if (dropdown && displayElement) {
+        const isOpen = dropdown.style.display === 'block';
+        dropdown.style.display = isOpen ? 'none' : 'block';
+        displayElement.setAttribute('aria-expanded', !isOpen);
+        
+        if (!isOpen) {
+            setTimeout(() => {
+                const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
+                if (firstItem) firstItem.focus();
+            }, 50);
+        }
+    }
+}
+
+/**
+ * Toggle function for category dropdown
+ */
+function toggleCategoryDropdown() {
+    const dropdown = document.getElementById('category-options');
+    const displayElement = document.getElementById('category-display');
+    if (dropdown && displayElement) {
+        const isOpen = dropdown.style.display === 'block';
+        dropdown.style.display = isOpen ? 'none' : 'block';
+        displayElement.setAttribute('aria-expanded', !isOpen);
+        if (!isOpen) {
+            setTimeout(() => {
+                const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
+                if (firstItem) firstItem.focus();
+            }, 50);
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for edit assigned dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleAssignedDropdownEditKeydown(event) {
+    const dropdown = document.getElementById('assigned-dropdown-edit');
+    const displayElement = document.getElementById('assigned-display-edit');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactDropdownEdit();
+    } else if (event.key === 'Escape') {
+        if (dropdown && dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
     }
 }
