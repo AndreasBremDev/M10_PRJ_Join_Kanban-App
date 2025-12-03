@@ -60,6 +60,7 @@ header {
     padding: 0 77px 0;
     display: flex;
     justify-content: space-between;
+    width: 100vw;
 }
 
 .logo {
@@ -232,6 +233,7 @@ header {
 }
 
 .input-field {
+    position: relative;
     display: flex;
     justify-content: space-between;
     width: 352px;
@@ -261,15 +263,19 @@ header {
     cursor: pointer;
 }
 
+
 .error-msg {
-    min-height: 0px;
-    line-height: 0px;
-    font-size: 12px;
+    position: absolute;
+    bottom: -23px;
+    left: 0;
     color: var(--red);
-    padding-left: 2px;
-    display: flex;
-    align-items: center;
+    font-size: 12px;
+    line-height: 1.2;
+    white-space: normal;
+    word-break: break-word;
+    display: none;
 }
+
 
 .two-buttons {
     width: 322px;
@@ -307,7 +313,7 @@ footer a:hover {
 .register-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
 }
 
 .register-login {
@@ -315,7 +321,7 @@ footer a:hover {
     flex-direction: column;
     align-items: center;
     width: 598px;
-    height: 630px;
+    height: 645px;
     border-radius: 30px;
     background-color: var(--white);
     box-shadow: var(--shadow-box);
@@ -572,7 +578,6 @@ footer a:hover {
     .error-msg {
         white-space: normal;
         word-break: break-word;
-        line-height: 1.2em;
         text-align: left;
         width: 100%;
     }

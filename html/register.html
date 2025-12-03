@@ -53,8 +53,10 @@
                         <div class="icon-div" aria-hidden="true">
                             <img src="../assets/icons/person.png" alt="" aria-hidden="true">
                         </div>
+                        <div id="errMsgName" class="error-msg" role="alert" aria-live="polite" style="display: none;">
+                        </div>
                     </div>
-                    <div id="errMsgName" class="error-msg" role="alert" aria-live="polite" style="display: none;"></div>
+
 
                     <div class="input-field">
                         <label for="emailRegister" class="sr-only">Email Address (required)</label>
@@ -65,9 +67,10 @@
                         <div class="icon-div" aria-hidden="true">
                             <img src="../assets/icons/mail.png" alt="" aria-hidden="true">
                         </div>
+                        <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite" style="display: none;">
+                        </div>
                     </div>
-                    <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                    </div>
+
 
                     <div class="input-field">
                         <label for="passwordRegister" class="sr-only">Password (required)</label>
@@ -82,9 +85,11 @@
                                 tabindex="0" aria-label="Show or hide password"
                                 onkeydown="handlePasswordToggleKeydown(event, 'passwordRegister', 'passwordIcon')">
                         </div>
+                        <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite"
+                            style="display: none;">
+                        </div>
                     </div>
-                    <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                    </div>
+
 
                     <div class="input-field">
                         <label for="passwordRegisterConfirm" class="sr-only">Confirm Password (required)</label>
@@ -100,9 +105,10 @@
                                 tabindex="0" aria-label="Show or hide confirm password"
                                 onkeydown="handlePasswordToggleKeydown(event, 'passwordRegisterConfirm', 'passwordConfirmIcon')">
                         </div>
+                        <div id="errMsgPasswordConfirm" class="error-msg" role="alert" aria-live="polite"
+                            style="display: none;"></div>
                     </div>
-                    <div id="errMsgPasswordConfirm" class="error-msg" role="alert" aria-live="polite"
-                        style="display: none;"></div>
+
 
                     <div class="ta_center">
                         <input class="register_checkbox" type="checkbox" id="checkbox"
@@ -111,8 +117,8 @@
                             class="register_checkbox" href="/html/login_privacy_policy.html"
                             aria-label="Read our privacy policy"><span class="sign_up_link">Privacy policy</span></a>
                     </div>
-                    <div id="errMsgCheckbox" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                    </div>
+
+
 
                     <div class="register_sign_up">
                         <button class="btn_sign_up" id="signUp" type="submit" disabled aria-disabled="true">Sign
