@@ -42,7 +42,8 @@
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy active" href="privacy_policy.html" aria-current="page" aria-label="Privacy Policy - currently viewing">Privacy Policy</a>
+                    <a class="privacy_policy active" href="privacy_policy.html" aria-current="page"
+                        aria-label="Privacy Policy - currently viewing">Privacy Policy</a>
                     <a class="legal_notes" href="legal_notice.html" aria-label="Read our legal notice">Legal notice</a>
                 </div>
             </section>
@@ -55,22 +56,16 @@
             <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
         </div>
         <div class="header-right">
-            <div class="user-circle" 
-                onclick="toggleDropDownMenu()" 
-                id="currentUserInitials" 
-                tabindex="0"
-                role="button"
-                aria-expanded="false"
-                aria-haspopup="menu"
-                aria-label="User menu"
-                aria-controls="user-menu"
+            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials" tabindex="0" role="button"
+                aria-expanded="false" aria-haspopup="menu" aria-label="User menu" aria-controls="user-menu"
                 onkeydown="handleUserMenuKeydown(event)"></div>
 
             <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
                 <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
                 <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
                 <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
-                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log out</a>
+                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log
+                    out</a>
             </div>
         </div>
     </header>
@@ -467,6 +462,13 @@
             </p>
         </section>
     </main>
+
+    <div id="rotateInfoOverlay">
+        <div class="rotate-box">
+            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <p>Please rotate your Phone</p>
+        </div>
+    </div>
 </body>
 
 </html>

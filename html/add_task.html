@@ -154,7 +154,7 @@
                                 aria-labelledby="assigned" style="display: none;"></div>
                         </div>
                         <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay" role="group"
-                        aria-label="Currently assigned contacts" aria-live="polite"></div>
+                            aria-label="Currently assigned contacts" aria-live="polite"></div>
                     </div>
 
                     <div class="padding-bottom-24 add-task-label-box-sizing">
@@ -164,7 +164,8 @@
                         <div class="custom-select-container">
 
                             <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()"
-                                required aria-required="true" aria-describedby="category-error" aria-invalid="false" tabindex="0">
+                                required aria-required="true" aria-describedby="category-error" aria-invalid="false"
+                                tabindex="0">
 
                                 <span id="category-text">Select task category</span>
 
@@ -176,13 +177,14 @@
                                 </div>
                                 <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
                             </div>
-                            <div id="category-error" class="error-text" style="padding-top: 24px;" role="alert" aria-live="polite">This field is
-                        required</div>
+                            <div id="category-error" class="error-text" style="padding-top: 24px;" role="alert"
+                                aria-live="polite">This field is
+                                required</div>
                             <input type="hidden" id="category" value="">
-                            
+
                         </div>
                     </div>
-                    
+
 
                     <div class="padding-bottom-24 add-task-label-box-sizing">
                         <label for="subtask">Subtasks</label>
@@ -226,6 +228,13 @@
         <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board" role="alert"
             class="success-toast-img d-none">
     </main>
+
+    <div id="rotateInfoOverlay">
+        <div class="rotate-box">
+            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <p>Please rotate your Phone</p>
+        </div>
+    </div>
 
 </body>
 

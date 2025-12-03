@@ -168,11 +168,31 @@
     overscroll-behavior: contain;
   }
 
-  .nav_icon{
+  .nav_icon {
     padding: 32px 0;
   }
 
-  .nav_policy{
+  .nav_policy {
     margin-top: 30px;
+  }
+}
+
+@media screen and (orientation: landscape) and (max-width: 1000px) {
+  body>*:not(#rotateInfoOverlay) {
+    display: none;
+  }
+
+  #rotateInfoOverlay {
+    display: flex;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 800px) {
+  .main_summary {
+    height: 100vh;
+  }
+
+  .summary_content {
+    margin-bottom: 20px;
   }
 }

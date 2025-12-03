@@ -66,8 +66,9 @@
             <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
                 <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
             </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)" id="currentUserInitials" tabindex="0" role="button"
-                aria-expanded="false" aria-haspopup="menu" aria-controls="user-menu">
+            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
+                id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
+                aria-controls="user-menu">
             </div>
 
             <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
@@ -156,6 +157,13 @@
 
     <div id="add-task-overlay" class="add-task-overlay slide-in d-none" role="dialog" aria-modal="true"
         aria-hidden="true">
+    </div>
+
+    <div id="rotateInfoOverlay">
+        <div class="rotate-box">
+            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <p>Please rotate your Phone</p>
+        </div>
     </div>
 
 </body>

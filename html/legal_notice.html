@@ -42,8 +42,10 @@
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy" href="privacy_policy.html" aria-label="Read our privacy policy">Privacy Policy</a>
-                    <a class="legal_notes active" href="legal_notice.html" aria-current="page" aria-label="Legal notice - currently viewing">Legal notice</a>
+                    <a class="privacy_policy" href="privacy_policy.html" aria-label="Read our privacy policy">Privacy
+                        Policy</a>
+                    <a class="legal_notes active" href="legal_notice.html" aria-current="page"
+                        aria-label="Legal notice - currently viewing">Legal notice</a>
                 </div>
             </section>
         </div>
@@ -55,15 +57,17 @@
             <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
         </div>
         <div class="header-right">
-            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)" id="currentUserInitials" tabindex="0" role="button"
-                aria-expanded="false" aria-haspopup="menu" aria-label="User menu" aria-controls="user-menu">
+            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
+                id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
+                aria-label="User menu" aria-controls="user-menu">
             </div>
 
             <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
                 <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
                 <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
                 <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
-                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log out</a>
+                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log
+                    out</a>
             </div>
         </div>
     </header>
@@ -71,10 +75,10 @@
     <main class="legal-main legal-notice-page" role="main">
         <div class="legal_title">
             <h1 class="h1_legal">Legal Notice</h1>
-            <button type="button" class="go_back" onclick="history.back()" 
-                    aria-label="Go back to previous page" tabindex="0"
-                    onkeydown="if(event.key==='Enter'||event.key===' '){history.back(); event.preventDefault();}"
-                    style="background: none; border: none; cursor: pointer;">
+            <button type="button" class="go_back" onclick="history.back()" aria-label="Go back to previous page"
+                tabindex="0"
+                onkeydown="if(event.key==='Enter'||event.key===' '){history.back(); event.preventDefault();}"
+                style="background: none; border: none; cursor: pointer;">
                 <img src="/assets/icons/arrow-left-line.svg" alt="" aria-hidden="true">
             </button>
         </div>
@@ -92,7 +96,8 @@
 
         <section class="legal_notice_section" aria-labelledby="contact-heading">
             <h3 id="contact-heading" class="h3_legal">Contact Information</h3>
-            <p>Email: <a class="span_legal_notice" href="mailto:reibadatschie@web.de" aria-label="Send email to reibadatschie@web.de">reibadatschie@web.de</a></p>
+            <p>Email: <a class="span_legal_notice" href="mailto:reibadatschie@web.de"
+                    aria-label="Send email to reibadatschie@web.de">reibadatschie@web.de</a></p>
         </section>
 
         <section class="legal_notice_section" aria-labelledby="terms-heading">
@@ -155,8 +160,10 @@
             <p>
                 In no event will we, the listed students, or the <span class="span_legal_notice">Developer Akademie
                     GmbH</span>, be liable for
-                any direct, indirect, incidental, consequential or exemplary damages, including but not limited to, damages for loss of
-                profits, goodwill, use, data, or other intangible losses, even if we have been advised of the possibility of such damages, arising out
+                any direct, indirect, incidental, consequential or exemplary damages, including but not limited to,
+                damages for loss of
+                profits, goodwill, use, data, or other intangible losses, even if we have been advised of the
+                possibility of such damages, arising out
                 of or in connection with the use or performance of <span class="span_legal_notice">Join</span>.
             </p>
         </section>
@@ -175,10 +182,18 @@
         <section aria-labelledby="contact-info-heading">
             <h3 id="contact-info-heading" class="sr-only">Contact Information</h3>
             <p>For any questions or notices, please contact us at <a class="span_legal_notice"
-                    href="mailto:reibadatschie@web.de" aria-label="Send email for questions or notices">reibadatschie@web.de</a>.</p>
+                    href="mailto:reibadatschie@web.de"
+                    aria-label="Send email for questions or notices">reibadatschie@web.de</a>.</p>
             <p><span>Date:</span> <time datetime="2025-10-29">October 29, 2025</time></p>
         </section>
     </main>
+
+    <div id="rotateInfoOverlay">
+        <div class="rotate-box">
+            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <p>Please rotate your Phone</p>
+        </div>
+    </div>
 
 </body>
 

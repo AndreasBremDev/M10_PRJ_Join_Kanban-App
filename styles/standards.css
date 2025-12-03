@@ -220,7 +220,7 @@ nav {
 
 .nav_policy a.active:hover {
     background-color: var(--primary-active);
-    color:var(--A8A8A8);
+    color: var(--A8A8A8);
     transform: none;
 }
 
@@ -329,6 +329,50 @@ header {
 
 .border-2px {
     border: 2px solid #fff;
+}
+
+#rotateInfoOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+.rotate-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+}
+
+.rotate-phone {
+    width: 120px;
+    animation: rotatePhone 2.2s infinite ease-in-out;
+    opacity: 0.9;
+}
+
+@keyframes rotatePhone {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    40% {
+        transform: rotate(90deg);
+    }
+
+    60% {
+        transform: rotate(90deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
 }
 
 /* all input fields */
