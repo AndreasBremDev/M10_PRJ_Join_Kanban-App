@@ -70,13 +70,17 @@ function formatDate(deadlineDate) {
 function findNextDeadline(tasks) {
   let today = new Date();
   today.setHours(0, 0, 0, 0);
-  let urgentTasks = tasks.filter(t =>
-    String(t.priority || "").toLowerCase() === "urgent"
-  );
+
+  let urgentTasks = tasks.filter(t => {
+    const priority = String(t.priority || "").toLowerCase();
+    const board = normalizeBoardValue(t.board);
+    return (
+      priority === "urgent" && !board.includes("done") && t.dueDate
+    );
+  });
   if (urgentTasks.length === 0) return null;
   let deadlines = [];
   for (let task of urgentTasks) {
-    if (!task.dueDate) continue;
     let due = new Date(task.dueDate);
     if (isNaN(due)) continue;
     due.setHours(0, 0, 0, 0);
