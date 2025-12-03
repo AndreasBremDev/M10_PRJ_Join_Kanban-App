@@ -390,15 +390,7 @@ body {
 }
 
 .form-right-overlay {
-    /* display: flex; */
-    /* align-items: flex-start; */
-    /* padding: 0px;
-    gap: 24px; */
-    /* position: absolute; */
     width: 440px;
-    /* height: 400px;
-    left: 610.25px;
-    top: 174px; */
     border: 1px solid blue;
 }
 
