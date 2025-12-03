@@ -4,7 +4,6 @@ let autoScrollIntervalX = null;
 let scrollSpeed = 10;
 let scrollThreshold = 50;
 
-//
 let editAssignedIds = [];
 let editSubtasks = [];
 let editPriority = 'medium';

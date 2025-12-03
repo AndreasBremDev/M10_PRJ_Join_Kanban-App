@@ -717,6 +717,13 @@ function toggleContactSelection(contactId, event) {
     updateContactRowVisuals(contactId);
 }
 
+function handlecontactSelectonCheckboxKeydown(contactId, event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactSelection(contactId, event)
+    }
+}
+
 function updateContactRowVisuals(contactId) {
     let row = document.getElementById(`contact-row-${contactId}`);
     if (!row) return;
