@@ -326,7 +326,6 @@ body {
 .overlay-add-task {
     width: 1116px;
     max-width: 90%;
-    height: 870px;
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
@@ -356,9 +355,13 @@ body {
     flex: none;
     order: 0;
     flex-grow: 0;
+    display: flex;
+    align-items: center;
 }
 
 .close-add-task-overlay {
+    display: flex;
+    justify-content: center;
     position: absolute;
     width: 32px;
     height: 32px;
@@ -398,9 +401,8 @@ body {
 .form-actions-overlay {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-    padding: 0px;
-    gap: 4px;
+    gap: 16px;
+    margin-top: 48px;
 }
 
 .form-hint-overlay {
@@ -1065,9 +1067,18 @@ textarea {
     justify-content: space-between;
     margin-left: 60px;
     margin-right: 60px;
+    margin-bottom: 20px;
 }
 
 @media (max-width: 1150px) {
+
+    .btn-create-overlay {
+        height: 64px;
+    }
+
+    .btn-clear-overlay {
+        height: 64px;
+    }
 
     .divider-overlay {
         width: 0;
@@ -1128,4 +1139,55 @@ textarea {
 
     }
 
+}
+
+@media (max-width: 525px) {
+
+    .btn-create-overlay {
+        margin-bottom: 8px;
+    }
+
+    .btn-clear-overlay {
+        margin-bottom: 8px;
+    }
+
+    .form-left-overlay {
+        width: 325px;
+    }
+
+    .form-right-overlay {
+        width: 325px;
+    }
+
+    .form-actions-overlay {
+        margin-top: 8px;
+    }
+
+    .form-footer-overlay {
+        margin-left: 0;
+        margin-right: 0;
+        flex-direction: column;
+        align-items: center;
+    }
+
+
+}
+
+@media (max-width: 470px) {
+
+    .form-left-overlay {
+        width: 250px;
+    }
+
+
+    .form-right-overlay {
+        width: 250px;
+    }
+
+}
+
+@media (max-width: 335px) {
+    .form-actions-overlay {
+        gap: 4px;
+    }
 }

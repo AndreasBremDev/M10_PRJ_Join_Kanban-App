@@ -142,10 +142,12 @@ function getAddTaskOverlayTemplate(board) {
 
         <div class="overlay-scroll">
             <div class="overlay-header">
-                <h1 id="overlay-title" class="overlay-headline">Add Task</h1>
-                <button onclick="closeAddTaskOverlay()" class="close-add-task-overlay" aria-label="Close add task dialog">
-                <img src="/assets/icons/close.svg" alt="">
-            </button>
+
+                <div><h1 id="overlay-title" class="overlay-headline">Add Task</h1></div>
+                <div><button onclick="closeAddTaskOverlay()" class="close-add-task-overlay" aria-label="Close add task dialog">
+                    <img src="/assets/icons/close.svg" alt="">
+                    </button>
+                </div>    
             </div>
             
             
@@ -247,11 +249,11 @@ function getAddTaskOverlayTemplate(board) {
                         <p class="form-hint form-hint-overlay">
                             <span class="required-marker">*</span>This field is required
                         </p>
-                        <div class="form-actions form-actions-overlay" role="group" aria-label="Form actions">
-                            <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">
+                        <div class="form-actions-overlay" role="group" aria-label="Form actions">
+                            <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear btn-clear-overlay">
                                 Cancel ✖
                             </button>
-                            <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create">
+                            <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create btn-create-overlay">
                                 Create Task ✔
                             </button>
                         </div>
