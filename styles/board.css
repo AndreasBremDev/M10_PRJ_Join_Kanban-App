@@ -581,7 +581,6 @@ body {
 }
 
 .subtask-input-wrapper:focus-within {
-    border-color: var(--primary-hover);
     outline: 2px solid #29ABE2;
     outline-offset: 2px;
 }
