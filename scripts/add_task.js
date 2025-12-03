@@ -88,7 +88,7 @@ function finalizeTaskCreation() {
  * Clears all form inputs and resets form state
  */
 function clearForm() {
-    document.getElementById("task-form").reset();
+    document.getElementById("task-form");
     document.getElementById('category-text').innerHTML = 'Select task category';
     document.getElementById('category').value = '';
     editSubtasks = [];
