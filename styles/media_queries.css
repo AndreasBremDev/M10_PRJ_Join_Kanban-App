@@ -177,22 +177,15 @@
   }
 }
 
-@media screen and (orientation: landscape) and (max-width: 1000px) {
-  body>*:not(#rotateInfoOverlay) {
+@media screen and (orientation: landscape) 
+  and (max-width: 1000px) 
+  and (max-height: 500px) {
+
+  body > *:not(#rotateInfoOverlay) {
     display: none;
   }
 
   #rotateInfoOverlay {
     display: flex;
-  }
-}
-
-@media (orientation: landscape) and (max-height: 800px) {
-  .main_summary {
-    height: 100vh;
-  }
-
-  .summary_content {
-    margin-bottom: 20px;
   }
 }

@@ -1,7 +1,6 @@
 body {
     display: flex;
     font-family: 'Inter', sans-serif;
-    height: 100vh;
 }
 
 .main-add-task {
@@ -96,8 +95,6 @@ select {
     align-items: flex-start;
     width: 100%;
     height: 424px;
-    overflow-x: hidden;
-    overflow-y: scroll;
     max-width: 1200px;
 }
 
@@ -602,7 +599,6 @@ select:focus {
         width: calc(100% - 232px);
         margin-left: 232px;
         padding: 40px;
-        height: 100vh;
         overflow-y: auto;
         overflow-x: hidden;
         box-sizing: border-box;
