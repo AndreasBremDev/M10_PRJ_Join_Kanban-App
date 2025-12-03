@@ -692,7 +692,12 @@ body {
 
 @media (max-height: 850px) {
   .main_summary{
+    height: 100vh;
     overflow: scroll;
+    margin-bottom: 16px;
+  }
+
+  .summary_content{
     margin-bottom: 16px;
   }
 }
