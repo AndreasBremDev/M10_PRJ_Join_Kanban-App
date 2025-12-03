@@ -15,97 +15,108 @@
     <script src="../scripts/global.js" defer></script>
 </head>
 
-<body onload="checkLoggedInPageSecurity(); eachPageSetcurrentUserInitials()">
-    <nav>
+<body onload="checkLoggedInPageSecurity(); eachPageSetCurrentUserInitials(); initNavKeyboardSupport()">
+    <nav role="navigation" aria-label="Main navigation">
         <div class="sidenav">
             <div class="nav_icon">
-                <img src="/assets/icons/Join_light.png" alt="">
+                <img src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true">
             </div>
             <section class="menu">
                 <div class="nav_navigation">
-                    <a class="nav_summary" href="/html/summary.html">
-                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
+                    <a class="nav_summary" href="/html/summary.html" aria-label="Go to Summary page">
+                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Summary</p>
                     </a>
-                    <a class="nav_add_task" href="/html/add_task.html">
-                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
+                    <a class="nav_add_task" href="/html/add_task.html" aria-label="Go to Add Task page">
+                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Add Task</p>
                     </a>
-                    <a class="nav_board" href="/html/board.html">
-                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
+                    <a class="nav_board" href="/html/board.html" aria-label="Go to Board page">
+                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Board</p>
                     </a>
-                    <a class="nav_contacts" href="/html/contacts.html">
-                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
+                    <a class="nav_contacts" href="/html/contacts.html" aria-label="Go to Contacts page">
+                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Contacts</p>
                     </a>
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy" href="privacy_policy.html">Privacy Policy</a>
-                    <a class="legal_notes active" href="legal_notice.html">Legal notice</a>
+                    <a class="privacy_policy" href="privacy_policy.html" aria-label="Read our privacy policy">Privacy
+                        Policy</a>
+                    <a class="legal_notes active" href="legal_notice.html" aria-current="page"
+                        aria-label="Legal notice - currently viewing">Legal notice</a>
                 </div>
             </section>
         </div>
     </nav>
 
-    <header>
+    <header role="banner">
         <div class="header-left">
             <h2 class="header_h2">Kanban Project Management Tool</h2>
-            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
         </div>
         <div class="header-right">
-            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
+            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
+                id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
+                aria-label="User menu" aria-controls="user-menu">
+            </div>
 
-            <div class="user-menu" id="user-menu">
-                <a href="/html/legal_notice.html">Legal Notice</a>
-                <a href="/html/privacy_policy.html">Privacy Policy</a>
-                <a href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
+                <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
+                <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
+                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
+                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log
+                    out</a>
             </div>
         </div>
     </header>
 
-    <main class="legal-main legal-notice-page">
+    <main class="legal-main legal-notice-page" role="main">
         <div class="legal_title">
             <h1 class="h1_legal">Legal Notice</h1>
-            <a class="go_back" onclick="history.back()">
-                <img src="/assets/icons/arrow-left-line.svg" alt="arrow-left">
-            </a>
+            <button type="button" class="go_back" onclick="history.back()" aria-label="Go back to previous page"
+                tabindex="0"
+                onkeydown="if(event.key==='Enter'||event.key===' '){history.back(); event.preventDefault();}"
+                style="background: none; border: none; cursor: pointer;">
+                <img src="/assets/icons/arrow-left-line.svg" alt="" aria-hidden="true">
+            </button>
         </div>
 
-        <section class="legal_notice_section">
-            <h2 class="h2_legal">Imprint</h2>
-            <ul>
-                <li>Marvin S.</li>
-                <li>Innerlohenerstraße 11</li>
-                <li>83324 Ruhpolding</li>
-            </ul>
+        <section class="legal_notice_section" aria-labelledby="imprint-heading">
+            <h2 id="imprint-heading" class="h2_legal">Imprint</h2>
+            <address>
+                <ul>
+                    <li>Marvin S.</li>
+                    <li>Innerlohenerstraße 11</li>
+                    <li>83324 Ruhpolding</li>
+                </ul>
+            </address>
         </section>
 
-        <section class="legal_notice_section">
-            <h3 class="h3_legal">Exploring the Board</h3>
-            <p>Email: <a class="span_legal_notice" href="mailto:reibadatschie@web.de">reibadatschie@web.de</a></p>
+        <section class="legal_notice_section" aria-labelledby="contact-heading">
+            <h3 id="contact-heading" class="h3_legal">Contact Information</h3>
+            <p>Email: <a class="span_legal_notice" href="mailto:reibadatschie@web.de"
+                    aria-label="Send email to reibadatschie@web.de">reibadatschie@web.de</a></p>
         </section>
-        <section class="legal_notice_section">
-            <h3 class="h3_legal">Acceptance of Terms</h3>
+
+        <section class="legal_notice_section" aria-labelledby="terms-heading">
+            <h3 id="terms-heading" class="h3_legal">Acceptance of Terms</h3>
             <p>
                 By accessing and using <span class="span_legal_notice">Join</span> (Product), you acknowledge and agree
-                to the following terms
-                and conditions,
+                to the following terms and conditions,
                 and any policies, guidelines, or amendments thereto that may be presented to you from time to time.
                 We, the listed students, may update or change the terms and conditions from time to time without notice.
             </p>
         </section>
 
-        <section class="legal_notice_section">
-            <h3 class="h3_legal">Scope and Ownership of the Product</h3>
+        <section class="legal_notice_section" aria-labelledby="scope-heading">
+            <h3 id="scope-heading" class="h3_legal">Scope and Ownership of the Product</h3>
             <p>
                 <span class="span_legal_notice">Join</span> has been developed as part of a student group project in a
-                web development
-                bootcamp at the
+                web development bootcamp at the
                 <span class="span_legal_notice">Developer Akademie GmbH</span>. It has an educational purpose and is not
-                intended for
-                extensive personal usage; business usage.
+                intended for extensive personal usage; business usage.
                 As such, we cannot guarantee consistent availability, reliability, accuracy, or any other aspect of
                 quality regarding this Product.
             </p>
@@ -117,72 +128,72 @@
             </p>
         </section>
 
-        <section class="legal_notice_section">
-            <h3 class="h3_legal">Proprietary Rights</h3>
+        <section class="legal_notice_section" aria-labelledby="rights-heading">
+            <h3 id="rights-heading" class="h3_legal">Proprietary Rights</h3>
             <p>
                 Aside from the design owned by <span class="span_legal_notice">Developer Akademie GmbH</span>, we, the
-                listed students, retain
-                all proprietary rights in
+                listed students, retain all proprietary rights in
                 <span class="span_legal_notice">Join</span>, including any associated copyrighted material, trademarks,
-                and other proprietary
-                information.
+                and other proprietary information.
             </p>
         </section>
 
-        <section class="legal_notice_section">
-            <h3 class="h3_legal">Use of the Product</h3>
+        <section class="legal_notice_section" aria-labelledby="usage-heading">
+            <h3 id="usage-heading" class="h3_legal">Use of the Product</h3>
             <p>
                 <span class="span_legal_notice">Join</span> is intended to be used for lawful purposes only, in
-                accordance with all applicable
-                laws and regulations.
+                accordance with all applicable laws and regulations.
                 Any use of <span class="span_legal_notice">Join</span> for illegal activities, or to harass, harm,
-                threaten, or intimidate
-                another person, is strictly prohibited.
+                threaten, or intimidate another person, is strictly prohibited.
                 You are solely responsible for your interactions with other users of <span
                     class="span_legal_notice">Join</span>.
             </p>
         </section>
 
-        <section class="legal_notice_section">
-            <h3 class="h3_legal">Disclaimer of Warranties and Limitation of Liability</h3>
+        <section class="legal_notice_section" aria-labelledby="disclaimer-heading">
+            <h3 id="disclaimer-heading" class="h3_legal">Disclaimer of Warranties and Limitation of Liability</h3>
             <p>
-                <span class="span_legal_notice">Join</span> is provided “as is” without warranty of any kind, either
-                express or implied,
-                including but not limited to
+                <span class="span_legal_notice">Join</span> is provided "as is" without warranty of any kind, either
+                express or implied, including but not limited to
                 the implied warranties of merchantability, fitness for a particular purpose, and non-infringement.
             </p>
             <p>
                 In no event will we, the listed students, or the <span class="span_legal_notice">Developer Akademie
                     GmbH</span>, be liable for
-                any direct, indirect,
-                incidental, consequential or exemplary damages, including but not limited to, damages for loss of
-                profits, goodwill, use, data,
-                or other intangible losses, even if we have been advised of the possibility of such damages, arising out
-                of or in connection
-                with the use or performance of <span class="span_legal_notice">Join</span>.
+                any direct, indirect, incidental, consequential or exemplary damages, including but not limited to,
+                damages for loss of
+                profits, goodwill, use, data, or other intangible losses, even if we have been advised of the
+                possibility of such damages, arising out
+                of or in connection with the use or performance of <span class="span_legal_notice">Join</span>.
             </p>
         </section>
 
-        <section class="legal_notice_section">
-            <h3 class="h3_legal">Indemnity</h3>
+        <section class="legal_notice_section" aria-labelledby="indemnity-heading">
+            <h3 id="indemnity-heading" class="h3_legal">Indemnity</h3>
             <p>
                 You agree to indemnify, defend and hold harmless us, the listed students, the <span
-                    class="span_legal_notice">Developer Akademie
-                    GmbH</span>, and our affiliates,
+                    class="span_legal_notice">Developer Akademie GmbH</span>, and our affiliates,
                 partners, officers, directors, agents, and employees, from and against any claim, demand, loss, damage,
-                cost, or liability
-                (including reasonable legal fees) arising out of or relating to your use of <span
-                    class="span_legal_notice">Join</span> and/or
-                your breach of this Legal Notice.
+                cost, or liability (including reasonable legal fees) arising out of or relating to your use of <span
+                    class="span_legal_notice">Join</span> and/or your breach of this Legal Notice.
             </p>
         </section>
 
-        <section>
+        <section aria-labelledby="contact-info-heading">
+            <h3 id="contact-info-heading" class="sr-only">Contact Information</h3>
             <p>For any questions or notices, please contact us at <a class="span_legal_notice"
-                    href="mailto:reibadatschie@web.de">reibadatschie@web.de</a>.</p>
-            <p><span>Date:</span> October 29, 2023</p>
+                    href="mailto:reibadatschie@web.de"
+                    aria-label="Send email for questions or notices">reibadatschie@web.de</a>.</p>
+            <p><span>Date:</span> <time datetime="2025-10-29">October 29, 2025</time></p>
         </section>
     </main>
+
+    <div id="rotateInfoOverlay">
+        <div class="rotate-box">
+            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <p>Please rotate your Phone</p>
+        </div>
+    </div>
 
 </body>
 

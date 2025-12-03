@@ -7,140 +7,172 @@
     <title>Join - Board</title>
     <link rel="shortcut icon" href="/assets/icons/Join_dark.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/board.css">
     <link rel="stylesheet" href="/styles/add_task.css">
-    <link rel="stylesheet" href="/styles/standards.css">
     <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="/styles/media_queries.css">
 
     <script src="/scripts/global.js" defer></script>
     <script src="/scripts/board.js" defer></script>
+    <script src="/scripts/board_keyboard.js" defer></script>
+    <script src="/scripts/board_drag_drop.js" defer></script>
     <script src="/scripts/login_register.js" defer></script>
-    <script src="/scripts/templates.js" defer></script>
-    <script src="/scripts/add_task.js" defer></script>
+    <script src="/scripts/templates.js"></script>
+    <script src="/scripts/add_task_core.js" defer></script>
+    <script src="/scripts/add_task_keyboard.js" defer></script>
+    <script src="/scripts/add_task_validation.js" defer></script>
+    <script src="/scripts/add_task_subtasks.js"></script>
+    <script src="/scripts/rendering.js" defer></script>
+    <script src="/scripts/contacts_dialogs.js" defer></script>
 
 </head>
 
 <body onload="init()">
-    <nav>
+    <nav role="navigation" aria-label="Main navigation">
         <div class="sidenav">
             <div class="nav_icon">
-                <img src="/assets/icons/Join_light.png" alt="">
+                <img src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true">
             </div>
             <section class="menu">
                 <div class="nav_navigation">
-                    <a class="nav_summary" href="/html/summary.html">
-                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
+                    <a class="nav_summary" href="/html/summary.html" aria-label="Go to Summary page">
+                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Summary</p>
                     </a>
-                    <a class="nav_add_task" href="/html/add_task.html">
-                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
+                    <a class="nav_add_task" href="/html/add_task.html" aria-label="Go to Add Task page">
+                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Add Task</p>
                     </a>
-                    <a class="nav_board active" href="/html/board.html">
-                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
+                    <a class="nav_board active" href="/html/board.html" aria-current="page"
+                        aria-label="Board page - currently selected">
+                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Board</p>
                     </a>
-                    <a class="nav_contacts" href="/html/contacts.html">
-                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
+                    <a class="nav_contacts" href="/html/contacts.html" aria-label="Go to Contacts page">
+                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Contacts</p>
                     </a>
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy" href="privacy_policy.html">Privacy Policy</a>
-                    <a class="legal_notes" href="legal_notice.html">Legal notice</a>
+                    <a class="privacy_policy" href="privacy_policy.html" aria-label="Read our privacy policy">Privacy
+                        Policy</a>
+                    <a class="legal_notes" href="legal_notice.html" aria-label="Read our legal notice">Legal notice</a>
                 </div>
             </section>
         </div>
     </nav>
 
-    <header>
+    <header role="banner">
         <div class="header-left">
-            <h2>Kanban Project Management Tool</h2>
+            <h2 class="header_h2">Kanban Project Management Tool</h2>
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
         </div>
         <div class="header-right">
-            <a href="/html/help.html">
-                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="help">
+            <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
+                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
             </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
-
-            <div class="user-menu" id="user-menu">
-                <a href="/html/legal_notice.html">Legal Notice</a>
-                <a href="/html/privacy_policy.html">Privacy Policy</a>
-                <a href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
+                id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
+                aria-controls="user-menu">
             </div>
 
+            <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
+                <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
+                <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
+                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
+                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log
+                    out</a>
+            </div>
         </div>
     </header>
 
-    <main>
+    <main class="board-header" role="main">
 
-        <section class="board-header">
-            <div class="board-header__top">
-                <h1 class="board-title">Board</h1>
+        <section class="board-header__top">
+            <h1 class="board-title">Board</h1>
 
-                <div class="board-actions">
-                    <div class="searchbar">
-                        <input class="searchbar__input" type="text" placeholder="Find Task">
-                        <div class="searchbar__divider"></div>
-                        <button class="btn_glass"><img class="searchbar__icon" src="/assets/icons/search.svg"
-                                alt="search icon"></button>
-                    </div>
-
-                    <button onclick="renderAddTaskOverlay('toDo')" class="btn btn-primary" type="button">Add Task
-                        +</button>
+            <div class="board-actions" role="group" aria-label="Board actions">
+                <div id="searchPositionDesktop">
                 </div>
+
+                <button onclick="renderAddTaskOverlay('toDo')" class="btn btn-primary" type="button"
+                    aria-label="Add Task">
+                    <span class="board_add_task_button_text">Add Task&nbsp;</span>+
+                </button>
+            </div>
+        </section>
+
+        <section id="searchPositionMobile">
+        </section>
+        <div id="searchFailed" class="search-error" role="alert" aria-live="polite"></div>
+
+        <section class="board_categories" role="region" aria-label="Kanban board with task columns">
+            <div class="category-block">
+                <div class="category">
+                    <h2 id="todo-heading">To do</h2>
+                    <button onclick="renderAddTaskOverlay('toDo')" class="add_btn" type="button"
+                        aria-label="Add new task to To Do column">+</button>
+                </div>
+                <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
+                    ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')" role="region"
+                    aria-labelledby="todo-heading" aria-describedby="todo-description" aria-dropeffect="move">
+                </section>
+                <div id="todo-description" class="sr-only">Drop zone for To Do tasks</div>
             </div>
 
-            <section class="board_categories">
-                <div class="category-block">
-                    <div class="category">
-                        <h2>To do</h2>
-                        <button onclick="renderAddTaskOverlay('toDo')" class="add_btn">+</button>
-                    </div>
-                    <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')">
-                    </section>
+            <div class="category-block">
+                <div class="category">
+                    <h2 id="progress-heading">In Progress</h2>
+                    <button onclick="renderAddTaskOverlay('inProgress')" class="add_btn" type="button"
+                        aria-label="Add new task to In Progress column">+</button>
                 </div>
+                <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
+                    ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')" role="region"
+                    aria-labelledby="progress-heading" aria-describedby="progress-description" aria-dropeffect="move">
+                </section>
+                <div id="progress-description" class="sr-only">Drop zone for In Progress tasks</div>
+            </div>
 
-                <div class="category-block">
-                    <div class="category">
-                        <h2>In Progress</h2>
-                        <button onclick="renderAddTaskOverlay('inProgress')" class="add_btn">+</button>
-                    </div>
-                    <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')">
-                    </section>
+            <div class="category-block">
+                <div class="category">
+                    <h2 id="feedback-heading">Await Feedback</h2>
+                    <button onclick="renderAddTaskOverlay('awaitFeedback')" class="add_btn" type="button"
+                        aria-label="Add new task to Await Feedback column">+</button>
                 </div>
+                <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
+                    ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')" role="region"
+                    aria-labelledby="feedback-heading" aria-describedby="feedback-description" aria-dropeffect="move">
+                </section>
+                <div id="feedback-description" class="sr-only">Drop zone for Await Feedback tasks</div>
+            </div>
 
-                <div class="category-block">
-                    <div class="category">
-                        <h2>Await Feedback</h2>
-                        <button onclick="renderAddTaskOverlay('awaitFeedback')" class="add_btn">+</button>
-                    </div>
-                    <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')">
-                    </section>
+            <div class="category-block">
+                <div class="category">
+                    <h2 id="done-heading">Done</h2>
                 </div>
+                <section id="categoryDone" class="draggable" ondragover="dragoverHandler(event)"
+                    ondragleave="toggleStyle(event)" ondrop="moveTo('done')" role="region"
+                    aria-labelledby="done-heading" aria-describedby="done-description" aria-dropeffect="move">
+                </section>
+                <div id="done-description" class="sr-only">Drop zone for completed tasks</div>
+            </div>
+        </section>
 
-                <div class="category-block">
-                    <div class="category">
-                        <h2>Done</h2>
-                    </div>
-                    <section id="categoryDone" class="draggable" ondragover="dragoverHandler(event)"
-                        ondragleave="toggleStyle(event)" ondrop="moveTo('done')">
-
-                    </section>
-                </div>
-
-            </section>
     </main>
 
-    <div id="add-task-overlay" class="add-task-overlay d-none slide-in">
+    <div id="add-task-overlay" class="add-task-overlay slide-in d-none" role="dialog" aria-modal="true"
+        aria-hidden="true">
+    </div>
+
+    <div id="rotateInfoOverlay">
+        <div class="rotate-box">
+            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <p>Please rotate your Phone</p>
+        </div>
     </div>
 
 </body>
-
-
 
 </html>

@@ -1,22 +1,37 @@
+let shownGreeting = loadShownGreeting();
+
+/**
+ * Initializes the summary page by checking security, handling greeting overlay,
+ * and loading summary data and user initials
+ */
 async function init() {
-  checkLoggedInPageSecurity()
+  checkLoggedInPageSecurity();
+  initNavKeyboardSupport();
+  const overlay = document.getElementById("greeting_overlay");
+  if (window.innerWidth <= 780 && !loadShownGreeting()) {
+    overlay.style.display = "flex";
+    overlay.style.opacity = "1";
+  } else {
+    overlay.style.display = "none";
+  }
   await initSummary();
-  await eachPageSetcurrentUserInitials();
+  await eachPageSetCurrentUserInitials();
 }
 
-/** get User-Object from realtime Database (REST) */
-async function fetchUserData(userId) {
-  let url = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user/" + userId + ".json";
-  let response = await fetch(url);
-  return await response.json();
-}
-
-/** checks, if entry Task on board */
+/**
+ * Checks if an entry is a valid task object
+ * @param {*} entry - The entry to validate
+ * @returns {boolean} True if entry is a valid task object with a board property
+ */
 function isTaskEntry(entry) {
   return entry && typeof entry === "object" && entry.board;
 }
 
-/** extracts Tasks from data.tasks and Top-Level */
+/**
+ * Extracts valid task objects from user data
+ * @param {Object} userData - The user data containing tasks
+ * @returns {Array} Array of valid task objects
+ */
 function extractTasks(userData) {
   let tasks = [];
   if (userData && userData.tasks && typeof userData.tasks === "object") {
@@ -25,72 +40,100 @@ function extractTasks(userData) {
       if (isTaskEntry(task)) tasks.push(task);
     }
   }
-  for (let key in userData) {
-    if (key !== "tasks" && isTaskEntry(userData[key])) tasks.push(userData[key]);
-  }
   return tasks;
 }
 
-/** norms Board-String */
+/**
+ * Normalizes board values by converting to lowercase and removing spaces/underscores
+ * @param {string} boardValue - The board value to normalize
+ * @returns {string} Normalized board value
+ */
 function normalizeBoardValue(boardValue) {
   return String(boardValue || "").toLowerCase().replace(/\s|_/g, "");
 }
 
-/** norm Date DD.MM.YYYY */
+/**
+ * Formats a date object to a readable string format
+ * @param {Date} deadlineDate - The date to format
+ * @returns {string} Formatted date string or '-' if no date provided
+ */
 function formatDate(deadlineDate) {
   if (!deadlineDate) return "-";
   return deadlineDate.toLocaleDateString("en-US", { month: "long", day: "2-digit", year: "numeric" });
 }
 
-/** checks the nearest Deadline */
+/**
+ * Finds the next upcoming deadline from urgent tasks
+ * @param {Array} tasks - Array of task objects
+ * @returns {Date|null} The next deadline date or null if none found
+ */
 function findNextDeadline(tasks) {
+  let today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  let urgentTasks = tasks.filter(t => {
+    const priority = String(t.priority || "").toLowerCase();
+    const board = normalizeBoardValue(t.board);
+    return (
+      priority === "urgent" && !board.includes("done") && t.dueDate
+    );
+  });
+  if (urgentTasks.length === 0) return null;
   let deadlines = [];
-  for (let i = 0; i < tasks.length; i++) {
-    let task = tasks[i];
-    if (task.dueDate) {
-      let dueDate = new Date(task.dueDate);
-      if (!isNaN(dueDate)) deadlines.push(dueDate);
-    }
+  for (let task of urgentTasks) {
+    let due = new Date(task.dueDate);
+    if (isNaN(due)) continue;
+    due.setHours(0, 0, 0, 0);
+    if (due >= today) deadlines.push(due);
   }
-  if (deadlines.length === 0) return null;
-  let earliest = new Date(Math.min.apply(null, deadlines));
-  return earliest;
+  return deadlines.length ? new Date(Math.min(...deadlines)) : null;
 }
 
 /**
- * Counts all key metrics for the summary cards.
- * Checks each task for its board status, priority, and due date.
+ * Counts tasks by category and calculates next deadline
+ * @param {Array} tasks - Array of task objects
+ * @returns {Object} Object containing task counts and next deadline
  */
 function countTasks(tasks) {
   let counts = { todo: 0, inProgress: 0, awaitingFeedback: 0, done: 0, urgent: 0, total: tasks.length, nextDeadline: "-" };
   for (let i = 0; i < tasks.length; i++) {
     let board = normalizeBoardValue(tasks[i].board);
     let priority = String(tasks[i].priority || "").toLowerCase();
-    if (board.indexOf("todo") !== -1) counts.todo++;
-    else if (board.indexOf("inprogress") !== -1) counts.inProgress++;
-    else if (board.indexOf("await") !== -1) counts.awaitingFeedback++;
-    else if (board.indexOf("done") !== -1) counts.done++;
+
+    if (board.includes("todo")) counts.todo++;
+    else if (board.includes("inprogress")) counts.inProgress++;
+    else if (board.includes("await")) counts.awaitingFeedback++;
+    else if (board.includes("done")) counts.done++;
+
     if (priority === "urgent") counts.urgent++;
   }
-  let nextDeadline = findNextDeadline(tasks);
-  counts.nextDeadline = formatDate(nextDeadline);
+  counts.nextDeadline = formatDate(findNextDeadline(tasks));
   return counts;
 }
 
-/** add numbers in cards (.numbers, .urgend_calender) */
+/**
+ * Renders task counts to the DOM elements
+ * @param {Object} taskCounts - Object containing task counts and deadline
+ */
 function renderSummaryCounts(taskCounts) {
   let numberFields = document.getElementsByClassName("numbers");
+
   if (numberFields[0]) numberFields[0].innerText = taskCounts.todo;
   if (numberFields[1]) numberFields[1].innerText = taskCounts.done;
   if (numberFields[2]) numberFields[2].innerText = taskCounts.urgent;
   if (numberFields[3]) numberFields[3].innerText = taskCounts.total;
   if (numberFields[4]) numberFields[4].innerText = taskCounts.inProgress;
   if (numberFields[5]) numberFields[5].innerText = taskCounts.awaitingFeedback;
+
   let deadlineField = document.getElementsByClassName("urgend_calender")[0];
   if (deadlineField) deadlineField.innerText = taskCounts.nextDeadline;
 }
 
-/** shows login Time and Name */
+/**
+ * Returns appropriate greeting text based on time of day
+ * @param {Date} currentDate - The current date (optional, defaults to new Date())
+ * @returns {string} Time-appropriate greeting text
+ */
 function getGreetingText(currentDate) {
   let hour = (currentDate || new Date()).getHours();
   if (hour < 12) return "Good morning,";
@@ -98,15 +141,16 @@ function getGreetingText(currentDate) {
   return "Good evening,";
 }
 
-/** writes greeting text */
+/**
+ * Renders personalized greeting message to DOM
+ * @param {string} userName - The user's name
+ * @param {Date} currentDate - The current date for time-based greeting
+ */
 function renderGreeting(userName, currentDate) {
   const greetingText = document.getElementById("greeting_text");
   const greetingName = document.getElementById("greeting_name");
-
   if (!greetingText || !greetingName) return;
-
   const baseGreeting = getGreetingText(currentDate);
-
   if (!userName || userName.toLowerCase() === "guest user") {
     greetingText.innerText = baseGreeting.replace(",", "!");
     greetingName.style.display = "none";
@@ -117,16 +161,21 @@ function renderGreeting(userName, currentDate) {
   }
 }
 
-/** Start: loading, counts, rendert */
+/**
+ * Initializes the summary dashboard by fetching user data,
+ * processing tasks, and rendering summary information
+ */
 async function initSummary() {
   try {
-    let userData = await fetchUserData(activeUserId);
+    let userData = await fetchData(`/${activeUserId}`);
     if (!userData) return;
     let tasks = extractTasks(userData);
     let taskCounts = countTasks(tasks);
     renderSummaryCounts(taskCounts);
     renderGreeting(userData.name || "Guest User", new Date());
-    if (window.innerWidth <= 780) {
+    shownGreeting = loadShownGreeting();
+    document.getElementById("greeting_overlay").style.display = "none";
+    if (window.innerWidth <= 780 && !shownGreeting) {
       showGreetingOverlay(userData.name || "Guest User");
     }
   } catch (error) {
@@ -134,13 +183,15 @@ async function initSummary() {
   }
 }
 
-/** shows and fades greeting overlay (mobile only) */
+/**
+ * Shows personalized greeting overlay on mobile devices with fade animation
+ * @param {string} userName - The user's name for personalized greeting
+ */
 function showGreetingOverlay(userName) {
-  if (window.innerWidth > 780) return;
+  if (window.innerWidth > 780 || shownGreeting) return;
   const overlay = document.getElementById("greeting_overlay");
   const text = document.getElementById("overlay_greeting_text");
   const name = document.getElementById("overlay_greeting_name");
-
   if (!overlay || !text || !name) {
     console.error("Overlay elements not found");
     return;
@@ -161,9 +212,14 @@ function showGreetingOverlay(userName) {
     overlay.style.display = "none";
     overlay.classList.remove("fade-out");
   }, 2000);
+  shownGreeting = true;
+  localStorage.setItem("shownGreeting", "true");
 }
 
-/** hides overlay if resizes to desktop version*/
+/**
+ * Handles window resize events for the greeting overlay
+ * Hides overlay on desktop view (> 780px width)
+ */
 function handleResizeOverlay() {
   const overlay = document.getElementById("greeting_overlay");
   if (window.innerWidth > 780 && overlay) {
@@ -172,4 +228,14 @@ function handleResizeOverlay() {
   }
 }
 
-// initSummary();
+/**
+ * Keyboard event handler for summary page links
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} url - The URL to navigate to
+ */
+function handleSummaryLinkKeydown(event, url) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        window.location.href = url;
+    }
+}

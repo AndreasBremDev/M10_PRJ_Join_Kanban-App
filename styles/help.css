@@ -41,6 +41,7 @@ main.help-page::-webkit-scrollbar {
     background-color: #e9e9e95b;
     transform: translate(-1px);
     border-radius: 50%;
+    cursor: pointer;
 }
 
 
@@ -90,7 +91,6 @@ main.help-page::-webkit-scrollbar {
     font-weight: 700;
     color: #000000;
     margin-bottom: 8px;
-    margin-left: ;
 }
 
 .help-steps {

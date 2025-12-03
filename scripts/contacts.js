@@ -1,14 +1,27 @@
-let contacts = [];
-bool = [0, 0]
+let bool = [0, 0];
+let lastFocusedContact = null;
 
-const isNameValid = val => /^[A-Za-z]+\s[A-Za-z]+$/.test(val);
-const isEmailValid = val => /^[^@]+@[^@]+\.[^@]+$/.test(val);
+/** Validates full name format (first name space last name) */
+const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
+/** Validates email address format */
+const isEmailValid = val => /^[^@]+@[^@]+\.(?!\.)[^@]+$/.test(val);
+/** Validates phone number format (6-20 characters, numbers and common symbols) */
+const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val);
 
+/**
+ * Initializes the contacts page by checking security, loading user initials and rendering contacts
+ */
 async function init() {
-    await eachPageSetcurrentUserInitials();
-    await renderContacts();
+    checkLoggedInPageSecurity();
+    initNavKeyboardSupport();
+    await eachPageSetCurrentUserInitials();
+    await loadAndRenderContacts('contactList', 'contacts');
 }
 
+/**
+ * Checks all contact creation validations and enables/disables the create button
+ * @param {string} id - The ID of the create button element
+ */
 function checkAllCreateContactValidations(id) {
     let contactCreateBtn = document.getElementById(id);
     let errMsgPhone = document.getElementById('errMsgPhone');
@@ -25,102 +38,93 @@ function checkAllCreateContactValidations(id) {
     }
 }
 
-async function renderContacts() {
-    let contactListRef = document.getElementById('contactList');
-    let contacts = await fetchContacts(activeUserId);
-    if (contacts.length == 0) {
-        contactListRef.innerHTML = emptyContactsHtml();
+// renderContacts function moved to rendering.js
+
+/**
+ * Converts the contactsFetch data to an array format
+ * Handles different data structures from Firebase: null/undefined, arrays, or objects
+ * @returns {Array} Array of contact objects with preserved IDs
+ */
+function convertContactsFetchObjectToArray() {
+    let contactsArray;
+    if (!contactsFetch) {
+        contactsArray = [];
+    } else if (Array.isArray(contactsFetch)) {
+        contactsArray = contactsFetch;
     } else {
-        let sortedContacts = contacts.sort((a, b) => {return a.name.localeCompare(b.name)});
-        let groupedContacts = groupContactsByLetter(sortedContacts)
-        contactListRef.innerHTML = renderGroupedContacts(groupedContacts)
-    };
-}
-
-function renderGroupedContacts(groupedContacts) {
-    let html = '';
-    let globalIndex = 0;
-    const sortedKeys = Object.keys(groupedContacts).sort();
-    for (const key of sortedKeys) {
-        html += renderContactsCardPartOne(key);
-
-        groupedContacts[key].forEach(contact => {
-            const color = contactCircleColor[globalIndex % contactCircleColor.length];
-            html += renderContactsCardPartTwo(contact, color);
-            globalIndex++;
-        });
+        contactsArray = Object.keys(contactsFetch).map(key => ({
+            id: key,
+            ...contactsFetch[key]
+        }));
     }
-    return html;
+    return contactsArray;
 }
 
-function renderContactLarge(contact, color) {
-    let contactLargeRef = document.getElementById('contactDisplayLarge');
-    contactLargeRef.innerHTML = '';
-    contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
-}
+// renderGroupedContacts function moved to rendering.js
 
-function checkContactForPhoneHtml(contact) {
-    if (contact?.phone) {
-        return `<a href="tel:${contact.phone}">${contact.phone}</a>`
-    } else {
-        return `<a href="tel:">phone number to be edit</a>`
+// renderContactLarge function moved to rendering.js
+
+/**
+ * Handles keyboard events for contact card interactions
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} contactJson - JSON string of the contact data
+ * @param {string} color - The contact's background color
+ */
+function handleContactKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        contactsLargeSlideIn(event, contactJson, color);
     }
 }
 
-function checkContactForPhone(contact) {
-    if (contact?.phone) {
-        return contact.phone;
-    } else {
-        return "";
+/**
+ * Handles keyboard events for contact cancel button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleContactCancelKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        contactCancel(event);
+    }
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        contactCancel(event);
     }
 }
 
-function groupContactsByLetter(contacts) {
-    const grouped = {};
-    contacts.forEach((c) => {
-        const letter = (c.name?.[0] || "?").toUpperCase();
-        if (!grouped[letter]) grouped[letter] = [];
-        grouped[letter].push(c);
-    });
-    return grouped;
+/**
+ * Handles keyboard events for contact submit button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleContactSubmitKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        // Trigger the form submission
+        const form = event.target.closest('form');
+        if (form) {
+            form.dispatchEvent(new Event('submit'));
+        }
+    }
 }
 
-function contactsLargeSlideIn(ev, contactJson, color) {
-    let contactLargeRef = document.getElementById('contactDisplayLarge');
-    contactLargeRef.style.display = 'none';
-    contactLargeRef.innerHTML = '';
-    let contact = JSON.parse(contactJson);
-    let contactCardsActive = document.querySelectorAll('.contact-list-card-active');
-    for (let i = 0; i < contactCardsActive.length; i++) {
-        contactCardsActive[i].classList.remove('contact-list-card-active');
-        contactCardsActive[i].classList.add('contact-list-card')
-    };
-    ev.currentTarget.classList.remove('contact-list-card');
-    ev.currentTarget.classList.add('contact-list-card-active');
-    contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
-    setTimeout(() => { contactLargeRef.style.display = 'block'; }, 10);
+/**
+ * Handles keyboard events for contact close button (duplicate function)
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleContactCloseKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        contactCancel(event);
+    }
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        contactCancel(event);
+    }
 }
 
-async function showDialogCreateContact(id, ev) {
-    let contactAddModal = document.getElementById(id);
-    ev.stopPropagation();
-    bool = [0, 0];
-    contactAddModal.innerHTML = renderAddNewContactOverlayHtml();
-    contactAddModal.showModal();
-    checkAllCreateContactValidations('contactCreateBtn');
-    await renderContacts();
-}
-
-async function showDialogEditContact(id, contactJson, color, ev) {
-    let contactEditDeleteModal = document.getElementById(id);
-    let contact = JSON.parse(contactJson);
-    ev.stopPropagation();
-    bool = [1, 1];
-    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color)
-    contactEditDeleteModal.showModal();
-    await renderContacts();
-}
-
+/**
+ * Creates a new contact and shows success feedback
+ */
 async function createContact() {
     await createNextIdPutDataAndRender();
     clearAllContactsInputFields();
@@ -131,45 +135,82 @@ async function createContact() {
     }, 1500);
 }
 
-async function updateSaveContact(currContactId) {
+/**
+ * Updates or deletes a contact based on the option parameter
+ * @param {string} currContactId - The ID of the contact to update/delete
+ * @param {string} option - The action to perform ('Edit' or 'Delete')
+ * @param {Event} [event] - The form submit event (optional)
+ */
+async function updateContact(currContactId, option, event = null) {
     try {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 10)));
         let contactData = await setContactDataForBackendUpload();
-        await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
+        if (option === 'Edit') {
+            await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
+        } else {
+            await deletePath('/' + activeUserId + '/contacts/' + currContactId);
+        }
         clearAllContactsInputFields();
-        await renderContacts();
-        document.getElementById('contactDisplayLarge').innerHTML = '';
-        document.getElementById('contactEditDeleteModal').close();
+        await loadAndRenderContacts('contactList', 'contacts');
+        const big = document.getElementById('contactDisplayLarge');
+        big.innerHTML = '';
+        big.style.display = 'none';
+        const modal = document.getElementById('contactEditDeleteModal');
+        modal.close();
     } catch (error) {
-        console.error('Error update/edit contact at putData():', error);
+        console.error('Error edit/delete contact at putData():', error);
     }
 }
 
-async function createNextIdPutDataAndRender() {    
+/**
+ * Creates the next contact ID, saves the contact data and re-renders the contact list
+ */
+async function createNextIdPutDataAndRender() {
     try {
         let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
         let contactData = await setContactDataForBackendUpload();
         let result = await putData('/' + activeUserId + '/contacts/' + nextContactId, contactData);
-        await renderContacts();
+        await loadAndRenderContacts('contactList', 'contacts');
     } catch (error) {
         console.error('Error creating contact:', error);
     }
 }
 
-function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
+/**
+ * Validates an input field using a provided validation function
+ * @param {string} inputId - The ID of the input element
+ * @param {string} errMsgId - The ID of the error message element
+ * @param {Function} validateFn - The validation function to use
+ * @param {number} boolIndex - The index in the bool array to update
+ * @param {string} errMsg - The error message to display
+ * @param {boolean} shouldCheckAll - Whether to check all validations after this one
+ * @returns {number} The validation result (0 or 1)
+ */
+function validateFieldContact(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
     let input = document.getElementById(inputId);
     let errMsgElem = document.getElementById(errMsgId);
     if (validateFn(input.value)) {
         errMsgElem.style.display = 'none';
+        input.setAttribute('aria-invalid', 'false');
         bool[boolIndex] = 1;
     } else {
         errMsgElem.style.display = 'block';
         errMsgElem.innerText = errMsg;
+        input.setAttribute('aria-invalid', 'true');
         bool[boolIndex] = 0;
     }
     if (shouldCheckAll) { checkAllCreateContactValidations('contactCreateBtn') };
     return bool[boolIndex];
 }
 
+/**
+ * Collects contact data from form inputs and formats it for backend upload
+ * @returns {Object} Contact data object with name, email, and phone
+ */
 async function setContactDataForBackendUpload() {
     let nameContact = document.getElementById('nameContact');
     let emailContact = document.getElementById('emailContact');
@@ -182,6 +223,9 @@ async function setContactDataForBackendUpload() {
     return data;
 }
 
+/**
+ * Clears all contact input fields
+ */
 function clearAllContactsInputFields() {
     let nameContact = document.getElementById('nameContact');
     let emailContact = document.getElementById('emailContact');
@@ -191,23 +235,110 @@ function clearAllContactsInputFields() {
     phoneContact.value = '';
 }
 
-function showPopup(id) {
-    const popup = document.getElementById(id);
-    popup.style.display = 'block';
-    popup.classList.add('show');
-    setTimeout(function () {
-        popup.classList.remove('show');
-        setTimeout(() => {
-            popup.style.display = 'none';
-        }, 500);
-    }, 1000);
+/**
+ * Handles keyboard events for contact back button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleContactBackKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        closeContactOverlay();
+    }
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        closeContactOverlay();
+    }
 }
 
-function contactCancel(ev) {
-    ev.stopPropagation();
-    let contactAddModal = document.getElementById('contactAddModal');
-    let contactEditDeleteModal = document.getElementById('contactEditDeleteModal');
-    clearAllContactsInputFields();
-    contactAddModal.close();
-    contactEditDeleteModal.close();
+/**
+ * Handles keyboard events for contact edit button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} contactJson - JSON string of the contact data
+ * @param {string} color - The contact's background color
+ */
+function handleContactEditKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Edit');
+    }
 }
+
+/**
+ * Handles keyboard events for contact delete button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} contactJson - JSON string of the contact data
+ * @param {string} color - The contact's background color
+ */
+function handleContactDeleteKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Delete');
+    }
+}
+
+/**
+ * Handles keyboard events for mobile menu toggle
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleMobileMenuKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleMobileContactMenu();
+    }
+    if (event.key === 'Escape') {
+        const menu = document.getElementById('mobileContactMenu');
+        if (menu.classList.contains('show')) {
+            menu.classList.remove('show');
+        }
+    }
+}
+
+/**
+ * Handles keyboard events for mobile edit button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} contactJson - JSON string of the contact data
+ * @param {string} color - The contact's background color
+ */
+function handleMobileEditKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openEditContact(contactJson, color);
+    }
+}
+
+/**
+ * Handles keyboard events for mobile delete button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} contactJson - JSON string of the contact data
+ * @param {string} color - The contact's background color
+ */
+function handleMobileDeleteKeydown(event, contactJson, color) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openDeleteContact(contactJson, color);
+    }
+}
+
+// checkContactForPhoneHtml function moved to rendering.js
+
+// checkContactForPhone function moved to rendering.js
+
+// groupContactsByLetter function moved to rendering.js
+
+// contactsLargeSlideIn function moved to contacts_dialogs.js
+
+// showDialogCreateContact function moved to contacts_dialogs.js
+
+// showDialogContact function moved to contacts_dialogs.js
+
+// contactCancel function moved to contacts_dialogs.js
+
+// closeContactOverlay function moved to contacts_dialogs.js
+
+// openEditContact function moved to contacts_dialogs.js
+
+// openDeleteContact function moved to contacts_dialogs.js
+
+// toggleMobileContactMenu function moved to contacts_dialogs.js
+
+// toggleMobileContactMenuTimeoutAriaAndFocus function moved to contacts_dialogs.js

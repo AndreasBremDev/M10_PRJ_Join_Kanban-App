@@ -15,57 +15,62 @@
     <script src="../scripts/global.js" defer></script>
 </head>
 
-<body onload="checkLoggedInPageSecurity(); eachPageSetcurrentUserInitials()">
-    <nav>
+<body onload="checkLoggedInPageSecurity(); eachPageSetCurrentUserInitials(); initNavKeyboardSupport()">
+    <nav aria-label="Main navigation">
         <div class="sidenav">
             <div class="nav_icon">
-                <img src="/assets/icons/Join_light.png" alt="">
+                <img src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true">
             </div>
             <section class="menu">
                 <div class="nav_navigation">
-                    <a class="nav_summary" href="/html/summary.html">
-                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="logo_summary">
+                    <a class="nav_summary" href="/html/summary.html" aria-label="Go to Summary page">
+                        <img src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Summary</p>
                     </a>
-                    <a class="nav_add_task" href="/html/add_task.html">
-                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="logo_add_tasks">
+                    <a class="nav_add_task" href="/html/add_task.html" aria-label="Go to Add Task page">
+                        <img src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Add Task</p>
                     </a>
-                    <a class="nav_board" href="/html/board.html">
-                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="logo_board">
+                    <a class="nav_board" href="/html/board.html" aria-label="Go to Board page">
+                        <img src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Board</p>
                     </a>
-                    <a class="nav_contacts" href="/html/contacts.html">
-                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="logo_contacts">
+                    <a class="nav_contacts" href="/html/contacts.html" aria-label="Go to Contacts page">
+                        <img src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Contacts</p>
                     </a>
                 </div>
 
                 <div class="nav_policy">
-                    <a class="privacy_policy active" href="privacy_policy.html">Privacy Policy</a>
-                    <a class="legal_notes" href="legal_notice.html">Legal notice</a>
+                    <a class="privacy_policy active" href="privacy_policy.html" aria-current="page"
+                        aria-label="Privacy Policy - currently viewing">Privacy Policy</a>
+                    <a class="legal_notes" href="legal_notice.html" aria-label="Read our legal notice">Legal notice</a>
                 </div>
             </section>
         </div>
     </nav>
 
-    <header>
+    <header role="banner">
         <div class="header-left">
             <h2 class="header_h2">Kanban Project Management Tool</h2>
-            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
         </div>
         <div class="header-right">
-            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials"></div>
+            <div class="user-circle" onclick="toggleDropDownMenu()" id="currentUserInitials" tabindex="0" role="button"
+                aria-expanded="false" aria-haspopup="menu" aria-label="User menu" aria-controls="user-menu"
+                onkeydown="handleUserMenuKeydown(event)"></div>
 
-            <div class="user-menu" id="user-menu">
-                <a href="/html/legal_notice.html">Legal Notice</a>
-                <a href="/html/privacy_policy.html">Privacy Policy</a>
-                <a href="/index.html" id="logout-btn" onclick="logout()">Log out</a>
+            <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
+                <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
+                <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
+                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
+                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log
+                    out</a>
             </div>
         </div>
     </header>
 
-    <main class="legal-main legal-privacy-page">
+    <main class="legal-main legal-privacy-page" role="main">
         <div class="legal_title">
             <h1 class="h1_legal">Privacy Policy</h1>
             <a class="go_back" onclick="history.back()">
@@ -457,6 +462,13 @@
             </p>
         </section>
     </main>
+
+    <div id="rotateInfoOverlay">
+        <div class="rotate-box">
+            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <p>Please rotate your Phone</p>
+        </div>
+    </div>
 </body>
 
 </html>

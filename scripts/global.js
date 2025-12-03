@@ -1,16 +1,26 @@
-const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
+const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
 let activeUserId;
-activeUserId = loadFromLocalStorage();
+activeUserId = loadActiveUserId();
 let isUserMenuListenerAdded = false;
+let contacts = [];
+let tasks = [];
 
-function loadFromLocalStorage() {
-    let activeUserIdLoad = JSON.parse(localStorage.getItem("activeUserId"));
-    if (activeUserIdLoad !== null) {
-        return activeUserIdLoad;
-    } else {
-        console.log("Security Check");
-        return 0;
-    }
+/**
+ * Loads the active user ID from localStorage
+ * @returns {number} The active user ID, defaults to 0 if not found
+ */
+function loadActiveUserId() {
+    const val = localStorage.getItem("activeUserId");
+    return val ? JSON.parse(val) : 0;
+}
+
+/**
+ * Loads the greeting shown status from localStorage
+ * @returns {boolean} True if greeting was already shown, false otherwise
+ */
+function loadShownGreeting() {
+    const val = localStorage.getItem("shownGreeting");
+    return val === "true";
 }
 
 let contactCircleColor = [
@@ -31,6 +41,27 @@ let contactCircleColor = [
     '#FFBB2B',
 ]
 
+/**
+ * Initializes keyboard navigation support for navigation links
+ * Enables Space key activation for nav links, privacy policy, and legal notice links
+ */
+function initNavKeyboardSupport() {
+    const navLinks = document.querySelectorAll('.nav_navigation a, .privacy_policy, .legal_notes');
+    navLinks.forEach(link => {
+        link.addEventListener('keydown', function(event) {
+            if (event.key === ' ') {
+                event.preventDefault();
+                this.click();
+            }
+        });
+    });
+}
+
+/**
+ * Calculates the next available ID for a given path
+ * @param {string} path - The database path to check for existing IDs
+ * @returns {Promise<number>} The next available ID
+ */
 async function calcNextId(path = "") {
     let nextId;
     try {
@@ -44,6 +75,12 @@ async function calcNextId(path = "") {
     return nextId;
 }
 
+/**
+ * Sends a PUT request to the Firebase database
+ * @param {string} path - The database path
+ * @param {Object} data - The data to send
+ * @returns {Promise<Response>} The fetch response
+ */
 async function putData(path = "", data = {}) {
     try {
         let response = await fetch(BASE_URL + path + ".json", {
@@ -61,115 +98,95 @@ async function putData(path = "", data = {}) {
     }
 }
 
-async function fetchContacts(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/contacts" + ".json");
-        let fetchJson = await res.json();
-        contacts = Object.entries(fetchJson).map(([id, contactsData]) => ({
-            contactId: id,
-            ...contactsData
-        }));
-        return contacts
-    } catch (error) {
-        console.log("Error fetchContacts(): ", error);
+/**
+ * Loads and renders contacts for a specific page
+ * @param {string} divId - The ID of the container element
+ * @param {string} useAtPage - The page type ('addTask' or 'contacts')
+ */
+async function loadAndRenderContacts(divId, useAtPage) {
+    const containerId = document.getElementById(divId);
+    let sortedContacts = await fetchAndSortContacts(containerId);
+    contacts = sortedContacts;
+    containerId.innerHTML = '';
+    if (useAtPage === 'addTask') {
+        const html = sortedContacts.map((contact, i) => contactRowHTML(contact, i)).join('');
+        containerId.innerHTML = html;
+    } else if (useAtPage === 'contacts') {
+        let groupedContacts = groupContactsByLetter(sortedContacts);
+        containerId.innerHTML = renderGroupedContacts(groupedContacts);
     }
 }
-
-async function fetchTasks(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/tasks" + ".json");
-        let tasks = await res.json();
-        let tasksWithId = Object.entries(tasks).map(([id, taskData]) => ({
-            id: id,
-            ...taskData
-        }));
-        return tasksWithId
-    } catch (error) {
-        console.log("Error fetchTasks(): ", error);
-    }
-}
-async function fetchUserName(activeUserId) {
-    try {
-        let res = await fetch(BASE_URL + "/" + activeUserId + "/name" + ".json");
-        let response = await res.json();
-        return response
-    } catch (error) {
-        console.log("Error fetchTasks(): ", error);
-    }
-}
-
-async function eachPageSetcurrentUserInitials() {
-    let currentUserInitials = document.getElementById('currentUserInitials');
-    let currentUser = await fetchUserName(activeUserId);
-    let initials = await getInitials(currentUser);
-    currentUserInitials.innerHTML = initials;
-}
-
-// function to extract initials from a full name
-function getInitials(name) {
-    return name.split(' ').map(part => part.charAt(0).toUpperCase()).join('');
-}
-
-// function to fetch user data from firebase
-async function fetchUserData(path) {
-    try {
-        let url = `${BASE_URL}${path}`;
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new Error(`Error fetching data from ${path}`);
-        }
-        let result = await response.json();
-        return result
-    } catch (error) {
-        console.error("Error loading user data:", error);
-        return null;
-    }
-}
-
-// function to create a user circle and put it to the container
-function createUserCircle(containerId, initials, index) {
-    const color = contactCircleColor[index % contactCircleColor.length]; // choose color from  contactCircleColor
-    const userCircle = document.createElement('div'); // create a 'div' element for the circle
-    userCircle.classList.add('user-circle-intials');
-    userCircle.textContent = initials; // set the initials as text inside the circle
-    userCircle.style.backgroundColor = color; // set the background color for the circle
-
-    const container = document.getElementById(containerId); // get the container to append the circle
-    if (container) {
-        container.appendChild(userCircle); // put circle tot he container
-    } else {
-        console.error(`Container ${containerId} not found!`);  // error handling
-    }
-}
-
-// function to load user contacts and create user circles for each contact
-async function renderUserCircles() {
-    const contacts = await fetchUserData(`/${activeUserId}/contacts.json`); // fetch contacts for the active user
-    if (!contacts) {
-        console.error("No contacts found for user:", activeUserId); // error message
-        return;
-    }
-    // loop through the contacts and create a circle for each one
-    contacts.forEach((contact, index) => {
-        if (contact) {
-            const initials = getInitials(contact.name); // // Extract initials
-            createUserCircle('user-initial-circle', initials, index); // create and append the user circle
-        }
-    });
-}
-
-
-
 
 /**
- * Delete a task from the backend.
+ * Fetches and sorts contacts from the database
+ * @param {HTMLElement} containerId - The container element for error display
+ * @returns {Promise<Array>} Sorted array of contacts
  */
-
-async function deleteTask(taskId) {
+async function fetchAndSortContacts(containerId = "") {
     try {
-        const taskPath = `/${activeUserId}/tasks/${taskId}`;
-        const response = await fetch(BASE_URL + taskPath + ".json", {
+        const contactsObj = await fetchData(`/${activeUserId}/contacts`);
+        if (contactsObj.length == 0) { throw new Error; }
+        const contactsArray = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+        let contactsWithoutUndefined = contactsArray.filter(i => i.name !== undefined);
+        let sortedContacts = contactsWithoutUndefined.sort((a, b) => a.name.localeCompare(b.name));
+        return sortedContacts
+    } catch (error) {
+        containerId.innerHTML = '';
+        containerId.innerHTML = emptyContactsHtml();
+    }
+}
+
+/**
+ * Fetches data from the Firebase database
+ * @param {string} path - The database path to fetch from
+ * @returns {Promise<Object|null>} The fetched data or null on error
+ */
+async function fetchData(path = "") {
+    try {
+        let response = await fetch(BASE_URL + path + ".json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error loading data:", error);
+    }
+}
+
+/**
+ * Sets the current user's initials in the navigation
+ */
+async function eachPageSetCurrentUserInitials() {
+    let currentUserInitials = document.getElementById('currentUserInitials');
+    let currentUser = await fetchData(`/${activeUserId}/name`);
+    let initials = await getInitials(currentUser);
+    currentUserInitials.innerHTML = initials;
+    currentUserInitials.setAttribute('aria-label', `${initials} - User menu`);
+    if (!window.resizeListenerAdded) {
+        window.addEventListener('resize', handleGlobalResize);
+        window.resizeListenerAdded = true;
+    }
+}
+
+/**
+ * Handles global window resize events, checks if function exist and calls summary-specific function
+ */
+function handleGlobalResize() {
+    if (typeof window.handleResizeOverlay === 'function') {
+        window.handleResizeOverlay();
+    }
+    else if (typeof handleResizeOverlay === 'function' && handleResizeOverlay !== window.handleResizeOverlay) {
+        handleResizeOverlay();
+    }
+}
+
+/**
+ * Deletes data from the Firebase database
+ * @param {string} path - The database path to delete
+ */
+async function deletePath(path = "") {
+    try {
+        const response = await fetch(BASE_URL + path + ".json", {
             method: "DELETE"
         });
         if (!response.ok) {
@@ -180,69 +197,288 @@ async function deleteTask(taskId) {
     }
 }
 
-
+/**
+ * Generates initials from a full name (enhanced version with null check)
+ * @param {string} name - The full name to generate initials from
+ * @returns {string} The initials in uppercase or '?' if name is invalid
+ */
 function getInitials(name) {
     if (!name) return "?";
     return name.split(' ').map(word => word[0].toUpperCase()).join('');
 }
 
-function renderContactCircle(contact, index) {
-    const color = contactCircleColor[index % contactCircleColor.length];
-    const initials = getInitials(contact.name);
-    return `<div class="user-circle-intials" style="background-color: ${color};">${initials}</div>`;
-}
-
-async function fetchContacts() {
-    return await fetchUserData(`/${activeUserId}/contacts.json`);
-}
-
-
-
 /**
- * Render contact circles in the overlay container.
- * Fetches contacts, generates initials, and displays them with colored circles.
+ * Logs out the current user and redirects to login page
  */
-async function renderContactsInOverlay() {
-    const contactsObject = await fetchContacts();
-    if (!contactsObject) return;
-    const container = document.getElementById('overlayContactContainer');
-    container.innerHTML = Object.values(contactsObject).map((contact, index) => {
-        const color = contactCircleColor[index % contactCircleColor.length];
-        const initials = getInitials(contact.name);
-        return `
-        <div class="contact-row" style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-        <div class="user-circle-intials" style="background-color: ${color};">${initials}</div>
-        <div style="font-size: 18px;">${contact.name}</div>
-        </div>`;
-    }).join('');
-}
-
 function logout() {
     localStorage.removeItem('activeUserId');
-    for (let i = 0; i < 100; i++) {
+    localStorage.removeItem('shownGreeting');
+    for (let i = 0; i < 50; i++) {
         history.pushState(null, null, '../index.html');
     }
     window.location.replace(window.location.origin + '/index.html');
 }
 
+/**
+ * Checks if user is logged in, redirects to login if not
+ */
 function checkLoggedInPageSecurity() {
     if (!localStorage.getItem('activeUserId')) {
-        window.location.href = '../index.html';
+        for (let i = 0; i < 50; i++) {
+            history.pushState(null, null, '../index.html');
+        }
+        window.location.replace(window.location.origin + '/index.html');
         return;
     }
 }
 
-function toggleDropDownMenu() {
+/**
+ * Toggles the user dropdown menu
+ * @param {Event} event - The triggering event
+ */
+function toggleDropDownMenu(event) {
+    if (event && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); }
     let userMenu = document.getElementById('user-menu');
-    userMenu.classList.toggle('show');
+    let userCircle = document.querySelector('.user-circle');
+    if (!userMenu || !userCircle) return;
+    const isOpen = userMenu.classList.contains('show');
+    if (isOpen) { closeDropDownAndResetFocus(userMenu, userCircle);
+    } else { openDropDownResetFocusAndAddListener(userMenu, userCircle); }
     if (!isUserMenuListenerAdded) {
-        document.addEventListener('click', function (event) {
-            let userMenu = document.getElementById('user-menu');
-            let userCircle = document.querySelector('.user-circle');
-            if (!userCircle.contains(event.target) && !userMenu.contains(event.target)) {
-                userMenu.classList.remove('show');
-            }
-        });
+        clickOutsideEventListener();
         isUserMenuListenerAdded = true;
+    }
+}
+
+/**
+ * Adds click outside listener for dropdown menu
+ */
+function clickOutsideEventListener() {
+    document.addEventListener('click', function (event) {
+        let userMenu = document.getElementById('user-menu');
+        let userCircle = document.querySelector('.user-circle');
+        if (userMenu && userMenu.classList.contains('show') &&
+            !userCircle?.contains(event.target) &&
+            !userMenu.contains(event.target)) {
+            closeDropDownAndResetFocus(userMenu, userCircle);
+        }
+    });
+}
+
+/**
+ * Opens dropdown menu and sets focus
+ * @param {HTMLElement} userMenu - The user menu element
+ * @param {HTMLElement} userCircle - The user circle element
+ */
+function openDropDownResetFocusAndAddListener(userMenu, userCircle) {
+    userMenu.classList.add('show');
+    userMenu.setAttribute('aria-hidden', 'false');
+    userCircle.setAttribute('aria-expanded', 'true');
+    setTimeout(() => {
+        const firstMenuItem = userMenu.querySelector('a[role="menuitem"]');
+        if (firstMenuItem) {
+            firstMenuItem.focus();
+        } else {
+            const menuLinks = userMenu.querySelectorAll('a');
+            if (menuLinks.length > 0) { menuLinks[0].focus() }
+        }
+    }, 150);
+    document.addEventListener('keydown', handleMenuEscapeKey);
+}
+
+/**
+ * Shows a popup notification with fade-in/fade-out animation
+ * @param {string} id - The ID of the popup element
+ */
+function showPopup(id) {
+    const popup = document.getElementById(id);
+    popup.style.display = 'block';
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 10);
+    setTimeout(function () {
+        popup.classList.remove('show');
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 500);
+    }, 1000);
+}
+
+/**
+ * Closes dropdown menu and resets focus
+ * @param {HTMLElement} userMenu - The user menu element
+ * @param {HTMLElement} userCircle - The user circle element
+ */
+function closeDropDownAndResetFocus(userMenu, userCircle) {
+    userMenu.classList.remove('show');
+    userMenu.setAttribute('aria-hidden', 'true');
+    userCircle.setAttribute('aria-expanded', 'false');
+    userCircle.focus();
+    
+    document.removeEventListener('keydown', handleMenuEscapeKey);
+}
+
+/**
+ * Keyboard event handler for menu escape key
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleMenuEscapeKey(event) {
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        let userMenu = document.getElementById('user-menu');
+        let userCircle = document.querySelector('.user-circle');
+        if (userMenu && userMenu.classList.contains('show')) {
+            closeDropDownAndResetFocus(userMenu, userCircle);
+        }
+    }
+}
+
+/**Event listener to close dropdown when clicking outside
+ */
+document.addEventListener('click', function (event) {
+    let dropdown = document.getElementById('assigned-dropdown');
+    let displayElement = document.getElementById('assigned-display');
+    handleDropdown(event, dropdown, displayElement);
+    
+    let dropdownEdit = document.getElementById('assigned-dropdown-edit');
+    let displayElementEdit = document.getElementById('assigned-display-edit');
+    handleDropdown(event, dropdownEdit, displayElementEdit);
+    
+    let categoryDropdown = document.getElementById('category-options');
+    let categoryDisplay = document.getElementById('category-display');
+    handleDropdown(event, categoryDropdown, categoryDisplay);
+});
+
+/**
+ * Unified dropdown handler for outside clicks
+ * @param {Event} event - The triggering event
+ * @param {HTMLElement} dropdown - The dropdown element
+ * @param {HTMLElement} displayElement - The display element
+ */
+function handleDropdown(event, dropdown, displayElement) {
+    if (dropdown && dropdown.style.display === 'block' &&
+        !dropdown.contains(event.target) &&
+        !displayElement?.contains(event.target)) {
+        dropdown.style.display = 'none';
+        if (displayElement) {
+            displayElement.setAttribute('aria-expanded', 'false');
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for user menu toggle
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleUserMenuKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleDropDownMenu();
+    }
+}
+
+/**
+ * Keyboard event handler for assigned dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleAssignedDropdownKeydown(event) {
+    const dropdown = document.getElementById('assigned-dropdown');
+    const displayElement = document.getElementById('assigned-display');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleAssignedDropdown();
+    } else if (event.key === 'Escape') {
+        if (dropdown && dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for category dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleCategoryDropdownKeydown(event) {
+    const dropdown = document.getElementById('category-options');
+    const displayElement = document.getElementById('category-display');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleCategoryDropdown();
+    } else if (event.key === 'Escape') {
+        if (dropdown && dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
+    }
+}
+
+/**
+ * Toggle function for assigned dropdown
+ */
+function toggleAssignedDropdown() {
+    const dropdown = document.getElementById('assigned-dropdown');
+    const displayElement = document.getElementById('assigned-display');
+    
+    if (dropdown && displayElement) {
+        const isOpen = dropdown.style.display === 'block';
+        dropdown.style.display = isOpen ? 'none' : 'block';
+        displayElement.setAttribute('aria-expanded', !isOpen);
+        
+        if (!isOpen) {
+            setTimeout(() => {
+                const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
+                if (firstItem) firstItem.focus();
+            }, 50);
+        }
+    }
+}
+
+/**
+ * Toggle function for category dropdown
+ */
+function toggleCategoryDropdown() {
+    const dropdown = document.getElementById('category-options');
+    const displayElement = document.getElementById('category-display');
+    if (dropdown && displayElement) {
+        const isOpen = dropdown.style.display === 'block';
+        dropdown.style.display = isOpen ? 'none' : 'block';
+        displayElement.setAttribute('aria-expanded', !isOpen);
+        if (!isOpen) {
+            setTimeout(() => {
+                const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
+                if (firstItem) firstItem.focus();
+            }, 50);
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for edit assigned dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleAssignedDropdownEditKeydown(event) {
+    const dropdown = document.getElementById('assigned-dropdown-edit');
+    const displayElement = document.getElementById('assigned-display-edit');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactDropdownEdit();
+    } else if (event.key === 'Escape') {
+        if (dropdown && dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
     }
 }

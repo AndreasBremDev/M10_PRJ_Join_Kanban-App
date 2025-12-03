@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: global.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: global.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
+let activeUserId;
+activeUserId = loadActiveUserId();
+let isUserMenuListenerAdded = false;
+let contacts = [];
+let tasks = [];
+
+/**
+ * Loads the active user ID from localStorage
+ * @returns {number} The active user ID, defaults to 0 if not found
+ */
+function loadActiveUserId() {
+    const val = localStorage.getItem("activeUserId");
+    return val ? JSON.parse(val) : 0;
+}
+
+/**
+ * Loads the greeting shown status from localStorage
+ * @returns {boolean} True if greeting was already shown, false otherwise
+ */
+function loadShownGreeting() {
+    const val = localStorage.getItem("shownGreeting");
+    return val === "true";
+}
+
+let contactCircleColor = [
+    '#FF7A00',
+    '#FF5EB3',
+    '#6E52FF',
+    '#9327FF',
+    '#00BEE8',
+    '#1FD7C1',
+    '#FF745E',
+    '#FFA35E',
+    '#FC71FF',
+    '#FFC701',
+    '#0038FF',
+    '#C3FF2B',
+    '#FFE62B',
+    '#FF4646',
+    '#FFBB2B',
+]
+
+/**
+ * Initializes keyboard navigation support for navigation links
+ * Enables Space key activation for nav links, privacy policy, and legal notice links
+ */
+function initNavKeyboardSupport() {
+    const navLinks = document.querySelectorAll('.nav_navigation a, .privacy_policy, .legal_notes');
+    navLinks.forEach(link => {
+        link.addEventListener('keydown', function(event) {
+            if (event.key === ' ') {
+                event.preventDefault();
+                this.click();
+            }
+        });
+    });
+}
+
+/**
+ * Calculates the next available ID for a given path
+ * @param {string} path - The database path to check for existing IDs
+ * @returns {Promise&lt;number>} The next available ID
+ */
+async function calcNextId(path = "") {
+    let nextId;
+    try {
+        let res = await fetch(BASE_URL + path + ".json");
+        let resJson = await res.json();
+        let userId = Object.keys(resJson);
+        userId.length === 0 ? nextId = 0 : nextId = userId.reduce((a, b) => Math.max(a, b), -Infinity) + 1;
+    } catch (error) {
+        console.log(`fetch in calcNextId() from ${BASE_URL + path} failed: `, error);
+    }
+    return nextId;
+}
+
+/**
+ * Sends a PUT request to the Firebase database
+ * @param {string} path - The database path
+ * @param {Object} data - The data to send
+ * @returns {Promise&lt;Response>} The fetch response
+ */
+async function putData(path = "", data = {}) {
+    try {
+        let response = await fetch(BASE_URL + path + ".json", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        return response;
+
+    } catch (fetchError) {
+        console.error('Fetch error:', fetchError);
+        throw fetchError;
+    }
+}
+
+/**
+ * Loads and renders contacts for a specific page
+ * @param {string} divId - The ID of the container element
+ * @param {string} useAtPage - The page type ('addTask' or 'contacts')
+ */
+async function loadAndRenderContacts(divId, useAtPage) {
+    const containerId = document.getElementById(divId);
+    let sortedContacts = await fetchAndSortContacts(containerId);
+    contacts = sortedContacts;
+    containerId.innerHTML = '';
+    if (useAtPage === 'addTask') {
+        const html = sortedContacts.map((contact, i) => contactRowHTML(contact, i)).join('');
+        containerId.innerHTML = html;
+    } else if (useAtPage === 'contacts') {
+        let groupedContacts = groupContactsByLetter(sortedContacts);
+        containerId.innerHTML = renderGroupedContacts(groupedContacts);
+    }
+}
+
+/**
+ * Fetches and sorts contacts from the database
+ * @param {HTMLElement} containerId - The container element for error display
+ * @returns {Promise&lt;Array>} Sorted array of contacts
+ */
+async function fetchAndSortContacts(containerId = "") {
+    try {
+        const contactsObj = await fetchData(`/${activeUserId}/contacts`);
+        if (contactsObj.length == 0) { throw new Error; }
+        const contactsArray = Object.entries(contactsObj || {}).map(([key, contact]) => ({ id: key, ...contact }));
+        let contactsWithoutUndefined = contactsArray.filter(i => i.name !== undefined);
+        let sortedContacts = contactsWithoutUndefined.sort((a, b) => a.name.localeCompare(b.name));
+        return sortedContacts
+    } catch (error) {
+        containerId.innerHTML = '';
+        containerId.innerHTML = emptyContactsHtml();
+    }
+}
+
+/**
+ * Fetches data from the Firebase database
+ * @param {string} path - The database path to fetch from
+ * @returns {Promise&lt;Object|null>} The fetched data or null on error
+ */
+async function fetchData(path = "") {
+    try {
+        let response = await fetch(BASE_URL + path + ".json");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error("Error loading data:", error);
+    }
+}
+
+/**
+ * Sets the current user's initials in the navigation
+ */
+async function eachPageSetCurrentUserInitials() {
+    let currentUserInitials = document.getElementById('currentUserInitials');
+    let currentUser = await fetchData(`/${activeUserId}/name`);
+    let initials = await getInitials(currentUser);
+    currentUserInitials.innerHTML = initials;
+    currentUserInitials.setAttribute('aria-label', `${initials} - User menu`);
+    if (!window.resizeListenerAdded) {
+        window.addEventListener('resize', handleGlobalResize);
+        window.resizeListenerAdded = true;
+    }
+}
+
+/**
+ * Handles global window resize events, checks if function exist and calls summary-specific function
+ */
+function handleGlobalResize() {
+    if (typeof window.handleResizeOverlay === 'function') {
+        window.handleResizeOverlay();
+    }
+    else if (typeof handleResizeOverlay === 'function' &amp;&amp; handleResizeOverlay !== window.handleResizeOverlay) {
+        handleResizeOverlay();
+    }
+}
+
+/**
+ * Deletes data from the Firebase database
+ * @param {string} path - The database path to delete
+ */
+async function deletePath(path = "") {
+    try {
+        const response = await fetch(BASE_URL + path + ".json", {
+            method: "DELETE"
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error deleting task:", error);
+    }
+}
+
+/**
+ * Generates initials from a full name (enhanced version with null check)
+ * @param {string} name - The full name to generate initials from
+ * @returns {string} The initials in uppercase or '?' if name is invalid
+ */
+function getInitials(name) {
+    if (!name) return "?";
+    return name.split(' ').map(word => word[0].toUpperCase()).join('');
+}
+
+/**
+ * Logs out the current user and redirects to login page
+ */
+function logout() {
+    localStorage.removeItem('activeUserId');
+    localStorage.removeItem('shownGreeting');
+    for (let i = 0; i &lt; 50; i++) {
+        history.pushState(null, null, '../index.html');
+    }
+    window.location.replace(window.location.origin + '/index.html');
+}
+
+/**
+ * Checks if user is logged in, redirects to login if not
+ */
+function checkLoggedInPageSecurity() {
+    if (!localStorage.getItem('activeUserId')) {
+        for (let i = 0; i &lt; 50; i++) {
+            history.pushState(null, null, '../index.html');
+        }
+        window.location.replace(window.location.origin + '/index.html');
+        return;
+    }
+}
+
+/**
+ * Toggles the user dropdown menu
+ * @param {Event} event - The triggering event
+ */
+function toggleDropDownMenu(event) {
+    if (event &amp;&amp; (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); }
+    let userMenu = document.getElementById('user-menu');
+    let userCircle = document.querySelector('.user-circle');
+    if (!userMenu || !userCircle) return;
+    const isOpen = userMenu.classList.contains('show');
+    if (isOpen) { closeDropDownAndResetFocus(userMenu, userCircle);
+    } else { openDropDownResetFocusAndAddListener(userMenu, userCircle); }
+    if (!isUserMenuListenerAdded) {
+        clickOutsideEventListener();
+        isUserMenuListenerAdded = true;
+    }
+}
+
+/**
+ * Adds click outside listener for dropdown menu
+ */
+function clickOutsideEventListener() {
+    document.addEventListener('click', function (event) {
+        let userMenu = document.getElementById('user-menu');
+        let userCircle = document.querySelector('.user-circle');
+        if (userMenu &amp;&amp; userMenu.classList.contains('show') &amp;&amp;
+            !userCircle?.contains(event.target) &amp;&amp;
+            !userMenu.contains(event.target)) {
+            closeDropDownAndResetFocus(userMenu, userCircle);
+        }
+    });
+}
+
+/**
+ * Opens dropdown menu and sets focus
+ * @param {HTMLElement} userMenu - The user menu element
+ * @param {HTMLElement} userCircle - The user circle element
+ */
+function openDropDownResetFocusAndAddListener(userMenu, userCircle) {
+    userMenu.classList.add('show');
+    userMenu.setAttribute('aria-hidden', 'false');
+    userCircle.setAttribute('aria-expanded', 'true');
+    setTimeout(() => {
+        const firstMenuItem = userMenu.querySelector('a[role="menuitem"]');
+        if (firstMenuItem) {
+            firstMenuItem.focus();
+        } else {
+            const menuLinks = userMenu.querySelectorAll('a');
+            if (menuLinks.length > 0) { menuLinks[0].focus() }
+        }
+    }, 150);
+    document.addEventListener('keydown', handleMenuEscapeKey);
+}
+
+/**
+ * Shows a popup notification with fade-in/fade-out animation
+ * @param {string} id - The ID of the popup element
+ */
+function showPopup(id) {
+    const popup = document.getElementById(id);
+    popup.style.display = 'block';
+    setTimeout(() => {
+        popup.classList.add('show');
+    }, 10);
+    setTimeout(function () {
+        popup.classList.remove('show');
+        setTimeout(() => {
+            popup.style.display = 'none';
+        }, 500);
+    }, 1000);
+}
+
+/**
+ * Closes dropdown menu and resets focus
+ * @param {HTMLElement} userMenu - The user menu element
+ * @param {HTMLElement} userCircle - The user circle element
+ */
+function closeDropDownAndResetFocus(userMenu, userCircle) {
+    userMenu.classList.remove('show');
+    userMenu.setAttribute('aria-hidden', 'true');
+    userCircle.setAttribute('aria-expanded', 'false');
+    userCircle.focus();
+    
+    document.removeEventListener('keydown', handleMenuEscapeKey);
+}
+
+/**
+ * Keyboard event handler for menu escape key
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleMenuEscapeKey(event) {
+    if (event.key === 'Escape') {
+        event.preventDefault();
+        let userMenu = document.getElementById('user-menu');
+        let userCircle = document.querySelector('.user-circle');
+        if (userMenu &amp;&amp; userMenu.classList.contains('show')) {
+            closeDropDownAndResetFocus(userMenu, userCircle);
+        }
+    }
+}
+
+/**Event listener to close dropdown when clicking outside
+ */
+document.addEventListener('click', function (event) {
+    let dropdown = document.getElementById('assigned-dropdown');
+    let displayElement = document.getElementById('assigned-display');
+    handleDropdown(event, dropdown, displayElement);
+    
+    let dropdownEdit = document.getElementById('assigned-dropdown-edit');
+    let displayElementEdit = document.getElementById('assigned-display-edit');
+    handleDropdown(event, dropdownEdit, displayElementEdit);
+    
+    let categoryDropdown = document.getElementById('category-options');
+    let categoryDisplay = document.getElementById('category-display');
+    handleDropdown(event, categoryDropdown, categoryDisplay);
+});
+
+/**
+ * Unified dropdown handler for outside clicks
+ * @param {Event} event - The triggering event
+ * @param {HTMLElement} dropdown - The dropdown element
+ * @param {HTMLElement} displayElement - The display element
+ */
+function handleDropdown(event, dropdown, displayElement) {
+    if (dropdown &amp;&amp; dropdown.style.display === 'block' &amp;&amp;
+        !dropdown.contains(event.target) &amp;&amp;
+        !displayElement?.contains(event.target)) {
+        dropdown.style.display = 'none';
+        if (displayElement) {
+            displayElement.setAttribute('aria-expanded', 'false');
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for user menu toggle
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleUserMenuKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleDropDownMenu();
+    }
+}
+
+/**
+ * Keyboard event handler for assigned dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleAssignedDropdownKeydown(event) {
+    const dropdown = document.getElementById('assigned-dropdown');
+    const displayElement = document.getElementById('assigned-display');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleAssignedDropdown();
+    } else if (event.key === 'Escape') {
+        if (dropdown &amp;&amp; dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for category dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleCategoryDropdownKeydown(event) {
+    const dropdown = document.getElementById('category-options');
+    const displayElement = document.getElementById('category-display');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleCategoryDropdown();
+    } else if (event.key === 'Escape') {
+        if (dropdown &amp;&amp; dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
+    }
+}
+
+/**
+ * Toggle function for assigned dropdown
+ */
+function toggleAssignedDropdown() {
+    const dropdown = document.getElementById('assigned-dropdown');
+    const displayElement = document.getElementById('assigned-display');
+    
+    if (dropdown &amp;&amp; displayElement) {
+        const isOpen = dropdown.style.display === 'block';
+        dropdown.style.display = isOpen ? 'none' : 'block';
+        displayElement.setAttribute('aria-expanded', !isOpen);
+        
+        if (!isOpen) {
+            setTimeout(() => {
+                const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
+                if (firstItem) firstItem.focus();
+            }, 50);
+        }
+    }
+}
+
+/**
+ * Toggle function for category dropdown
+ */
+function toggleCategoryDropdown() {
+    const dropdown = document.getElementById('category-options');
+    const displayElement = document.getElementById('category-display');
+    if (dropdown &amp;&amp; displayElement) {
+        const isOpen = dropdown.style.display === 'block';
+        dropdown.style.display = isOpen ? 'none' : 'block';
+        displayElement.setAttribute('aria-expanded', !isOpen);
+        if (!isOpen) {
+            setTimeout(() => {
+                const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
+                if (firstItem) firstItem.focus();
+            }, 50);
+        }
+    }
+}
+
+/**
+ * Keyboard event handler for edit assigned dropdown
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleAssignedDropdownEditKeydown(event) {
+    const dropdown = document.getElementById('assigned-dropdown-edit');
+    const displayElement = document.getElementById('assigned-display-edit');
+    
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactDropdownEdit();
+    } else if (event.key === 'Escape') {
+        if (dropdown &amp;&amp; dropdown.style.display === 'block') {
+            dropdown.style.display = 'none';
+            if (displayElement) {
+                displayElement.setAttribute('aria-expanded', 'false');
+                displayElement.focus();
+            }
+        }
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addSubtaskEdit">addSubtaskEdit</a></li><li><a href="global.html#addUser">addUser</a></li><li><a href="global.html#animateLogoFirstVisit">animateLogoFirstVisit</a></li><li><a href="global.html#bindDialogAccessibilityKeys">bindDialogAccessibilityKeys</a></li><li><a href="global.html#calcNextId">calcNextId</a></li><li><a href="global.html#cancelMainSubtaskInput">cancelMainSubtaskInput</a></li><li><a href="global.html#categoryColor">categoryColor</a></li><li><a href="global.html#changePasswordIcon">changePasswordIcon</a></li><li><a href="global.html#checkAllCreateContactValidations">checkAllCreateContactValidations</a></li><li><a href="global.html#checkAllValidations">checkAllValidations</a></li><li><a href="global.html#checkContactForPhone">checkContactForPhone</a></li><li><a href="global.html#checkContactForPhoneHtml">checkContactForPhoneHtml</a></li><li><a href="global.html#checkForAndDisplaySubtasks">checkForAndDisplaySubtasks</a></li><li><a href="global.html#checkForAndDisplayUserCircles">checkForAndDisplayUserCircles</a></li><li><a href="global.html#checkIconPathAndSetNewIconAndInputType">checkIconPathAndSetNewIconAndInputType</a></li><li><a href="global.html#checkLoggedInPageSecurity">checkLoggedInPageSecurity</a></li><li><a href="global.html#checkTaskAssignedAgainstNullOrInvalidContacts">checkTaskAssignedAgainstNullOrInvalidContacts</a></li><li><a href="global.html#clearAllContactsInputFields">clearAllContactsInputFields</a></li><li><a href="global.html#clearAllSignUpInputFields">clearAllSignUpInputFields</a></li><li><a href="global.html#clearError">clearError</a></li><li><a href="global.html#clearForm">clearForm</a></li><li><a href="global.html#clickOutsideEventListener">clickOutsideEventListener</a></li><li><a href="global.html#closeAddTaskOverlay">closeAddTaskOverlay</a></li><li><a href="global.html#closeContactOverlay">closeContactOverlay</a></li><li><a href="global.html#closeDropDownAndResetFocus">closeDropDownAndResetFocus</a></li><li><a href="global.html#contactCancel">contactCancel</a></li><li><a href="global.html#contactLargeSetFocusAndKeyEscapeHandling">contactLargeSetFocusAndKeyEscapeHandling</a></li><li><a href="global.html#contactsLargeSlideIn">contactsLargeSlideIn</a></li><li><a href="global.html#convertContactsFetchObjectToArray">convertContactsFetchObjectToArray</a></li><li><a href="global.html#countTasks">countTasks</a></li><li><a href="global.html#createContact">createContact</a></li><li><a href="global.html#createInitialCircle">createInitialCircle</a></li><li><a href="global.html#createNextIdPutDataAndRender">createNextIdPutDataAndRender</a></li><li><a href="global.html#createTaskObject">createTaskObject</a></li><li><a href="global.html#deletePath">deletePath</a></li><li><a href="global.html#deleteSubtaskEdit">deleteSubtaskEdit</a></li><li><a href="global.html#deleteTaskfromBoard">deleteTaskfromBoard</a></li><li><a href="global.html#dragendHandler">dragendHandler</a></li><li><a href="global.html#dragoverHandler">dragoverHandler</a></li><li><a href="global.html#dragstartHandler">dragstartHandler</a></li><li><a href="global.html#eachPageSetCurrentUserInitials">eachPageSetCurrentUserInitials</a></li><li><a href="global.html#editSubtask">editSubtask</a></li><li><a href="global.html#extractTasks">extractTasks</a></li><li><a href="global.html#fetchAndAddIdAndRemoveUndefinedContacts">fetchAndAddIdAndRemoveUndefinedContacts</a></li><li><a href="global.html#fetchAndSortContacts">fetchAndSortContacts</a></li><li><a href="global.html#fetchData">fetchData</a></li><li><a href="global.html#finalizeTaskCreation">finalizeTaskCreation</a></li><li><a href="global.html#findNextDeadline">findNextDeadline</a></li><li><a href="global.html#formatDate">formatDate</a></li><li><a href="global.html#getGreetingText">getGreetingText</a></li><li><a href="global.html#getInitials">getInitials</a></li><li><a href="global.html#getMergedTaskData">getMergedTaskData</a></li><li><a href="global.html#groupContactsByLetter">groupContactsByLetter</a></li><li><a href="global.html#guestLogin">guestLogin</a></li><li><a href="global.html#handleAssignedDropdownEditKeydown">handleAssignedDropdownEditKeydown</a></li><li><a href="global.html#handleAssignedDropdownKeydown">handleAssignedDropdownKeydown</a></li><li><a href="global.html#handleAutoScroll">handleAutoScroll</a></li><li><a href="global.html#handleCategoryDropdownKeydown">handleCategoryDropdownKeydown</a></li><li><a href="global.html#handleCloseKeydown">handleCloseKeydown</a></li><li><a href="global.html#handleContactBackKeydown">handleContactBackKeydown</a></li><li><a href="global.html#handleContactCancelKeydown">handleContactCancelKeydown</a></li><li><a href="global.html#handleContactCloseKeydown">handleContactCloseKeydown</a></li><li><a href="global.html#handleContactDeleteKeydown">handleContactDeleteKeydown</a></li><li><a href="global.html#handleContactEditKeydown">handleContactEditKeydown</a></li><li><a href="global.html#handleContactKeydown">handleContactKeydown</a></li><li><a href="global.html#handleContactSubmitKeydown">handleContactSubmitKeydown</a></li><li><a href="global.html#handleCreateTask">handleCreateTask</a></li><li><a href="global.html#handleDeleteTaskKeydown">handleDeleteTaskKeydown</a></li><li><a href="global.html#handleDropdown">handleDropdown</a></li><li><a href="global.html#handleEditTaskKeydown">handleEditTaskKeydown</a></li><li><a href="global.html#handleGlobalResize">handleGlobalResize</a></li><li><a href="global.html#handleMenuEscapeKey">handleMenuEscapeKey</a></li><li><a href="global.html#handleMobileDeleteKeydown">handleMobileDeleteKeydown</a></li><li><a href="global.html#handleMobileEditKeydown">handleMobileEditKeydown</a></li><li><a href="global.html#handleMobileMenuKeydown">handleMobileMenuKeydown</a></li><li><a href="global.html#handlePasswordToggleKeydown">handlePasswordToggleKeydown</a></li><li><a href="global.html#handlePriorityKeydown">handlePriorityKeydown</a></li><li><a href="global.html#handleResizeOverlay">handleResizeOverlay</a></li><li><a href="global.html#handleSaveKeydown">handleSaveKeydown</a></li><li><a href="global.html#handleScrollDown">handleScrollDown</a></li><li><a href="global.html#handleScrollLeft">handleScrollLeft</a></li><li><a href="global.html#handleScrollRight">handleScrollRight</a></li><li><a href="global.html#handleScrollUp">handleScrollUp</a></li><li><a href="global.html#handleScrollXStop">handleScrollXStop</a></li><li><a href="global.html#handleScrollYStop">handleScrollYStop</a></li><li><a href="global.html#handleSearchButtonKeydown">handleSearchButtonKeydown</a></li><li><a href="global.html#handleSearchKeydown">handleSearchKeydown</a></li><li><a href="global.html#handleSubtaskAddKeydown">handleSubtaskAddKeydown</a></li><li><a href="global.html#handleSubtaskCancelKeydown">handleSubtaskCancelKeydown</a></li><li><a href="global.html#handleSubtaskDeleteKeydown">handleSubtaskDeleteKeydown</a></li><li><a href="global.html#handleSubtaskEditActionKeydown">handleSubtaskEditActionKeydown</a></li><li><a href="global.html#handleSubtaskEditKeydown">handleSubtaskEditKeydown</a></li><li><a href="global.html#handleSubtaskKey">handleSubtaskKey</a></li><li><a href="global.html#handleSubtaskRowKeydown">handleSubtaskRowKeydown</a></li><li><a href="global.html#handleSubtaskSaveKeydown">handleSubtaskSaveKeydown</a></li><li><a href="global.html#handleSubtaskToggleKeydown">handleSubtaskToggleKeydown</a></li><li><a href="global.html#handleSummaryLinkKeydown">handleSummaryLinkKeydown</a></li><li><a href="global.html#handleTaskCardKeydown">handleTaskCardKeydown</a></li><li><a href="global.html#handleUserMenuKeydown">handleUserMenuKeydown</a></li><li><a href="global.html#handlecontactSelectonCheckboxKeydown">handlecontactSelectonCheckboxKeydown</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initAddTask">initAddTask</a></li><li><a href="global.html#initNavKeyboardSupport">initNavKeyboardSupport</a></li><li><a href="global.html#initSummary">initSummary</a></li><li><a href="global.html#initializeEditTaskAccessibility">initializeEditTaskAccessibility</a></li><li><a href="global.html#isCheckboxValid">isCheckboxValid</a></li><li><a href="global.html#isConfirmValid">isConfirmValid</a></li><li><a href="global.html#isEmailValid">isEmailValid</a></li><li><a href="global.html#isNameValid">isNameValid</a></li><li><a href="global.html#isPassValid">isPassValid</a></li><li><a href="global.html#isPhoneValid">isPhoneValid</a></li><li><a href="global.html#isTaskEntry">isTaskEntry</a></li><li><a href="global.html#loadActiveUserId">loadActiveUserId</a></li><li><a href="global.html#loadAndRenderContacts">loadAndRenderContacts</a></li><li><a href="global.html#loadEditTaskDetailOverlay">loadEditTaskDetailOverlay</a></li><li><a href="global.html#loadFillInputFields">loadFillInputFields</a></li><li><a href="global.html#loadShownGreeting">loadShownGreeting</a></li><li><a href="global.html#loadTaskVariableGlobally">loadTaskVariableGlobally</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#moveTo">moveTo</a></li><li><a href="global.html#normalizeBoardValue">normalizeBoardValue</a></li><li><a href="global.html#openDeleteContact">openDeleteContact</a></li><li><a href="global.html#openDropDownResetFocusAndAddListener">openDropDownResetFocusAndAddListener</a></li><li><a href="global.html#openEditContact">openEditContact</a></li><li><a href="global.html#passwordVisible">passwordVisible</a></li><li><a href="global.html#positionSearchField">positionSearchField</a></li><li><a href="global.html#putData">putData</a></li><li><a href="global.html#refreshBoardAfterEdit">refreshBoardAfterEdit</a></li><li><a href="global.html#renderAddTAskOverlay">renderAddTAskOverlay</a></li><li><a href="global.html#renderAddTaskOverlay">renderAddTaskOverlay</a></li><li><a href="global.html#renderAllCircles">renderAllCircles</a></li><li><a href="global.html#renderAssignedEditCircles">renderAssignedEditCircles</a></li><li><a href="global.html#renderContactLarge">renderContactLarge</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderContactsInOverlay">renderContactsInOverlay</a></li><li><a href="global.html#renderEditTaskDetail">renderEditTaskDetail</a></li><li><a href="global.html#renderGreeting">renderGreeting</a></li><li><a href="global.html#renderGroupedContacts">renderGroupedContacts</a></li><li><a href="global.html#renderLimitedCircles">renderLimitedCircles</a></li><li><a href="global.html#renderPlusCircle">renderPlusCircle</a></li><li><a href="global.html#renderSingleCircle">renderSingleCircle</a></li><li><a href="global.html#renderSubtasksForOverlay">renderSubtasksForOverlay</a></li><li><a href="global.html#renderSummaryCounts">renderSummaryCounts</a></li><li><a href="global.html#renderTaskDetail">renderTaskDetail</a></li><li><a href="global.html#renderTasks">renderTasks</a></li><li><a href="global.html#resetCategoryInput">resetCategoryInput</a></li><li><a href="global.html#resetCustomUIComponents">resetCustomUIComponents</a></li><li><a href="global.html#resetGlobalVariables">resetGlobalVariables</a></li><li><a href="global.html#resetMainSubtaskIcons">resetMainSubtaskIcons</a></li><li><a href="global.html#resetValidationVisuals">resetValidationVisuals</a></li><li><a href="global.html#saveEditedSubtask">saveEditedSubtask</a></li><li><a href="global.html#saveEditedTask">saveEditedTask</a></li><li><a href="global.html#saveTaskToServer">saveTaskToServer</a></li><li><a href="global.html#saveToLocalStorage">saveToLocalStorage</a></li><li><a href="global.html#searchAndClearSearchField">searchAndClearSearchField</a></li><li><a href="global.html#searchFieldPositionInclusiveWcagAriaConformityA">searchFieldPositionInclusiveWcagAriaConformityA</a></li><li><a href="global.html#searchFieldPositionInclusiveWcagAriaConformityB">searchFieldPositionInclusiveWcagAriaConformityB</a></li><li><a href="global.html#searchTasks">searchTasks</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#setCheckboxesById">setCheckboxesById</a></li><li><a href="global.html#setContactDataForBackendUpload">setContactDataForBackendUpload</a></li><li><a href="global.html#setDataForBackendUpload">setDataForBackendUpload</a></li><li><a href="global.html#setEditPrio">setEditPrio</a></li><li><a href="global.html#setEditPrioSetActivePriorityButton">setEditPrioSetActivePriorityButton</a></li><li><a href="global.html#setupEditFormValidation">setupEditFormValidation</a></li><li><a href="global.html#setupFormElements">setupFormElements</a></li><li><a href="global.html#setupPriorityButtons">setupPriorityButtons</a></li><li><a href="global.html#showDialogContact">showDialogContact</a></li><li><a href="global.html#showDialogCreateContact">showDialogCreateContact</a></li><li><a href="global.html#showGreetingOverlay">showGreetingOverlay</a></li><li><a href="global.html#showPopup">showPopup</a></li><li><a href="global.html#showSuccessImageAnimation">showSuccessImageAnimation</a></li><li><a href="global.html#slideInOverlay">slideInOverlay</a></li><li><a href="global.html#startAutoScroll">startAutoScroll</a></li><li><a href="global.html#stopAutoScroll">stopAutoScroll</a></li><li><a href="global.html#toggleAssignedDropdown">toggleAssignedDropdown</a></li><li><a href="global.html#toggleCategoryDropdown">toggleCategoryDropdown</a></li><li><a href="global.html#toggleContactDropdown">toggleContactDropdown</a></li><li><a href="global.html#toggleContactDropdownEdit">toggleContactDropdownEdit</a></li><li><a href="global.html#toggleContactSelection">toggleContactSelection</a></li><li><a href="global.html#toggleDropDownMenu">toggleDropDownMenu</a></li><li><a href="global.html#toggleEditAssign">toggleEditAssign</a></li><li><a href="global.html#toggleIfDropdownExist">toggleIfDropdownExist</a></li><li><a href="global.html#toggleMobileContactMenu">toggleMobileContactMenu</a></li><li><a href="global.html#toggleMobileContactMenuTimeoutAriaAndFocus">toggleMobileContactMenuTimeoutAriaAndFocus</a></li><li><a href="global.html#toggleNotAsDropdownDoesNotExist">toggleNotAsDropdownDoesNotExist</a></li><li><a href="global.html#toggleStyle">toggleStyle</a></li><li><a href="global.html#toggleSubtask">toggleSubtask</a></li><li><a href="global.html#toggleSubtaskWithScrollPreservation">toggleSubtaskWithScrollPreservation</a></li><li><a href="global.html#updateContact">updateContact</a></li><li><a href="global.html#updateContactRowVisuals">updateContactRowVisuals</a></li><li><a href="global.html#updatePrioUI">updatePrioUI</a></li><li><a href="global.html#updateSubtaskElementInDOM">updateSubtaskElementInDOM</a></li><li><a href="global.html#validateCategory">validateCategory</a></li><li><a href="global.html#validateCheckboxSeperately">validateCheckboxSeperately</a></li><li><a href="global.html#validateEditTaskForm">validateEditTaskForm</a></li><li><a href="global.html#validateField">validateField</a></li><li><a href="global.html#validateFieldContact">validateFieldContact</a></li><li><a href="global.html#validateTaskForm">validateTaskForm</a></li><li><a href="global.html#validateTaskFormCheckIfDateInputAndDateErrorExist">validateTaskFormCheckIfDateInputAndDateErrorExist</a></li><li><a href="global.html#validateTaskFormCheckIfTitleInputAndTitleErrorExist">validateTaskFormCheckIfTitleInputAndTitleErrorExist</a></li><li><a href="global.html#validateTaskFormIfDateSmallerToday">validateTaskFormIfDateSmallerToday</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Dec 03 2025 14:37:43 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

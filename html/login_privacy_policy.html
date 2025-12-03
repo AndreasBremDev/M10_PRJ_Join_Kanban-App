@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join - Legal Notice</title>
+    <title>Join - Privacy Policy</title>
     <link rel="shortcut icon" href="/assets/icons/Join_dark.png" type="image/x-icon">
 
     <link rel="stylesheet" href="/styles/standards.css">
@@ -15,35 +15,37 @@
 </head>
 
 <body>
-    <nav>
+    <nav role="navigation" aria-label="Main navigation">
         <div class="sidenav">
             <div class="nav_icon">
-                <img src="/assets/icons/Join_light.png" alt="">
+                <img src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true">
             </div>
             <section class="login_menu">
                 <div class="login_nav_navigation">
-                    <a class="nav_summary" href="/index.html">
-                        <img src="/assets/icons/prop_login.svg" height="30px" width="30px" alt="logo_summary">
+                    <a class="nav_summary" href="/index.html" aria-label="Go to Login page">
+                        <img src="/assets/icons/prop_login.svg" height="30px" width="30px" alt="" aria-hidden="true">
                         <p class="nav_p">Log In</p>
                     </a>
                 </div>
 
                 <div class="login_nav_policy">
-                    <a class="login_privacy_policy active" href="login_privacy_policy.html">Privacy Policy</a>
-                    <a class="login_legal_notes" href="login_legal_notice.html">Legal notice</a>
+                    <a class="login_privacy_policy active" href="login_privacy_policy.html" aria-current="page"
+                        aria-label="Privacy Policy - currently viewing">Privacy Policy</a>
+                    <a class="login_legal_notes" href="login_legal_notice.html" aria-label="Read our legal notice">Legal
+                        notice</a>
                 </div>
             </section>
         </div>
     </nav>
 
-    <header>
+    <header role="banner">
         <div class="header-left">
             <h2 class="header_h2">Kanban Project Management Tool</h2>
-            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="">
+            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
         </div>
     </header>
 
-    <main class="legal-main legal-privacy-page">
+    <main class="legal-main legal-privacy-page" role="main">
         <div class="legal_title">
             <h1 class="h1_legal">Privacy Policy</h1>
             <a class="go_back" onclick="history.back()">
@@ -436,7 +438,12 @@
         </section>
     </main>
 
-
+    <div id="rotateInfoOverlay">
+        <div class="rotate-box">
+            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <p>Please rotate your Phone</p>
+        </div>
+    </div>
 
 </body>
 
