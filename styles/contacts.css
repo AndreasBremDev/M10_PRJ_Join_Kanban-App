@@ -279,6 +279,7 @@ a {
     max-width: 70%;
     overflow-wrap: break-word;
     white-space: normal;
+    max-width: 500px;
 }
 
 .user-circle-large {
@@ -567,6 +568,7 @@ a {
 
 .contact-info-group p {
     margin: 4px 0;
+    word-wrap: break-word;
 }
 
 /* Mobile menu accessibility improvements */
@@ -1093,7 +1095,7 @@ a {
     }
 
     .contact-list-name {
-    max-width: 160px;
+    max-width: 260px;
     }
 
     .contact-list-email {

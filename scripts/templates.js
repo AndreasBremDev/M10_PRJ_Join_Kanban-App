@@ -300,7 +300,7 @@ function getTaskDetailOverlayTemplate(task) {
             
             <div class="task-detail-priority" role="text" aria-label="Priority: ${task.priority}">
                 <div style="font-size: 18px;">Priority:</div>
-                <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>
+                <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>&nbsp;&nbsp;
                 <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority icon" aria-hidden="true">
             </div>
 

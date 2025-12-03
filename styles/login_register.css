@@ -258,6 +258,7 @@ header {
     display: flex;
     align-items: center;
     padding-right: 12px;
+    cursor: pointer;
 }
 
 .error-msg {
