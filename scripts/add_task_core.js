@@ -178,7 +178,7 @@ function getMergedTaskData(oldTask) {
         title: document.getElementById('edit-title').value,
         description: document.getElementById('edit-description').value,
         dueDate: document.getElementById('edit-due-date').value,
-        category: document.getElementById('category').value,
+        category: document.getElementById('category').value == '' ? oldTask.category : document.getElementById('category').value,
         priority: editPriority,
         assigned: editAssignedIds,
         subtasks: editSubtasks
