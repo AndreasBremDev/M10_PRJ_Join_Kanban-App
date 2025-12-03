@@ -1106,6 +1106,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             type="submit" 
                             tabindex="0"
                             aria-label="${option === 'Edit' ? 'Save changes to contact' : 'Delete this contact'}"
+                            onclick="updateContact('${contact.id}','Edit')"
                             onkeydown="handleContactSubmitKeydown(event)">
                             ${option === 'Edit' ? 'Save' : 'Delete'}
                             <svg width="20" height="15" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

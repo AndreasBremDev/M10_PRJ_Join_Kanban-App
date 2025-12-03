@@ -139,9 +139,15 @@ async function createContact() {
  * Updates or deletes a contact based on the option parameter
  * @param {string} currContactId - The ID of the contact to update/delete
  * @param {string} option - The action to perform ('Edit' or 'Delete')
+ * @param {Event} [event] - The form submit event (optional)
  */
-async function updateContact(currContactId, option) {
+async function updateContact(currContactId, option, event = null) {
     try {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 10)));
         let contactData = await setContactDataForBackendUpload();
         if (option === 'Edit') {
             await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
