@@ -189,7 +189,7 @@ a {
 
 .contact-list-name {
     flex-grow: 1;
-    max-width: 300px;
+    max-width: 165px;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -199,7 +199,7 @@ a {
 
 .contact-list-email {
     flex-grow: 1;
-    max-width: 232px;
+    max-width: 165px;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -521,7 +521,7 @@ a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
     z-index: 300;
     cursor: pointer;
-    border:none;
+    border: none;
 }
 
 .mobile-actions-btn img {
@@ -644,6 +644,7 @@ a {
 
 /* Enhanced focus for high contrast accessibility */
 @media (prefers-contrast: high) {
+
     .contacts-edit-delete-buttons:focus-visible,
     .contacts-edit-delete-buttons:focus {
         outline: 3px solid #000000;
@@ -1012,6 +1013,14 @@ a {
         padding-left: 12px;
         text-align: center;
     }
+
+    .contact-list-name {
+        max-width: 100%;
+    }
+
+    .contact-list-email {
+        max-width: 100%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -1019,7 +1028,7 @@ a {
         margin-left: 0;
     }
 
-    #contactList{
+    #contactList {
         margin-bottom: 80px;
     }
 
@@ -1054,9 +1063,11 @@ a {
         overflow: hidden;
     }
 
-        .contact-list-sidebar-outer {
+    .contact-list-sidebar-outer {
         margin-bottom: 80px;
     }
+
+
 
 
 }
@@ -1095,11 +1106,11 @@ a {
     }
 
     .contact-list-name {
-    max-width: 260px;
+        max-width: 260px;
     }
 
     .contact-list-email {
-    max-width: 160px;
+        max-width: 160px;
     }
 
     .contact-list-card-active {
@@ -1126,7 +1137,7 @@ a {
         align-items: center;
         width: 100%;
     }
-    
+
     .contact-list-letter {
         padding: 0;
     }
@@ -1146,7 +1157,7 @@ a {
 }
 
 @media (max-height: 700px) {
-    .button_add_contact{
+    .button_add_contact {
         top: 72%;
     }
 
