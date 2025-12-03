@@ -324,15 +324,13 @@ body {
 }
 
 .overlay-add-task {
-    /* Karten-Design */
     width: 1116px;
-    max-width: 90%; /* Damit es nicht breiter als der Screen wird */
+    max-width: 90%;
     height: 870px;
-    max-height: 90vh; /* Damit es nicht höher als der Screen wird */
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
-    overflow: hidden; /* Wichtig für runde Ecken */
+    overflow: hidden;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -1084,12 +1082,6 @@ textarea {
         font-size: 36px;
     }
 
-    .task-form {
-        flex-direction: column;
-        padding: 0 24px;
-        gap: 16px;
-        overflow-y: auto;
-        flex: 1;
-    }
+
 
 }
