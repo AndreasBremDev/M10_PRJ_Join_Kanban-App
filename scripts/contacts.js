@@ -1,4 +1,5 @@
-bool = [0, 0];
+let bool = [0, 0];
+let lastFocusedContact = null;
 
 /** Validates full name format (first name space last name) */
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
@@ -37,22 +38,7 @@ function checkAllCreateContactValidations(id) {
     }
 }
 
-/**
- * Renders the contacts list by fetching, filtering, sorting and grouping contacts
- */
-async function renderContacts() {
-    let contactListRef = document.getElementById('contactList');
-    contactsFetch = await fetchData(`/${activeUserId}/contacts`);
-    let contactsArray = convertContactsFetchObjectToArray();
-    if (contactsArray.length == 0) {
-        contactListRef.innerHTML = emptyContactsHtml();
-    } else {
-        let contacts = contactsArray.filter(i => i && i.name);
-        let sortedContacts = contacts.sort((a, b) => { return a.name.localeCompare(b.name) });
-        let groupedContacts = groupContactsByLetter(sortedContacts);
-        contactListRef.innerHTML = renderGroupedContacts(groupedContacts);
-    };
-}
+// renderContacts function moved to rendering.js
 
 /**
  * Converts the contactsFetch data to an array format
@@ -74,34 +60,9 @@ function convertContactsFetchObjectToArray() {
     return contactsArray;
 }
 
-/**
- * Renders grouped contacts organized by first letter
- * @param {Object} groupedContacts - Object containing contacts grouped by first letter
- * @returns {string} HTML string for the grouped contacts
- */
-function renderGroupedContacts(groupedContacts) {
-    let html = '';
-    const sortedKeys = Object.keys(groupedContacts).sort();
-    for (const key of sortedKeys) {
-        html += renderContactsCardPartOne(key);
-        groupedContacts[key].forEach(contact => {
-            const color = contactCircleColor[contact.id % contactCircleColor.length];
-            html += renderContactsCardPartTwo(contact, color);
-        });
-    }
-    return html;
-}
+// renderGroupedContacts function moved to rendering.js
 
-/**
- * Renders the large contact detail view
- * @param {Object} contact - The contact object to display
- * @param {string} color - The background color for the contact circle
- */
-function renderContactLarge(contact, color) {
-    let contactLargeRef = document.getElementById('contactDisplayLarge');
-    contactLargeRef.innerHTML = '';
-    contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
-}
+// renderContactLarge function moved to rendering.js
 
 /**
  * Handles keyboard events for contact card interactions
@@ -147,113 +108,6 @@ function handleContactSubmitKeydown(event) {
 }
 
 /**
- * Returns HTML for contact phone number with tel: link
- * @param {Object} contact - The contact object
- * @returns {string} HTML string with phone link or placeholder
- */
-function checkContactForPhoneHtml(contact) {
-    if (contact?.phone) {
-        return `<a href="tel:${contact.phone}">${contact.phone}</a>`
-    } else {
-        return `<a href="tel:">phone number to be edit</a>`
-    }
-}
-
-/**
- * Returns the phone number of a contact or empty string
- * @param {Object} contact - The contact object
- * @returns {string} Phone number or empty string
- */
-function checkContactForPhone(contact) {
-    if (contact?.phone) {
-        return contact.phone;
-    } else {
-        return "";
-    }
-}
-
-/**
- * Groups contacts by their first letter for alphabetical organization
- * @param {Array} contacts - Array of contact objects
- * @returns {Object} Object with contacts grouped by first letter
- */
-function groupContactsByLetter(contacts) {
-    const grouped = {};
-    contacts.forEach((c) => {
-        const letter = (c.name?.[0] || "?").toUpperCase();
-        if (!grouped[letter]) grouped[letter] = [];
-        grouped[letter].push(c);
-    });
-    return grouped;
-}
-
-let lastFocusedContact = null;
-
-/**
- * Shows the large contact view with slide-in animation and focus management
- * @param {Event} ev - The triggering event
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
- */
-function contactsLargeSlideIn(ev, contactJson, color) {
-    let contactLargeRef = document.getElementById('contactDisplayLarge');
-    contactLargeRef.style.display = 'none';
-    contactLargeRef.innerHTML = '';
-    let contact = JSON.parse(contactJson);
-
-    lastFocusedContact = ev.currentTarget;
-    
-    let contactCardsActive = document.querySelectorAll('.contact-list-card-active');
-    for (let i = 0; i < contactCardsActive.length; i++) {
-        contactCardsActive[i].classList.remove('contact-list-card-active');
-        contactCardsActive[i].classList.add('contact-list-card')
-    };
-    ev.currentTarget.classList.remove('contact-list-card');
-    ev.currentTarget.classList.add('contact-list-card-active');
-    contactLargeRef.innerHTML = renderContactLargeHtml(contact, color);
-    
-    setTimeout(() => { 
-        contactLargeRef.style.display = 'block'; 
-        contactLargeRef.setAttribute('aria-hidden', 'false');
-        
-        // Focus management - set focus to Edit-Button
-        const editButton = contactLargeRef.querySelector('#edit-contact-btn');
-        if (editButton) {
-            editButton.focus();
-        }
-        
-        // Escape key handler for contact details
-        const handleEscapeKey = (event) => {
-            if (event.key === 'Escape') {
-                event.preventDefault();
-                closeContactOverlay();
-                document.removeEventListener('keydown', handleEscapeKey);
-            }
-        };
-        document.addEventListener('keydown', handleEscapeKey);
-    }, 10);
-}
-
-/**
- * Shows the dialog for creating a new contact
- * @param {string} id - The ID of the modal dialog
- * @param {Event} ev - The triggering event
- */
-async function showDialogCreateContact(id, ev) {
-    ev.stopPropagation();
-    const modal = document.getElementById(id);
-    bool = [0, 0];
-    modal.innerHTML = renderAddNewContactOverlayHtml();
-    modal.showModal();
-    setTimeout(() => {
-        modal.classList.add("open");
-    }, 10);
-
-    checkAllCreateContactValidations('contactCreateBtn');
-    await loadAndRenderContacts('contactList', 'contacts');;
-}
-
-/**
  * Handles keyboard events for contact close button (duplicate function)
  * @param {KeyboardEvent} event - The keyboard event
  */
@@ -266,27 +120,6 @@ function handleContactCloseKeydown(event) {
         event.preventDefault();
         contactCancel(event);
     }
-}
-
-/**
- * Shows the dialog for editing or deleting a contact
- * @param {string} id - The ID of the modal dialog
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
- * @param {Event} ev - The triggering event
- * @param {string} option - The action ('Edit' or 'Delete')
- */
-async function showDialogContact(id, contactJson, color, ev, option) {
-    ev.stopPropagation();
-    let contactEditDeleteModal = document.getElementById(id);
-    let contact = JSON.parse(contactJson);
-    bool = [1, 1];
-    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
-    contactEditDeleteModal.showModal();
-    setTimeout(() => {
-        contactEditDeleteModal.classList.add("open");
-    }, 10);
-    await renderContacts();
 }
 
 /**
@@ -397,60 +230,6 @@ function clearAllContactsInputFields() {
 }
 
 /**
- * Cancels and closes the contact dialog
- * @param {Event} ev - The triggering event
- */
-function contactCancel(ev) {
-    ev.preventDefault();
-    ev.stopPropagation();
-
-    const modal = ev.target.closest("dialog");
-    if (!modal) return;
-
-    modal.classList.remove("open");
-    modal.close();
-}
-
-/**
- * Closes the contact overlay and returns focus to the last focused contact
- */
-function closeContactOverlay() {
-    const overlay = document.getElementById('contactDisplayLarge');
-    
-    overlay.classList.remove('open');
-    overlay.style.display = 'none';
-    overlay.setAttribute('aria-hidden', 'true');
-    
-    document.body.classList.remove('no-scroll');
-    
-    // Return focus to last focused contact in the list
-    if (lastFocusedContact) {
-        lastFocusedContact.focus();
-        lastFocusedContact = null;
-    }
-}
-
-/**
- * Opens the edit contact dialog from mobile menu
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
- */
-function openEditContact(contactJson, color) {
-    toggleMobileContactMenu();
-    showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Edit');
-}
-
-/**
- * Opens the delete contact dialog from mobile menu
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
- */
-function openDeleteContact(contactJson, color) {
-    toggleMobileContactMenu();
-    showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Delete');
-}
-
-/**
  * Handles keyboard events for contact back button
  * @param {KeyboardEvent} event - The keyboard event
  */
@@ -534,42 +313,26 @@ function handleMobileDeleteKeydown(event, contactJson, color) {
     }
 }
 
-/////////////////// OVER 14 lines (refactor pending) ////////////////////
-/**
- * Updated toggleMobileContactMenu function to manage ARIA states (duplicate function)
- */
-function toggleMobileContactMenu() {
-    const menu = document.getElementById('mobileContactMenu');
-    const button = document.querySelector('.mobile-actions-btn');
+// checkContactForPhoneHtml function moved to rendering.js
 
-    const isOpen = menu.classList.contains('show');
+// checkContactForPhone function moved to rendering.js
 
-    if (isOpen) {
-        menu.classList.remove('show');
-        menu.setAttribute('aria-hidden', 'true');
-        button.setAttribute('aria-expanded', 'false');
-        document.body.onclick = null;
-    } else {
-        menu.classList.add('show');
-        menu.setAttribute('aria-hidden', 'false');
-        button.setAttribute('aria-expanded', 'true');
-        
-        const firstMenuItem = menu.querySelector('button[role="menuitem"]');
-        if (firstMenuItem) {
-            firstMenuItem.focus();
-        }
-        
-        setTimeout(() => {
-            document.body.onclick = (ev) => {
-                if (!menu.contains(ev.target) &&
-                    !button.contains(ev.target)) {
-                    menu.classList.remove('show');
-                    menu.setAttribute('aria-hidden', 'true');
-                    button.setAttribute('aria-expanded', 'false');
-                    button.focus(); // Return focus to button
-                    document.body.onclick = null;
-                }
-            }
-        }, 0);
-    }
-}
+// groupContactsByLetter function moved to rendering.js
+
+// contactsLargeSlideIn function moved to contacts_dialogs.js
+
+// showDialogCreateContact function moved to contacts_dialogs.js
+
+// showDialogContact function moved to contacts_dialogs.js
+
+// contactCancel function moved to contacts_dialogs.js
+
+// closeContactOverlay function moved to contacts_dialogs.js
+
+// openEditContact function moved to contacts_dialogs.js
+
+// openDeleteContact function moved to contacts_dialogs.js
+
+// toggleMobileContactMenu function moved to contacts_dialogs.js
+
+// toggleMobileContactMenuTimeoutAriaAndFocus function moved to contacts_dialogs.js

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: contacts.js</title>
+    <title>JSDoc: Source: add_task_keyboard.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: contacts.js</h1>
+    <h1 class="page-title">Source: add_task_keyboard.js</h1>
 
     
 
@@ -26,344 +26,254 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>let bool = [0, 0];
-let lastFocusedContact = null;
-
-/** Validates full name format (first name space last name) */
-const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
-/** Validates email address format */
-const isEmailValid = val => /^[^@]+@[^@]+\.(?!\.)[^@]+$/.test(val);
-/** Validates phone number format (6-20 characters, numbers and common symbols) */
-const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val);
-
-/**
- * Initializes the contacts page by checking security, loading user initials and rendering contacts
+            <pre class="prettyprint source linenums"><code>/**
+ * Add Task Keyboard Event Handlers and Accessibility Features
+ * Contains all keyboard navigation and accessibility functions for the add task module
  */
-async function init() {
-    checkLoggedInPageSecurity();
-    initNavKeyboardSupport();
-    await eachPageSetCurrentUserInitials();
-    await loadAndRenderContacts('contactList', 'contacts');
-}
 
 /**
- * Checks all contact creation validations and enables/disables the create button
- * @param {string} id - The ID of the create button element
- */
-function checkAllCreateContactValidations(id) {
-    let contactCreateBtn = document.getElementById(id);
-    let errMsgPhone = document.getElementById('errMsgPhone');
-    let allBoolEqualOne = bool.every(el => el === 1);
-    if (allBoolEqualOne) {
-        errMsgPhone.style.display = 'none';
-        contactCreateBtn.disabled = false;
-        contactCreateBtn.ariaDisabled = false;
-    } else {
-        errMsgPhone.style.display = 'block';
-        errMsgPhone.innerHTML = "Please enter at least full name and email"
-        contactCreateBtn.disabled = true;
-        contactCreateBtn.ariaDisabled = true;
-    }
-}
-
-// renderContacts function moved to rendering.js
-
-/**
- * Converts the contactsFetch data to an array format
- * Handles different data structures from Firebase: null/undefined, arrays, or objects
- * @returns {Array} Array of contact objects with preserved IDs
- */
-function convertContactsFetchObjectToArray() {
-    let contactsArray;
-    if (!contactsFetch) {
-        contactsArray = [];
-    } else if (Array.isArray(contactsFetch)) {
-        contactsArray = contactsFetch;
-    } else {
-        contactsArray = Object.keys(contactsFetch).map(key => ({
-            id: key,
-            ...contactsFetch[key]
-        }));
-    }
-    return contactsArray;
-}
-
-// renderGroupedContacts function moved to rendering.js
-
-// renderContactLarge function moved to rendering.js
-
-/**
- * Handles keyboard events for contact card interactions
+ * Handles keyboard navigation for priority buttons
  * @param {KeyboardEvent} event - The keyboard event
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
+ * @param {string} priority - The current priority level
  */
-function handleContactKeydown(event, contactJson, color) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        contactsLargeSlideIn(event, contactJson, color);
+function handlePriorityKeydown(event, priority) {
+    const priorities = ['urgent', 'medium', 'low'];
+    const currentIndex = priorities.indexOf(priority);
+    
+    switch(event.key) {
+        case 'ArrowLeft':
+        case 'ArrowUp':
+            event.preventDefault();
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : priorities.length - 1;
+            document.getElementById(`prio-${priorities[prevIndex]}`).focus();
+            break;
+            
+        case 'ArrowRight':
+        case 'ArrowDown':
+            event.preventDefault();
+            const nextIndex = currentIndex &lt; priorities.length - 1 ? currentIndex + 1 : 0;
+            document.getElementById(`prio-${priorities[nextIndex]}`).focus();
+            break;
+            
+        case 'Enter':
+        case ' ':
+            event.preventDefault();
+            setPriority(priority);
+            break;
     }
 }
 
 /**
- * Handles keyboard events for contact cancel button
+ * Handles keyboard events for assigned dropdown interactions
  * @param {KeyboardEvent} event - The keyboard event
  */
-function handleContactCancelKeydown(event) {
+function handleAssignedDropdownKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        contactCancel(event);
-    }
-    if (event.key === 'Escape') {
-        event.preventDefault();
-        contactCancel(event);
-    }
-}
-
-/**
- * Handles keyboard events for contact submit button
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleContactSubmitKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        // Trigger the form submission
-        const form = event.target.closest('form');
-        if (form) {
-            form.dispatchEvent(new Event('submit'));
+        toggleContactDropdown();
+    } else if (event.key === 'Escape') {
+        let dropdown = document.getElementById('assigned-dropdown');
+        if (dropdown.style.display === 'block') {
+            toggleContactDropdown();
         }
     }
 }
 
 /**
- * Handles keyboard events for contact close button (duplicate function)
+ * Handles keyboard events for close button
  * @param {KeyboardEvent} event - The keyboard event
  */
-function handleContactCloseKeydown(event) {
+function handleCloseKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        contactCancel(event);
-    }
-    if (event.key === 'Escape') {
-        event.preventDefault();
-        contactCancel(event);
+        closeAddTaskOverlay();
     }
 }
 
 /**
- * Creates a new contact and shows success feedback
- */
-async function createContact() {
-    await createNextIdPutDataAndRender();
-    clearAllContactsInputFields();
-    showPopup('popupContactCreated');
-    setTimeout(() => {
-        let contactAddModal = document.getElementById('contactAddModal');
-        contactAddModal.close()
-    }, 1500);
-}
-
-/**
- * Updates or deletes a contact based on the option parameter
- * @param {string} currContactId - The ID of the contact to update/delete
- * @param {string} option - The action to perform ('Edit' or 'Delete')
- */
-async function updateContact(currContactId, option) {
-    try {
-        let contactData = await setContactDataForBackendUpload();
-        if (option === 'Edit') {
-            await putData('/' + activeUserId + '/contacts/' + currContactId, contactData);
-        } else {
-            await deletePath('/' + activeUserId + '/contacts/' + currContactId);
-        }
-        clearAllContactsInputFields();
-        await loadAndRenderContacts('contactList', 'contacts');
-        const big = document.getElementById('contactDisplayLarge');
-        big.innerHTML = '';
-        big.style.display = 'none';
-        const modal = document.getElementById('contactEditDeleteModal');
-        modal.close();
-    } catch (error) {
-        console.error('Error edit/delete contact at putData():', error);
-    }
-}
-
-/**
- * Creates the next contact ID, saves the contact data and re-renders the contact list
- */
-async function createNextIdPutDataAndRender() {
-    try {
-        let nextContactId = await calcNextId('/' + activeUserId + '/contacts');
-        let contactData = await setContactDataForBackendUpload();
-        let result = await putData('/' + activeUserId + '/contacts/' + nextContactId, contactData);
-        await loadAndRenderContacts('contactList', 'contacts');
-    } catch (error) {
-        console.error('Error creating contact:', error);
-    }
-}
-
-/**
- * Validates an input field using a provided validation function
- * @param {string} inputId - The ID of the input element
- * @param {string} errMsgId - The ID of the error message element
- * @param {Function} validateFn - The validation function to use
- * @param {number} boolIndex - The index in the bool array to update
- * @param {string} errMsg - The error message to display
- * @param {boolean} shouldCheckAll - Whether to check all validations after this one
- * @returns {number} The validation result (0 or 1)
- */
-function validateFieldContact(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
-    let input = document.getElementById(inputId);
-    let errMsgElem = document.getElementById(errMsgId);
-    if (validateFn(input.value)) {
-        errMsgElem.style.display = 'none';
-        input.setAttribute('aria-invalid', 'false');
-        bool[boolIndex] = 1;
-    } else {
-        errMsgElem.style.display = 'block';
-        errMsgElem.innerText = errMsg;
-        input.setAttribute('aria-invalid', 'true');
-        bool[boolIndex] = 0;
-    }
-    if (shouldCheckAll) { checkAllCreateContactValidations('contactCreateBtn') };
-    return bool[boolIndex];
-}
-
-/**
- * Collects contact data from form inputs and formats it for backend upload
- * @returns {Object} Contact data object with name, email, and phone
- */
-async function setContactDataForBackendUpload() {
-    let nameContact = document.getElementById('nameContact');
-    let emailContact = document.getElementById('emailContact');
-    let phoneContact = document.getElementById('phoneContact');
-    let data = {
-        name: nameContact.value.trim(),
-        email: emailContact.value.trim().toLowerCase(),
-        phone: phoneContact.value.trim(),
-    };
-    return data;
-}
-
-/**
- * Clears all contact input fields
- */
-function clearAllContactsInputFields() {
-    let nameContact = document.getElementById('nameContact');
-    let emailContact = document.getElementById('emailContact');
-    let phoneContact = document.getElementById('phoneContact');
-    nameContact.value = '';
-    emailContact.value = '';
-    phoneContact.value = '';
-}
-
-/**
- * Handles keyboard events for contact back button
+ * Handles keyboard events for edit assigned dropdown
  * @param {KeyboardEvent} event - The keyboard event
  */
-function handleContactBackKeydown(event) {
+function handleAssignedDropdownEditKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        closeContactOverlay();
-    }
-    if (event.key === 'Escape') {
-        event.preventDefault();
-        closeContactOverlay();
-    }
-}
-
-/**
- * Handles keyboard events for contact edit button
- * @param {KeyboardEvent} event - The keyboard event
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
- */
-function handleContactEditKeydown(event, contactJson, color) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Edit');
-    }
-}
-
-/**
- * Handles keyboard events for contact delete button
- * @param {KeyboardEvent} event - The keyboard event
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
- */
-function handleContactDeleteKeydown(event, contactJson, color) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        showDialogContact('contactEditDeleteModal', contactJson, color, event, 'Delete');
-    }
-}
-
-/**
- * Handles keyboard events for mobile menu toggle
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleMobileMenuKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleMobileContactMenu();
-    }
-    if (event.key === 'Escape') {
-        const menu = document.getElementById('mobileContactMenu');
-        if (menu.classList.contains('show')) {
-            menu.classList.remove('show');
+        toggleContactDropdownEdit();
+    } else if (event.key === 'Escape') {
+        let dropdown = document.getElementById('assigned-dropdown-edit');
+        if (dropdown.style.display === 'block') {
+            toggleContactDropdownEdit();
         }
     }
 }
 
 /**
- * Handles keyboard events for mobile edit button
+ * Handles keyboard events for save button
  * @param {KeyboardEvent} event - The keyboard event
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
+ * @param {string} taskId - The task ID to save
  */
-function handleMobileEditKeydown(event, contactJson, color) {
+function handleSaveKeydown(event, taskId) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        openEditContact(contactJson, color);
+        saveEditedTask(taskId);
     }
 }
 
 /**
- * Handles keyboard events for mobile delete button
+ * Handles keyboard events for subtask cancel button
  * @param {KeyboardEvent} event - The keyboard event
- * @param {string} contactJson - JSON string of the contact data
- * @param {string} color - The contact's background color
  */
-function handleMobileDeleteKeydown(event, contactJson, color) {
+function handleSubtaskCancelKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        openDeleteContact(contactJson, color);
+        cancelMainSubtaskInput();
     }
 }
 
-// checkContactForPhoneHtml function moved to rendering.js
+/**
+ * Handles keyboard events for subtask add button
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleSubtaskAddKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        addSubtaskEdit();
+    }
+}
 
-// checkContactForPhone function moved to rendering.js
+/**
+ * Handles keyboard events for subtask edit input
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
+function handleSubtaskEditKeydown(event, index) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        saveEditedSubtask(index);
+    } else if (event.key === 'Escape') {
+        event.preventDefault();
+        editingSubtaskIndex = -1;
+        renderSubtasksEditMode();
+    }
+}
 
-// groupContactsByLetter function moved to rendering.js
+/**
+ * Handles keyboard events for subtask delete button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
+function handleSubtaskDeleteKeydown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        deleteSubtaskEdit(index);
+    }
+}
 
-// contactsLargeSlideIn function moved to contacts_dialogs.js
+/**
+ * Handles keyboard events for subtask save button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
+function handleSubtaskSaveKeydown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        saveEditedSubtask(index);
+    }
+}
 
-// showDialogCreateContact function moved to contacts_dialogs.js
+/**
+ * Handles keyboard events for subtask row
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
+function handleSubtaskRowKeydown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        editSubtask(index);
+    }
+}
 
-// showDialogContact function moved to contacts_dialogs.js
+/**
+ * Handles keyboard events for subtask edit action
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {number} index - The subtask index
+ */
+function handleSubtaskEditActionKeydown(event, index) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        editSubtask(index);
+    }
+}
 
-// contactCancel function moved to contacts_dialogs.js
+/**
+ * Handles keyboard events for subtask input
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handleSubtaskKey(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        addSubtaskEdit();
+    }
+}
 
-// closeContactOverlay function moved to contacts_dialogs.js
+/**
+ * Handles keyboard events for contact selection checkboxes
+ * @param {string} contactId - The ID of the contact
+ * @param {KeyboardEvent} event - The keyboard event
+ */
+function handlecontactSelectonCheckboxKeydown(contactId, event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactSelection(contactId, event)
+    }
+}
 
-// openEditContact function moved to contacts_dialogs.js
+/**
+ * Initializes accessibility features for the edit task form
+ * Should be called after the edit overlay is rendered
+ */
+function initializeEditTaskAccessibility() {
+    setupEditFormValidation();
+    const editTitle = document.getElementById('edit-title');
+    if (editTitle) { setTimeout(() => editTitle.focus(), 100); }
+    const dialog = document.querySelector('[role="dialog"]');
+    if (dialog) {
+        const focusableElements = dialog.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        bindDialogAccessibilityKeys(dialog, firstElement, lastElement);
+    }
+    const assignedDisplay = document.getElementById('assigned-display-edit');
+    if (assignedDisplay) {
+        assignedDisplay.setAttribute('aria-expanded', 'false');
+    }
+}
 
-// openDeleteContact function moved to contacts_dialogs.js
-
-// toggleMobileContactMenu function moved to contacts_dialogs.js
-
-// toggleMobileContactMenuTimeoutAriaAndFocus function moved to contacts_dialogs.js
+/**
+ * Binds keyboard accessibility features to a dialog element
+ * Manages tab cycling within the dialog and escape key handling
+ * @param {HTMLElement} dialog - The dialog element to bind keyboard events to
+ * @param {HTMLElement} firstElement - The first focusable element in the dialog
+ * @param {HTMLElement} lastElement - The last focusable element in the dialog
+ */
+function bindDialogAccessibilityKeys(dialog, firstElement, lastElement) {
+    dialog.addEventListener('keydown', (e) => {
+        if (e.key === 'Tab') {
+            if (e.shiftKey &amp;&amp; document.activeElement === firstElement) {
+                e.preventDefault();
+                lastElement.focus();
+            } else if (!e.shiftKey &amp;&amp; document.activeElement === lastElement) {
+                e.preventDefault();
+                firstElement.focus();
+            }
+        } else if (e.key === 'Escape') {
+            closeAddTaskOverlay();
+        }
+    });
+}
 </code></pre>
         </article>
     </section>

@@ -1,4 +1,4 @@
-const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";  // BASE-URL ersetzen
+const BASE_URL = "https://join-kanban-app-14634-default-rtdb.europe-west1.firebasedatabase.app/user";
 let activeUserId;
 activeUserId = loadActiveUserId();
 let isUserMenuListenerAdded = false;
@@ -363,41 +363,6 @@ function handleDropdown(event, dropdown, displayElement) {
         if (displayElement) {
             displayElement.setAttribute('aria-expanded', 'false');
         }
-    }
-}
-
-/**
- * Keyboard event handler for subtask toggle
- * @param {KeyboardEvent} event - The keyboard event
- * @param {string} taskId - The ID of the task
- * @param {number} index - The subtask index
- */
-function handleSubtaskToggleKeydown(event, taskId, index) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleSubtask(taskId, index);
-    }
-}
-
-/**
- * Keyboard event handler for search input
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleSearchKeydown(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        searchTasks();
-    }
-}
-
-/**
- * Keyboard event handler for search button
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleSearchButtonKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        searchAndClearSearchField();
     }
 }
 
