@@ -950,28 +950,6 @@ function renderAddNewContactOverlayHtml() {
                 </form>
             </div>
         </article>
-
-        <div class="form-footer">
-
-            <div>
-                <p class="form-hint">
-                    <span class="required-marker">*</span>This field is required
-                </p>
-            </div>
-
-
-            <div class="form-actions" role="group" aria-label="Form actions">
-                <button onclick="clearForm()" id="clear-btn" type="button" class="clear"
-                    aria-label="Clear all form fields">Clear ✖</button>
-                <button type="button" onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create"
-                    aria-label="Create new task">Create
-                    Task
-                    ✔</button>
-            </div>
-        </div>
-
-        <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board" role="alert"
-            class="success-toast-img d-none">
         `
 }
 
@@ -1113,7 +1091,8 @@ function contactRowHTML(contact, index) {
     let cssClass = isSelected ? 'contact-item selected' : 'contact-item';
     let icon = isSelected ? getCheckboxCheckedSvg() : getCheckboxEmptySvg();
     return `
-    <div id="contact-row-${contact.id}" class="${cssClass}" onclick="toggleContactSelection('${contact.id}')">
+    <div id="contact-row-${contact.id}" class="${cssClass}" onclick="toggleContactSelection('${contact.id}', event)"
+    onkeydown="handlecontactSelectonCheckboxKeydown('${contact.id}', event)">
         <div class="contact-item-left">
             ${renderContactCircle(contact)}
             <span class="contact-name">${contact.name}</span>

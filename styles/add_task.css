@@ -20,6 +20,11 @@ body {
     height: 100vh;
 }
 
+#subtask-list-edit-ul{
+    height: 100px;
+    overflow: overlay;
+}
+
 
 .help-icon {
     width: 24px;
@@ -79,7 +84,7 @@ select {
     border: 1px solid #D1D1D1;
     border-radius: 8px;
     resize: vertical;
-    width: 440px;
+    width: 435px;
     height: 48px;
     font-size: 16px;
     cursor: pointer;
@@ -125,6 +130,8 @@ select {
     display: flex;
     justify-content: space-between;
     align-items: end;
+    height: 64px;
+    margin-top: 75px;
 }
 
 label {
@@ -215,13 +222,6 @@ button.clear:hover {
     resize: vertical;
     max-height: 147px;
     min-height: 98px;
-}
-
-.form-actions {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-    margin-top: 32px;
 }
 
 .priority-buttons {
@@ -650,19 +650,15 @@ select:focus {
         margin-left: 4px;
     }
 
-    .form-footer {
-        margin-top: 40px;
-        flex-direction: column;
-        align-items: flex-start;
+    .form-footer{
+        margin-top: 0;
+        align-items: center;
     }
 
-    .form-actions {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        gap: 16px;
-        margin-top: 20px;
+    .form-actions{
+        margin: 0;
     }
+
 }
 
 @media (max-width: 950px) {
@@ -686,19 +682,6 @@ select:focus {
         display: none;
     }
 
-    .form-footer {
-        margin-top: 40px;
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .form-actions {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-        gap: 16px;
-        margin-top: 20px;
-    }
 }
 
 @media (max-width: 768px) {
@@ -706,7 +689,7 @@ select:focus {
     .main-add-task {
         margin-left: 0;
         width: 100%;
-        padding: 24px 16px 120px 16px;
+        padding: 24px 16px 96px 16px;
         margin-top: 80px;
         height: auto;
         min-height: 100vh;
@@ -720,20 +703,21 @@ select:focus {
         justify-content: space-between;
     }
 
-    .clear,
-    .create {
-        flex: 1;
-        height: 50px;
-    }
+
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
     .priority-btn {
         font-size: 12px;
         padding: 8px 0;
     }
 
-    .form-actions {
-        flex-direction: column-reverse;
+    .form-footer{
+        flex-direction: column;
+        height: 100px;
+    }
+
+    .form-hint{
+        justify-content: flex-start;
     }
 }

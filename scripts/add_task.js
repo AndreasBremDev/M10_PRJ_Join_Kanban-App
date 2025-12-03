@@ -705,9 +705,17 @@ function updatePrioUI(prio) {
     }
 }
 
-function toggleContactSelection(contactId) {
+function toggleContactSelection(contactId, event) {
+    event.stopPropagation();
     toggleEditAssign(contactId);
     updateContactRowVisuals(contactId);
+}
+
+function handlecontactSelectonCheckboxKeydown(contactId, event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleContactSelection(contactId, event)
+    }
 }
 
 function updateContactRowVisuals(contactId) {

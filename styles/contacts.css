@@ -753,9 +753,8 @@ a {
 
     .contact-list-sidebar-outer {
         padding: 16px;
-        margin-bottom: 80px;
         box-shadow: none;
-        width: 96%;
+        width: 100%;
     }
 
     .add-contact-btn {
@@ -1006,7 +1005,6 @@ a {
     }
 
     .error-msg {
-        width: 100%;
         padding-left: 12px;
         text-align: center;
     }
@@ -1050,6 +1048,10 @@ a {
         margin: 80px 0 0 0;
         height: calc(100vh - 80px);
         overflow: hidden;
+    }
+
+        .contact-list-sidebar-outer {
+        margin-bottom: 80px;
     }
 
 

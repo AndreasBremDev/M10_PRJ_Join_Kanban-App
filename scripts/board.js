@@ -4,7 +4,6 @@ let autoScrollIntervalX = null;
 let scrollSpeed = 10;
 let scrollThreshold = 50;
 
-//
 let editAssignedIds = [];
 let editSubtasks = [];
 let editPriority = 'medium';
@@ -221,50 +220,17 @@ async function moveTo(category) {
  * Renders the add task overlay with animation and focus management
  * @param {string} board - The default board category for the new task (default: 'toDo')
  */
-// async function renderAddTaskOverlay(board = "toDo") {
-//     let overlay = document.getElementById("add-task-overlay");
-//     overlay.classList.remove('d-none');
-//     overlay.innerHTML = getAddTaskOverlayTemplate(board);
-//     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
-//     setupPriorityButtons();
-//     setTimeout(() => {
-//         let section = overlay.querySelector('.add-task-section');
-//         if (section) {
-//             section.classList.add('slide-in');
-//         }
-//         let titleInput = document.getElementById('title');
-//         if (titleInput) {
-//             setTimeout(() => titleInput.focus(), 150);
-//         }
-//     }, 20);
-// }
-
-
 async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
-    
-    // 1. Sichtbar machen
     overlay.classList.remove('d-none');
-    
-    // 2. WICHTIG: Das hier hat gefehlt! Aria-Hidden entfernen.
     overlay.removeAttribute('aria-hidden'); 
-    // Jetzt weiß der Browser: "Aha, das Element ist jetzt aktiv!"
-
-    // 3. Inhalt reinladen
     overlay.innerHTML = getAddTaskOverlayTemplate(board);
-    
-    // 4. Logik starten
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
-    setupPriorityButtons();
-    
-    // 5. Animation & Fokus
     setTimeout(() => {
         let section = overlay.querySelector('.add-task-section');
         if (section) {
             section.classList.add('slide-in');
         }
-        
-        // Fokus manuell setzen (statt autofocus im HTML)
         let titleInput = document.getElementById('title');
         if (titleInput) {
             setTimeout(() => titleInput.focus(), 150);
@@ -272,10 +238,7 @@ async function renderAddTaskOverlay(board = "toDo") {
     }, 20);
 }
 
-/**
- * Closes the add task overlay with slide-out animation and updates board
- * Update board after overlay close to reflect any changes made during modal interaction
- */
+
 // async function closeAddTaskOverlay() {
 //     let overlay = document.getElementById("add-task-overlay");
 //     let section = overlay.querySelector('.add-task-section');
@@ -292,20 +255,18 @@ async function renderAddTaskOverlay(board = "toDo") {
 //     }, 400);
 // }
 
-
+/**
+ * Closes the add task overlay with slide-out animation and updates board
+ * Update board after overlay close to reflect any changes made during modal interaction
+ */
 async function closeAddTaskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     let section = overlay.querySelector('.add-task-section');
-    
     if (section) { section.classList.remove('slide-in'); }
-    
     setTimeout(async () => {
         overlay.classList.add('d-none');
         overlay.innerHTML = '';
-        
-        // WICHTIG: Wieder verstecken für Screenreader
         overlay.setAttribute('aria-hidden', 'true'); 
-        
         try {
             let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
             renderTasks(tasksRefetch);
@@ -314,6 +275,7 @@ async function closeAddTaskOverlay() {
         }
     }, 400);
 }
+
 /**
  * Adds slide-in animation to the overlay
  */
