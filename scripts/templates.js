@@ -134,6 +134,155 @@ function contactsLoadingIssueHTML() {
     `
 }
 
+// function getAddTaskOverlayTemplate(board) {
+//     const todayStr = new Date().toISOString().split('T')[0];
+
+//     return /* html */`
+//         <section class="overlay-add-task" role="dialog" aria-labelledby="overlay-title" aria-modal="true">
+//             <div class="overlay-header">
+//                 <h1 id="overlay-title" class="overlay-headline">Add Task</h1>
+//             </div>
+//             <button 
+//                 onclick="closeAddTaskOverlay()" 
+//                 onkeydown="handleCloseKeydown(event)"
+//                 class="close-add-task-overlay" 
+//                 aria-label="Close add task dialog"
+//                 tabindex="0"
+//                 style="border: none; cursor: pointer; padding: 0;"
+//                 autofocus>
+//                 <img src="/assets/icons/close.svg" alt="" aria-hidden="true">
+//             </button>
+//             <form id="task-form" class="task-form" novalidate>
+//                 <div class="form-left form-left-overlay">
+//                     <label for="title">Title<span class="required-marker"  aria-label="required">*</span></label>
+//                     <input id="title" type="text" placeholder="Enter a title" onblur="validateField('title')"
+//                     oninput="clearError('title')" aria-required="true"  aria-describedby="title-error" aria-invalid="false" autofocus>
+//                     <div id="title-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
+                    
+
+
+//                     <label for="description">Description</label>
+//                     <textarea class="description-box" id="description"
+//                         class="description-input-overlay title-input-overlay" placeholder="Enter a Description"
+//                         tabindex="0" aria-describedby="description-hint"></textarea>
+//                     <div id="description-hint" class="sr-only">Optional field for task description</div>
+
+//                     <label for="due-date">Due date<span class="required-marker" aria-label="required">*</span></label>
+//                     <input id="due-date" type="date" required onblur="validateField('due-date')"
+//                         oninput="clearError('due-date')" tabindex="0" aria-required="true" aria-describedby="date-error"
+//                         aria-invalid="false">
+//                     <div id="due-date-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
+//                 </div>
+
+//                 <div class="divider divider-overlay"></div>
+
+//                 <div class="form-right form-right-overlay">
+//                     <fieldset style="border: none; padding: 0; margin: 0;">
+//                         <legend class="sr-only">Task Priority</legend>
+//                         <label>Priority</label>
+//                         <div class="priority-buttons" role="group" aria-label="Select task priority">
+//                             <button type="button" id="prio-urgent" class="priority-btn urgent"
+//                                 onclick="setEditPrio('urgent')" role="radio" aria-checked="false"
+//                                 aria-label="High priority">
+//                                 Urgent <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+//                             </button>
+//                             <button type="button" id="prio-medium" class="priority-btn medium active"
+//                                 onclick="setEditPrio('medium')" role="radio" aria-checked="true"
+//                                 aria-label="Medium priority">
+//                                 Medium <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+//                             </button>
+//                             <button type="button" id="prio-low" class="priority-btn low" onclick="setEditPrio('low')"
+//                                 role="radio" aria-checked="false" aria-label="Low priority">
+//                                 Low <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+//                             </button>
+//                         </div>
+//                     </fieldset>
+                    
+
+//                     <label id="assigned-label" for="assigned">Assigned to</label>
+//                     <div class="custom-select-container">
+//                         <div id="assigned-display" class="select-display" onclick="toggleContactDropdownEdit()"
+//                             role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox"
+//                             aria-labelledby="assigned-label" aria-haspopup="listbox"
+//                             aria-controls="assigned-dropdown-edit" aria-label="Select contacts to assign"
+//                             onkeydown="handleAssignedDropdownEditKeydown(event)">
+//                             Select contacts to assign <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg"
+//                                 alt="arrow" class="dropdown-icon" aria-hidden="true">
+//                         </div>
+//                         <div id="assigned-dropdown-edit" class="select-dropdown" role="listbox"
+//                             aria-labelledby="assigned" style="display: none;"></div>
+//                     </div>
+
+//                     <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay" role="group"
+//                         aria-label="Currently assigned contacts" aria-live="polite"></div>
+                    
+                    
+//                     <label for="category">Category<span class="required-marker" aria-label="required">*</span></label>
+
+//                     <div class="custom-select-container">
+
+//                         <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()" required aria-required="true" aria-describedby="category-error"
+//                         aria-invalid="false" tabindex="0">
+
+//                             <span id="category-text">Select task category</span>
+
+//                             <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow"
+//                                 class="dropdown-icon">
+//                         </div>
+//                         <div id="category-options" class="select-dropdown" style="display: none;">
+//                             <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task</div>
+//                             <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
+//                         </div>
+
+//                         <input type="hidden" id="category" value="">
+
+//                     </div>
+//                     <div id="category-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
+
+//                     <label for="subtask">Subtasks</label>
+//                     <div class="subtask-input-wrapper">
+//                         <input type="text" id="subtask-input-edit" class="subtask-input-field"
+//                             placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
+//                             onkeydown="handleSubtaskKey(event)" tabindex="0" aria-describedby="subtask-hint">
+//                         <div id="main-subtask-icons" class="input-action-icons"></div>
+//                     </div>
+//                     <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons
+//                         to save or cancel</div>
+
+//                     <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;" role="list"
+//                         aria-label="Subtask list"></ul>
+
+//                 </div>
+//             </form>
+
+//             <div class="form-footer">
+//                 <p class="form-hint form-hint-overlay">
+//                     <span class="required-marker">*</span>This field is required
+//                 </p>
+
+//                 <div class="form-actions form-actions-overlay" role="group" aria-label="Form actions">
+//                     <button onclick="clearForm(), closeAddTaskOverlay()" 
+//                             id="clear-btn" 
+//                             type="button" 
+//                             class="clear"
+//                             aria-describedby="clear-hint">
+//                         Cancel ✖
+//                     </button>
+//                     <button onclick="handleCreateTask('${board}')" 
+//                             id="create-btn" 
+//                             type="button" 
+//                             class="create"
+//                             aria-describedby="create-hint">
+//                         Create Task ✔
+//                     </button>
+//                 </div>
+//                 <div id="clear-hint" class="sr-only">Cancel and close dialog without saving</div>
+//                 <div id="create-hint" class="sr-only">Save task and close dialog</div>
+//             </div>
+//         </section>
+//     `;
+// }
+
 function getAddTaskOverlayTemplate(board) {
     const todayStr = new Date().toISOString().split('T')[0];
 
@@ -142,35 +291,23 @@ function getAddTaskOverlayTemplate(board) {
             <div class="overlay-header">
                 <h1 id="overlay-title" class="overlay-headline">Add Task</h1>
             </div>
-            <button 
-                onclick="closeAddTaskOverlay()" 
-                onkeydown="handleCloseKeydown(event)"
-                class="close-add-task-overlay" 
-                aria-label="Close add task dialog"
-                tabindex="0"
-                style="border: none; cursor: pointer; padding: 0;"
-                autofocus>
-                <img src="/assets/icons/close.svg" alt="" aria-hidden="true">
+            
+            <button onclick="closeAddTaskOverlay()" class="close-add-task-overlay" aria-label="Close add task dialog">
+                <img src="/assets/icons/close.svg" alt="">
             </button>
+
             <form id="task-form" class="task-form" novalidate>
                 <div class="form-left form-left-overlay">
-                   
-                    <div class="add-task-label-box-sizing padding-bottom-32">
-                        <label for="title">Title<span class="required-marker" aria-label="required">*</span></label>
-                        <input id="title" maxlength="50" type="text" placeholder="Enter a title"
-                            onblur="validateField('title')" oninput="clearError('title')" aria-required="true"
-                            aria-describedby="title-error" aria-invalid="false">
-                        <div id="title-error" class="error-text" role="alert" aria-live="polite">This field is
-                            required</div>
-                    </div>
+                    <label for="title">Title<span class="required-marker" aria-label="required">*</span></label>
+                    <input id="title" type="text" placeholder="Enter a title" onblur="validateField('title')"
+                        oninput="clearError('title')" aria-required="true" aria-describedby="title-error" aria-invalid="false">
+                    <div id="title-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
 
-                    <div class="add-task-label-box-sizing padding-bottom-32">
-                        <label for="description">Description</label>
-                        <textarea class="description-box" id="description"
-                            class="description-input-overlay title-input-overlay" placeholder="Enter a Description"
-                            tabindex="0" aria-describedby="description-hint"></textarea>
-                        <div id="description-hint" class="sr-only">Optional field for task description</div>
-                    </div>
+                    <label for="description">Description</label>
+                    <textarea class="description-box" id="description"
+                        class="description-input-overlay title-input-overlay" placeholder="Enter a Description"
+                        tabindex="0" aria-describedby="description-hint"></textarea>
+                    <div id="description-hint" class="sr-only">Optional field for task description</div>
 
                     <div class="add-task-label-box-sizing">
                         <label for="due-date">Due date<span class="required-marker"
@@ -185,117 +322,82 @@ function getAddTaskOverlayTemplate(board) {
 
                 <div class="divider" role="presentation" aria-hidden="true"></div>
 
-                <div class="form-right">
-                    <div class="padding-bottom-24">
-                        <fieldset style="border: none; padding: 0; margin: 0;">
-                            <legend class="sr-only">Task Priority</legend>
-                            <div style="padding-bottom: 8px;"><label>Priority</label></div>
-                            <div class="priority-buttons" role="group" aria-label="Select task priority">
-                                <button type="button" id="prio-urgent" class="priority-btn urgent"
-                                    onclick="setEditPrio('urgent')" role="radio" aria-checked="false"
-                                    aria-label="High priority">
-                                    Urgent <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
-                                </button>
-                                <button type="button" id="prio-medium" class="priority-btn medium active"
-                                    onclick="setEditPrio('medium')" role="radio" aria-checked="true"
-                                    aria-label="Medium priority">
-                                    Medium <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
-                                </button>
-                                <button type="button" id="prio-low" class="priority-btn low"
-                                    onclick="setEditPrio('low')" role="radio" aria-checked="false"
-                                    aria-label="Low priority">
-                                    Low <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
-                                </button>
-                            </div>
-                        </fieldset>
-                    </div>
-                    <div class="padding-bottom-24 add-task-label-box-sizing">
-                        <label for="assigned">Assigned to</label>
-                        <div class="custom-select-container">
-                            <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdownEdit()"
-                                tabindex="0" aria-expanded="false" aria-haspopup="listbox"
-                                aria-controls="assigned-dropdown-edit" aria-label="Select contacts to assign"
-                                onkeydown="handleAssignedDropdownKeydown(event)">
-                                <p>Select contacts to assign</p> <img id="arrow-icon-edit"
-                                    src="/assets/icons/arrow_drop_down.svg" alt="arrow" class="dropdown-icon"
-                                    aria-hidden="true">
-                            </div>
-                            <div id="assigned-dropdown-edit" class="select-dropdown" role="listbox"
-                                aria-labelledby="assigned" style="display: none;"></div>
+                <div class="form-right form-right-overlay">
+                    <fieldset style="border: none; padding: 0; margin: 0;">
+                        <legend class="sr-only">Task Priority</legend>
+                        <label>Priority</label>
+                        <div class="priority-buttons" role="group" aria-label="Select task priority">
+                            <button type="button" id="prio-urgent" class="priority-btn urgent"
+                                onclick="setEditPrio('urgent')" role="radio" aria-checked="false"
+                                aria-label="High priority">
+                                Urgent <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+                            </button>
+                            <button type="button" id="prio-medium" class="priority-btn medium active"
+                                onclick="setEditPrio('medium')" role="radio" aria-checked="true"
+                                aria-label="Medium priority">
+                                Medium <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+                            </button>
+                            <button type="button" id="prio-low" class="priority-btn low" onclick="setEditPrio('low')"
+                                role="radio" aria-checked="false" aria-label="Low priority">
+                                Low <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+                            </button>
                         </div>
-                        <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay" role="group"
+                    </fieldset>
+
+                    <label id="assigned-label" for="assigned">Assigned to</label>
+                    <div class="custom-select-container">
+                        <div id="assigned-display-edit" class="select-display" onclick="toggleContactDropdown('assigned-dropdown-edit', 'assigned-display-edit', 'arrow-icon-edit')"
+                            role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox"
+                            aria-labelledby="assigned-label" aria-controls="assigned-dropdown-edit">
+                            Select contacts to assign 
+                            <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg" alt="arrow" class="dropdown-icon" aria-hidden="true">
+                        </div>
+                        <div id="assigned-dropdown-edit" class="select-dropdown" role="listbox"
+                            aria-labelledby="assigned" style="display: none;"></div>
+                    </div>
+
+                    <div id="user-circle-assigned-edit-overlay" class="assigned-circles-edit-overlay" role="group"
                         aria-label="Currently assigned contacts" aria-live="polite"></div>
-                    </div>
 
-                    <div class="padding-bottom-24 add-task-label-box-sizing">
-                        <label for="category">Category<span class="required-marker"
-                                aria-label="required">*</span></label>
-
-                        <div class="custom-select-container">
-
-                            <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()"
-                                required aria-required="true" aria-describedby="category-error" aria-invalid="false" tabindex="0">
-
-                                <span id="category-text">Select task category</span>
-
-                                <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow"
-                                    class="dropdown-icon">
-                            </div>
-                            <div id="category-options" class="select-dropdown" style="display: none;">
-                                <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task
-                                </div>
-                                <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
-                            </div>
-
-                            <input type="hidden" id="category" value="">
-
+                    <label for="category">Category<span class="required-marker" aria-label="required">*</span></label>
+                    <div class="custom-select-container">
+                        <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()" required aria-required="true" aria-describedby="category-error"
+                            aria-invalid="false" tabindex="0">
+                            <span id="category-text">Select task category</span>
+                            <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow" class="dropdown-icon">
                         </div>
-                    </div>
-                    <div id="category-error" class="error-text sr-only" role="alert" aria-live="polite">This field is
-                        required</div>
-
-                    <div class="padding-bottom-24 add-task-label-box-sizing">
-                        <label for="subtask">Subtasks</label>
-                        <div class="subtask-input-wrapper">
-                            <input type="text" id="subtask-input-edit" class="subtask-input-field"
-                                placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
-                                onkeydown="handleSubtaskKey(event)" tabindex="0" aria-describedby="subtask-hint">
-                            <div id="main-subtask-icons" class="input-action-icons"></div>
+                        <div id="category-options" class="select-dropdown" style="display: none;">
+                            <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task</div>
+                            <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
                         </div>
-                        <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the
-                            buttons
-                            to save or cancel</div>
-
-                        <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;" role="list"
-                            aria-label="Subtask list"></ul>
+                        <input type="hidden" id="category" value="">
                     </div>
+                    <div id="category-error" class="error-text" role="alert" aria-live="polite">This field is required</div>
+
+                    <label for="subtask">Subtasks</label>
+                    <div class="subtask-input-wrapper">
+                        <input type="text" id="subtask-input-edit" class="subtask-input-field"
+                            placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
+                            onkeydown="handleSubtaskKey(event)" tabindex="0" aria-describedby="subtask-hint">
+                        <div id="main-subtask-icons" class="input-action-icons"></div>
+                    </div>
+                    <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons to save or cancel</div>
+                    <ul id="subtask-list-edit-ul" style="padding: 0; list-style: none;" role="list" aria-label="Subtask list"></ul>
                 </div>
-                    
             </form>
 
             <div class="form-footer">
                 <p class="form-hint form-hint-overlay">
                     <span class="required-marker">*</span>This field is required
                 </p>
-
                 <div class="form-actions form-actions-overlay" role="group" aria-label="Form actions">
-                    <button onclick="clearForm(), closeAddTaskOverlay()" 
-                            id="clear-btn" 
-                            type="button" 
-                            class="clear"
-                            aria-describedby="clear-hint">
+                    <button onclick="clearForm(), closeAddTaskOverlay()" id="clear-btn" type="button" class="clear">
                         Cancel ✖
                     </button>
-                    <button onclick="handleCreateTask('${board}')" 
-                            id="create-btn" 
-                            type="button" 
-                            class="create"
-                            aria-describedby="create-hint">
+                    <button onclick="handleCreateTask('${board}')" id="create-btn" type="button" class="create">
                         Create Task ✔
                     </button>
                 </div>
-                <div id="clear-hint" class="sr-only">Cancel and close dialog without saving</div>
-                <div id="create-hint" class="sr-only">Save task and close dialog</div>
             </div>
         </section>
     `;

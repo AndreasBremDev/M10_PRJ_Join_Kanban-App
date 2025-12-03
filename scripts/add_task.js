@@ -105,31 +105,45 @@ function clearForm() {
 /**
  * Toggles the visibility of the contact dropdown
  */
-function toggleContactDropdown() {
-    let dropdown = document.getElementById('assigned-dropdown');
-    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-}
+// function toggleContactDropdown() {
+//     let dropdown = document.getElementById('assigned-dropdown');
+//     dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+// }
 
 /**
  * Toggles the contact dropdown with accessibility features
  */
-function toggleContactDropdown() {
-    let dropdown = document.getElementById('assigned-dropdown');
-    let display = document.getElementById('assigned-display');
-    
-    if (dropdown.style.display === 'none') {
+
+function toggleContactDropdown(dropdownId, displayId, arrowId) {
+    // 1. IDs bestimmen (Parameter nutzen oder Standard für Hauptseite)
+    const idDropdown = dropdownId || 'assigned-dropdown';
+    const idDisplay = displayId || 'assigned-display';
+    const idArrow = arrowId || 'arrow-icon';
+
+    // 2. Elemente im DOM suchen
+    let dropdown = document.getElementById(idDropdown);
+    let display = document.getElementById(idDisplay);
+    let arrow = document.getElementById(idArrow);
+
+    // --- SICHERHEITS-CHECK (WICHTIG!) ---
+    if (!dropdown) {
+        console.warn(`FEHLER: Das Element mit der ID '${idDropdown}' existiert nicht im DOM!`);
+        // Wir brechen hier ab, damit es keinen "Uncaught TypeError" gibt
+        return; 
+    }
+    // -------------------------------------
+
+    // 3. Toggle Logik (wird nur ausgeführt, wenn dropdown existiert)
+    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        // Öffnen
         dropdown.style.display = 'block';
-        display.setAttribute('aria-expanded', 'true');
-        setTimeout(() => {
-            let firstCheckbox = dropdown.querySelector('input[type="checkbox"]');
-            if (firstCheckbox) {
-                firstCheckbox.focus();
-            }
-        }, 100);
+        if (display) display.setAttribute('aria-expanded', 'true');
+        if (arrow) arrow.classList.add('rotate-180');
     } else {
+        // Schließen
         dropdown.style.display = 'none';
-        display.setAttribute('aria-expanded', 'false');
-        display.focus();
+        if (display) display.setAttribute('aria-expanded', 'false');
+        if (arrow) arrow.classList.remove('rotate-180');
     }
 }
 
@@ -175,11 +189,6 @@ function handleAssignedDropdownKeydown(event) {
             toggleContactDropdown();
         }
     }
-}
-
-function toggleContactDropdown() {
-    let dropdown = document.getElementById('assigned-dropdown');
-    dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
 }
 
 /**
