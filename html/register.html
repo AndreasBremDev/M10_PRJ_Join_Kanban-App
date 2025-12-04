@@ -47,7 +47,8 @@
                     <div class="input-field">
                         <label for="nameRegister" class="sr-only">Full Name (required)</label>
                         <input class="input_login" type="text" id="nameRegister"
-                            oninput="validateField('nameRegister', 'errMsgName', isNameValid, 0, `Please enter forename + 'space' + surname`)"
+                            onblur="validateField('nameRegister', 'errMsgName', isNameValid, 0, `Please enter forename + 'space' + surname`)"
+                            onchange="validateField('nameRegister', 'errMsgName', isNameValid, 0, `Please enter forename + 'space' + surname`)"
                             placeholder="Full name" aria-required="true" aria-describedby="errMsgName"
                             aria-invalid="false" autofocus>
                         <div class="icon-div" aria-hidden="true">
@@ -61,7 +62,8 @@
                     <div class="input-field">
                         <label for="emailRegister" class="sr-only">Email Address (required)</label>
                         <input class="input_login" type="email" id="emailRegister"
-                            oninput="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update')"
+                            onblur="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update')"
+                            onchange="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update')"
                             placeholder="Email" aria-required="true" aria-describedby="errMsgEmail"
                             aria-invalid="false">
                         <div class="icon-div" aria-hidden="true">
@@ -76,7 +78,8 @@
                         <label for="passwordRegister" class="sr-only">Password (required)</label>
                         <input class="input_login" type="password" id="passwordRegister"
                             onfocus="changePasswordIcon('passwordIcon')"
-                            oninput="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')"
+                            onblur="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')"
+                            onchange="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')"
                             placeholder="Password" minlength="12" aria-required="true" aria-describedby="errMsgPassword"
                             aria-invalid="false">
                         <div class="icon-div">
@@ -95,7 +98,8 @@
                         <label for="passwordRegisterConfirm" class="sr-only">Confirm Password (required)</label>
                         <input class="input_login" type="password" id="passwordRegisterConfirm"
                             onfocus="changePasswordIcon('passwordConfirmIcon')"
-                            oninput="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal. Please double check')"
+                            onblur="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal. Please double check')"
+                            onchange="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal. Please double check')"
                             placeholder="Confirm Password" minlength="12" aria-required="true"
                             aria-describedby="errMsgPasswordConfirm" aria-invalid="false">
                         <div class="icon-div">
@@ -112,10 +116,12 @@
 
                     <div class="ta_center">
                         <input class="register_checkbox" type="checkbox" id="checkbox"
-                            oninput="validateField('checkbox', 'errMsgCheckbox', isCheckboxValid, 4, 'Please accept the privacy policy to continue')"
+                            onchange="validateField('checkbox', 'errMsgCheckbox', isCheckboxValid, 4, 'Please click accept')"
                             aria-required="true" aria-describedby="errMsgCheckbox">I accept the&nbsp;<a
                             class="register_checkbox" href="/html/login_privacy_policy.html"
                             aria-label="Read our privacy policy"><span class="sign_up_link">Privacy policy</span></a>
+                        <div id="errMsgCheckbox" class="error-msg" role="alert" aria-live="polite" style="display: none;">
+                        </div>
                     </div>
 
 

@@ -373,6 +373,7 @@ footer a:hover {
 .ta_center {
     display: flex;
     justify-content: center;
+    position: relative;
 }
 
 .register_checkbox {
@@ -579,7 +580,7 @@ footer a:hover {
         white-space: normal;
         word-break: break-word;
         text-align: left;
-        width: 100%;
+        /* width: 100%; */
     }
 
     .two-buttons {

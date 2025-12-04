@@ -4,7 +4,7 @@ let lastFocusedContact = null;
 /** Validates full name format (first name space last name) */
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
 /** Validates email address format */
-const isEmailValid = val => /^[^@]+@[^@]+\.(?!\.)[^@]+$/.test(val);
+const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)[a-zA-Z]{2,3})?$/.test(val);
 /** Validates phone number format (6-20 characters, numbers and common symbols) */
 const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val);
 
@@ -29,12 +29,12 @@ function checkAllCreateContactValidations(id) {
     if (allBoolEqualOne) {
         errMsgPhone.style.display = 'none';
         contactCreateBtn.disabled = false;
-        contactCreateBtn.ariaDisabled = false;
+        contactCreateBtn.setAttribute('aria-disabled', 'false');
     } else {
         errMsgPhone.style.display = 'block';
         errMsgPhone.innerHTML = "Please enter at least full name and email"
         contactCreateBtn.disabled = true;
-        contactCreateBtn.ariaDisabled = true;
+        contactCreateBtn.setAttribute('aria-disabled', 'true');
     }
 }
 
