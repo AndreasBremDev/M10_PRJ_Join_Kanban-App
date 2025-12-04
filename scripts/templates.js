@@ -168,7 +168,7 @@ function getAddTaskOverlayTemplate(board) {
                     <div class="add-task-label-box-sizing">
                         <label for="due-date">Due date<span class="required-marker"
                                 aria-label="required">*</span></label>
-                        <input id="due-date" type="date" required onblur="validateField('due-date')"
+                        <input min="${todayStr}" id="due-date" type="date" required onblur="validateField('due-date')"
                             oninput="clearError('due-date')" tabindex="0" aria-required="true"
                             aria-describedby="date-error" aria-invalid="false">
                         <div id="due-date-error" class="error-text" role="alert" aria-live="polite">This field
