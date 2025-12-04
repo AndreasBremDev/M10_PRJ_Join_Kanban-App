@@ -238,7 +238,10 @@ function getAddTaskOverlayTemplate(board) {
                         <div id="main-subtask-icons" class="input-action-icons"></div>
                     </div>
                     <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons to save or cancel</div>
-                    <ul id="subtask-list-overlay" style="padding: 0; list-style: none;" role="list" aria-label="Subtask list"></ul>
+                    <div class="test">
+                        <ul id="subtask-list-overlay" class="scrollable-list" style="padding: 0; list-style: none;" role="list" aria-label="Subtask list"></ul>
+                    </div>            
+                
                 </div>
 
             </div>
