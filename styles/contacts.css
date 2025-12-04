@@ -1035,16 +1035,10 @@ a {
         top: 80px;
         left: 0;
         right: 0;
-        margin-bottom: 80px;
-        margin-top: 0;
-        padding: 24px 16px;
-        background: #FFFFFF;
-        z-index: 200;
-        display: none;
-        flex-direction: column;
-        gap: 16px;
+        bottom: 0;
         overflow-y: auto;
-        animation: none;
+        margin-bottom: 80px;
+        height: auto;
     }
 
     .popup {
