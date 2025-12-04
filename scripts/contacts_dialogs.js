@@ -56,9 +56,9 @@ function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
  * @param {string} id - The ID of the modal dialog
  * @param {Event} ev - The triggering event
  */
-async function showDialogCreateContact(id, ev) {
+async function showDialogCreateContact(dialogId, ev) {
     ev.stopPropagation();
-    const modal = document.getElementById(id);
+    const modal = document.getElementById(dialogId);
     bool = [0, 0];
     modal.innerHTML = renderAddNewContactOverlayHtml();
     modal.showModal();
@@ -66,7 +66,7 @@ async function showDialogCreateContact(id, ev) {
         modal.classList.add("open");
     }, 10);
 
-    checkAllCreateContactValidations('contactCreateBtn');
+    updateContactButtonState(dialogId);
     await loadAndRenderContacts('contactList', 'contacts');;
 }
 
@@ -82,11 +82,16 @@ async function showDialogContact(id, contactJson, color, ev, option) {
     ev.stopPropagation();
     let contactEditDeleteModal = document.getElementById(id);
     let contact = JSON.parse(contactJson);
-    bool = [1, 1];
+    if (option === 'Delete') {
+        bool = [1, 1, 1];
+    } else {
+        bool = [0, 0, 0];
+    }
     contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
     contactEditDeleteModal.showModal();
     setTimeout(() => {
         contactEditDeleteModal.classList.add("open");
+        updateContactButtonState(id);
     }, 10);
     await renderContacts();
 }

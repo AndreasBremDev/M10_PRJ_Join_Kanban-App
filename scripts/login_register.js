@@ -3,7 +3,7 @@ let firebase = [];
 /** Validates full name format (first name space last name with Unicode support) */
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß\p{M}]+$/.test(val);
 /** Validates email address format with length constraints */
-const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)[a-zA-Z]{2,3})?$/.test(val);
+const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)(?:uk|jp|in|au|at))?$/.test(val);
 /** Validates password strength (uppercase, lowercase, number, special char, min 12 chars) */
 const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 8;
 /** Validates password confirmation matches original password */
@@ -44,44 +44,35 @@ function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldC
  * Validates the privacy policy checkbox separately
  * @returns {number} The validation result (0 or 1)
  */
-function validateCheckboxSeperately() {
-    let checkbox = document.getElementById('checkbox');
-    let errMsgCheckbox = document.getElementById('errMsgCheckbox');
-    if (!checkbox.checked) {
-        errMsgCheckbox.style.display = 'block';
-        errMsgCheckbox.innerText = 'Please accept the privacy policy to continue';
-        bool[4] = 0;
-    } else {
-        errMsgCheckbox.style.display = 'none';
-        bool[4] = 1;
-    }
-    return bool[4]
-}
+// function validateCheckboxSeperately() {
+//     let checkbox = document.getElementById('checkbox');
+//     let errMsgCheckbox = document.getElementById('errMsgCheckbox');
+//     if (!checkbox.checked) {
+//         errMsgCheckbox.style.display = 'block';
+//         errMsgCheckbox.innerText = 'Please accept the privacy policy to continue';
+//         bool[4] = 0;
+//     } else {
+//         errMsgCheckbox.style.display = 'none';
+//         bool[4] = 1;
+//     }
+//     return bool[4]
+// }
 
 /**
  * Checks all validations and enables/disables the sign up button
  */
 function checkAllValidations() {
-    // let fourOutOfFive = bool[0] === 1 && bool[1] === 1 && bool[2] === 1 && bool[3] === 1;
-    // if (fourOutOfFive) { validateCheckboxSeperately() };
     let signUpBtn = document.getElementById('signUp');
     let allBoolEqualOne = bool.every(el => el === 1);
-    
-    // Debug: Log current bool state
-    console.log('Current bool array:', bool, 'All valid:', allBoolEqualOne);
     
     if (allBoolEqualOne) {
         signUpBtn.disabled = false;
         signUpBtn.setAttribute('aria-disabled', 'false');
         signUpBtn.tabIndex = '1';
         signUpBtn.focus();
-        // Debug
-        console.log('Button enabled!');
     } else {
         signUpBtn.disabled = true;
         signUpBtn.setAttribute('aria-disabled', 'true');
-        // Debug
-        console.log('Button still disabled, bool:', bool);
     }
 }
 

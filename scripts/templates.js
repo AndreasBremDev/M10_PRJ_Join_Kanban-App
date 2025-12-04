@@ -872,7 +872,7 @@ function renderAddNewContactOverlayHtml() {
                 <form class="contact-form" onsubmit="createContact(); return false;" novalidate>
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact"
-                            oninput="validateFieldContact('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
+                            onblur="validateFieldContact('contactAddModal','nameContact', 'errMsgName', isNameValid, 0, 'forename + _space_ + surname', true)"
                             tabindex="0" 
                             placeholder="Full name"
                             aria-required="true"
@@ -888,7 +888,7 @@ function renderAddNewContactOverlayHtml() {
 
                     <div class="input-field">
                         <input class="input_login" type="email" id="emailContact"
-                            oninput="validateFieldContact('emailContact', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', true)"
+                            onblur="validateFieldContact('contactAddModal','emailContact', 'errMsgEmail', isEmailValid, 1, 'check email format', true)"
                             tabindex="0" 
                             placeholder="Email"
                             aria-required="true"
@@ -904,6 +904,7 @@ function renderAddNewContactOverlayHtml() {
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" 
                             tabindex="0"
+                            onblur="validateFieldContact('contactAddModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, '20 char [0-9+()/-] and [space]', false)"
                             placeholder="Phone number"
                             aria-describedby="errMsgPhone"
                             aria-label="Contact phone number (optional)"
@@ -1003,7 +1004,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             type="text" 
                             id="nameContact" 
                             value="${contact.name}"
-                            oninput="validateFieldContact('nameContact', 'errMsgName', isNameValid, 0, 'Please enter forename + _space_ + surname', true)"
+                            onblur="validateFieldContact('contactEditDeleteModal','nameContact', 'errMsgName', isNameValid, 0, 'forename + _space_ + surname', true)"
                             tabindex="0" 
                             placeholder="Full name"
                             aria-required="true"
@@ -1019,7 +1020,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
                     <div class="input-field">
                         <input class="input_login" type="email" id="emailContact" value="${contact.email}"
-                            oninput="validateFieldContact('emailContact', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', true)"
+                            onblur="validateFieldContact('contactEditDeleteModal','emailContact', 'errMsgEmail', isEmailValid, 1, 'check email format', true)"
                             tabindex="0" 
                             placeholder="Email"
                             aria-required="true"
@@ -1034,7 +1035,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" value="${checkContactForPhone(contact)}"
-                            oninput="validateFieldContact('phoneContact', 'errMsgPhone', isPhoneValid, 1, 'Allowed 20 symbols [0-9+()/-] and [space]', false)"
+                            onblur="validateFieldContact('contactEditDeleteModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, '20 char [0-9+()/-] and [space]', false)"
                             tabindex="0" 
                             placeholder="Phone number"
                             aria-describedby="errMsgPhone"
@@ -1067,6 +1068,8 @@ function renderEditContactOverlayHtml(contact, color, option) {
                             class="btn_contact_create btn flex align gap-13" 
                             type="submit" 
                             tabindex="0"
+                            ${option === 'Edit' ? 'disabled' : ''}
+                            aria-disabled="${option === 'Edit' ? 'true' : 'false'}"
                             aria-label="${option === 'Edit' ? 'Save changes to contact' : 'Delete this contact'}"
                             onclick="updateContact('${contact.id}','${option}')"
                             onkeydown="handleContactSubmitKeydown(event)">

@@ -440,9 +440,10 @@ a {
 }
 
 .btn_contact_create:disabled {
-    cursor: inherit;
+    cursor: not-allowed;
     color: var(--primary);
     background-color: var(--bg-color);
+    border: 1px solid var(--primary)
 }
 
 .btn_contact_create:disabled:hover {
