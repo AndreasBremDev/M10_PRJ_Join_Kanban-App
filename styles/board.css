@@ -910,7 +910,7 @@ body {
 
 
 
-.subtask-input-wrapper:hover {
+.subtask-input-wrapper  {
     border-color: #4fb9e7;
 }
 
@@ -918,7 +918,6 @@ body {
     display: flex;
     align-items: center;
     background-color: white;
-    padding: 2px 4px;
     margin-bottom: 8px;
     border: 1px solid #D1D1D1;
     width: 100%;
