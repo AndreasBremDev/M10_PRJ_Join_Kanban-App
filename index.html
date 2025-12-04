@@ -45,7 +45,7 @@
                     <div class="input-field">
                         <label for="emailLogin" class="sr-only">Email Address</label>
                         <input class="input_login" type="email" id="emailLogin"
-                            oninput="validateField('emailLogin', 'errMsgEmail', isEmailValid, 1, 'Email format is wrong, please update', false)"
+                            onblur="validateField('emailLogin', 'errMsgEmail', isEmailValid, 1, 'check email format', false)"
                             tabindex="0" placeholder="Email" aria-required="true" aria-describedby="errMsgEmail"
                             aria-invalid="false" autocomplete="email">
                         <div class="icon-div">
@@ -60,7 +60,7 @@
                         <label for="passwordLogin" class="sr-only">Password</label>
                         <input class="input_login" type="password" id="passwordLogin"
                             onfocus="changePasswordIcon('passwordIcon')"
-                            oninput="validateField('passwordLogin', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?]', false)"
+                            onblur="validateField('passwordLogin', 'errMsgPassword', isPassValid, 2, '8 char, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]', false)"
                             tabindex="0" placeholder="Password" minlength="12" aria-required="true"
                             aria-describedby="errMsgPassword" aria-invalid="false" autocomplete="current-password">
                         <div class="icon-div">

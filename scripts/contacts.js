@@ -1,12 +1,19 @@
-let bool = [0, 0];
+let bool = [0, 0, 0];
 let lastFocusedContact = null;
 
 /** Validates full name format (first name space last name) */
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß]+$/.test(val);
 /** Validates email address format */
-const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)[a-zA-Z]{2,3})?$/.test(val);
+const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)(?:uk|jp|in|au|at))?$/.test(val);
 /** Validates phone number format (6-20 characters, numbers and common symbols) */
-const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val);
+/** was: const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val); */
+/** now is: accept empty value */
+function isPhoneValid(value) {
+    if (!value || value.trim() === '') {
+        return true;
+    }
+    return /^[0-9+()\/\-\s]{1,20}$/.test(value.trim());
+}
 
 /**
  * Initializes the contacts page by checking security, loading user initials and rendering contacts
@@ -19,22 +26,23 @@ async function init() {
 }
 
 /**
- * Checks all contact creation validations and enables/disables the create button
- * @param {string} id - The ID of the create button element
+ * Updates the contact button state based on validation results
+ * @param {string} dialogId - The ID of the dialog containing the button
+ * @param {string} buttonId - The ID of the button to update (default: 'contactCreateBtn')
  */
-function checkAllCreateContactValidations(id) {
-    let contactCreateBtn = document.getElementById(id);
-    let errMsgPhone = document.getElementById('errMsgPhone');
-    let allBoolEqualOne = bool.every(el => el === 1);
-    if (allBoolEqualOne) {
-        errMsgPhone.style.display = 'none';
-        contactCreateBtn.disabled = false;
-        contactCreateBtn.setAttribute('aria-disabled', 'false');
-    } else {
-        errMsgPhone.style.display = 'block';
-        errMsgPhone.innerHTML = "Please enter at least full name and email"
-        contactCreateBtn.disabled = true;
-        contactCreateBtn.setAttribute('aria-disabled', 'true');
+function updateContactButtonState(dialogId, buttonId = 'contactCreateBtn') {
+    const isValid = bool[0] === 1 && bool[1] === 1 && bool[2] === 1;
+    const dialog = document.getElementById(dialogId);
+    const button = dialog ? dialog.querySelector(`#${buttonId}`) : null;
+    
+    if (button) {
+        if (isValid) {
+            button.disabled = false;
+            button.setAttribute('aria-disabled', 'false');
+        } else {
+            button.disabled = true;
+            button.setAttribute('aria-disabled', 'true');
+        }
     }
 }
 
@@ -190,9 +198,10 @@ async function createNextIdPutDataAndRender() {
  * @param {boolean} shouldCheckAll - Whether to check all validations after this one
  * @returns {number} The validation result (0 or 1)
  */
-function validateFieldContact(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
-    let input = document.getElementById(inputId);
-    let errMsgElem = document.getElementById(errMsgId);
+function validateFieldContact(dialogId, inputId, errMsgId, validateFn, boolIndex, errMsg, shouldCheckAll = false) {
+    let input = document.getElementById(dialogId).querySelector(`#${inputId}`);
+    let errMsgElem = document.getElementById(dialogId).querySelector(`#${errMsgId}`);
+    // let errMsgElem = document.getElementById(errMsgId);
     if (validateFn(input.value)) {
         errMsgElem.style.display = 'none';
         input.setAttribute('aria-invalid', 'false');
@@ -203,7 +212,7 @@ function validateFieldContact(inputId, errMsgId, validateFn, boolIndex, errMsg, 
         input.setAttribute('aria-invalid', 'true');
         bool[boolIndex] = 0;
     }
-    if (shouldCheckAll) { checkAllCreateContactValidations('contactCreateBtn') };
+    updateContactButtonState(dialogId);
     return bool[boolIndex];
 }
 
