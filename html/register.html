@@ -76,7 +76,7 @@
                         <label for="passwordRegister" class="sr-only">Password (required)</label>
                         <input class="input_login" type="password" id="passwordRegister"
                             onfocus="changePasswordIcon('passwordIcon')"
-                            oninput="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')"
+                            oninput="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '12 characters, [A-Z], [a-z], [0-9], one special [!§$%&/?]')"
                             placeholder="Password" minlength="12" aria-required="true" aria-describedby="errMsgPassword"
                             aria-invalid="false">
                         <div class="icon-div">
@@ -114,7 +114,7 @@
                         <input class="register_checkbox" type="checkbox" id="checkbox"
                             oninput="validateField('checkbox', 'errMsgCheckbox', isCheckboxValid, 4, 'Please accept the privacy policy to continue')"
                             aria-required="true" aria-describedby="errMsgCheckbox">I accept the&nbsp;<a
-                            class="register_checkbox" href="/html/login_privacy_policy.html"
+                            class="register_checkbox chk" href="/html/login_privacy_policy.html"
                             aria-label="Read our privacy policy"><span class="sign_up_link">Privacy policy</span></a>
                     </div>
 
