@@ -51,9 +51,10 @@
                         <div class="icon-div">
                             <img src="../assets/icons/mail.png" alt="email icon" aria-hidden="true">
                         </div>
+                        <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite" style="display: none;">
+                        </div>
                     </div>
-                    <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                    </div>
+
 
                     <div class="input-field">
                         <label for="passwordLogin" class="sr-only">Password</label>
@@ -68,9 +69,11 @@
                                 aria-label="Show or hide password"
                                 onkeydown="if(event.key==='Enter'||event.key===' '){passwordVisible('passwordLogin','passwordIcon'); event.preventDefault();}">
                         </div>
+                        <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite"
+                            style="display: none;">
+                        </div>
                     </div>
-                    <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                    </div>
+
 
                     <div class="two-buttons">
                         <button class="btn_log_in btn_std" type="submit" tabindex="0">Log in</button>
