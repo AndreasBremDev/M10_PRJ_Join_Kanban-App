@@ -905,7 +905,7 @@ function renderAddNewContactOverlayHtml() {
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" 
                             tabindex="0"
-                            onblur="validateFieldContact('contactAddModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, 'example +49(0) 171 / 23456789', false)"
+                            onblur="validateFieldContact('contactAddModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, 'example +49 (0)89 / 123456-789', false)"
                             placeholder="Phone number"
                             aria-describedby="errMsgPhone"
                             aria-label="Contact phone number (optional)"
@@ -1036,7 +1036,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" value="${checkContactForPhone(contact)}"
-                            onblur="validateFieldContact('contactEditDeleteModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, 'example +49(0) 171 / 23456789', false)"
+                            onblur="validateFieldContact('contactEditDeleteModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, 'example +49 (0)89 / 123456-789', false)"
                             tabindex="0" 
                             placeholder="Phone number"
                             aria-describedby="errMsgPhone"
