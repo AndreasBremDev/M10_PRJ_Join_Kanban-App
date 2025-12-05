@@ -873,7 +873,7 @@ function renderAddNewContactOverlayHtml() {
                 <form class="contact-form" onsubmit="createContact(); return false;" novalidate>
                     <div class="input-field">
                         <input class="input_login" type="text" id="nameContact"
-                            onblur="validateFieldContact('contactAddModal','nameContact', 'errMsgName', isNameValid, 0, 'forename + _space_ + surname', true)"
+                            onblur="validateFieldContact('contactAddModal','nameContact', 'errMsgName', isNameValid, 0, 'forename, space, surname', true)"
                             tabindex="0" 
                             placeholder="Full name"
                             aria-required="true"
@@ -905,7 +905,7 @@ function renderAddNewContactOverlayHtml() {
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" 
                             tabindex="0"
-                            onblur="validateFieldContact('contactAddModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, '20 char [0-9+()/-] and [space]', false)"
+                            onblur="validateFieldContact('contactAddModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, 'example +49(0) 171 / 23456789', false)"
                             placeholder="Phone number"
                             aria-describedby="errMsgPhone"
                             aria-label="Contact phone number (optional)"
@@ -1036,7 +1036,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
                     <div class="input-field">
                         <input class="input_login" type="tel" id="phoneContact" value="${checkContactForPhone(contact)}"
-                            onblur="validateFieldContact('contactEditDeleteModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, '20 char [0-9+()/-] and [space]', false)"
+                            onblur="validateFieldContact('contactEditDeleteModal','phoneContact', 'errMsgPhone', isPhoneValid, 2, 'example +49(0) 171 / 23456789', false)"
                             tabindex="0" 
                             placeholder="Phone number"
                             aria-describedby="errMsgPhone"

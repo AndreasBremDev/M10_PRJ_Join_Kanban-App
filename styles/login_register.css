@@ -243,7 +243,7 @@ header {
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 6px;
     align-items: center;
 }
 
@@ -279,15 +279,11 @@ header {
 
 
 .error-msg {
-    position: absolute;
-    bottom: -37px;
-    left: 0;
     color: var(--red);
+    min-height: 20px;
     font-size: 16px;
-    line-height: 1;
     white-space: normal;
     word-break: break-word;
-    display: none;
 }
 
 
@@ -326,7 +322,7 @@ footer a:hover {
 .register-form {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 6px;
 }
 
 .register-login {
@@ -587,7 +583,7 @@ footer a:hover {
         max-width: 396px;
         height: auto;
         justify-content: center;
-        padding: 32px 24px;
+        padding: 0px 24px 32px;
     }
 
     .login-form {
@@ -598,7 +594,6 @@ footer a:hover {
         white-space: normal;
         word-break: break-word;
         text-align: left;
-        /* width: 100%; */
     }
 
     .two-buttons {
@@ -618,6 +613,12 @@ footer a:hover {
         box-shadow: none;
         transform: none;
         border: none;
+    }
+
+    .btn_log_in,
+    .btn_guest_log_in {
+        width: 180px;
+        box-sizing: border-box;
     }
 
     .btn_guest_log_in:active {
