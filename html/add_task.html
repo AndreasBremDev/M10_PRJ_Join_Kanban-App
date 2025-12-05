@@ -198,7 +198,8 @@
                         <div class="subtask-input-wrapper">
                             <input type="text" id="subtask-input-edit" class="subtask-input-field"
                                 placeholder="Add new subtask" onclick="showMainSubtaskIcons()"
-                                onkeydown="handleSubtaskKey(event)" tabindex="0" aria-describedby="subtask-hint">
+                                onkeydown="handleSubtaskKey(event)" onblur="cleanInput('subtask-input-edit')"
+                                tabindex="0" aria-describedby="subtask-hint">
                             <div id="main-subtask-icons" class="input-action-icons"></div>
                         </div>
                         <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the
