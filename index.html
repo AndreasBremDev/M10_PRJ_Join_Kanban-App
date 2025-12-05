@@ -51,8 +51,8 @@
                         <div class="icon-div">
                             <img src="../assets/icons/mail.png" alt="email icon" aria-hidden="true">
                         </div>
-                        <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                        </div>
+                    </div>
+                    <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite">
                     </div>
 
 
@@ -60,7 +60,7 @@
                         <label for="passwordLogin" class="sr-only">Password</label>
                         <input class="input_login" type="password" id="passwordLogin"
                             onfocus="changePasswordIcon('passwordIcon')"
-                            onblur="validateField('passwordLogin', 'errMsgPassword', isPassValid, 2, '8 char, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]', false)"
+                            onblur="validateField('passwordLogin', 'errMsgPassword', isPassValid, 2, '8 character 1 special', false)"
                             tabindex="0" placeholder="Password" minlength="12" aria-required="true"
                             aria-describedby="errMsgPassword" aria-invalid="false" autocomplete="current-password">
                         <div class="icon-div">
@@ -69,9 +69,8 @@
                                 aria-label="Show or hide password"
                                 onkeydown="if(event.key==='Enter'||event.key===' '){passwordVisible('passwordLogin','passwordIcon'); event.preventDefault();}">
                         </div>
-                        <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite"
-                            style="display: none;">
-                        </div>
+                    </div>
+                    <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite">
                     </div>
 
 

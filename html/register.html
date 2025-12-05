@@ -47,15 +47,14 @@
                     <div class="input-field">
                         <label for="nameRegister" class="sr-only">Full Name (required)</label>
                         <input class="input_login" type="text" id="nameRegister"
-                            onblur="validateField('nameRegister', 'errMsgName', isNameValid, 0, `forename + 'space' + surname`)"
+                            onblur="validateField('nameRegister', 'errMsgName', isNameValid, 0, `forename, space, surname`)"
                             placeholder="Full name" aria-required="true" aria-describedby="errMsgName"
-                            aria-invalid="false" autofocus>
+                            aria-invalid="false" autofocus tabindex="0">
                         <div class="icon-div" aria-hidden="true">
                             <img src="../assets/icons/person.png" alt="" aria-hidden="true">
                         </div>
-                        <div id="errMsgName" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                        </div>
                     </div>
+                    <div id="errMsgName" class="error-msg" role="alert" aria-live="polite"></div>
 
 
                     <div class="input-field">
@@ -63,41 +62,38 @@
                         <input class="input_login" type="email" id="emailRegister"
                             onblur="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'check email format')"
                             placeholder="Email" aria-required="true" aria-describedby="errMsgEmail"
-                            aria-invalid="false">
+                            aria-invalid="false" tabindex="0">
                         <div class="icon-div" aria-hidden="true">
                             <img src="../assets/icons/mail.png" alt="" aria-hidden="true">
                         </div>
-                        <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                        </div>
                     </div>
+                    <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite"></div>
 
 
                     <div class="input-field">
                         <label for="passwordRegister" class="sr-only">Password (required)</label>
                         <input class="input_login" type="password" id="passwordRegister"
                             onfocus="changePasswordIcon('passwordIcon')"
-                            onblur="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '8 char, [A-Z], [a-z], [0-9], one special [!§$%&/?-+#@]')"
-                            placeholder="Password" minlength="12" aria-required="true" aria-describedby="errMsgPassword"
-                            aria-invalid="false">
+                            onblur="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '8 character 1 special')"
+                            placeholder="Password" aria-required="true" aria-describedby="errMsgPassword"
+                            aria-invalid="false" tabindex="0">
                         <div class="icon-div">
                             <img id="passwordIcon" onclick="passwordVisible('passwordRegister','passwordIcon', event)"
                                 src="../assets/icons/lock.png" alt="toggle password visibility" role="button"
                                 tabindex="0" aria-label="Show or hide password"
                                 onkeydown="handlePasswordToggleKeydown(event, 'passwordRegister', 'passwordIcon')">
                         </div>
-                        <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite"
-                            style="display: none;">
-                        </div>
                     </div>
+                    <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite"></div>
 
 
                     <div class="input-field">
                         <label for="passwordRegisterConfirm" class="sr-only">Confirm Password (required)</label>
                         <input class="input_login" type="password" id="passwordRegisterConfirm"
                             onfocus="changePasswordIcon('passwordConfirmIcon')"
-                            onblur="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal. Please double check')"
-                            placeholder="Confirm Password" minlength="12" aria-required="true"
-                            aria-describedby="errMsgPasswordConfirm" aria-invalid="false">
+                            onblur="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal')"
+                            placeholder="Confirm Password" aria-required="true"
+                            aria-describedby="errMsgPasswordConfirm" aria-invalid="false" tabindex="0">
                         <div class="icon-div">
                             <img id="passwordConfirmIcon"
                                 onclick="passwordVisible('passwordRegisterConfirm','passwordConfirmIcon', event)"
@@ -105,9 +101,8 @@
                                 tabindex="0" aria-label="Show or hide confirm password"
                                 onkeydown="handlePasswordToggleKeydown(event, 'passwordRegisterConfirm', 'passwordConfirmIcon')">
                         </div>
-                        <div id="errMsgPasswordConfirm" class="error-msg" role="alert" aria-live="polite"
-                            style="display: none;"></div>
                     </div>
+                    <div id="errMsgPasswordConfirm" class="error-msg" role="alert" aria-live="polite"></div>
 
 
                     <div class="ta_center">
@@ -115,16 +110,14 @@
                             onchange="validateField('checkbox', 'errMsgCheckbox', isCheckboxValid, 4, 'Please click accept')"
                             aria-required="true" aria-describedby="errMsgCheckbox">I accept the&nbsp;<a
                             class="register_checkbox chk" href="/html/login_privacy_policy.html"
-                            aria-label="Read our privacy policy"><span class="sign_up_link">Privacy policy</span></a>
-                        <div id="errMsgCheckbox" class="error-msg" role="alert" aria-live="polite" style="display: none;">
-                        </div>
+                            aria-label="Read our privacy policy" tabindex="0"><span class="sign_up_link">Privacy policy</span></a>
                     </div>
+                    <div id="errMsgCheckbox" class="error-msg" role="alert" aria-live="polite"></div>
 
 
 
                     <div class="register_sign_up">
-                        <button class="btn_sign_up" id="signUp" type="submit" disabled aria-disabled="true">Sign
-                            up</button>
+                        <button class="btn_sign_up" id="signUp" type="submit" disabled aria-disabled="true" tabindex="0">Sign up</button>
                     </div>
                 </form>
             </div>

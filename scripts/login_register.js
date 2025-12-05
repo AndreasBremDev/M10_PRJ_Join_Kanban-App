@@ -5,7 +5,7 @@ const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß\
 /** Validates email address format with length constraints */
 const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)(?:uk|jp|in|au|at))?$/.test(val);
 /** Validates password strength (uppercase, lowercase, number, special char, min 12 chars) */
-const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) && /[0-9]/.test(val) && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 8;
+const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) /* && /[0-9]/.test(val) */ && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 8;
 /** Validates password confirmation matches original password */
 const isConfirmValid = val => val === document.getElementById('passwordRegister').value;
 /** Validates checkbox is checked */
@@ -29,10 +29,9 @@ function validateField(inputId, errMsgId, validateFn, boolIndex, errMsg, shouldC
     let input = document.getElementById(inputId);
     let errMsgElem = document.getElementById(errMsgId);
     if (validateFn(input.value)) {
-        errMsgElem.style.display = 'none';
+        errMsgElem.innerText = '';
         bool[boolIndex] = 1;
     } else {
-        errMsgElem.style.display = 'block';
         errMsgElem.innerText = errMsg;
         bool[boolIndex] = 0;
     }
@@ -68,8 +67,6 @@ function checkAllValidations() {
     if (allBoolEqualOne) {
         signUpBtn.disabled = false;
         signUpBtn.setAttribute('aria-disabled', 'false');
-        signUpBtn.tabIndex = '1';
-        signUpBtn.focus();
     } else {
         signUpBtn.disabled = true;
         signUpBtn.setAttribute('aria-disabled', 'true');
