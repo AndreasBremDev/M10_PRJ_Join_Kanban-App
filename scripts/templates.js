@@ -381,6 +381,7 @@ function editTaskDetailOverlayTemplate(task) {
                     type="text" 
                     class="title-input-overlay" 
                     placeholder="Enter a title"
+                    onblur="validateField('edit-title')"
                     aria-required="true"
                     aria-describedby="edit-title-error title-hint"
                     autofocus>
