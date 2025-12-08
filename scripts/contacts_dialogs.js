@@ -61,7 +61,7 @@ async function showDialogCreateContact(dialogId, ev) {
     ev.stopPropagation();
     const modal = document.getElementById(dialogId);
     modal.onclick = (e) => contactCancel(e);
-    bool = [0, 0];
+    bool = [0, 0, 1];
     modal.innerHTML = renderAddNewContactOverlayHtml();
     modal.showModal();
     setTimeout(() => {

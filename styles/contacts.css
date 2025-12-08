@@ -236,7 +236,7 @@ a {
 
 .two-buttons {
     height: 48px;
-    margin-top: 35px;
+    margin-top: 8px;
     text-align: left;
     display: flex;
     gap: 35px;
@@ -389,7 +389,7 @@ a {
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 2px;
 }
 
 .user-circle-large_edit {
@@ -619,20 +619,25 @@ a {
     outline-offset: 2px;
 }
 
-/*Neu*/
-.test {
+
+.contact-delete-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    justify-content: center;
+    flex: 1;
+    gap: 20px;
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 700;
     border: 1px solid red;
 }
 
 .contact-delete {
     color: var(--primary);
-    padding-top: 98px;
+    text-align: center;
+    text-wrap: balance;
+    word-wrap: break-word;
+    word-break:break-all
 }
 
 
@@ -956,7 +961,6 @@ a {
     .overlay_form,
     .contact-form {
         width: 100%;
-        gap: 8px;
         height: auto;
         align-items: center;
         transform: translateY(30px);
@@ -1045,10 +1049,6 @@ a {
         left: 50%;
     }
 
-    .contact-form {
-        gap: 8px;
-    }
-
     .contacts-wrapper {
         margin: 80px 0 0 0;
         height: calc(100vh - 80px);
@@ -1124,7 +1124,6 @@ a {
     .contact-form {
         width: 100%;
         align-items: center;
-        gap: 2px;
         transform: unset;
     }
 

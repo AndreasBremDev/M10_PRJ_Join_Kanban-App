@@ -1132,15 +1132,11 @@ function renderDeleteContactOverlayHtml(contact, color, option) {
                 </div>
             </div>
 
-                    <div class="two-buttons" role="group" aria-label="Dialog actions">
-                        <div class="test">
-                                <div class="contact-delete">
-                                    Are you sure, you want to delete:<br>
-                                    ${contact.name}<br>
-                                    ${contact.email}
-                                </div>
-                            
-
+            <div class="contact-delete-container">
+                <div class="contact-delete">Are you sure, you want to delete:</div>
+                <div class="contact-delete">${contact.name}</div>
+                <div class="contact-delete">${contact.email}</div>
+                <div class="two-buttons" role="group" aria-label="Dialog actions">
                         <button 
                             id="contactCreateBtn" 
                             class="btn_contact_create btn flex align gap-13" 
