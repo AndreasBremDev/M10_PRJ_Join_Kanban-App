@@ -79,8 +79,9 @@ header {
     max-width: 1920px;
     left: 50%;
     transform: translateX(-50%);
-    height: 100vh;
+    /* height: 100vh;*/
     z-index: 9999;
+    height: 20px;
 }
 
 .logo-overlay {

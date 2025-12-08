@@ -210,7 +210,7 @@ function animateLogoFirstVisit() {
         logoOverlay.classList.add('animate-out');
     }
     setTimeout(() => {
-        logoOverlay.style.display = 'none';
+        logoOverlay.style.display ='none';
         logo.style.opacity = 1;
     }, 800);
 }

@@ -1100,6 +1100,91 @@ function renderEditContactOverlayHtml(contact, color, option) {
         `
 }
 
+function renderDeleteContactOverlayHtml(contact, color, option) {
+    return /*html*/`
+        <article class="flex h-100 overlay_edit_delete" 
+                onclick="event.stopPropagation()"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="edit-contact-dialog-h2"
+                style="color: var(--white); position: relative;">
+            <button 
+                type="button"
+                class="close-button-position" 
+                onclick="contactCancel(event); return false;" 
+                onkeydown="handleContactCloseKeydown(event)"
+                aria-label="Close ${option.toLowerCase()} contact dialog" 
+                tabindex="0"
+                style="cursor: pointer; background: none; border: none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path
+                        d="M12.001 12.0001L17.244 17.2431M6.758 17.2431L12.001 12.0001L6.758 17.2431ZM17.244 6.75708L12 12.0001L17.244 6.75708ZM12 12.0001L6.758 6.75708L12 12.0001Z"
+                        stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+
+            <div class="flex align contact-dialog-add">
+                <div class="flex column gap-13 title_mobile">
+                    <img class="logo_img_edit" src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true"
+                        style="height: 66px; width: 55px;">
+                    <h2 id="edit-contact-dialog-h2" class="contact-dialog-h2">${option} contact</h2>
+                    <div class="contact-dialog-line" aria-hidden="true"></div>
+                </div>
+            </div>
+
+                    <div class="two-buttons" role="group" aria-label="Dialog actions">
+                        <div style="border: 1px solid red; color: var(--primary);">
+                            Are you sure, you want to delete:<br>
+                            ${contact.name}<br>
+                            ${contact.email}
+                        </div>
+                        <button 
+                            type="button"
+                            class="btn_contact_cancel flex align gap-13"
+                            onclick="contactCancel(event); return false;" 
+                            onkeydown="handleContactCancelKeydown(event)"
+                            tabindex="0"
+                            aria-label="Cancel and close dialog">
+                            Cancel
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path
+                                    d="M12.001 12.0001L17.244 17.2431M6.758 17.2431L12.001 12.0001L6.758 17.2431ZM17.244 6.75708L12 12.0001L17.244 6.75708ZM12 12.0001L6.758 6.75708L12 12.0001Z"
+                                    stroke="#2A3647" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button 
+                            id="contactCreateBtn" 
+                            class="btn_contact_create btn flex align gap-13" 
+                            type="submit" 
+                            tabindex="0"
+                            ${option === 'Edit' ? 'disabled' : ''}
+                            aria-disabled="${option === 'Edit' ? 'true' : 'false'}"
+                            aria-label="${option === 'Edit' ? 'Save changes to contact' : 'Delete this contact'}"
+                            onclick="updateContact('${contact.id}','${option}')"
+                            onkeydown="handleContactSubmitKeydown(event)">
+                            ${option === 'Edit' ? 'Save' : 'Delete'}
+                            <svg width="20" height="15" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path
+                                    d="M5.288 8.775L13.763 0.3C13.963 0.1 14.2005 0 14.4755 0C14.7505 0 14.988 0.1 15.188 0.3C15.388 0.5 15.488 0.7375 15.488 1.0125C15.488 1.2875 15.388 1.525 15.188 1.725L5.988 10.925C5.788 11.125 5.55467 11.225 5.288 11.225C5.02133 11.225 4.788 11.125 4.588 10.925L0.288 6.625C0.088 6.425 -0.00783333 6.1875 0.0005 5.9125C0.00883333 5.6375 0.113 5.4 0.313 5.2C0.513 5 0.7505 4.9 1.0255 4.9C1.3005 4.9 1.538 5 1.738 5.2L5.288 8.775Z"
+                                    fill="white" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </article>
+
+        <div id="popupContactUpdated" 
+            class="popup btn"
+            role="status"
+            aria-live="polite"
+            aria-label="Contact update confirmation">
+            <p class="btn_std">Contact updated successfully</p>
+        </div>
+        `
+}
+
 function contactRowHTML(contact, index) {
     let isSelected = editAssignedIds.includes(contact.id);
     let cssClass = isSelected ? 'contact-item selected' : 'contact-item';

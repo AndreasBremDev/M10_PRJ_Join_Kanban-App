@@ -84,12 +84,8 @@ async function showDialogContact(id, contactJson, color, ev, option) {
     ev.stopPropagation();
     let contactEditDeleteModal = document.getElementById(id);
     let contact = JSON.parse(contactJson);
-    if (option === 'Delete' || option === 'Edit') {
-        bool = [1, 1, 1];
-    } else {
-        bool = [0, 0, 0];
-    }
-    contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
+    option === 'Delete' || option === 'Edit' ? bool = [1, 1, 1] : bool = [0, 0, 0];
+    option === 'Delete' ? contactEditDeleteModal.innerHTML = renderDeleteContactOverlayHtml(contact, color, option) : contactEditDeleteModal.innerHTML = renderEditContactOverlayHtml(contact, color, option);
     contactEditDeleteModal.onclick = (e) => contactCancel(e);
     contactEditDeleteModal.showModal();
     setTimeout(() => {
