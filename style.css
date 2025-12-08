@@ -7,6 +7,11 @@ body {
     overflow: hidden;
 }
 
+.animated_logo_wrapper {
+    max-width: 1920px;
+    position: relative;
+}
+
 .main-container {
     display: flex;
     width: 100%;
