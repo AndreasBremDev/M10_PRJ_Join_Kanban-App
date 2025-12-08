@@ -4,8 +4,8 @@ let firebase = [];
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß\p{M}]+$/.test(val);
 /** Validates email address format with length constraints */
 const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)(?:uk|jp|in|au|at))?$/.test(val);
-/** Validates password strength (uppercase, lowercase, number, special char, min 12 chars) */
-const isPassValid = val => /[A-Z]/.test(val) && /[a-z]/.test(val) /* && /[0-9]/.test(val) */ && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 8;
+/** Validates password strength (uppercase, lowercase, no number, special char, min 8 chars) */
+const isPassValid = val => /[A-Za-z]/.test(val) /* && /[a-z]/.test(val) && /[0-9]/.test(val) */ && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 8;
 /** Validates password confirmation matches original password */
 const isConfirmValid = val => val === document.getElementById('passwordRegister').value;
 /** Validates checkbox is checked */
