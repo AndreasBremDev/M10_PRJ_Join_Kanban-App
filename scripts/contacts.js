@@ -174,6 +174,14 @@ async function updateContact(currContactId, option, event = null) {
     }
 }
 
+/**
+ * Deletes a contact from the database and updates the UI
+ * Removes the contact from Firebase, refreshes the contact list, and closes any open dialogs
+ * @param {string} currContactId - The ID of the contact to delete
+ * @param {string} option - The operation type (unused parameter, kept for consistency)
+ * @returns {Promise<void>} Promise that resolves when the contact is successfully deleted
+ * @throws {Error} Throws an error if the deletion operation fails
+ */
 async function deleteContact(currContactId, option) {
     try {
         await deletePath('/' + activeUserId + '/contacts/' + currContactId);
