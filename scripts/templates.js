@@ -1138,21 +1138,7 @@ function renderDeleteContactOverlayHtml(contact, color, option) {
                             ${contact.name}<br>
                             ${contact.email}
                         </div>
-                        <button 
-                            type="button"
-                            class="btn_contact_cancel flex align gap-13"
-                            onclick="contactCancel(event); return false;" 
-                            onkeydown="handleContactCancelKeydown(event)"
-                            tabindex="0"
-                            aria-label="Cancel and close dialog">
-                            Cancel
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path
-                                    d="M12.001 12.0001L17.244 17.2431M6.758 17.2431L12.001 12.0001L6.758 17.2431ZM17.244 6.75708L12 12.0001L17.244 6.75708ZM12 12.0001L6.758 6.75708L12 12.0001Z"
-                                    stroke="#2A3647" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </svg>
-                        </button>
+
                         <button 
                             id="contactCreateBtn" 
                             class="btn_contact_create btn flex align gap-13" 
