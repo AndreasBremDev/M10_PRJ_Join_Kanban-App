@@ -65,14 +65,6 @@ async function moveTo(category) {
     elements.forEach(el => el.classList.remove('highlight'));
 }
 
-function calculateAndSetHeightForClassDraggable() {
-    let cards
-    if (window.innerWidth >768) {
-
-    }
-}
-
-
 /**
  * Starts the auto-scroll functionality during drag operations
  */
