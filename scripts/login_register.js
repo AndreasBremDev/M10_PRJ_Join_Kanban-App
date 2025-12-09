@@ -1,19 +1,15 @@
-let firebase = [];
-
 /** Validates full name format (first name space last name with Unicode support) */
 const isNameValid = val => /^[A-Z\-a-zÄÖÜäöüß]+\s[A-Z\-a-zÄÖÜäöüß\p{M}]+$/.test(val);
 /** Validates email address format with length constraints */
 const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+\.(?!\.)[a-zA-Z]{2,3}(\.(?!\.)(?:uk|jp|in|au|at))?$/.test(val);
 /** Validates password strength (uppercase, lowercase, no number, special char, min 8 chars) */
-const isPassValid = val => /[A-Za-z]/.test(val) /* && /[a-z]/.test(val) && /[0-9]/.test(val) */ && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 8;
+const isPassValid = val => /[A-Za-z0-9]/.test(val) /* && /[a-z]/.test(val) && /[0-9]/.test(val) */ && /[!§$%&\/\?\-\+#@]/.test(val) && val.length >= 8;
 /** Validates password confirmation matches original password */
 const isConfirmValid = val => val === document.getElementById('passwordRegister').value;
 /** Validates checkbox is checked */
 const isCheckboxValid = () => document.getElementById('checkbox').checked;
 
 let bool = [0, 0, 0, 0, 0]
-
-// #region registration validation
 
 /**
  * Validates an input field using a provided validation function
@@ -105,10 +101,6 @@ function checkIconPathAndSetNewIconAndInputType(icon, input) {
     }
 }
 
-// #endregion
-
-// #region registration -> add New User to firebase DB
-
 /**
  * Adds a new user to the Firebase database and handles success flow
  */
@@ -157,8 +149,6 @@ function clearAllSignUpInputFields() {
     nameRegister.value = emailRegister.value = passwordRegister.value = passwordRegisterConfirm.value = '';
     signUpBtn.checked = false;
 }
-
-// #endregion
 
 /**
  * Handles user login by validating credentials against Firebase database

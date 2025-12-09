@@ -345,4 +345,3 @@ function toggleEditAssign(userId) {
     }
     renderAssignedEditCircles();
 }
-

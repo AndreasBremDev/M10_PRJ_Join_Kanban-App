@@ -429,7 +429,7 @@ function editTaskDetailOverlayTemplate(task) {
                         role="radio" 
                         aria-checked="false"
                         onclick="setEditPrio('urgent')"
-                        onkeydown="handlePriorityKeydown(event, 'urgent')"
+                        onkeydown="setEditPrio('urgent')"
                         aria-describedby="urgent-hint">
                         Urgent
                         <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
@@ -441,7 +441,7 @@ function editTaskDetailOverlayTemplate(task) {
                         role="radio" 
                         aria-checked="true"
                         onclick="setEditPrio('medium')"
-                        onkeydown="handlePriorityKeydown(event, 'medium')"
+                        onkeydown="setEditPrio('medium')"
                         aria-describedby="medium-hint">
                         Medium
                         <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
@@ -453,7 +453,7 @@ function editTaskDetailOverlayTemplate(task) {
                         role="radio" 
                         aria-checked="false"
                         onclick="setEditPrio('low')"
-                        onkeydown="handlePriorityKeydown(event, 'low')"
+                        onkeydown="setEditPrio('low')"
                         aria-describedby="low-hint">
                         Low
                         <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">

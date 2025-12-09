@@ -3,8 +3,6 @@
  * Contains all subtask-related functionality for the add task module
  */
 
-// #region subtask management add_task
-
 /**
  * Enters edit mode for a specific subtask
  * @param {number} index - The index of the subtask to edit
@@ -84,8 +82,6 @@ function cancelMainSubtaskInput() {
     }
     resetMainSubtaskIcons();
 }
-
-// #endregion
 
 /**
  * Toggles the visibility of the edit contact dropdown
@@ -179,7 +175,6 @@ function resetCustomUIComponents() {
 function resetCategoryInput() {
     const categoryText = document.getElementById('category-text');
     const categoryInput = document.getElementById('category');
-
     if (categoryText) categoryText.innerHTML = 'Select task category';
     if (categoryInput) categoryInput.value = '';
 }

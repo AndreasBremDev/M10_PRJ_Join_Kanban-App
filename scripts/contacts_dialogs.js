@@ -67,7 +67,6 @@ async function showDialogCreateContact(dialogId, ev) {
     setTimeout(() => {
         modal.classList.add("open");
     }, 10);
-
     updateContactButtonState(dialogId);
     await loadAndRenderContacts('contactList', 'contacts');
 }
@@ -102,10 +101,8 @@ async function showDialogContact(id, contactJson, color, ev, option) {
 function contactCancel(ev) {
     ev.preventDefault();
     ev.stopPropagation();
-
     const modal = ev.target.closest("dialog");
     if (!modal) return;
-
     modal.classList.remove("open");
     modal.close();
 }
@@ -115,13 +112,10 @@ function contactCancel(ev) {
  */
 function closeContactOverlay() {
     const overlay = document.getElementById('contactDisplayLarge');
-    
     overlay.classList.remove('open');
     overlay.style.display = 'none';
     overlay.setAttribute('aria-hidden', 'true');
-    
     document.body.classList.remove('no-scroll');
-
     if (lastFocusedContact) {
         lastFocusedContact.focus();
         lastFocusedContact = null;

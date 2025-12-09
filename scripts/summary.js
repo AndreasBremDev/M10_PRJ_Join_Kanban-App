@@ -117,14 +117,12 @@ function countTasks(tasks) {
  */
 function renderSummaryCounts(taskCounts) {
   let numberFields = document.getElementsByClassName("numbers");
-
   if (numberFields[0]) numberFields[0].innerText = taskCounts.todo;
   if (numberFields[1]) numberFields[1].innerText = taskCounts.done;
   if (numberFields[2]) numberFields[2].innerText = taskCounts.urgent;
   if (numberFields[3]) numberFields[3].innerText = taskCounts.total;
   if (numberFields[4]) numberFields[4].innerText = taskCounts.inProgress;
   if (numberFields[5]) numberFields[5].innerText = taskCounts.awaitingFeedback;
-
   let deadlineField = document.getElementsByClassName("urgend_calender")[0];
   if (deadlineField) deadlineField.innerText = taskCounts.nextDeadline;
 }
@@ -234,8 +232,8 @@ function handleResizeOverlay() {
  * @param {string} url - The URL to navigate to
  */
 function handleSummaryLinkKeydown(event, url) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        window.location.href = url;
-    }
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    window.location.href = url;
+  }
 }

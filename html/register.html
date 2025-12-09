@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/styles/media_queries.css">
 
     <script src="/scripts/global.js" defer></script>
+    <script src="/scripts/global_keyboard.js" defer></script>
     <script src="/scripts/login_register.js" defer></script>
 </head>
 
@@ -61,8 +62,8 @@
                         <label for="emailRegister" class="sr-only">Email Address (required)</label>
                         <input class="input_login" type="email" id="emailRegister"
                             onblur="validateField('emailRegister', 'errMsgEmail', isEmailValid, 1, 'check email format')"
-                            placeholder="Email" aria-required="true" aria-describedby="errMsgEmail"
-                            aria-invalid="false" tabindex="0">
+                            placeholder="Email" aria-required="true" aria-describedby="errMsgEmail" aria-invalid="false"
+                            tabindex="0">
                         <div class="icon-div" aria-hidden="true">
                             <img src="../assets/icons/mail.png" alt="" aria-hidden="true">
                         </div>
@@ -92,8 +93,8 @@
                         <input class="input_login" type="password" id="passwordRegisterConfirm"
                             onfocus="changePasswordIcon('passwordConfirmIcon')"
                             onblur="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal')"
-                            placeholder="Confirm Password" aria-required="true"
-                            aria-describedby="errMsgPasswordConfirm" aria-invalid="false" tabindex="0">
+                            placeholder="Confirm Password" aria-required="true" aria-describedby="errMsgPasswordConfirm"
+                            aria-invalid="false" tabindex="0">
                         <div class="icon-div">
                             <img id="passwordConfirmIcon"
                                 onclick="passwordVisible('passwordRegisterConfirm','passwordConfirmIcon', event)"
@@ -110,14 +111,16 @@
                             onchange="validateField('checkbox', 'errMsgCheckbox', isCheckboxValid, 4, 'Please click accept')"
                             aria-required="true" aria-describedby="errMsgCheckbox">I accept the&nbsp;<a
                             class="register_checkbox chk" href="/html/login_privacy_policy.html"
-                            aria-label="Read our privacy policy" tabindex="0"><span class="sign_up_link">Privacy policy</span></a>
+                            aria-label="Read our privacy policy" tabindex="0"><span class="sign_up_link">Privacy
+                                policy</span></a>
                     </div>
                     <div id="errMsgCheckbox" class="error-msg" role="alert" aria-live="polite"></div>
 
 
 
                     <div class="register_sign_up">
-                        <button class="btn_sign_up" id="signUp" type="submit" disabled aria-disabled="true" tabindex="0">Sign up</button>
+                        <button class="btn_sign_up" id="signUp" type="submit" disabled aria-disabled="true"
+                            tabindex="0">Sign up</button>
                     </div>
                 </form>
             </div>

@@ -42,22 +42,6 @@ let contactCircleColor = [
 ]
 
 /**
- * Initializes keyboard navigation support for navigation links
- * Enables Space key activation for nav links, privacy policy, and legal notice links
- */
-function initNavKeyboardSupport() {
-    const navLinks = document.querySelectorAll('.nav_navigation a, .privacy_policy, .legal_notes');
-    navLinks.forEach(link => {
-        link.addEventListener('keydown', function(event) {
-            if (event.key === ' ') {
-                event.preventDefault();
-                this.click();
-            }
-        });
-    });
-}
-
-/**
  * Calculates the next available ID for a given path
  * @param {string} path - The database path to check for existing IDs
  * @returns {Promise<number>} The next available ID
@@ -91,7 +75,6 @@ async function putData(path = "", data = {}) {
             body: JSON.stringify(data),
         });
         return response;
-
     } catch (fetchError) {
         console.error('Fetch error:', fetchError);
         throw fetchError;
@@ -314,23 +297,7 @@ function closeDropDownAndResetFocus(userMenu, userCircle) {
     userMenu.setAttribute('aria-hidden', 'true');
     userCircle.setAttribute('aria-expanded', 'false');
     userCircle.focus();
-    
     document.removeEventListener('keydown', handleMenuEscapeKey);
-}
-
-/**
- * Keyboard event handler for menu escape key
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleMenuEscapeKey(event) {
-    if (event.key === 'Escape') {
-        event.preventDefault();
-        let userMenu = document.getElementById('user-menu');
-        let userCircle = document.querySelector('.user-circle');
-        if (userMenu && userMenu.classList.contains('show')) {
-            closeDropDownAndResetFocus(userMenu, userCircle);
-        }
-    }
 }
 
 /**Event listener to close dropdown when clicking outside
@@ -339,11 +306,9 @@ document.addEventListener('click', function (event) {
     let dropdown = document.getElementById('assigned-dropdown');
     let displayElement = document.getElementById('assigned-display');
     handleDropdown(event, dropdown, displayElement);
-    
     let dropdownEdit = document.getElementById('assigned-dropdown-edit');
     let displayElementEdit = document.getElementById('assigned-display-edit');
     handleDropdown(event, dropdownEdit, displayElementEdit);
-    
     let categoryDropdown = document.getElementById('category-options');
     let categoryDisplay = document.getElementById('category-display');
     handleDropdown(event, categoryDropdown, categoryDisplay);
@@ -367,72 +332,15 @@ function handleDropdown(event, dropdown, displayElement) {
 }
 
 /**
- * Keyboard event handler for user menu toggle
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleUserMenuKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleDropDownMenu();
-    }
-}
-
-/**
- * Keyboard event handler for assigned dropdown
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleAssignedDropdownKeydown(event) {
-    const dropdown = document.getElementById('assigned-dropdown');
-    const displayElement = document.getElementById('assigned-display');
-    
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleAssignedDropdown();
-    } else if (event.key === 'Escape') {
-        if (dropdown && dropdown.style.display === 'block') {
-            dropdown.style.display = 'none';
-            if (displayElement) {
-                displayElement.setAttribute('aria-expanded', 'false');
-                displayElement.focus();
-            }
-        }
-    }
-}
-
-/**
- * Keyboard event handler for category dropdown
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleCategoryDropdownKeydown(event) {
-    const dropdown = document.getElementById('category-options');
-    const displayElement = document.getElementById('category-display');
-    
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleCategoryDropdown();
-    } else if (event.key === 'Escape') {
-        if (dropdown && dropdown.style.display === 'block') {
-            dropdown.style.display = 'none';
-            if (displayElement) {
-                displayElement.setAttribute('aria-expanded', 'false');
-                displayElement.focus();
-            }
-        }
-    }
-}
-
-/**
  * Toggle function for assigned dropdown
  */
 function toggleAssignedDropdown() {
     const dropdown = document.getElementById('assigned-dropdown');
     const displayElement = document.getElementById('assigned-display');
-    
     if (dropdown && displayElement) {
         const isOpen = dropdown.style.display === 'block';
         dropdown.style.display = isOpen ? 'none' : 'block';
         displayElement.setAttribute('aria-expanded', !isOpen);
-        
         if (!isOpen) {
             setTimeout(() => {
                 const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
@@ -457,28 +365,6 @@ function toggleCategoryDropdown() {
                 const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
                 if (firstItem) firstItem.focus();
             }, 50);
-        }
-    }
-}
-
-/**
- * Keyboard event handler for edit assigned dropdown
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleAssignedDropdownEditKeydown(event) {
-    const dropdown = document.getElementById('assigned-dropdown-edit');
-    const displayElement = document.getElementById('assigned-display-edit');
-    
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleContactDropdownEdit();
-    } else if (event.key === 'Escape') {
-        if (dropdown && dropdown.style.display === 'block') {
-            dropdown.style.display = 'none';
-            if (displayElement) {
-                displayElement.setAttribute('aria-expanded', 'false');
-                displayElement.focus();
-            }
         }
     }
 }

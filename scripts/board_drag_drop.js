@@ -4,8 +4,6 @@
  * Handles task dragging, drop zones, visual feedback, and smooth scrolling during drag operations
  */
 
-// #region Drag & Drop Functions
-
 /**
  * Handles the drag start event for task cards
  * @param {DragEvent} event - The drag event
@@ -66,14 +64,6 @@ async function moveTo(category) {
     const elements = document.querySelectorAll('.draggable');
     elements.forEach(el => el.classList.remove('highlight'));
 }
-
-function calculateAndSetHeightForClassDraggable() {
-    let cards
-    if (window.innerWidth >768) {
-
-    }
-}
-
 
 /**
  * Starts the auto-scroll functionality during drag operations
@@ -178,5 +168,3 @@ function handleScrollUp(main) {
         }, 16);
     }
 }
-
-// #endregion

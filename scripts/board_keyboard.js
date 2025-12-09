@@ -3,8 +3,6 @@
  * Contains all keyboard navigation and accessibility functions for the board module
  */
 
-// #region keyboard accessibility board
-
 /**
  * Keyboard event handler for task card navigation
  * @param {KeyboardEvent} event - The keyboard event
@@ -86,5 +84,3 @@ function handleCloseKeydown(event) {
         closeAddTaskOverlay();
     }
 }
-
-// #endregion

@@ -4,38 +4,6 @@
  */
 
 /**
- * Handles keyboard navigation for priority buttons
- * @param {KeyboardEvent} event - The keyboard event
- * @param {string} priority - The current priority level
- */
-function handlePriorityKeydown(event, priority) {
-    const priorities = ['urgent', 'medium', 'low'];
-    const currentIndex = priorities.indexOf(priority);
-    
-    switch(event.key) {
-        case 'ArrowLeft':
-        case 'ArrowUp':
-            event.preventDefault();
-            const prevIndex = currentIndex > 0 ? currentIndex - 1 : priorities.length - 1;
-            document.getElementById(`prio-${priorities[prevIndex]}`).focus();
-            break;
-            
-        case 'ArrowRight':
-        case 'ArrowDown':
-            event.preventDefault();
-            const nextIndex = currentIndex < priorities.length - 1 ? currentIndex + 1 : 0;
-            document.getElementById(`prio-${priorities[nextIndex]}`).focus();
-            break;
-            
-        case 'Enter':
-        case ' ':
-            event.preventDefault();
-            setPriority(priority);
-            break;
-    }
-}
-
-/**
  * Handles keyboard events for assigned dropdown interactions
  * @param {KeyboardEvent} event - The keyboard event
  */

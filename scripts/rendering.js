@@ -2,8 +2,6 @@
  * All Project Rendering functions, for ADD_TASK, BOARD and CONTACTS
  */
 
-// #region rendering in ADD_TASK
-
 /**
  * Renders assigned contact circles in edit overlay
  */
@@ -117,10 +115,6 @@ function showSuccessImageAnimation() {
     }, 2000);
 }
 
-// #endregion
-
-// #region rendering in BOARD
-
 /**
  * Checks for subtasks in a task and displays progress bar if subtasks exist
  * @param {Object} task - The task object to check for subtasks
@@ -224,10 +218,6 @@ function renderContactsInOverlay(task) {
     container.innerHTML = html;
 }
 
-// #endregion
-
-// #region rendering in CONTACTS
-
 /**
  * Renders the contacts list by fetching, filtering, sorting and grouping contacts
  */
@@ -314,5 +304,3 @@ function checkContactForPhone(contact) {
         return "";
     }
 }
-
-// #endregion

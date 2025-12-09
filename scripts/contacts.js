@@ -46,8 +46,6 @@ function updateContactButtonState(dialogId, buttonId = 'contactCreateBtn') {
     }
 }
 
-// renderContacts function moved to rendering.js
-
 /**
  * Converts the contactsFetch data to an array format
  * Handles different data structures from Firebase: null/undefined, arrays, or objects
@@ -67,10 +65,6 @@ function convertContactsFetchObjectToArray() {
     }
     return contactsArray;
 }
-
-// renderGroupedContacts function moved to rendering.js
-
-// renderContactLarge function moved to rendering.js
 
 /**
  * Handles keyboard events for contact card interactions
@@ -107,7 +101,6 @@ function handleContactCancelKeydown(event) {
 function handleContactSubmitKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        // Trigger the form submission
         const form = event.target.closest('form');
         if (form) {
             form.dispatchEvent(new Event('submit'));
@@ -349,27 +342,3 @@ function handleMobileDeleteKeydown(event, contactJson, color) {
         openDeleteContact(contactJson, color);
     }
 }
-
-// checkContactForPhoneHtml function moved to rendering.js
-
-// checkContactForPhone function moved to rendering.js
-
-// groupContactsByLetter function moved to rendering.js
-
-// contactsLargeSlideIn function moved to contacts_dialogs.js
-
-// showDialogCreateContact function moved to contacts_dialogs.js
-
-// showDialogContact function moved to contacts_dialogs.js
-
-// contactCancel function moved to contacts_dialogs.js
-
-// closeContactOverlay function moved to contacts_dialogs.js
-
-// openEditContact function moved to contacts_dialogs.js
-
-// openDeleteContact function moved to contacts_dialogs.js
-
-// toggleMobileContactMenu function moved to contacts_dialogs.js
-
-// toggleMobileContactMenuTimeoutAriaAndFocus function moved to contacts_dialogs.js

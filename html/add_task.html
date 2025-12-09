@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/styles/media_queries.css">
 
     <script src="/scripts/global.js" defer></script>
+    <script src="/scripts/global_keyboard.js" defer></script>
     <script src="/scripts/templates.js" defer></script>
     <script src="/scripts/board.js" defer></script>
     <script src="/scripts/add_task_core.js" defer></script>
@@ -98,8 +99,8 @@
                     <div class="add-task-label-box-sizing padding-bottom-32">
                         <label for="title">Title<span class="required-marker" aria-label="required">*</span></label>
                         <input id="title" maxlength="50" type="text" placeholder="Enter a title"
-                            onblur="cleanInput('title'); validateField('title')" oninput="clearError('title')"
-                            aria-required="true" aria-describedby="title-error" aria-invalid="false">
+                            onblur="validateField('title')" oninput="clearError('title')" aria-required="true"
+                            aria-describedby="title-error" aria-invalid="false">
                         <div id="title-error" class="error-text" role="alert" aria-live="polite">This field is
                             required</div>
                     </div>
@@ -216,31 +217,29 @@
                 </div>
 
             </form>
-
-            <div class="form-footer">
-
-                <div>
-                    <p class="form-hint">
-                        <span class="required-marker">*</span>This field is required
-                    </p>
-                </div>
-
-
-                <div class="form-actions" role="group" aria-label="Form actions">
-                    <button onclick="clearForm()" id="clear-btn" type="button" class="clear"
-                        aria-label="Clear all form fields">Clear ✖</button>
-                    <button type="button" onclick="handleCreateTask('toDo')" id="create-btn" type="button"
-                        class="create" aria-label="Create new task">Create
-                        Task
-                        ✔</button>
-                </div>
-            </div>
-
-            <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board"
-                role="alert" class="success-toast-img d-none">
         </section>
 
+        <div class="form-footer">
 
+            <div>
+                <p class="form-hint">
+                    <span class="required-marker">*</span>This field is required
+                </p>
+            </div>
+
+
+            <div class="form-actions" role="group" aria-label="Form actions">
+                <button onclick="clearForm()" id="clear-btn" type="button" class="clear"
+                    aria-label="Clear all form fields">Clear ✖</button>
+                <button type="button" onclick="handleCreateTask('toDo')" id="create-btn" type="button" class="create"
+                    aria-label="Create new task">Create
+                    Task
+                    ✔</button>
+            </div>
+        </div>
+
+        <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board" role="alert"
+            class="success-toast-img d-none">
     </main>
 
     <div id="rotateInfoOverlay">
