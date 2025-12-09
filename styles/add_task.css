@@ -686,16 +686,6 @@ select:focus {
         display: none;
     }
 
-<<<<<<< HEAD
-    #subtask-list-edit-ul {
-        /* display: flex;
-        flex-direction: column;
-        align-items: flex-start; */
-    }
-
-
-=======
->>>>>>> a31458de5ad59de65d6783d3dff83ba5e6e4ccdd
 }
 
 @media (max-width: 834px) {
