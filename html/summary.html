@@ -19,202 +19,213 @@
 </head>
 
 <body onload="init()" style="overflow-y: hidden;">
+    <div class="page_container">
 
-    <nav role="navigation" aria-label="Main navigation">
-        <div class="sidenav">
-            <div class="nav_icon">
-                <img src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true">
+        <nav role="navigation" aria-label="Main navigation">
+            <div class="sidenav">
+                <div class="nav_icon">
+                    <img src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true">
+                </div>
+                <section class="menu">
+                    <div class="nav_navigation">
+                        <a class="nav_summary active" href="/html/summary.html" aria-current="page"
+                            aria-label="Summary page - currently selected">
+                            <img class="img_nav" src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt=""
+                                aria-hidden="true">
+                            <p class="nav_p">Summary</p>
+                        </a>
+                        <a class="nav_add_task" href="/html/add_task.html" aria-label="Go to Add Task page">
+                            <img class="img_nav" src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt=""
+                                aria-hidden="true">
+                            <p class="nav_p">Add Task</p>
+                        </a>
+                        <a class="nav_board" href="/html/board.html" aria-label="Go to Board page">
+                            <img class="img_nav" src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt=""
+                                aria-hidden="true">
+                            <p class="nav_p">Board</p>
+                        </a>
+                        <a class="nav_contacts" href="/html/contacts.html" aria-label="Go to Contacts page">
+                            <img class="img_nav" src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt=""
+                                aria-hidden="true">
+                            <p class="nav_p">Contacts</p>
+                        </a>
+                    </div>
+
+                    <div class="nav_policy">
+                        <a class="privacy_policy" href="privacy_policy.html"
+                            aria-label="Read our privacy policy">Privacy
+                            Policy</a>
+                        <a class="legal_notes" href="legal_notice.html" aria-label="Read our legal notice">Legal
+                            notice</a>
+                    </div>
+                </section>
             </div>
-            <section class="menu">
-                <div class="nav_navigation">
-                    <a class="nav_summary active" href="/html/summary.html" aria-current="page"
-                        aria-label="Summary page - currently selected">
-                        <img class="img_nav" src="/assets/icons/Prop_summary.svg" height="30px" width="30px" alt=""
-                            aria-hidden="true">
-                        <p class="nav_p">Summary</p>
+        </nav>
+
+        <header role="banner">
+            <div class="header_content">
+                <div class="header-left">
+                    <h2 class="header_h2">Kanban Project Management Tool</h2>
+                    <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
+                </div>
+                <div class="header-right">
+                    <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
+                        <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
                     </a>
-                    <a class="nav_add_task" href="/html/add_task.html" aria-label="Go to Add Task page">
-                        <img class="img_nav" src="/assets/icons/Prop_add_task.svg" height="30px" width="30px" alt=""
-                            aria-hidden="true">
-                        <p class="nav_p">Add Task</p>
-                    </a>
-                    <a class="nav_board" href="/html/board.html" aria-label="Go to Board page">
-                        <img class="img_nav" src="/assets/icons/Prop_board.svg" height="30px" width="30px" alt=""
-                            aria-hidden="true">
-                        <p class="nav_p">Board</p>
-                    </a>
-                    <a class="nav_contacts" href="/html/contacts.html" aria-label="Go to Contacts page">
-                        <img class="img_nav" src="/assets/icons/Prop_contacts.svg" height="30px" width="30px" alt=""
-                            aria-hidden="true">
-                        <p class="nav_p">Contacts</p>
-                    </a>
+                    <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
+                        id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
+                        aria-label="User menu" aria-controls="user-menu">
+                    </div>
+
+                    <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
+                        <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
+                        <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal
+                            Notice</a>
+                        <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy
+                            Policy</a>
+                        <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()"
+                            role="menuitem">Log
+                            out</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <main class="main_summary" role="main">
+            <div id="greeting_overlay" role="dialog" aria-modal="false" aria-live="polite"
+                aria-label="Welcome greeting">
+                <div class="greeting_content">
+                    <p id="overlay_greeting_text"></p>
+                    <p id="overlay_greeting_name"></p>
+                </div>
+            </div>
+
+            <section class="main_title">
+                <div class="tile_summary">
+                    <h1 class="h1_title_summary">Join 360</h1>
                 </div>
 
-                <div class="nav_policy">
-                    <a class="privacy_policy" href="privacy_policy.html" aria-label="Read our privacy policy">Privacy
-                        Policy</a>
-                    <a class="legal_notes" href="legal_notice.html" aria-label="Read our legal notice">Legal notice</a>
+                <div class="title_seperator" aria-hidden="true">
+                    <img src="/assets/icons/Summary_title_seperator.svg" height="59px" width="3px" alt="">
+                </div>
+
+                <div class="title_summary_discription">
+                    <p class="title_discription">Key Metrics at a Glance</p>
                 </div>
             </section>
-        </div>
-    </nav>
 
-    <header role="banner">
-        <div class="header-left">
-            <h2 class="header_h2">Kanban Project Management Tool</h2>
-            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
-        </div>
-        <div class="header-right">
-            <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
-                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
-            </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
-                id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
-                aria-label="User menu" aria-controls="user-menu">
-            </div>
+            <section class="summary_content" aria-labelledby="summary-stats-heading">
+                <h2 id="summary-stats-heading" class="sr-only">Task Statistics</h2>
 
-            <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
-                <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
-                <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
-                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
-                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log
-                    out</a>
-            </div>
-        </div>
-    </header>
-
-    <main class="main_summary" role="main">
-        <div id="greeting_overlay" role="dialog" aria-modal="false" aria-live="polite" aria-label="Welcome greeting">
-            <div class="greeting_content">
-                <p id="overlay_greeting_text"></p>
-                <p id="overlay_greeting_name"></p>
-            </div>
-        </div>
-
-        <section class="main_title">
-            <div class="tile_summary">
-                <h1 class="h1_title_summary">Join 360</h1>
-            </div>
-
-            <div class="title_seperator" aria-hidden="true">
-                <img src="/assets/icons/Summary_title_seperator.svg" height="59px" width="3px" alt="">
-            </div>
-
-            <div class="title_summary_discription">
-                <p class="title_discription">Key Metrics at a Glance</p>
-            </div>
-        </section>
-
-        <section class="summary_content" aria-labelledby="summary-stats-heading">
-            <h2 id="summary-stats-heading" class="sr-only">Task Statistics</h2>
-
-            <div class="to_do_summary">
-                <div class="to_to_container">
-                    <a class="to_do" href="/html/board.html?status=todo"
-                        aria-label="View To-Do tasks. Current count will be announced"
-                        onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=todo')">
-                        <div class="div_icon" aria-hidden="true">
-                            <img src="/assets/icons/pen_dark_icon.svg" class="icon_dark" alt="">
-                            <img src="/assets/icons/pen_light_icon.svg" class="icon_light" alt="">
-                        </div>
-                        <div class="container_information">
-                            <div class="numbers" aria-describedby="todo-description">1</div>
-                            <div class="numbers_txt">
-                                <p id="todo-description">To-do</p>
+                <div class="to_do_summary">
+                    <div class="to_to_container">
+                        <a class="to_do" href="/html/board.html?status=todo"
+                            aria-label="View To-Do tasks. Current count will be announced"
+                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=todo')">
+                            <div class="div_icon" aria-hidden="true">
+                                <img src="/assets/icons/pen_dark_icon.svg" class="icon_dark" alt="">
+                                <img src="/assets/icons/pen_light_icon.svg" class="icon_light" alt="">
                             </div>
+                            <div class="container_information">
+                                <div class="numbers" aria-describedby="todo-description">1</div>
+                                <div class="numbers_txt">
+                                    <p id="todo-description">To-do</p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a class="done" href="/html/board.html?status=done"
+                            aria-label="View completed tasks. Current count will be announced"
+                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=done')">
+                            <div class="div_icon" aria-hidden="true">
+                                <img src="/assets/icons/check_dark_icon.svg" class="icon_dark" alt="">
+                                <img src="/assets/icons/check_light_icon.svg" class="icon_light" alt="">
+                            </div>
+                            <div class="container_information">
+                                <div class="numbers" aria-describedby="done-description"></div>
+                                <div class="numbers_txt">
+                                    <p id="done-description">Done</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <a class="urgent_container" href="/html/board.html?status=urgent"
+                        aria-label="View urgent tasks and upcoming deadline"
+                        onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=urgent')">
+
+                        <div class="urgent">
+                            <div class="urgent_icon" aria-hidden="true">
+                                <img src="/assets/icons/Summary_urgent_icon.svg" alt="">
+                            </div>
+                            <div class="container_information">
+                                <div class="numbers" aria-describedby="urgent-description"></div>
+                                <div class="numbers_txt">
+                                    <p id="urgent-description">Urgent</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="urgent_seperator" aria-hidden="true">
+                            <img class="urgent_seperator_icon" src="" height="" width="2px" alt="">
+                        </div>
+
+                        <div class="urgent_daytime_group">
+                            <div class="urgend_calender" aria-describedby="deadline-description"></div>
+                            <div class="urgend_calender_txt" id="deadline-description">Upcoming Deadline</div>
                         </div>
                     </a>
 
-                    <a class="done" href="/html/board.html?status=done"
-                        aria-label="View completed tasks. Current count will be announced"
-                        onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=done')">
-                        <div class="div_icon" aria-hidden="true">
-                            <img src="/assets/icons/check_dark_icon.svg" class="icon_dark" alt="">
-                            <img src="/assets/icons/check_light_icon.svg" class="icon_light" alt="">
-                        </div>
-                        <div class="container_information">
-                            <div class="numbers" aria-describedby="done-description"></div>
-                            <div class="numbers_txt">
-                                <p id="done-description">Done</p>
+                    <div class="board_informations" role="group" aria-label="Board statistics overview">
+                        <a class="tasks_in_board" href="/html/board.html"
+                            aria-label="View all tasks in board. Current count will be announced"
+                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html')">
+                            <div class="container_information">
+                                <div class="numbers" aria-describedby="board-description"></div>
+                                <div class="numbers_txt">
+                                    <p id="board-description">Tasks in <br> Board</p>
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+
+                        <a class="tasks_in_progress" href="/html/board.html?status=in_progress"
+                            aria-label="View tasks in progress. Current count will be announced"
+                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=in_progress')">
+                            <div class="container_information">
+                                <div class="numbers" aria-describedby="progress-description"></div>
+                                <div class="numbers_txt">
+                                    <p id="progress-description">Tasks in <br> Progress</p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a class="awaiting_feedback" href="/html/board.html?status=awaiting_feedback"
+                            aria-label="View tasks awaiting feedback. Current count will be announced"
+                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=awaiting_feedback')">
+                            <div class="container_information">
+                                <div class="numbers" aria-describedby="feedback-description"></div>
+                                <div class="numbers_txt">
+                                    <p id="feedback-description">Awaiting <br> Feedback</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
 
-                <a class="urgent_container" href="/html/board.html?status=urgent"
-                    aria-label="View urgent tasks and upcoming deadline"
-                    onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=urgent')">
-
-                    <div class="urgent">
-                        <div class="urgent_icon" aria-hidden="true">
-                            <img src="/assets/icons/Summary_urgent_icon.svg" alt="">
-                        </div>
-                        <div class="container_information">
-                            <div class="numbers" aria-describedby="urgent-description"></div>
-                            <div class="numbers_txt">
-                                <p id="urgent-description">Urgent</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="urgent_seperator" aria-hidden="true">
-                        <img class="urgent_seperator_icon" src="" height="" width="2px" alt="">
-                    </div>
-
-                    <div class="urgent_daytime_group">
-                        <div class="urgend_calender" aria-describedby="deadline-description"></div>
-                        <div class="urgend_calender_txt" id="deadline-description">Upcoming Deadline</div>
-                    </div>
-                </a>
-
-                <div class="board_informations" role="group" aria-label="Board statistics overview">
-                    <a class="tasks_in_board" href="/html/board.html"
-                        aria-label="View all tasks in board. Current count will be announced"
-                        onkeydown="handleSummaryLinkKeydown(event, '/html/board.html')">
-                        <div class="container_information">
-                            <div class="numbers" aria-describedby="board-description"></div>
-                            <div class="numbers_txt">
-                                <p id="board-description">Tasks in <br> Board</p>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a class="tasks_in_progress" href="/html/board.html?status=in_progress"
-                        aria-label="View tasks in progress. Current count will be announced"
-                        onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=in_progress')">
-                        <div class="container_information">
-                            <div class="numbers" aria-describedby="progress-description"></div>
-                            <div class="numbers_txt">
-                                <p id="progress-description">Tasks in <br> Progress</p>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a class="awaiting_feedback" href="/html/board.html?status=awaiting_feedback"
-                        aria-label="View tasks awaiting feedback. Current count will be announced"
-                        onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=awaiting_feedback')">
-                        <div class="container_information">
-                            <div class="numbers" aria-describedby="feedback-description"></div>
-                            <div class="numbers_txt">
-                                <p id="feedback-description">Awaiting <br> Feedback</p>
-                            </div>
-                        </div>
-                    </a>
+                <div class="greeting_container" role="complementary" aria-label="Personalized greeting">
+                    <p id="greeting_text"></p>
+                    <p id="greeting_name"></p>
                 </div>
+
+            </section>
+        </main>
+
+        <div id="rotateInfoOverlay">
+            <div class="rotate-box">
+                <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+                <p>Please rotate your Phone</p>
             </div>
-
-            <div class="greeting_container" role="complementary" aria-label="Personalized greeting">
-                <p id="greeting_text"></p>
-                <p id="greeting_name"></p>
-            </div>
-
-        </section>
-    </main>
-
-    <div id="rotateInfoOverlay">
-        <div class="rotate-box">
-            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
-            <p>Please rotate your Phone</p>
         </div>
     </div>
 </body>

@@ -3,6 +3,10 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+.user-menu{
+  left: -72px;
+}
+
 /* Main Legal Notice */
 
 main.legal-main {

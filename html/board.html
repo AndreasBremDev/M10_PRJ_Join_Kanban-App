@@ -66,25 +66,29 @@
     </nav>
 
     <header role="banner">
-        <div class="header-left">
-            <h2 class="header_h2">Kanban Project Management Tool</h2>
-            <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
-        </div>
-        <div class="header-right">
-            <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
-                <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
-            </a>
-            <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
-                id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
-                aria-controls="user-menu">
+        <div class="header_content">
+            <div class="header-left">
+                <h2 class="header_h2">Kanban Project Management Tool</h2>
+                <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
             </div>
+            <div class="header-right">
+                <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
+                    <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
+                </a>
+                <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
+                    id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
+                    aria-controls="user-menu">
+                </div>
 
-            <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
-                <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
-                <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
-                <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy Policy</a>
-                <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()" role="menuitem">Log
-                    out</a>
+                <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
+                    <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
+                    <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal Notice</a>
+                    <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy
+                        Policy</a>
+                    <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()"
+                        role="menuitem">Log
+                        out</a>
+                </div>
             </div>
         </div>
     </header>

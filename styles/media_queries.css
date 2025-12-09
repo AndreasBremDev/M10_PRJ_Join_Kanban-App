@@ -94,6 +94,7 @@
   /*----------Header----------*/
   header {
     height: 80px;
+    padding: 0;
   }
 
   .header-left {
@@ -126,10 +127,11 @@
   }
 
   .user-menu {
-    display: flex !important;
+    display: flex;
     position: absolute;
     top: 70px;
-    right: 8px;
+    right: 16px;
+    left: -82px;
     transform: translateX(120%);
     opacity: 0;
     pointer-events: none;

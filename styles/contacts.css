@@ -685,10 +685,6 @@ a {
 }
 
 @media (max-width: 1200px) {
-    .header-left {
-        margin-left: 250px;
-    }
-
     .contacts-wrapper {
         margin: 80px 0 0 232px;
         height: calc(100vh - 80px);
@@ -1020,7 +1016,17 @@ a {
 
 }
 
+@media (max-width: 834px) {
+    header {
+        padding-left: 250px;
+    }
+}
+
 @media (max-width: 768px) {
+    header {
+        padding-left: 0;
+    }
+
     .header-left {
         margin-left: 0;
     }
