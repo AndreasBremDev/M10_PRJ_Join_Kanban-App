@@ -71,10 +71,10 @@ header {
     height: 122px;
     margin-top: 80px;
 }
- 
+
 .animated_logo {
     position: fixed;
-    top:0;
+    top: 0;
     width: 100%;
     max-width: 1920px;
     left: 50%;
@@ -82,7 +82,7 @@ header {
     height: 100vh;
     z-index: 9999;
     height: 0px;
-} 
+}
 
 .logo-overlay {
     position: fixed;
@@ -145,6 +145,11 @@ header {
 .a_sign_up {
     text-decoration: none;
     color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 }
 
 /**----------Login----------*/
@@ -692,7 +697,7 @@ footer a:hover {
         width: 90%;
     }
 
-    .chk{
+    .chk {
         margin: 0;
     }
 
