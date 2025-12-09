@@ -70,14 +70,7 @@ function formatDate(deadlineDate) {
 function findNextDeadline(tasks) {
   let today = new Date();
   today.setHours(0, 0, 0, 0);
-
-  let urgentTasks = tasks.filter(t => {
-    const priority = String(t.priority || "").toLowerCase();
-    const board = normalizeBoardValue(t.board);
-    return (
-      priority === "urgent" && !board.includes("done") && t.dueDate
-    );
-  });
+  let urgentTasks = urgentTasksFilter(tasks);
   if (urgentTasks.length === 0) return null;
   let deadlines = [];
   for (let task of urgentTasks) {
@@ -87,6 +80,21 @@ function findNextDeadline(tasks) {
     if (due >= today) deadlines.push(due);
   }
   return deadlines.length ? new Date(Math.min(...deadlines)) : null;
+}
+
+/**
+ * Filters tasks to return only urgent tasks that are not completed and have a due date
+ * @param {Array} tasks - Array of task objects to filter
+ * @returns {Array} Array of urgent tasks that are not done and have due dates
+ */
+function urgentTasksFilter(tasks) {
+  return tasks.filter(t => {
+    const priority = String(t.priority || "").toLowerCase();
+    const board = normalizeBoardValue(t.board);
+    return (
+      priority === "urgent" && !board.includes("done") && t.dueDate
+    );
+  });
 }
 
 /**
@@ -194,6 +202,25 @@ function showGreetingOverlay(userName) {
     console.error("Overlay elements not found");
     return;
   }
+  displayGreeting(overlay, userName, text, name);
+  setTimeout(() => overlay.classList.add("fade-out"), 1200);
+  setTimeout(() => {
+    overlay.style.display = "none";
+    overlay.classList.remove("fade-out");
+  }, 2000);
+  shownGreeting = true;
+  localStorage.setItem("shownGreeting", "true");
+}
+
+/**
+ * Displays personalized greeting in the overlay with time-appropriate message
+ * Shows overlay, removes fade effects, and sets greeting text based on user name
+ * @param {HTMLElement} overlay - The overlay element to display
+ * @param {string} userName - The user's name for personalization
+ * @param {HTMLElement} text - The DOM element for greeting text
+ * @param {HTMLElement} name - The DOM element for displaying user name
+ */
+function displayGreeting(overlay, userName, text, name) {
   overlay.style.display = "flex";
   overlay.classList.remove("fade-out");
   const greeting = getGreetingText(new Date());
@@ -205,13 +232,6 @@ function showGreetingOverlay(userName) {
     name.innerText = userName;
     name.style.display = "block";
   }
-  setTimeout(() => overlay.classList.add("fade-out"), 1200);
-  setTimeout(() => {
-    overlay.style.display = "none";
-    overlay.classList.remove("fade-out");
-  }, 2000);
-  shownGreeting = true;
-  localStorage.setItem("shownGreeting", "true");
 }
 
 /**

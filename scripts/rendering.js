@@ -139,25 +139,51 @@ function checkForAndDisplayUserCircles(task) {
     let arrAssigned = task.assigned;
     let html = '';
     if (arrAssigned && arrAssigned.length > 0 && arrAssigned.length <= 5) {
-        html += renderTaskCardAssignedSectionGrid(arrAssigned);
-        for (let i = 0; i < arrAssigned.length; i++) {
-            html = createInitialCircle(arrAssigned, i, html);
-        }
-        html += `</div>`
-        return html
+        let __return;
+        ({ __return, html } = renderUpToFiveCircles(html, arrAssigned));
+        return __return;
     } else if (arrAssigned && arrAssigned.length > 5) {
-        html += renderTaskCardAssignedSectionGridMoreThanFive();
-        for (let i = 0; i < 5; i++) {
-            html = createInitialCircle(arrAssigned, i, html);
-        }
-        additionalAssigned = `+${arrAssigned.length - 5}`;
-        const color = '#2A3647';
-        html += renderTaskCardAssignedSectionInitials(additionalAssigned, color)
-        html += `</div>`
-        return html
+        let __return;
+        ({ __return, html } = renderMoreThanFiveCircles(html, arrAssigned));
+        return __return;
     } else {
         return '<div></div>';
     }
+}
+
+/**
+ * Renders contact circles for tasks with more than 5 assigned contacts
+ * Shows first 5 contacts as circles and displays a "+X" indicator for remaining contacts
+ * @param {string} html - The current HTML string being built
+ * @param {Array} arrAssigned - Array of assigned contact IDs
+ * @returns {Object} Object containing the updated HTML string in both __return and html properties
+ */
+function renderMoreThanFiveCircles(html, arrAssigned) {
+    html += renderTaskCardAssignedSectionGridMoreThanFive();
+    for (let i = 0; i < 5; i++) {
+        html = createInitialCircle(arrAssigned, i, html);
+    }
+    additionalAssigned = `+${arrAssigned.length - 5}`;
+    const color = '#2A3647';
+    html += renderTaskCardAssignedSectionInitials(additionalAssigned, color);
+    html += `</div>`;
+    return { __return: html, html };
+}
+
+/**
+ * Renders contact circles for tasks with 5 or fewer assigned contacts
+ * Shows all assigned contacts as individual circles
+ * @param {string} html - The current HTML string being built
+ * @param {Array} arrAssigned - Array of assigned contact IDs
+ * @returns {Object} Object containing the updated HTML string in both __return and html properties
+ */
+function renderUpToFiveCircles(html, arrAssigned) {
+    html += renderTaskCardAssignedSectionGrid(arrAssigned);
+    for (let i = 0; i < arrAssigned.length; i++) {
+        html = createInitialCircle(arrAssigned, i, html);
+    }
+    html += `</div>`;
+    return { __return: html, html };
 }
 
 /**
