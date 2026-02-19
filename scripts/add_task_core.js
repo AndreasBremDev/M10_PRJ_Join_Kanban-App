@@ -141,7 +141,7 @@ function resetAssigned() {
     const disp = document.getElementById('assigned-display-edit');
     if (disp) disp.innerHTML = `
         <p>Select contacts to assign</p>
-        <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg" class="dropdown-icon" aria-hidden="true">
+        <img id="arrow-icon-edit" src="../assets/icons/arrow_drop_down.svg" class="dropdown-icon" aria-hidden="true">
     `;
     const dd = document.getElementById('assigned-dropdown-edit');
     if (dd) {

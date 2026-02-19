@@ -18,7 +18,7 @@ function renderTasksCardSmallHtml(task) {
                 ${checkForAndDisplaySubtasks(task)}
             <div class="flex spacebetween">
                 ${checkForAndDisplayUserCircles(task)}
-                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority">
+                <img src="../assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority">
             </div>
         </div>
     </div>`
@@ -145,7 +145,7 @@ function getAddTaskOverlayTemplate(board) {
 
                 <div><h1 id="overlay-title" class="overlay-headline">Add Task</h1></div>
                 <div><button onclick="closeAddTaskOverlay()" class="close-add-task-overlay" aria-label="Close add task dialog">
-                    <img src="/assets/icons/close.svg" alt="">
+                    <img src="../assets/icons/close.svg" alt="">
                     </button>
                 </div>    
             </div>
@@ -185,16 +185,16 @@ function getAddTaskOverlayTemplate(board) {
                             <button type="button" id="prio-urgent" class="priority-btn urgent"
                                 onclick="setEditPrio('urgent')" role="radio" aria-checked="false"
                                 aria-label="High priority">
-                                Urgent <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+                                Urgent <img src="../assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
                             </button>
                             <button type="button" id="prio-medium" class="priority-btn medium active"
                                 onclick="setEditPrio('medium')" role="radio" aria-checked="true"
                                 aria-label="Medium priority">
-                                Medium <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+                                Medium <img src="../assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
                             </button>
                             <button type="button" id="prio-low" class="priority-btn low" onclick="setEditPrio('low')"
                                 role="radio" aria-checked="false" aria-label="Low priority">
-                                Low <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+                                Low <img src="../assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
                             </button>
                         </div>
                     </fieldset>
@@ -205,7 +205,7 @@ function getAddTaskOverlayTemplate(board) {
                             role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox"
                             aria-labelledby="assigned-label" aria-controls="assigned-dropdown-edit">
                             Select contacts to assign 
-                            <img id="arrow-icon-edit" src="/assets/icons/arrow_drop_down.svg" alt="arrow" class="dropdown-icon" aria-hidden="true">
+                            <img id="arrow-icon-edit" src="../assets/icons/arrow_drop_down.svg" alt="arrow" class="dropdown-icon" aria-hidden="true">
                         </div>
                         <div id="assigned-dropdown-edit" class="select-dropdown" role="listbox"
                             aria-labelledby="assigned" style="display: none;"></div>
@@ -219,7 +219,7 @@ function getAddTaskOverlayTemplate(board) {
                         <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()" required aria-required="true" aria-describedby="category-error"
                             aria-invalid="false" tabindex="0">
                             <span id="category-text">Select task category</span>
-                            <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow" class="dropdown-icon">
+                            <img id="category-arrow" src="../assets/icons/arrow_drop_down.svg" alt="Arrow" class="dropdown-icon">
                         </div>
                         <div id="category-options" class="select-dropdown" style="display: none;">
                             <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task</div>
@@ -459,7 +459,7 @@ function editTaskDetailOverlayTemplate(task) {
                         onkeydown="setEditPrio('low')"
                         aria-describedby="low-hint">
                         Low
-                        <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+                        <img src="../assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
                     </button>
                 </div>
                 <div id="urgent-hint" class="sr-only">High priority task that requires immediate attention</div>

@@ -91,11 +91,11 @@ function checkIconPathAndSetNewIconAndInputType(icon, input) {
         return
     }
     else if (icon.src.endsWith('visibility_off.png')) {
-        icon.src = '../assets/icons/visibility.png';
+        icon.src = './assets/icons/visibility.png';
         icon.alt = 'visibility icon';
         input.type = 'text';
     } else {
-        icon.src = '../assets/icons/visibility_off.png';
+        icon.src = './assets/icons/visibility_off.png';
         icon.alt = 'visibility_off icon';
         input.type = 'password';
     }
