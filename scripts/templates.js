@@ -1269,7 +1269,7 @@ function displaySearchInBoardHtml() {
                 onkeydown="handleSearchButtonKeydown(event)"
                 aria-label="Find Task"
                 tabindex="0">
-                <img class="searchbar__icon" src="/assets/icons/search.svg" alt="" aria-hidden="true">
+                <img class="searchbar__icon" src="../assets/icons/search.svg" alt="" aria-hidden="true">
             </button>
         </div>`
 }
