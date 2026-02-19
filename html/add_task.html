@@ -135,17 +135,17 @@
                                 <button type="button" id="prio-urgent" class="priority-btn urgent"
                                     onclick="setEditPrio('urgent')" role="radio" aria-checked="false"
                                     aria-label="High priority">
-                                    Urgent <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+                                    Urgent <img src="../assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
                                 </button>
                                 <button type="button" id="prio-medium" class="priority-btn medium active"
                                     onclick="setEditPrio('medium')" role="radio" aria-checked="true"
                                     aria-label="Medium priority">
-                                    Medium <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+                                    Medium <img src="../assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
                                 </button>
                                 <button type="button" id="prio-low" class="priority-btn low"
                                     onclick="setEditPrio('low')" role="radio" aria-checked="false"
                                     aria-label="Low priority">
-                                    Low <img src="/assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+                                    Low <img src="../assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
                                 </button>
                             </div>
                         </fieldset>
@@ -158,7 +158,7 @@
                                 aria-controls="assigned-dropdown-edit" aria-label="Select contacts to assign"
                                 onkeydown="handleAssignedDropdownEditKeydown(event)">
                                 <p>Select contacts to assign</p> <img id="arrow-icon-edit"
-                                    src="/assets/icons/arrow_drop_down.svg" alt="arrow" class="dropdown-icon"
+                                    src="../assets/icons/arrow_drop_down.svg" alt="arrow" class="dropdown-icon"
                                     aria-hidden="true">
                             </div>
                             <div id="assigned-dropdown-edit" class="select-dropdown" role="listbox"
@@ -182,7 +182,7 @@
                                 <span id="category-text">Select task category</span>
 
                                 <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow"
-                                    class="dropdown-icon">
+                                    src="../assets/icons/arrow_drop_down.svg" alt="Arrow" class="dropdown-icon">
                             </div>
                             <div id="category-options" class="select-dropdown" style="display: none;">
                                 <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task
@@ -239,12 +239,12 @@
         </div>
 
         <img id="success-toast-img" src="/assets/img/added_to_board.svg" alt="Success: Task added to board" role="alert"
-            class="success-toast-img d-none">
+            src="../assets/img/added_to_board.svg" alt="Success: Task added to board" role="alert" class="success-toast-img d-none">
     </main>
 
     <div id="rotateInfoOverlay">
         <div class="rotate-box">
-            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <img src="../assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
             <p>Please rotate your Phone</p>
         </div>
     </div>

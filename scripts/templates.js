@@ -18,7 +18,7 @@ function renderTasksCardSmallHtml(task) {
                 ${checkForAndDisplaySubtasks(task)}
             <div class="flex spacebetween">
                 ${checkForAndDisplayUserCircles(task)}
-                <img src="../assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority">
+                    <img src="../assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority">
             </div>
         </div>
     </div>`
@@ -280,7 +280,7 @@ function getTaskDetailOverlayTemplate(task) {
                         aria-label="Close task details dialog"
                         tabindex="1"
                         style="border: none; background: none; cursor: pointer; padding: 4px;">
-                    <img src="/assets/icons/close.svg" alt="" aria-hidden="true">
+                    <img src="../assets/icons/close.svg" alt="" aria-hidden="true">
                 </button>
             </div>
         <div class="task-overlay-wrapper">
@@ -302,7 +302,7 @@ function getTaskDetailOverlayTemplate(task) {
             <div class="task-detail-priority" role="text" aria-label="Priority: ${task.priority}">
                 <div style="font-size: 18px;">Priority:</div>
                 <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>&nbsp;&nbsp;
-                <img src="/assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority icon" aria-hidden="true">
+                <img src="../assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority icon" aria-hidden="true">
             </div>
 
             <div class="task-detail-assigned">
@@ -366,7 +366,7 @@ function editTaskDetailOverlayTemplate(task) {
                 type="button"
                 tabindex="0"
                 style="border: none; background: none; cursor: pointer; padding: 4px;">
-                <img src="/assets/icons/close.svg" alt="" aria-hidden="true">
+                <img src="../assets/icons/close.svg" alt="" aria-hidden="true">
             </button>
         </div>
         <div class="task-overlay-wrapper">
@@ -435,7 +435,7 @@ function editTaskDetailOverlayTemplate(task) {
                         onkeydown="setEditPrio('urgent')"
                         aria-describedby="urgent-hint">
                         Urgent
-                        <img src="/assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+                        <img src="../assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
                     </button>
                     <button 
                         type="button" 
@@ -447,7 +447,7 @@ function editTaskDetailOverlayTemplate(task) {
                         onkeydown="setEditPrio('medium')"
                         aria-describedby="medium-hint">
                         Medium
-                        <img src="/assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+                        <img src="../assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
                     </button>
                     <button 
                         type="button" 
@@ -512,7 +512,7 @@ function editTaskDetailOverlayTemplate(task) {
 
                         <span id="category-text">Select task category</span>
 
-                        <img id="category-arrow" src="/assets/icons/arrow_drop_down.svg" alt="Arrow"
+                        <img id="category-arrow" src="../assets/icons/arrow_drop_down.svg" alt="Arrow"
                             class="dropdown-icon">
                     </div>
                     <div id="category-options" class="select-dropdown" style="display: none;">
@@ -556,7 +556,7 @@ function editTaskDetailOverlayTemplate(task) {
                     class="btn"
                     aria-describedby="save-hint">
                     Save Changes&nbsp;&nbsp;
-                    <img src="/assets/icons/check.svg" alt="" aria-hidden="true">
+                    <img src="../assets/icons/check.svg" alt="" aria-hidden="true">
                 </button>
             <div id="save-hint" class="sr-only">Save all changes and close the edit dialog</div>
         </div>  
@@ -630,11 +630,11 @@ function generateViewSubtaskHTML(st, i) {
         <span onclick="editSubtask(${i})" style="flex-grow:1; cursor:pointer; padding-left: 16px;">• ${st.title}</span>
         <div class="subtask-icons-container">
             <div onclick="editSubtask(${i})" class="subtask-icon">
-                <img src="/assets/icons/edit.svg" alt="Edit">
+                <img src="../assets/icons/edit.svg" alt="Edit">
             </div>
             <div class="separator-vertical"></div>
             <div onclick="deleteSubtaskEdit(${i})" class="subtask-icon">
-                <img src="/assets/icons/delete.svg" alt="Delete">
+                <img src="../assets/icons/delete.svg" alt="Delete">
             </div>
         </div>
     </li>`;
@@ -650,11 +650,11 @@ function generateEditSubtaskHTML(st, i) {
                onkeydown="handleSubtaskEditKeydown(event, ${i})">
         <div class="subtask-icons-container" style="display: flex;">
             <div onmousedown="deleteSubtaskEdit(${i})" class="subtask-icon">
-                <img src="/assets/icons/delete.svg" alt="Delete">
+                <img src="../assets/icons/delete.svg" alt="Delete">
             </div>
             <div class="separator-vertical"></div>
             <div onmousedown="saveEditedSubtask(${i})" class="subtask-icon">
-                <img src="/assets/icons/check_black.svg" alt="Save">
+                <img src="../assets/icons/check_black.svg" alt="Save">
             </div>
         </div>
     </li>`;
@@ -677,13 +677,13 @@ function renderContactLargeHtml(contact, color) {
                         aria-label="Go back to contacts list"
                         tabindex="0"
                         style="background: none; border: none; cursor: pointer;">
-                        <img src="/assets/icons/arrow-left-line.svg" alt="go back" aria-hidden="true">
+                        <img src="../assets/icons/arrow-left-line.svg" alt="go back" aria-hidden="true">
                     </button>
                 </div>
             </div>
 
             <div class="title_seperator_2" aria-hidden="true">
-                <img src="/assets/icons/Summary_title_seperator.svg" height="59px" width="3px" alt="seperator">
+                <img src="../assets/icons/Summary_title_seperator.svg" height="59px" width="3px" alt="seperator">
             </div>
 
             <div class="title_summary_discription_2">
@@ -850,7 +850,7 @@ function renderAddNewContactOverlayHtml() {
 
             <div class="flex align contact-dialog-add">
                 <div class="flex column gap-13 overlay_title">
-                    <img class="add_contact_overlay_img" src="/assets/icons/Join_light.png" alt="Join Logo"
+                    <img class="add_contact_overlay_img" src="../assets/icons/Join_light.png" alt="Join Logo"
                         style="height: 66px; width: 55px;" aria-hidden="true">
                     <h2 id="contact-dialog-h2" class="contact-dialog-h2">Add contact</h2>
                     <p class="contact-dialog-h3">Tasks are better with a team!</p>
@@ -991,7 +991,7 @@ function renderEditContactOverlayHtml(contact, color, option) {
 
             <div class="flex align contact-dialog-add">
                 <div class="flex column gap-13 title_mobile">
-                    <img class="logo_img_edit" src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true"
+                    <img class="logo_img_edit" src="../assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true"
                         style="height: 66px; width: 55px;">
                     <h2 id="edit-contact-dialog-h2" class="contact-dialog-h2">${option} contact</h2>
                     <div class="contact-dialog-line" aria-hidden="true"></div>
@@ -1128,7 +1128,7 @@ function renderDeleteContactOverlayHtml(contact, color, option) {
 
             <div class="flex align contact-dialog-add">
                 <div class="flex column gap-13 title_mobile">
-                    <img class="logo_img_edit" src="/assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true"
+                    <img class="logo_img_edit" src="../assets/icons/Join_light.png" alt="Join Logo" aria-hidden="true"
                         style="height: 66px; width: 55px;">
                     <h2 id="edit-contact-dialog-h2" class="contact-dialog-h2">${option} contact</h2>
                     <div class="contact-dialog-line" aria-hidden="true"></div>
