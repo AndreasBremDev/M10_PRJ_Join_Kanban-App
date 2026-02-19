@@ -8,12 +8,12 @@
     <link rel="icon" href="./assets/icons/Join_dark.png" type="image/png">
     <title>Join - Login</title>
 
-    <link rel="stylesheet" href="/styles/login_register.css">
-    <link rel="stylesheet" href="/styles/fonts.css">
-    <link rel="stylesheet" href="/styles/media_queries.css">
+    <link rel="stylesheet" href="./styles/login_register.css">
+    <link rel="stylesheet" href="./styles/fonts.css">
+    <link rel="stylesheet" href="./styles/media_queries.css">
 
-    <script src="/scripts/global.js" defer></script>
-    <script src="/scripts/global_keyboard.js" defer></script>
+    <script src="./scripts/global.js" defer></script>
+    <script src="./scripts/global_keyboard.js" defer></script>
     <script src="./scripts/login_register.js" defer></script>
 
 </head>
@@ -50,7 +50,7 @@
                             tabindex="0" placeholder="Email" aria-required="true" aria-describedby="errMsgEmail"
                             aria-invalid="false" autocomplete="email">
                         <div class="icon-div">
-                            <img src="../assets/icons/mail.png" alt="email icon" aria-hidden="true">
+                            <img src="./assets/icons/mail.png" alt="email icon" aria-hidden="true">
                         </div>
                     </div>
                     <div id="errMsgEmail" class="error-msg" role="alert" aria-live="polite">
@@ -65,7 +65,7 @@
                             tabindex="0" placeholder="Password" minlength="12" aria-required="true"
                             aria-describedby="errMsgPassword" aria-invalid="false" autocomplete="current-password">
                         <div class="icon-div">
-                            <img id="passwordIcon" src="../assets/icons/lock.png" alt="toggle password visibility"
+                            <img id="passwordIcon" src="./assets/icons/lock.png" alt="toggle password visibility"
                                 onclick="passwordVisible('passwordLogin','passwordIcon')" tabindex="0" role="button"
                                 aria-label="Show or hide password"
                                 onkeydown="if(event.key==='Enter'||event.key===' '){passwordVisible('passwordLogin','passwordIcon'); event.preventDefault();}">
@@ -92,14 +92,14 @@
         </main>
 
         <footer>
-            <a class="legal_pages_index" href="/html/login_privacy_policy.html">Privacy policy</a>
-            <a class="legal_pages_index" href="/html/login_legal_notice.html">Legal notice</a>
+            <a class="legal_pages_index" href="./html/login_privacy_policy.html">Privacy policy</a>
+            <a class="legal_pages_index" href="./html/login_legal_notice.html">Legal notice</a>
         </footer>
     </div>
 
     <div id="rotateInfoOverlay">
         <div class="rotate-box">
-            <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+            <img src="./assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
             <p>Please rotate your Phone</p>
         </div>
     </div>

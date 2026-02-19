@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join - Summary</title>
-    <link rel="shortcut icon" href="/assets/icons/Join_dark.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets/icons/Join_dark.png" type="image/x-icon">
 
-    <link rel="stylesheet" href="/styles/standards.css">
-    <link rel="stylesheet" href="/styles/summary.css">
-    <link rel="stylesheet" href="/styles/media_queries.css">
-    <link rel="stylesheet" href="/styles/fonts.css">
+    <link rel="stylesheet" href="../styles/standards.css">
+    <link rel="stylesheet" href="../styles/summary.css">
+    <link rel="stylesheet" href="../styles/media_queries.css">
+    <link rel="stylesheet" href="../styles/fonts.css">
 
-    <script src="/scripts/global.js" defer></script>
-    <script src="/scripts/global_keyboard.js" defer></script>
-    <script src="/scripts/summary.js" defer></script>
-    <script src="/scripts/add_task_keyboard.js" defer></script>
+    <script src="../scripts/global.js" defer></script>
+    <script src="../scripts/global_keyboard.js" defer></script>
+    <script src="../scripts/summary.js" defer></script>
+    <script src="../scripts/add_task_keyboard.js" defer></script>
 </head>
 
 <body onload="init()" style="overflow-y: hidden;">
@@ -66,11 +66,11 @@
             <div class="header_content">
                 <div class="header-left">
                     <h2 class="header_h2">Kanban Project Management Tool</h2>
-                    <img class="header-left-img" src="/assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
+                    <img class="header-left-img" src="../assets/icons/Join_dark.png" alt="Join Logo" aria-hidden="true">
                 </div>
                 <div class="header-right">
-                    <a class="a_help_summary" href="/html/help.html" aria-label="Get help and support">
-                        <img class="help-icon" src="/assets/icons/help_icon.svg" alt="" aria-hidden="true">
+                    <a class="a_help_summary" href="help.html" aria-label="Get help and support">
+                        <img class="help-icon" src="../assets/icons/help_icon.svg" alt="" aria-hidden="true">
                     </a>
                     <div class="user-circle" onclick="toggleDropDownMenu()" onkeydown="handleUserMenuKeydown(event)"
                         id="currentUserInitials" tabindex="0" role="button" aria-expanded="false" aria-haspopup="menu"
@@ -78,12 +78,12 @@
                     </div>
 
                     <div class="user-menu" id="user-menu" role="menu" aria-hidden="true">
-                        <a class="user-menu-help" href="/html/help.html" role="menuitem">Help</a>
-                        <a class="user-menu-legal-notice" href="/html/legal_notice.html" role="menuitem">Legal
+                        <a class="user-menu-help" href="help.html" role="menuitem">Help</a>
+                        <a class="user-menu-legal-notice" href="legal_notice.html" role="menuitem">Legal
                             Notice</a>
-                        <a class="user-menu-privacy-policy" href="/html/privacy_policy.html" role="menuitem">Privacy
+                        <a class="user-menu-privacy-policy" href="privacy_policy.html" role="menuitem">Privacy
                             Policy</a>
-                        <a class="user-menu-logout" href="/index.html" id="logout-btn" onclick="logout()"
+                        <a class="user-menu-logout" href="../index.html" id="logout-btn" onclick="logout()"
                             role="menuitem">Log
                             out</a>
                     </div>
@@ -107,7 +107,7 @@
                 </div>
 
                 <div class="title_seperator" aria-hidden="true">
-                    <img src="/assets/icons/Summary_title_seperator.svg" height="59px" width="3px" alt="">
+                    <img src="../assets/icons/Summary_title_seperator.svg" height="59px" width="3px" alt="">
                 </div>
 
                 <div class="title_summary_discription">
@@ -120,12 +120,12 @@
 
                 <div class="to_do_summary">
                     <div class="to_to_container">
-                        <a class="to_do" href="/html/board.html?status=todo"
+                        <a class="to_do" href="board.html?status=todo"
                             aria-label="View To-Do tasks. Current count will be announced"
-                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=todo')">
+                            onkeydown="handleSummaryLinkKeydown(event, 'board.html?status=todo')">
                             <div class="div_icon" aria-hidden="true">
-                                <img src="/assets/icons/pen_dark_icon.svg" class="icon_dark" alt="">
-                                <img src="/assets/icons/pen_light_icon.svg" class="icon_light" alt="">
+                                <img src="../assets/icons/pen_dark_icon.svg" class="icon_dark" alt="">
+                                <img src="../assets/icons/pen_light_icon.svg" class="icon_light" alt="">
                             </div>
                             <div class="container_information">
                                 <div class="numbers" aria-describedby="todo-description">1</div>
@@ -135,12 +135,12 @@
                             </div>
                         </a>
 
-                        <a class="done" href="/html/board.html?status=done"
+                        <a class="done" href="board.html?status=done"
                             aria-label="View completed tasks. Current count will be announced"
-                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=done')">
+                            onkeydown="handleSummaryLinkKeydown(event, 'board.html?status=done')">
                             <div class="div_icon" aria-hidden="true">
-                                <img src="/assets/icons/check_dark_icon.svg" class="icon_dark" alt="">
-                                <img src="/assets/icons/check_light_icon.svg" class="icon_light" alt="">
+                                <img src="../assets/icons/check_dark_icon.svg" class="icon_dark" alt="">
+                                <img src="../assets/icons/check_light_icon.svg" class="icon_light" alt="">
                             </div>
                             <div class="container_information">
                                 <div class="numbers" aria-describedby="done-description"></div>
@@ -151,13 +151,13 @@
                         </a>
                     </div>
 
-                    <a class="urgent_container" href="/html/board.html?status=urgent"
+                    <a class="urgent_container" href="board.html?status=urgent"
                         aria-label="View urgent tasks and upcoming deadline"
-                        onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=urgent')">
+                        onkeydown="handleSummaryLinkKeydown(event, 'board.html?status=urgent')">
 
                         <div class="urgent">
                             <div class="urgent_icon" aria-hidden="true">
-                                <img src="/assets/icons/Summary_urgent_icon.svg" alt="">
+                                <img src="../assets/icons/Summary_urgent_icon.svg" alt="">
                             </div>
                             <div class="container_information">
                                 <div class="numbers" aria-describedby="urgent-description"></div>
@@ -178,9 +178,9 @@
                     </a>
 
                     <div class="board_informations" role="group" aria-label="Board statistics overview">
-                        <a class="tasks_in_board" href="/html/board.html"
+                        <a class="tasks_in_board" href="board.html"
                             aria-label="View all tasks in board. Current count will be announced"
-                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html')">
+                            onkeydown="handleSummaryLinkKeydown(event, 'board.html')">
                             <div class="container_information">
                                 <div class="numbers" aria-describedby="board-description"></div>
                                 <div class="numbers_txt">
@@ -189,9 +189,9 @@
                             </div>
                         </a>
 
-                        <a class="tasks_in_progress" href="/html/board.html?status=in_progress"
+                        <a class="tasks_in_progress" href="board.html?status=in_progress"
                             aria-label="View tasks in progress. Current count will be announced"
-                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=in_progress')">
+                            onkeydown="handleSummaryLinkKeydown(event, 'board.html?status=in_progress')">
                             <div class="container_information">
                                 <div class="numbers" aria-describedby="progress-description"></div>
                                 <div class="numbers_txt">
@@ -200,9 +200,9 @@
                             </div>
                         </a>
 
-                        <a class="awaiting_feedback" href="/html/board.html?status=awaiting_feedback"
+                        <a class="awaiting_feedback" href="board.html?status=awaiting_feedback"
                             aria-label="View tasks awaiting feedback. Current count will be announced"
-                            onkeydown="handleSummaryLinkKeydown(event, '/html/board.html?status=awaiting_feedback')">
+                            onkeydown="handleSummaryLinkKeydown(event, 'board.html?status=awaiting_feedback')">
                             <div class="container_information">
                                 <div class="numbers" aria-describedby="feedback-description"></div>
                                 <div class="numbers_txt">
@@ -223,7 +223,7 @@
 
         <div id="rotateInfoOverlay">
             <div class="rotate-box">
-                <img src="/assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
+                <img src="../assets/icons/rotate_phone.png" alt="rotate-phone" class="rotate-phone">
                 <p>Please rotate your Phone</p>
             </div>
         </div>
