@@ -24,6 +24,8 @@ function validateEditTaskForm() {
     const titleInput = document.getElementById('edit-title');
     const titleError = document.getElementById('edit-title-error');
     isValid = validateTaskFormCheckIfTitleInputAndTitleErrorExist(titleInput, titleError, isValid);
+    const descValid = validateField('edit-description');
+    isValid = isValid && descValid;
     const dateInput = document.getElementById('edit-due-date');
     const dateError = document.getElementById('edit-due-date-error');
     isValid = validateTaskFormCheckIfDateInputAndDateErrorExist(dateInput, dateError, isValid);
@@ -134,8 +136,11 @@ function validateField(id) {
     if (!input || !error) return;
     if (input.type === 'date' && input.value < new Date().toISOString().split('T')[0]) input.value = '';
     const value = input.value.trim();
-    let isInvalid = !value;
+    let isInvalid = false;
     let htmlInvalid = false;
+    if (id === 'title' || id === 'edit-title') {
+        isInvalid = !value;
+    }
     if ((id === 'title' || id === 'description' || id === 'edit-title' || id === 'edit-description') && containsHTML(value)) {
         htmlInvalid = displayHtmlError(error, input, htmlInvalid);
     } else if (isInvalid) {

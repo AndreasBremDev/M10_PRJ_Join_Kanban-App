@@ -397,7 +397,11 @@ function editTaskDetailOverlayTemplate(task) {
                     class="title-input-overlay description-textarea" 
                     placeholder="Enter a Description"
                     aria-describedby="description-hint"
-                    rows="4"></textarea>
+                    rows="4"
+                    onblur="validateField('edit-description')"
+                    oninput="clearError('edit-description')"
+                ></textarea>
+                <div id="edit-description-error" class="error-text" aria-live="polite"></div>
                 <div id="description-hint" class="sr-only">Optional detailed description of the task</div>
             </div>
 
