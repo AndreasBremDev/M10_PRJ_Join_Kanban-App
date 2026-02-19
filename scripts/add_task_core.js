@@ -232,7 +232,7 @@ function toggleIfDropdownExist(dropdown, display, arrow) {
  * @param {string} taskId - The ID of the task to save
  */
 async function saveEditedTask(taskId) {
-    if (!validateEditInputs()) return;
+    if (!validateEditTaskForm()) return;
     const oldTask = tasks.find(t => t.id === taskId);
     if (!oldTask) return;
     try {
