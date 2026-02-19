@@ -164,7 +164,7 @@ async function login(path = "") {
     );
     if (activeUser !== -1) {
         saveToLocalStorage(activeUser);
-        window.location.href = `../html/summary.html`;
+        window.location.href = 'html/summary.html';
     } else {
         document.getElementById('errMsgPassword').style.display = "block";
         document.getElementById('errMsgPassword').innerText = "please double check email and password or not a Join user?";
@@ -181,7 +181,7 @@ function guestLogin() {
     email.value = password.value = '';
     let activeUser = 0;
     saveToLocalStorage(activeUser)
-    window.location.href = `../html/summary.html`;
+    window.location.href = 'html/summary.html';
 }
 
 /**
