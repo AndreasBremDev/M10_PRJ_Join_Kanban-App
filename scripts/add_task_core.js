@@ -21,6 +21,16 @@ function setupFormElements() {
         const todayStr = new Date().toISOString().split('T')[0];
         dueDateInput.setAttribute('min', todayStr);
     }
+    // Ensure error message element for description exists
+    const descriptionInput = document.getElementById('description');
+    if (descriptionInput && !document.getElementById('description-error')) {
+        const errorDiv = document.createElement('div');
+        errorDiv.id = 'description-error';
+        errorDiv.className = 'error-text';
+        errorDiv.setAttribute('role', 'alert');
+        errorDiv.setAttribute('aria-live', 'polite');
+        descriptionInput.parentNode.insertBefore(errorDiv, descriptionInput.nextSibling);
+    }
 }
 
 /**

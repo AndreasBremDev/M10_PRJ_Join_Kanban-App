@@ -130,7 +130,7 @@ function slideInOverlay() {
  * @param {string} taskJson - Base64 encoded JSON string of the task object
  */
 async function renderTaskDetail(taskJson) {
-    let task = JSON.parse(atob(taskJson));
+    let task = JSON.parse(decodeURIComponent(escape(atob(taskJson))));
     let overlay = document.getElementById("add-task-overlay");
     overlay.onclick = closeAddTaskOverlay;
     overlay.innerHTML = getTaskDetailOverlayTemplate(task);

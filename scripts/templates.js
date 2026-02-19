@@ -1,5 +1,5 @@
 function renderTasksCardSmallHtml(task) {
-    const taskJson = btoa(JSON.stringify(task));
+    const taskJson = btoa(unescape(encodeURIComponent(JSON.stringify(task))));
     return /* html */`
     <div 
         role="button" 
@@ -149,8 +149,6 @@ function getAddTaskOverlayTemplate(board) {
                     </button>
                 </div>    
             </div>
-            
-            
 
             <div id="task-form" class="task-form-overlay">
                 <div class="form-left-overlay">
@@ -163,6 +161,7 @@ function getAddTaskOverlayTemplate(board) {
                     <textarea class="description-box" id="description"
                         class="description-input-overlay title-input-overlay" placeholder="Enter a Description"
                         tabindex="0" aria-describedby="description-hint"></textarea>
+                    <div id="description-error" class="error-text" role="alert" aria-live="polite"></div>
                     <div id="description-hint" class="sr-only">Optional field for task description</div>
 
                     <div class="add-task-label-box-sizing">
@@ -246,7 +245,7 @@ function getAddTaskOverlayTemplate(board) {
 
             </div>
 
-             <div class="form-footer-overlay">
+            <div class="form-footer-overlay">
                         <p class="form-hint form-hint-overlay">
                             <span class="required-marker">*</span>This field is required
                         </p>

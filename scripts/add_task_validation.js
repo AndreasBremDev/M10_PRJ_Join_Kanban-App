@@ -9,9 +9,10 @@
  */
 function validateTaskForm() {
     const isTitleValid = validateField('title');
+    const isDescriptionValid = validateField('description');
     const isDateValid = validateField('due-date');
     const isCategoryValid = validateCategory();
-    return isTitleValid && isDateValid && isCategoryValid;
+    return isTitleValid && isDescriptionValid && isDateValid && isCategoryValid;
 }
 
 /**
@@ -115,19 +116,71 @@ function setupEditFormValidation() {
 }
 
 /**
- * Validates a form field and shows/hides error messages
+ * Checks if a string contains HTML tags
+ * @param {string} str - The string to check
+ * @returns {boolean} True if HTML tags are found, false otherwise
+ */
+function containsHTML(str) {
+    return /<[^>]+>/.test(str);
+}
+
+/**
+ * Validates a form field, checks for empty value and HTML tags (for title/description)
  * @param {string} id - The ID of the form field to validate
- * @returns {boolean} True if field is valid, false otherwise
+ * @returns {boolean} True if field is valid and contains no HTML tags, false otherwise
  */
 function validateField(id) {
     const input = document.getElementById(id), error = document.getElementById(`${id}-error`);
     if (!input || !error) return;
     if (input.type === 'date' && input.value < new Date().toISOString().split('T')[0]) input.value = '';
-    const isInvalid = !input.value.trim();
-    error.textContent = isInvalid ? 'This field is required' : '';
-    error.classList.toggle('visible', isInvalid);
-    input.classList.toggle('input-error', isInvalid);
-    return !isInvalid;
+    const value = input.value.trim();
+    let isInvalid = !value;
+    let htmlInvalid = false;
+    if ((id === 'title' || id === 'description' || id === 'edit-title' || id === 'edit-description') && containsHTML(value)) {
+        htmlInvalid = displayHtmlError(error, input, htmlInvalid);
+    } else if (isInvalid) {
+        displayFieldErrorMessage(error, input);
+    } else {
+        clearErrorMessage(error, input);
+    }
+    return !isInvalid && !htmlInvalid;
+}
+
+/**
+ * Clears error message and error styling for a field
+ * @param {HTMLElement} error - The error message element
+ * @param {HTMLElement} input - The input field element
+ */
+function clearErrorMessage(error, input) {
+    error.textContent = '';
+    error.classList.remove('visible');
+    input.classList.remove('input-error');
+}
+
+/**
+ * Displays required field error message and styling
+ * @param {HTMLElement} error - The error message element
+ * @param {HTMLElement} input - The input field element
+ */
+function displayFieldErrorMessage(error, input) {
+    error.textContent = 'This field is required';
+    error.classList.add('visible');
+    input.classList.add('input-error');
+}
+
+/**
+ * Displays HTML tag error message and styling
+ * @param {HTMLElement} error - The error message element
+ * @param {HTMLElement} input - The input field element
+ * @param {boolean} htmlInvalid - Current HTML invalid state
+ * @returns {boolean} Always true (for clarity in validateField)
+ */
+function displayHtmlError(error, input, htmlInvalid) {
+    error.textContent = 'HTML tags are not allowed!';
+    error.classList.add('visible');
+    input.classList.add('input-error');
+    htmlInvalid = true;
+    return htmlInvalid;
 }
 
 /**
