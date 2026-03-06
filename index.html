@@ -66,9 +66,9 @@
                             aria-describedby="errMsgPassword" aria-invalid="false" autocomplete="current-password">
                         <div class="icon-div">
                             <img id="passwordIcon" src="./assets/icons/lock.png" alt="toggle password visibility"
-                                onclick="passwordVisible('passwordLogin','passwordIcon')" tabindex="0" role="button"
+                                onclick="passwordVisible('passwordLogin','passwordIcon', 'index')" tabindex="0" role="button"
                                 aria-label="Show or hide password"
-                                onkeydown="if(event.key==='Enter'||event.key===' '){passwordVisible('passwordLogin','passwordIcon'); event.preventDefault();}">
+                                onkeydown="if(event.key==='Enter'||event.key===' '){passwordVisible('passwordLogin','passwordIcon', 'index'); event.preventDefault();}">
                         </div>
                     </div>
                     <div id="errMsgPassword" class="error-msg" role="alert" aria-live="polite">

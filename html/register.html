@@ -79,7 +79,7 @@
                             placeholder="Password" aria-required="true" aria-describedby="errMsgPassword"
                             aria-invalid="false" tabindex="0">
                         <div class="icon-div">
-                            <img id="passwordIcon" onclick="passwordVisible('passwordRegister','passwordIcon', event)"
+                            <img id="passwordIcon" onclick="passwordVisible('passwordRegister','passwordIcon', 'register', event)"
                                 src="../assets/icons/lock.png" alt="toggle password visibility" role="button"
                                 tabindex="0" aria-label="Show or hide password"
                                 onkeydown="handlePasswordToggleKeydown(event, 'passwordRegister', 'passwordIcon')">
@@ -97,7 +97,7 @@
                             aria-invalid="false" tabindex="0">
                         <div class="icon-div">
                             <img id="passwordConfirmIcon"
-                                onclick="passwordVisible('passwordRegisterConfirm','passwordConfirmIcon', event)"
+                                onclick="passwordVisible('passwordRegisterConfirm','passwordConfirmIcon', 'register', event)"
                                 src="../assets/icons/lock.png" alt="toggle confirm password visibility" role="button"
                                 tabindex="0" aria-label="Show or hide confirm password"
                                 onkeydown="handlePasswordToggleKeydown(event, 'passwordRegisterConfirm', 'passwordConfirmIcon')">
