@@ -54,12 +54,12 @@ function checkAllValidations() {
  * Changes the password icon to visibility_off when user starts typing
  * @param {string} id - The ID of the icon element
  */
-function changePasswordIcon(id) {
+function changePasswordIcon(id, website) {
     let containerId = document.getElementById(`${id}`);
     if (containerId.src.endsWith('visibility.png')) {
         return;
     }
-    containerId.src = '../assets/icons/visibility_off.png';
+    containerId.src = website === 'index' ? './assets/icons/visibility_off.png' : '../assets/icons/visibility_off.png';
     containerId.alt = 'visibility_off icon';
 }
 
@@ -91,7 +91,7 @@ function checkIconPathAndSetNewIconAndInputType(icon, input, website) {
         return
     }
     else if (icon.src.endsWith('visibility_off.png')) {
-        icon.src = website === 'index' ? './assets/icons/visibility.png' : './assets/icons/visibility.png';
+        icon.src = website === 'index' ? './assets/icons/visibility.png' : '../assets/icons/visibility.png';
         icon.alt = 'visibility icon';
         input.type = 'text';
     } else {
@@ -225,6 +225,6 @@ function saveToLocalStorage(activeUserId) {
 function handlePasswordToggleKeydown(event, inputId, iconId) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        passwordVisible(inputId, iconId, event);
+        passwordVisible(inputId, iconId, website, event);
     }
 }

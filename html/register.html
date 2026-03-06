@@ -74,7 +74,7 @@
                     <div class="input-field">
                         <label for="passwordRegister" class="sr-only">Password (required)</label>
                         <input class="input_login" type="password" id="passwordRegister"
-                            onfocus="changePasswordIcon('passwordIcon')"
+                            onfocus="changePasswordIcon('passwordIcon', 'register')"
                             onblur="validateField('passwordRegister', 'errMsgPassword', isPassValid, 2, '8 character 1 special')"
                             placeholder="Password" aria-required="true" aria-describedby="errMsgPassword"
                             aria-invalid="false" tabindex="0">
@@ -91,7 +91,7 @@
                     <div class="input-field">
                         <label for="passwordRegisterConfirm" class="sr-only">Confirm Password (required)</label>
                         <input class="input_login" type="password" id="passwordRegisterConfirm"
-                            onfocus="changePasswordIcon('passwordConfirmIcon')"
+                            onfocus="changePasswordIcon('passwordConfirmIcon', 'register')"
                             onblur="validateField('passwordRegisterConfirm', 'errMsgPasswordConfirm', isConfirmValid, 3, 'Passwords are not equal')"
                             placeholder="Confirm Password" aria-required="true" aria-describedby="errMsgPasswordConfirm"
                             aria-invalid="false" tabindex="0">
