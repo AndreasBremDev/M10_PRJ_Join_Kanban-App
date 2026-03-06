@@ -69,12 +69,12 @@ function changePasswordIcon(id) {
  * @param {string} iconId - The ID of the toggle icon element
  * @param {Event} event - The triggering event
  */
-function passwordVisible(inputId, iconId, event) {
+function passwordVisible(inputId, iconId, website, event = false) {
     if (event) { event.preventDefault() }
     let input = document.getElementById(`${inputId}`);
     let icon = document.getElementById(`${iconId}`);
     let cursorPosition = input.selectionStart;
-    checkIconPathAndSetNewIconAndInputType(icon, input);
+    checkIconPathAndSetNewIconAndInputType(icon, input, website);
     setTimeout(() => {
         input.focus();
         input.setSelectionRange(cursorPosition, cursorPosition)
@@ -86,16 +86,16 @@ function passwordVisible(inputId, iconId, event) {
  * @param {HTMLElement} icon - The icon element
  * @param {HTMLInputElement} input - The password input element
  */
-function checkIconPathAndSetNewIconAndInputType(icon, input) {
+function checkIconPathAndSetNewIconAndInputType(icon, input, website) {
     if (icon.src.endsWith('lock.png')) {
         return
     }
     else if (icon.src.endsWith('visibility_off.png')) {
-        icon.src = './assets/icons/visibility.png';
+        icon.src = website === 'index' ? './assets/icons/visibility.png' : './assets/icons/visibility.png';
         icon.alt = 'visibility icon';
         input.type = 'text';
     } else {
-        icon.src = './assets/icons/visibility_off.png';
+        icon.src = website === 'index' ? './assets/icons/visibility_off.png' : '../assets/icons/visibility_off.png';
         icon.alt = 'visibility_off icon';
         input.type = 'password';
     }
@@ -105,13 +105,15 @@ function checkIconPathAndSetNewIconAndInputType(icon, input) {
  * Adds a new user to the Firebase database and handles success flow
  */
 async function addUser() {
-    let nextUserId = await calcNextId();
-    await putData('/' + nextUserId, setDataForBackendUpload());
-    clearAllSignUpInputFields();
-    showPopup('popup');
-    setTimeout(() => {
-        window.location.href = '../index.html?msg=You signed up successfully';
-    }, 1500);
+    if (bool.every(el => el === 1)) {
+        let nextUserId = await calcNextId();
+        await putData('/' + nextUserId, setDataForBackendUpload());
+        clearAllSignUpInputFields();
+        showPopup('popup');
+        setTimeout(() => {
+            window.location.href = '../index.html?msg=You signed up successfully';
+        }, 1500);
+    }
 }
 
 /**
@@ -158,8 +160,8 @@ async function login(path = "") {
     let email = document.getElementById('emailLogin');
     let password = document.getElementById('passwordLogin');
     let response = await fetchData();
-    let activeUser = response.findIndex(user => 
-        user && user.email && user.password && 
+    let activeUser = response.findIndex(user =>
+        user && user.email && user.password &&
         user.email === email.value && user.password === password.value
     );
     if (activeUser !== -1) {
@@ -200,7 +202,7 @@ function animateLogoFirstVisit() {
         logoOverlay.classList.add('animate-out');
     }
     setTimeout(() => {
-        logoOverlay.style.display ='none';
+        logoOverlay.style.display = 'none';
         logo.style.opacity = 1;
     }, 800);
 }
