@@ -5,6 +5,16 @@
  */
 
 /**
+ * Checks if the current browser is Safari (including iOS/MacOS Safari).
+ * @returns {boolean} True if Safari, otherwise false.
+ */
+function isSafari() {
+    const ua = navigator.userAgent;
+    const isSafari = /^((?!chrome|android|crios).)*safari/i.test(ua);
+    return isSafari;
+}
+
+/**
  * Handles the drag start event for task cards
  * @param {DragEvent} event - The drag event
  * @param {string} id - The ID of the task being dragged
@@ -99,9 +109,9 @@ function handleAutoScroll(event) {
         handleScrollDown(main);
     } else { handleScrollYStop(); }
     if (mouseX < rect.left + scrollThreshold) {
-        handleScrollLeft(main);
+        // handleScrollLeft(main); // temporary disabled horizontal auto-scroll
     } else if (mouseX > rect.right - scrollThreshold) {
-        handleScrollRight(main);
+        // handleScrollRight(main); // temporary disabled horizontal auto-scroll
     } else { handleScrollXStop(); }
 }
 
@@ -122,19 +132,36 @@ function handleScrollXStop() {
 function handleScrollRight(main) {
     if (!autoScrollIntervalX) {
         autoScrollIntervalX = setInterval(() => {
-            main.scrollLeft += scrollSpeed;
+            if (isSafari()) {
+                if (main.scrollWidth > main.clientWidth) {
+                    main.scrollLeft += scrollSpeed;
+                } else {
+                    window.scrollBy(scrollSpeed, 0);
+                }
+            } else {
+                main.scrollLeft += scrollSpeed;
+            }
         }, 16);
     }
 }
 
 /**
  * Initiates leftward horizontal scrolling during drag operations
+ * Uses a Safari-specific workaround if needed.
  * @param {HTMLElement} main - The main container element to scroll
  */
 function handleScrollLeft(main) {
     if (!autoScrollIntervalX) {
         autoScrollIntervalX = setInterval(() => {
-            main.scrollLeft -= scrollSpeed;
+            if (isSafari()) {
+                if (main.scrollWidth > main.clientWidth) {
+                    main.scrollLeft -= scrollSpeed;
+                } else {
+                    window.scrollBy(-scrollSpeed, 0);
+                }
+            } else {
+                main.scrollLeft -= scrollSpeed;
+            }
         }, 16);
     }
 }
@@ -150,25 +177,46 @@ function handleScrollYStop() {
 }
 
 /**
- * Initiates downward vertical scrolling during drag operations
+ * Initiates downward vertical scrolling during drag operations.
+ * Uses a Safari-specific workaround if needed.
  * @param {HTMLElement} main - The main container element to scroll
  */
+
 function handleScrollDown(main) {
     if (!autoScrollInterval) {
         autoScrollInterval = setInterval(() => {
-            main.scrollTop += scrollSpeed;
+            if (isSafari()) {
+                if (main.scrollHeight > main.clientHeight) {
+                    main.scrollTop += scrollSpeed;
+                } else {
+                    window.scrollBy(0, scrollSpeed);
+                }
+            } else {
+                main.scrollTop += scrollSpeed;
+            }
         }, 16);
     }
 }
 
 /**
- * Initiates upward vertical scrolling during drag operations
+ * Initiates upward vertical scrolling during drag operations.
+ * Uses a Safari-specific workaround if needed.
  * @param {HTMLElement} main - The main container element to scroll
  */
+
 function handleScrollUp(main) {
     if (!autoScrollInterval) {
         autoScrollInterval = setInterval(() => {
-            main.scrollTop -= scrollSpeed;
+            if (isSafari()) {
+                // Safari/iOS workaround: use window.scrollBy if main is not scrollable
+                if (main.scrollHeight > main.clientHeight) {
+                    main.scrollTop -= scrollSpeed;
+                } else {
+                    window.scrollBy(0, -scrollSpeed);
+                }
+            } else {
+                main.scrollTop -= scrollSpeed;
+            }
         }, 16);
     }
 }
@@ -346,16 +394,6 @@ function resetTouchVariables() {
 function isTouchDevice() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 }
-
-// 2DO: Sollte nach dem Laden/Rendern der Tasks aufgerufen werden
-// In board.js oder wo auch immer Tasks gerendert werden
-
-// async function renderTasks() {
-//     // ... bestehender Render-Code ...
-    
-//     // Touch-Support initialisieren
-//     initTouchDragAndDrop();
-// }
 
 /**
  * Initializes touch drag-and-drop functionality for all task items
