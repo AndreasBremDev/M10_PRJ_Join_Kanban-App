@@ -602,10 +602,14 @@ select:focus {
 
 @media (max-width: 1350px) {
 
+    h1 {
+        font-size: clamp(47px, 4vw, 61px);
+    }
+
     .main-add-task {
         width: calc(100% - 232px);
         margin-left: 232px;
-        padding: 40px;
+        padding: 60px 40px;
         overflow-y: auto;
         overflow-x: hidden;
         box-sizing: border-box;
@@ -699,14 +703,14 @@ select:focus {
     .main-add-task {
         margin-left: 0;
         width: 100%;
-        padding: 24px 16px 96px 16px;
+        padding: 32px 16px 96px 16px;
         margin-top: 80px;
         height: auto;
         min-height: 100vh;
     }
 
     h1 {
-        font-size: 40px;
+        font-size: 47px;
     }
 
     .form-actions {

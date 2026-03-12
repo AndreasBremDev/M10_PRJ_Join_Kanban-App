@@ -42,6 +42,7 @@ body {
 
 .h1_title_summary {
   font-size: 61px;
+  min-width: 202px;
 }
 
 .title_discription {
@@ -381,7 +382,7 @@ body {
   .main_title {
     margin-bottom: 0;
     width: 80%;
-    margin-top: 160px;
+    margin-top: 156px;
   }
 
   .to_do_summary {
@@ -431,7 +432,7 @@ body {
 
 
   .h1_title_summary {
-    font-size: clamp(32px, 4vw, 61px);
+    font-size: clamp(47px, 4vw, 61px);
   }
 
   .title_discription {
@@ -499,10 +500,6 @@ body {
     padding: 0;
   }
 
-  .h1_title_summary {
-    font-size: clamp(32px, 4vw, 61px);
-  }
-
   .title_discription {
     font-size: clamp(18px, 2vw, 27px);
   }
@@ -519,10 +516,10 @@ body {
 @media (max-width: 768px) {
   .main_summary {
     position: relative;
-    top: 80px;
+    top: 60px;
     height: calc(100vh - 160px);
     overflow-y: auto;
-    padding: 16px;
+    padding: 0 16px;
   }
 
   .main_title {
@@ -531,10 +528,6 @@ body {
     align-items: center;
     gap: 10px;
     width: 100%;
-  }
-
-  .h1_title_summary {
-    font-size: 47px;
   }
 
   .summary_content {

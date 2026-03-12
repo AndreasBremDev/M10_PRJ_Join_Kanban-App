@@ -256,10 +256,7 @@ function handleTouchStart(event, id) {
  */
 function handleTouchMove(event) {
     if (!touchElement) return;
-    const touch = event.touches[0];
-    const deltaX = Math.abs(touch.clientX - touchStartX);
-    const deltaY = Math.abs(touch.clientY - touchStartY);
-    const totalDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const { totalDistance, touch } = calculateTouchDistanceAndDelta(event);
     if (totalDistance < touchMoveThreshold && !isDraggingTouch) { return; }
     if (!isDraggingTouch && totalDistance >= touchMoveThreshold) {
         clearTimeout(longPressTimeout);
@@ -267,9 +264,40 @@ function handleTouchMove(event) {
     }
     if (!isDraggingTouch) return;
     event.preventDefault();
-    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    const elementBelow = moveElementByTouch(touch);
     handleTouchRemoveHighlightsAllDropZone();
     handleTouchHighlightNewDropZone(elementBelow);
+}
+
+/**
+ * Calculates the distance and delta between the initial and current touch positions.
+ * @param {TouchEvent} event - The touch event containing current touch coordinates.
+ * @returns {{ totalDistance: number, touch: Touch }} The total distance and the current touch object.
+ */
+function calculateTouchDistanceAndDelta(event) {
+    const touch = event.touches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    const absDeltaX = Math.abs(deltaX);
+    const absDeltaY = Math.abs(deltaY);
+    const totalDistance = Math.sqrt(absDeltaX * absDeltaX + absDeltaY * absDeltaY);
+    return { totalDistance, touch };
+}
+
+/**
+ * Moves the dragged element to follow the finger during touch drag.
+ * @param {Touch} touch - The current touch object with coordinates.
+ * @returns {Element|null} The element currently below the finger.
+ */
+function moveElementByTouch(touch) {
+    touchElement.style.position = 'fixed';
+    touchElement.style.zIndex = '9999';
+    touchElement.style.pointerEvents = 'none';
+    touchElement.style.left = '0px';
+    touchElement.style.top = '0px';
+    touchElement.style.transform = `translate3d(${touch.clientX - touchElement.offsetWidth / 2}px, ${touch.clientY - touchElement.offsetHeight / 2}px, 0) rotate(2deg)`;
+    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    return elementBelow;
 }
 
 /**
@@ -364,6 +392,11 @@ function touchPositionAtRelease(event) {
 function resetTouchState() {
     if (touchElement) {
         touchElement.style.transform = '';
+        touchElement.style.position = '';
+        touchElement.style.zIndex = '';
+        touchElement.style.pointerEvents = '';
+        touchElement.style.left = '';
+        touchElement.style.top = '';
         touchElement.classList.remove('dragging-touch');
     }
     document.querySelectorAll('.draggable').forEach(zone => {
