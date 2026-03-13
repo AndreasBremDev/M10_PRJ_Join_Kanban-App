@@ -181,7 +181,6 @@ function handleScrollYStop() {
  * Uses a Safari-specific workaround if needed.
  * @param {HTMLElement} main - The main container element to scroll
  */
-
 function handleScrollDown(main) {
     if (!autoScrollInterval) {
         autoScrollInterval = setInterval(() => {
@@ -208,7 +207,6 @@ function handleScrollUp(main) {
     if (!autoScrollInterval) {
         autoScrollInterval = setInterval(() => {
             if (isSafari()) {
-                // Safari/iOS workaround: use window.scrollBy if main is not scrollable
                 if (main.scrollHeight > main.clientHeight) {
                     main.scrollTop -= scrollSpeed;
                 } else {
