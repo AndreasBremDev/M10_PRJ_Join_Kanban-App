@@ -69,11 +69,11 @@ function handleAutoScroll(event) {
     } else if (mouseY > rect.bottom - scrollThreshold) {
         setAutoScroll(main, 0, scrollSpeed); 
     } else { setAutoScroll(main, 0, 0); }
-    if (mouseX < rect.left + scrollThreshold) { // temporary disabled horizontal scrolling
-        // handleScrollLeft(main); // temporary disabled horizontal auto-scroll
+    if (mouseX < rect.left + scrollThreshold) {
+        setAutoScroll(main, -10, 0)
     } else if (mouseX > rect.right - scrollThreshold) {
-        // handleScrollRight(main); // temporary disabled horizontal auto-scroll
-    } else { /* handleScrollXStop();  */ }
+        setAutoScroll(main, 10, 0)
+    } else { setAutoScroll(main, 0, 0); }
 }
 
 /**
@@ -234,12 +234,8 @@ function handleTouchEnd(ev) {
 function resetTouchState() {
     if (touchElement) {
         touchElement.style.transform = '';
-        touchElement.style.position = '';
         touchElement.style.zIndex = '';
         touchElement.style.pointerEvents = '';
-        touchElement.style.left = '';
-        touchElement.style.top = '';
-        touchElement.style.width = ''; 
         touchElement.classList.remove('dragging-touch');
         document.body.style.overflow = '';
     }
