@@ -121,7 +121,7 @@
                         aria-label="Add new task to To Do column">+</button>
                 </div>
                 <section id="categoryToDo" class="draggable" ondragover="dragoverHandler(event)"
-                    ondragleave="toggleStyle(event)" ondrop="moveTo('toDo')" role="region"
+                    ondragleave="toggleStyleDragSections(event)" ondrop="moveTo('toDo')" role="region"
                     aria-labelledby="todo-heading" aria-describedby="todo-description" aria-dropeffect="move">
                 </section>
                 <div id="todo-description" class="sr-only">Drop zone for To Do tasks</div>
@@ -134,7 +134,7 @@
                         aria-label="Add new task to In Progress column">+</button>
                 </div>
                 <section id="categoryInProgress" class="draggable" ondragover="dragoverHandler(event)"
-                    ondragleave="toggleStyle(event)" ondrop="moveTo('inProgress')" role="region"
+                    ondragleave="toggleStyleDragSections(event)" ondrop="moveTo('inProgress')" role="region"
                     aria-labelledby="progress-heading" aria-describedby="progress-description" aria-dropeffect="move">
                 </section>
                 <div id="progress-description" class="sr-only">Drop zone for In Progress tasks</div>
@@ -147,7 +147,7 @@
                         aria-label="Add new task to Await Feedback column">+</button>
                 </div>
                 <section id="categoryAwaitFeedback" class="draggable" ondragover="dragoverHandler(event)"
-                    ondragleave="toggleStyle(event)" ondrop="moveTo('awaitFeedback')" role="region"
+                    ondragleave="toggleStyleDragSections(event)" ondrop="moveTo('awaitFeedback')" role="region"
                     aria-labelledby="feedback-heading" aria-describedby="feedback-description" aria-dropeffect="move">
                 </section>
                 <div id="feedback-description" class="sr-only">Drop zone for Await Feedback tasks</div>
@@ -158,7 +158,7 @@
                     <h2 id="done-heading">Done</h2>
                 </div>
                 <section id="categoryDone" class="draggable" ondragover="dragoverHandler(event)"
-                    ondragleave="toggleStyle(event)" ondrop="moveTo('done')" role="region"
+                    ondragleave="toggleStyleDragSections(event)" ondrop="moveTo('done')" role="region"
                     aria-labelledby="done-heading" aria-describedby="done-description" aria-dropeffect="move">
                 </section>
                 <div id="done-description" class="sr-only">Drop zone for completed tasks</div>
