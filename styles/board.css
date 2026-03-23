@@ -937,7 +937,7 @@ body {
 @media (max-width: 480px) {
     .task-detail-overlay {
         width: 100%;
-        min-height: 100vh;
+        min-height: 100dvh;
         padding-block: 16px;
         border-radius: unset;
     }
