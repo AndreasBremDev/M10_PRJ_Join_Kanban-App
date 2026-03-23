@@ -748,23 +748,24 @@ body {
 .task-edit-icon {
     width: 62px;
     height: 24px;
-    background: url(/assets/icons/task_edit_block_icon.svg);
+    background: url('../assets/icons/task_edit_block_icon.svg') no-repeat center center;
+    background-size: cover;
 }
 
 .task-edit-icon:hover {
     cursor: pointer;
-    background: url(/assets/icons/task_edit_block_hover_icon.svg) no-repeat;
+    background: url('../assets/icons/task_edit_block_hover_icon.svg') no-repeat;
 }
 
 .task-delete-icon {
     width: 82px;
     height: 24px;
-    background: url(/assets/icons/task_delete_block_icon.svg);
+    background: url('../assets/icons/task_delete_block_icon.svg');
 }
 
 .task-delete-icon:hover {
     cursor: pointer;
-    background: url(/assets/icons/task_delete_block_hover_icon.svg) no-repeat;
+    background: url('../assets/icons/task_delete_block_hover_icon.svg') no-repeat;
 }
 
 .task-detail-edit-button {
@@ -857,6 +858,9 @@ body {
 }
 
 .dragging-touch {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
     z-index: 1000;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);;
     /* box-shadow: 0 15px 30px rgba(0,0,0,0.3); */
@@ -934,7 +938,7 @@ body {
     .task-detail-overlay {
         width: 100%;
         min-height: 100vh;
-        padding: 0;
+        padding-block: 16px;
         border-radius: unset;
     }
 }

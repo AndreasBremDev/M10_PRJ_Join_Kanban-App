@@ -261,7 +261,7 @@ function initTouchDragAndDrop() {
     if (!isTouchDevice()) return;
     const dragItems = document.querySelectorAll('.drag-item');
     dragItems.forEach(item => {
-        removeTouchListeners(item);
+        // removeTouchListeners(item);
         setupNewTouchListeners(item);
     });
 }
@@ -327,14 +327,16 @@ function resetTouchVariables() {
 }
 
 /**
- * Window resize event listener for touch drag reinitialization
+ * // Window resize event listener for touch drag reinitialization
  * Reinitializes touch drag functionality after layout changes on touch devices
  */
-window.addEventListener('resize', () => {
+// window.addEventListener('resize', () => {
     if (isTouchDevice()) {
+        console.log('test: its a touch device');
+        
         setTimeout(initTouchDragAndDrop, 100);
     }
-});
+// });
 
 /**
  * Sets up touch event listeners for a specific drag item
@@ -353,6 +355,8 @@ function setupNewTouchListeners(item) {
  * @param {HTMLElement} item - The DOM element to remove touch listeners from
  */
 function removeTouchListeners(item) {
+    console.log('check if removeTouchListerners is running');
+    
     item.removeEventListener('touchstart', handleTouchStart);
     item.removeEventListener('touchmove', handleTouchMove);
     item.removeEventListener('touchend', handleTouchEnd);
