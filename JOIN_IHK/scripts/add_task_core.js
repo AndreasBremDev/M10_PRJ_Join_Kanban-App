@@ -4,12 +4,23 @@
 async function initAddTask() {
     checkLoggedInPageSecurity();
     await eachPageSetCurrentUserInitials();
+    renderAddTaskTemplate();
     editSubtasks = [];
     editAssignedIds = [];
     editPriority = 'medium';
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setCheckboxesById();
     setupFormElements();
+}
+
+/**
+ * Renders the add task HTML template into the main container
+ */
+function renderAddTaskTemplate() {
+    const addTaskContainer = document.getElementById('mainAddTask');
+    if (addTaskContainer) {
+        addTaskContainer.innerHTML = getAddTaskTemplate();
+    }
 }
 
 /**
@@ -355,3 +366,4 @@ function toggleEditAssign(userId) {
     }
     renderAssignedEditCircles();
 }
+
