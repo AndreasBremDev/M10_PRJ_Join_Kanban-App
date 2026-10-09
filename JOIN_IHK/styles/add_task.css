@@ -52,10 +52,11 @@ main {
     overflow-y: auto;
 }
 
+/* 2b DELETED later */
 h1 {
     font-size: 61px;
 }
-
+/* 2b DELETED later */
 .add-task-section {
     display: flex;
     flex-direction: column;
@@ -93,6 +94,7 @@ select {
     scrollbar-width: none;
 }
 
+/* 2b DELETED later */
 .task-form {
     display: flex;
     justify-content: space-between;
@@ -102,12 +104,14 @@ select {
     max-width: 1200px;
 }
 
+/* 2b DELETED later: possibly? */
 .divider {
     width: 1px;
     background-color: #D1D1D1;
     height: 424px;
 }
 
+/* 2b DELETED later */
 .form-left,
 .form-right {
     display: flex;
@@ -115,16 +119,19 @@ select {
     width: 440px;
 }
 
+/* 2b DELETED later */
 .add-task-label-box-sizing {
     gap: 8px;
     display: flex;
     flex-direction: column;
 }
-
+/* 2b DELETED later: INSTEAD ...box-sizing + padding-bottom: GAP! */
+/* 2b DELETED later */
 .padding-bottom-32 {
     padding-bottom: 32px;
 }
 
+/* 2b DELETED later */
 .form-footer {
     display: flex;
     justify-content: space-between;
@@ -140,14 +147,14 @@ label {
     font-size: 16px;
     font-weight: 500;
     color: var(--black);
-    ;
 }
 
 .form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 16px;
-    margin-top: 48px;
+    /* 2b DELETED later: margin-top */
+    /* margin-top: 48px; */
 }
 
 
