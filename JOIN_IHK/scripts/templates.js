@@ -1429,6 +1429,14 @@ function getAddTaskTemplate() {
     `
 }
 
+
+
+
+
+// NEW CODE from HERE
+
+
+
 /**
 * Generates the HTML form for adding and editing tasks. 
 * @param {Object|null} task - The task object (null for "Add Task", populated for "Edit Task")
@@ -1444,13 +1452,245 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
     const descVal = isEdit ? task.description : '';
     const dateVal = isEdit ? task.dueDate : '';
     const prioVal = isEdit ? task.priority : 'medium';
-    
+
     // Layout-Klasse: Einspaltig für Edit, zweispaltig für Add
     const layoutClass = isEdit ? 'task-form--single-column' : 'task-form--two-column';
 
     return /* html */`
-        
-        
+    <section class="task-detail-overlay"
+            onclick="event.stopPropagation()"
+            role="dialog" 
+            aria-modal="true" 
+            aria-labelledby="edit-task-title"
+            aria-describedby="edit-task-description">
+            
+        <div class="task-detail-header task-detail-edit-header">
+            <button 
+                onclick="closeAddTaskOverlay()" 
+                onkeydown="handleCloseKeydown(event)"
+                class="close-board-info-overlay" 
+                aria-label="Close edit task dialog"
+                type="button"
+                tabindex="0"
+                style="border: none; background: none; cursor: pointer; padding: 4px;">
+                <img src="../assets/icons/close.svg" alt="" aria-hidden="true">
+            </button>
+        </div>
+        <div class="task-overlay-wrapper">
+            <h1 id="edit-task-title" class="sr-only">Edit Task</h1>
+            <div id="edit-task-description" class="sr-only">Edit task form with title, description, due date, priority, assigned contacts, and subtasks</div>
+            
+            <div class="edit-form-section">
+                <label for="title" class="form-headline-text">
+                    Title<span class="required-marker" aria-hidden="true">*</span>
+                </label>
+                <input 
+                    id="title" 
+                    type="text" 
+                    class="title-input-overlay" 
+                    placeholder="Enter a title"
+                    value="${titleVal}"
+                    onblur="validateField('title')"
+                    oninput="clearError('title')"
+                    aria-required="true"
+                    aria-describedby="title-error title-hint"
+                    autofocus>
+                <div id="title-hint" class="sr-only">Enter a descriptive title for the task</div>
+                <div id="title-error" class="error-text" aria-live="polite"></div>
+            </div>
 
+            <div class="edit-form-section">
+                <label for="description" class="form-headline-text">Description</label>
+                <textarea 
+                    id="description" 
+                    class="title-input-overlay description-textarea" 
+                    placeholder="Enter a Description"
+                    aria-describedby="description-hint"
+                    rows="4"
+                    onblur="validateField('description')"
+                    oninput="clearError('description')"
+                >${descVal}</textarea>
+                <div id="description-error" class="error-text" aria-live="polite"></div>
+                <div id="description-hint" class="sr-only">Optional detailed description of the task</div>
+            </div>
+
+            <div class="edit-form-section">
+                <label for="due-date" class="form-headline-text">
+                    Due date<span class="required-marker" aria-hidden="true">*</span>
+                </label>
+                <input 
+                    id="due-date" 
+                    class="title-input-overlay" 
+                    min="${todayStr}" 
+                    value="${dateVal}"
+                    type="date" 
+                    aria-required="true"
+                    aria-describedby="due-date-error date-hint"
+                    onblur="validateField('due-date')"
+                    oninput="clearError('due-date')">
+                <div id="date-hint" class="sr-only">Select the deadline for this task</div>
+                <div id="due-date-error" class="error-text" aria-live="polite"></div>
+            </div>
+
+            <fieldset class="priority-fieldset edit-form-section" style="border: none; padding: 0; margin: 0;">
+                <legend class="form-headline-text" style="padding: 0; margin-bottom: 0.5rem;">Priority</legend>
+                <div class="priority-buttons">
+                    <button 
+                        type="button" 
+                        class="priority-btn urgent ${prioVal === 'urgent' ? 'active' : ''}"
+                        id="prio-urgent" 
+                        role="radio" 
+                        aria-checked="${prioVal === 'urgent' ? 'true' : 'false'}"
+                        onclick="setEditPrio('urgent')"
+                        onkeydown="setEditPrio('urgent')"
+                        aria-describedby="urgent-hint">
+                        Urgent
+                        <img src="../assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
+                    </button>
+                    <button 
+                        type="button" 
+                        class="priority-btn medium ${prioVal === 'medium' ? 'active' : ''}" 
+                        id="prio-medium" 
+                        role="radio" 
+                        aria-checked="${prioVal === 'medium' ? 'true' : 'false'}"
+                        onclick="setEditPrio('medium')"
+                        onkeydown="setEditPrio('medium')"
+                        aria-describedby="medium-hint">
+                        Medium
+                        <img src="../assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
+                    </button>
+                    <button 
+                        type="button" 
+                        class="priority-btn low ${prioVal === 'low' ? 'active' : ''}"
+                        id="prio-low" 
+                        role="radio" 
+                        aria-checked="${prioVal === 'low' ? 'true' : 'false'}"
+                        onclick="setEditPrio('low')"
+                        onkeydown="setEditPrio('low')"
+                        aria-describedby="low-hint">
+                        Low
+                        <img src="../assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
+                    </button>
+                </div>
+                <div id="urgent-hint" class="sr-only">High priority task that requires immediate attention</div>
+                <div id="medium-hint" class="sr-only">Standard priority task</div>
+                <div id="low-hint" class="sr-only">Lower priority task that can be addressed when time permits</div>
+            </fieldset>
+
+            <div class="edit-form-section">
+                <label id="assigned-edit-label" class="form-headline-text">Assigned to</label>
+                <div class="custom-select-container">
+                    <div id="assigned-display-edit" 
+                        class="select-display" 
+                        role="combobox"
+                        tabindex="0"
+                        aria-expanded="false"
+                        aria-haspopup="listbox"
+                        aria-labelledby="assigned-edit-label"
+                        aria-controls="assigned-dropdown-edit"
+                        aria-describedby="assigned-hint"
+                        onclick="toggleContactDropdownEdit()"                   
+                        onkeydown="handleAssignedDropdownEditKeydown(event)"> 
+                                <!-- CHANGE to and DELETE the other (double) functions without "Edit" -->
+                        Select contacts to assign
+                    </div>
+
+                    <div id="assigned-dropdown-edit" 
+                        class="select-dropdown" 
+                        role="listbox"
+                        aria-labelledby="assigned-edit-label"
+                        style="display: none;"> 
+                        <!-- CHANGE to and DELETE the other (double) div-id's without "Edit" -->
+                    </div>
+                </div>
+                <div id="assigned-hint" class="sr-only">Use arrow keys to navigate options, Enter to select</div>
+
+                <div id="user-circle-assigned-edit-overlay" 
+                    class="assigned-circles-edit-overlay"
+                    role="status"
+                    aria-live="polite">
+                    <!-- CHANGE to and DELETE the other (double) div-id's without "Edit" -->
+                </div>
+            </div>
+            
+            <div class="edit-form-section">
+                <label for="category">Category<span class="required-marker"
+                        aria-label="required">*</span></label>
+
+                <div class="custom-select-container">
+
+                    <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()"
+                        tabindex="0" role="combobox"
+                        required aria-required="true" aria-describedby="category-error" aria-invalid="false" aria-haspopup="listbox"
+                        onkeydown="handleCategoryDropdownKeydown(event)">
+
+                        <span id="category-text">Select task category</span>
+
+                        <img id="category-arrow" src="../assets/icons/arrow_drop_down.svg" alt="Arrow"
+                            class="dropdown-icon">
+                    </div>
+                    <div id="category-options" class="select-dropdown" style="display: none;">
+                        <div class="contact-item" onclick="selectCategory('Technical Task')">Technical Task
+                        </div>
+                        <div class="contact-item" onclick="selectCategory('User Story')">User Story</div>
+                    </div>
+                    <div id="category-error" class="error-text" style="padding-top: 8px;" role="alert"
+                        aria-live="polite">This field is
+                        required</div>
+                    <input type="hidden" id="category" value="">
+
+                </div>
+            </div>
+            
+            <div class="edit-form-section">
+                <label for="subtask-input-edit" class="form-headline-text">Subtasks</label>
+                <div class="subtask-input-wrapper">
+                    <input 
+                        type="text" 
+                        id="subtask-input-edit" 
+                        class="subtask-input-field select-display"
+                        placeholder="Add new subtask" 
+                        aria-describedby="subtask-hint"
+                        onclick="showMainSubtaskIcons()" 
+                        onkeydown="handleSubtaskKey(event)">
+                    <div id="main-subtask-icons" class="input-action-icons"></div>
+                </div>
+                <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons to save or cancel</div>
+
+                <ul id="subtask-list-edit-ul" 
+                    role="list" 
+                    aria-label="Subtask list"
+                    style="padding: 0; list-style: none;"></ul>
+            </div>
+        </div>
+
+        <div class="${isEdit ? 'task-detail-edit-footer' : 'form-footer'}">
+            ${isEdit ? `
+                <button 
+                    onclick="saveEditedTask('${task.id}')" 
+                    onkeydown="handleSaveKeydown(event, '${task.id}')"
+                    class="btn"
+                    aria-describedby="save-hint">
+                    Save Changes&nbsp;&nbsp;
+                    <img src="../assets/icons/check.svg" alt="" aria-hidden="true">
+                </button>
+            <div id="save-hint" class="sr-only">Save all changes and close the edit dialog</div>
+            ` : `
+            <div>
+                <p class="form-hint">
+                    <span class="required-marker">*</span>This field is required
+                </p>
+            </div>
+            <div class="form-actions" role="group" aria-label="Form actions">
+                <button onclick="clearForm()" id="clear-btn" type="button" class="clear"
+                    aria-label="Clear all form fields">Clear ✖</button>
+                <button type="button" onclick="addNewTask()" id="create-btn" class="create"
+                    aria-label="Create new task">Create Task ✔</button>
+            </div>
+            `}
+            
+        </div>  
+            
+    </section>
     `;
 }

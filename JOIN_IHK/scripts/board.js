@@ -79,7 +79,7 @@ async function renderAddTaskOverlay(board = "toDo") {
     overlay.onclick = closeAddTaskOverlay;
     overlay.classList.remove('d-none');
     overlay.removeAttribute('aria-hidden'); 
-    overlay.innerHTML = getAddTaskOverlayTemplate(board);
+    overlay.innerHTML = prepareTaskFormTemplate(null, true, board); // WAS: getAddTaskOverlayTemplate(board);
     clearForm();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setTimeout(() => {
@@ -187,7 +187,7 @@ function loadTaskVariableGlobally(task) {
  */
 function loadEditTaskDetailOverlay(task) {
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = editTaskDetailOverlayTemplate(task);
+    overlay.innerHTML = prepareTaskFormTemplate(task, true); // WAS: editTaskDetailOverlayTemplate(task)
     overlay.classList.remove('d-none');
 }
 
@@ -196,9 +196,9 @@ function loadEditTaskDetailOverlay(task) {
  * @param {Object} task - The task object containing data to fill into form fields
  */
 function loadFillInputFields(task) {
-    document.getElementById('edit-title').value = task.title;
-    document.getElementById('edit-description').value = task.description;
-    document.getElementById('edit-due-date').value = task.dueDate;
+    document.getElementById('title').value = task.title;
+    document.getElementById('description').value = task.description;
+    document.getElementById('due-date').value = task.dueDate;
 }
 
 /**

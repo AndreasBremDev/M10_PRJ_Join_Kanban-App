@@ -1251,3 +1251,23 @@ body {
 
 
 
+/* NEW CODE */
+
+.task-form--responsive-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Standard: 1 Spalte */
+    gap: 24px;
+}
+
+@media (min-width: 960px) {
+    .task-form--responsive-grid {
+        grid-template-columns: 1fr 1px 1fr; /* Spalte 1 | Trennlinie | Spalte 2 */
+        align-items: start;
+    }
+    
+    .task-form-divider {
+        background-color: #D1D1D1;
+        height: 100%;
+        width: 1px;
+    }
+}
