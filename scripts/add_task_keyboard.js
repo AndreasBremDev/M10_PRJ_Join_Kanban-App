@@ -173,7 +173,7 @@ function handlecontactSelectonCheckboxKeydown(contactId, event) {
  */
 function initializeEditTaskAccessibility() {
     setupEditFormValidation();
-    const editTitle = document.getElementById('edit-title');
+    const editTitle = document.getElementById('title');
     if (editTitle) { setTimeout(() => editTitle.focus(), 100); }
     const dialog = document.querySelector('[role="dialog"]');
     if (dialog) {

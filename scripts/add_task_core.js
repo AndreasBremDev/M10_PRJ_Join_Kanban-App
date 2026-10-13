@@ -283,9 +283,9 @@ function checkInput(inputId, errorId, msg) {
 function getMergedTaskData(oldTask) {
     return {
         ...oldTask,
-        title: document.getElementById('edit-title').value,
-        description: document.getElementById('edit-description').value,
-        dueDate: document.getElementById('edit-due-date').value,
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        dueDate: document.getElementById('due-date').value,
         category: document.getElementById('category').value == '' ? oldTask.category : document.getElementById('category').value,
         priority: editPriority,
         assigned: editAssignedIds,
@@ -299,8 +299,8 @@ function getMergedTaskData(oldTask) {
  * @returns {boolean} True only if ALL required fields are valid.
  */
 function validateEditInputs() {
-    const titleValid = checkInput('edit-title', 'edit-title-error', 'Title is required');
-    const dateValid = checkInput('edit-due-date', 'edit-due-date-error', 'Date is required');
+    const titleValid = checkInput('title', 'title-error', 'Title is required');
+    const dateValid = checkInput('due-date', 'due-date-error', 'Date is required');
     return titleValid && dateValid;
 }
 

@@ -70,10 +70,12 @@ h1 {
     max-height: 200px;
 }
 
+/* 2b DELETED */
 .padding-bottom-32 {
     padding-bottom: 36px;
 }
 
+/* 2b DELETED */
 .padding-bottom-24 {
     padding-bottom: 24px;
 }
@@ -104,7 +106,7 @@ select {
     max-width: 1200px;
 }
 
-/* 2b DELETED later: possibly? */
+/* 2b DELETED later! */
 .divider {
     width: 1px;
     background-color: #D1D1D1;
@@ -220,6 +222,7 @@ button.clear:hover {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-bottom: 4px;
 }
 
 .priority-fieldset {
@@ -328,7 +331,8 @@ select:focus {
 
 .select-display {
     display: flex;
-    justify-content: space-between;
+    width: 100%;
+    /* justify-content: space-between; */
     border: 1px solid #D1D1D1;
     border-radius: 8px;
     padding: 12px;
@@ -692,6 +696,7 @@ select:focus {
         width: 100%;
     }
 
+    /* 2b DELETED */
     .divider {
         display: none;
     }

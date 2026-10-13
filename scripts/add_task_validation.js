@@ -21,13 +21,13 @@ function validateTaskForm() {
  */
 function validateEditTaskForm() {
     let isValid = true;
-    const titleInput = document.getElementById('edit-title');
-    const titleError = document.getElementById('edit-title-error');
+    const titleInput = document.getElementById('title');
+    const titleError = document.getElementById('title-error');
     isValid = validateTaskFormCheckIfTitleInputAndTitleErrorExist(titleInput, titleError, isValid);
-    const descValid = validateField('edit-description');
+    const descValid = validateField('description');
     isValid = isValid && descValid;
-    const dateInput = document.getElementById('edit-due-date');
-    const dateError = document.getElementById('edit-due-date-error');
+    const dateInput = document.getElementById('due-date');
+    const dateError = document.getElementById('due-date-error');
     isValid = validateTaskFormCheckIfDateInputAndDateErrorExist(dateInput, dateError, isValid);
     return isValid;
 }
@@ -99,18 +99,18 @@ function validateTaskFormCheckIfTitleInputAndTitleErrorExist(titleInput, titleEr
  * Sets up real-time validation for edit form inputs
  */
 function setupEditFormValidation() {
-    const titleInput = document.getElementById('edit-title');
+    const titleInput = document.getElementById('title');
     if (titleInput) {
         titleInput.addEventListener('blur', () => validateEditTaskForm());
         titleInput.addEventListener('input', () => {
-            const titleError = document.getElementById('edit-title-error');
+            const titleError = document.getElementById('title-error');
             if (titleError && titleInput.value.trim()) {
                 titleError.textContent = '';
                 titleInput.setAttribute('aria-invalid', 'false');
             }
         });
     }
-    const dateInput = document.getElementById('edit-due-date');
+    const dateInput = document.getElementById('due-date');
     if (dateInput) {
         dateInput.addEventListener('blur', () => validateEditTaskForm());
         dateInput.addEventListener('change', () => validateEditTaskForm());
@@ -138,10 +138,10 @@ function validateField(id) {
     const value = input.value.trim();
     let isInvalid = false;
     let htmlInvalid = false;
-    if (id === 'title' || id === 'edit-title') {
+    if (id === 'title') {
         isInvalid = !value;
     }
-    if ((id === 'title' || id === 'description' || id === 'edit-title' || id === 'edit-description') && containsHTML(value)) {
+    if ((id === 'title' || id === 'description') && containsHTML(value)) {
         htmlInvalid = displayHtmlError(error, input, htmlInvalid);
     } else if (isInvalid) {
         displayFieldErrorMessage(error, input);
