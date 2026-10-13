@@ -10,7 +10,7 @@ body {
     box-sizing: border-box;
     padding-right: 135.75px;
     padding-left: 96px;
-    padding-top: 110px;
+    padding-top: 98px;
 }
 
 .content {
@@ -137,12 +137,8 @@ select {
 .form-footer {
     display: flex;
     justify-content: space-between;
-    align-items: end;
+    align-items: center;
     margin-bottom: 16px;
-    /* margin-top: 120px; */
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 label {
@@ -235,27 +231,20 @@ button.clear:hover {
     min-height: 98px;
 }
 
-.priority-buttons {
-    display: flex;
-    gap: 12px;
-}
-
 .priority-btn {
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    width: 136px;
-    height: 56px;
+    flex: 1 1 0;
+    height: 48px;
     padding: 16px 10px;
-    border: 1px solid transparent;
     border-radius: 10px;
-    background-color: #fff;
-    font-weight: 500;
+    background-color:  var(--white);
+    border: 1px solid var(--borderGray);
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 
@@ -658,19 +647,13 @@ select:focus {
     }
 
     .priority-btn {
-        flex: 1;
-        width: auto;
+        width: max(auto, 100%);
         padding: 10px 0;
     }
 
     .priority-btn img {
         width: 14px;
         margin-left: 4px;
-    }
-
-    .form-footer {
-        margin-top: 0;
-        align-items: center;
     }
 
     .form-actions {
@@ -731,7 +714,7 @@ select:focus {
 
 }
 
-@media (max-width: 500px) {
+@media (max-width: 515px) {
     .priority-btn {
         padding: 8px 0;
     }
@@ -739,6 +722,14 @@ select:focus {
     .form-footer {
         flex-direction: column;
         height: 100px;
+    }
+    .form-footer > .form-hint{
+        margin: 8px 0;
+    }
+    .form-footer > .form-actions{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
     }
 
     .form-hint {

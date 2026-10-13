@@ -1688,10 +1688,8 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                 </button>
             <div id="save-hint" class="sr-only">Save all changes and close the edit dialog</div>
             ` : `
-            <div>
-                <p class="form-hint">
+            <div class="form-hint">
                     <span class="required-marker">*</span>This field is required
-                </p>
             </div>
             <div class="form-actions" role="group" aria-label="Form actions">
                 <button onclick="clearForm()" id="clear-btn" type="button" class="clear"
