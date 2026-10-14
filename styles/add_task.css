@@ -20,12 +20,6 @@ body {
     height: 100vh;
 }
 
-#subtask-list-edit-ul {
-    height: 100px;
-    overflow: overlay;
-}
-
-
 .help-icon {
     width: 24px;
     height: 24px;
@@ -56,29 +50,6 @@ main {
 h1 {
     font-size: 61px;
 }
-/* 2b DELETED later */
-.add-task-section {
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.description-box {
-    min-height: 120px;
-    max-height: 200px;
-}
-
-/* 2b DELETED */
-.padding-bottom-32 {
-    padding-bottom: 36px;
-}
-
-/* 2b DELETED */
-.padding-bottom-24 {
-    padding-bottom: 24px;
-}
 
 input,
 textarea,
@@ -96,44 +67,6 @@ select {
     scrollbar-width: none;
 }
 
-/* 2b DELETED later */
-.task-form {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    height: 424px;
-    max-width: 1200px;
-}
-
-/* 2b DELETED later! */
-.divider {
-    width: 1px;
-    background-color: #D1D1D1;
-    height: 424px;
-}
-
-/* 2b DELETED later */
-.form-left,
-.form-right {
-    display: flex;
-    flex-direction: column;
-    width: 440px;
-}
-
-/* 2b DELETED later */
-.add-task-label-box-sizing {
-    gap: 8px;
-    display: flex;
-    flex-direction: column;
-}
-/* 2b DELETED later: INSTEAD ...box-sizing + padding-bottom: GAP! */
-/* 2b DELETED later */
-.padding-bottom-32 {
-    padding-bottom: 32px;
-}
-
-/* 2b DELETED later */
 .form-footer {
     display: flex;
     justify-content: space-between;
@@ -151,8 +84,6 @@ label {
     display: flex;
     justify-content: flex-end;
     gap: 16px;
-    /* 2b DELETED later: margin-top */
-    /* margin-top: 48px; */
 }
 
 
@@ -263,7 +194,6 @@ button.clear:hover {
 .priority-btn:focus {
     outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
-    /* border-color: var(--primary-hover); */
 }
 
 .priority-btn:focus:not(:focus-visible) {
@@ -321,7 +251,8 @@ select:focus {
 .select-display {
     display: flex;
     width: 100%;
-    /* justify-content: space-between; */
+    justify-content: space-between;
+    align-items: center;
     border: 1px solid #D1D1D1;
     border-radius: 8px;
     padding: 12px;
@@ -337,7 +268,7 @@ select:focus {
 }
 
 .select-display:focus {
-    outline: 2px solid #29ABE2;
+    outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
 }
 
@@ -407,19 +338,10 @@ select:focus {
     font-size: 16px;
 }
 
-.subtask-input-field {
-    border: none;
-}
-
 .subtask-input-wrapper:focus-within,
 .subtask-input-wrapper:hover {
     outline: 2px solid var(--primary-hover);
     outline-offset: 2px;
-}
-
-.input-action-icons {
-    display: flex;
-    gap: 4px;
 }
 
 .separator-vertical {
@@ -446,10 +368,11 @@ select:focus {
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 425px;
+    /* max-width: 425px; */
     padding: 4px 0;
     border-radius: 8px;
     transition: background-color 0.1s;
+    justify-content: space-between;
 }
 
 .subtask-edit-row:hover .subtask-icons-container {
@@ -462,7 +385,7 @@ select:focus {
     align-items: center;
     padding: 4px 0;
     width: 100%;
-    border-bottom: 1px solid #29ABE2;
+    border: 1px solid var(--primary-hover);
     background-color: #f5f6f7;
     margin-bottom: 4px;
     border-radius: 8px;
@@ -490,11 +413,9 @@ select:focus {
     border-radius: 10px;
     justify-content: space-between;
     cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
 }
 
-.assigned-circles-edit-overlay {
+.assigned-circles {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
@@ -568,9 +489,8 @@ select:focus {
 .dropdown-icon {
     transition: transform 125ms ease-in-out;
     cursor: pointer;
-    padding: 6px 8px;
-    width: 7px;
-    height: 5px;
+    width: 16px;
+    height: 16px;
 }
 
 .rotate-180 {
@@ -579,7 +499,6 @@ select:focus {
 
 .dropdown-icon:hover {
     background-color: #F5F6F7;
-    padding: 6px 0px;
     border-radius: 12px;
 }
 
@@ -614,36 +533,14 @@ select:focus {
         box-sizing: border-box;
     }
 
-    .task-form {
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        gap: 24px;
-        height: auto;
-        max-height: unset;
-        overflow: visible;
-    }
-
-    .form-left,
-    .form-right {
-        flex: 1;
-        width: auto;
-        max-width: unset;
-    }
-
     input,
     textarea,
     select,
     .select-display,
     .subtask-input-wrapper,
-    .custom-select-container,
-    .add-task-label-box-sizing {
+    .custom-select-container {
         width: 100%;
         box-sizing: border-box;
-    }
-
-    .priority-buttons {
-        gap: 8px;
     }
 
     .priority-btn {
@@ -668,15 +565,6 @@ select:focus {
         width: calc(100% - 232px);
         margin-left: 232px;
         padding: 32px;
-    }
-
-    .task-form {
-        flex-direction: column;
-    }
-
-    .form-left,
-    .form-right {
-        width: 100%;
     }
 
     /* 2b DELETED */

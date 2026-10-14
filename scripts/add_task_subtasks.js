@@ -131,29 +131,13 @@ function toggleContactSelection(contactId, event) {
 }
 
 /**
- * Toggles the visibility of the category dropdown menu
- * Shows/hides the dropdown and rotates the arrow icon accordingly
- */
-function toggleCategoryDropdown() {
-    let dropdown = document.getElementById('category-options');
-    let arrow = document.getElementById('category-arrow');
-    if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-        arrow.classList.remove('rotate-180');
-    } else {
-        dropdown.style.display = 'block';
-        arrow.classList.add('rotate-180');
-    }
-}
-
-/**
  * Resets global edit variables to their default values
  * Clears subtasks array, assigned IDs array, and sets priority to medium
  */
 function resetGlobalVariables() {
     editSubtasks = [];
     editAssignedIds = [];
-    editPriority = 'medium';
+    editPriority = 'low';
 }
 
 /**
@@ -164,7 +148,7 @@ function resetCustomUIComponents() {
     renderAssignedEditCircles();
     renderSubtasksEditMode();
     setCheckboxesById();
-    updatePrioUI('medium');
+    updatePrioUI('low');
     resetMainSubtaskIcons();
 }
 

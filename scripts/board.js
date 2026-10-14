@@ -83,8 +83,6 @@ async function renderAddTaskOverlay(board = "toDo") {
     clearForm();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setTimeout(() => {
-        let section = overlay.querySelector('.add-task-section, .task-detail-overlay');
-        if (section) {section.classList.add('slide-in');}
         let titleInput = document.getElementById('title');
         if (titleInput) {setTimeout(() => titleInput.focus(), 150);}
     }, 20);
@@ -96,8 +94,7 @@ async function renderAddTaskOverlay(board = "toDo") {
  */
 async function closeAddTaskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
-    let section = overlay.querySelector('.add-task-section');
-    if (section) { section.classList.remove('slide-in'); }
+    if (overlay) { overlay.classList.remove('slide-in'); }
     setTimeout(async () => {
         overlay.classList.add('d-none');
         overlay.innerHTML = '';
@@ -132,7 +129,7 @@ async function renderTaskDetail(taskJson) {
     overlay.setAttribute('aria-hidden', 'false');
     setupPriorityButtons();
     setTimeout(() => {
-        let section = overlay.querySelector('.add-task-section, .task-detail-overlay');
+        let section = overlay.querySelector('.task-detail-overlay');
         if (section) {section.classList.add('slide-in');}
     }, 50);
     renderContactsInOverlay(task);

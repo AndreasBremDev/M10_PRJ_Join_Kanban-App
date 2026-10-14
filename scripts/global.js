@@ -356,15 +356,17 @@ function toggleAssignedDropdown() {
 function toggleCategoryDropdown() {
     const dropdown = document.getElementById('category-options');
     const displayElement = document.getElementById('category-display');
+    const arrow = document.getElementById('category-arrow');
     if (dropdown && displayElement) {
         const isOpen = dropdown.style.display === 'block';
         dropdown.style.display = isOpen ? 'none' : 'block';
         displayElement.setAttribute('aria-expanded', !isOpen);
+        if (arrow) { arrow.classList.toggle('rotate-180', !isOpen) }
         if (!isOpen) {
             setTimeout(() => {
-                const firstItem = dropdown.querySelector('[tabindex="0"], input, button, a');
+                const firstItem = dropdown.querySelector('.contact-item');
                 if (firstItem) firstItem.focus();
             }, 50);
-        }
+        } else { displayElement.focus(); }
     }
 }

@@ -6,7 +6,7 @@
  * Renders assigned contact circles in edit overlay
  */
 function renderAssignedEditCircles() {
-    let container = document.getElementById('user-circle-assigned-edit-overlay');
+    let container = document.getElementById('user-circle-assigned');
     if (!container) return;
     container.innerHTML = '';
 

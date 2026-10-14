@@ -176,8 +176,8 @@ function resetSubtasks() {
  * Resets the priority selection to the default value ('medium') and updates the UI.
  */
 function resetPriority() {
-    editPriority = 'medium';
-    updatePrioUI('medium');
+    editPriority = 'low';
+    updatePrioUI('low');
 }
 
 /**
