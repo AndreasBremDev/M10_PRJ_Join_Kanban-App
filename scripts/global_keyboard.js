@@ -91,23 +91,17 @@ function handleCategoryDropdownKeydown(event) {
 }
 
 /**
- * Keyboard event handler for edit assigned dropdown
+ * Handles keyboard events for edit assigned dropdown
  * @param {KeyboardEvent} event - The keyboard event
  */
 function handleAssignedDropdownEditKeydown(event) {
-    const dropdown = document.getElementById('assigned-dropdown-edit');
-    const displayElement = document.getElementById('assigned-display-edit');
-    
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        toggleContactDropdownEdit(); /* 2b DELETED: actually CHANGED to new function */
+        toggleCustomDropdown('assigned-display-edit', 'assigned-dropdown-edit', 'assigned-arrow');
     } else if (event.key === 'Escape') {
+        let dropdown = document.getElementById('assigned-dropdown-edit');
         if (dropdown && dropdown.style.display === 'block') {
-            dropdown.style.display = 'none';
-            if (displayElement) {
-                displayElement.setAttribute('aria-expanded', 'false');
-                displayElement.focus();
-            }
+            toggleCustomDropdown('assigned-display-edit', 'assigned-dropdown-edit', 'assigned-arrow');
         }
     }
 }

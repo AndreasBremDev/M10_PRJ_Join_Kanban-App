@@ -280,15 +280,18 @@ function renderSubtasksEditMode() {
 function generateViewSubtaskHTML(st, i) {
     return /*html*/`
     <li class="subtask-edit-row" ondblclick="editSubtask(${i})">
-        <span onclick="editSubtask(${i})" style="flex-grow:1; cursor:pointer; padding-left: 16px;">• ${st.title}</span>
+        <span onclick="editSubtask(${i})" tabindex="0" 
+            onkeydown="handleSubtaskEditActionKeydown(event, ${i})" style="flex-grow:1; cursor:pointer; padding-left: 16px;">• ${st.title}</span>
         <div class="subtask-icons-container">
-            <div onclick="editSubtask(${i})" class="subtask-icon">
-                <img src="../assets/icons/edit.svg" alt="Edit">
-            </div>
+            <button onclick="editSubtask(${i})" class="subtask-icon" tabindex="0" aria-label="Edit subtask ${st.title}">
+                <img src="../assets/icons/edit.svg" alt="Edit" aria-hidden="true">
+            </button>
             <div class="separator-vertical"></div>
-            <div onclick="deleteSubtaskEdit(${i})" class="subtask-icon">
-                <img src="../assets/icons/delete.svg" alt="Delete">
-            </div>
+            <button onclick="deleteSubtaskEdit(${i})" 
+                onkeydown="handleSubtaskDeleteKeydown(event, ${i})"
+                class="subtask-icon" tabindex="0" aria-label="Delete subtask ${st.title}">
+                <img src="../assets/icons/delete.svg" alt="Delete" aria-hidden="true">
+            </button>
         </div>
     </li>`;
 }
@@ -300,15 +303,19 @@ function generateEditSubtaskHTML(st, i) {
     return /*html*/`
     <li class="subtask-edit-row-editing">
         <input id="edit-subtask-input-${i}" class="subtask-row-input" type="text" value="${st.title}" 
-               onkeydown="handleSubtaskEditKeydown(event, ${i})">
+            onkeydown="handleSubtaskEditKeydown(event, ${i})">
         <div class="subtask-icons-container" style="display: flex;">
-            <div onmousedown="deleteSubtaskEdit(${i})" class="subtask-icon">
+            <button onclick="deleteSubtaskEdit(${i})" 
+                onkeydown="handleSubtaskDeleteKeydown(event, ${i})"
+                class="subtask-icon" tabindex="0" aria-label="Delete edited subtask ${st.title}">
                 <img src="../assets/icons/delete.svg" alt="Delete">
-            </div>
+            </button>
             <div class="separator-vertical"></div>
-            <div onmousedown="saveEditedSubtask(${i})" class="subtask-icon">
+            <button onclick="saveEditedSubtask(${i})" 
+                onkeydown="handleSubtaskSaveKeydown(event, ${i})"
+                class="subtask-icon" tabindex="0" aria-label="Save edited subtask ${st.title}">
                 <img src="../assets/icons/check_black.svg" alt="Save">
-            </div>
+            </button>
         </div>
     </li>`;
 }
@@ -1149,7 +1156,7 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                             placeholder="Add new subtask" 
                             aria-describedby="subtask-hint"
                             onclick="showMainSubtaskIcons()" 
-                            onkeydown="handleSubtaskKey(event)">
+                            onkeydown="handleSubtaskAddKeydown(event)">
                         <div id="main-subtask-icons" class="input-action-icons"></div>
                     </div>
                     <div id="subtask-hint" class="sr-only">Enter subtask text and press Enter to add, or use the buttons to save or cancel</div>

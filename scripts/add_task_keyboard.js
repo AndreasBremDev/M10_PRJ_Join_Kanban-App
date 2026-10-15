@@ -4,33 +4,6 @@
  */
 
 
-/**
- * Handles keyboard events for close button
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleCloseKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        closeAddTaskOverlay();
-    }
-}
-
-/* 2b DELETED: CHECK global_keyboards.js OR actually CHANGED to new function */
-/**
- * Handles keyboard events for edit assigned dropdown
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleAssignedDropdownEditKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleContactDropdownEdit(); /* 2b DELETED: actually CHANGED to new function */
-    } else if (event.key === 'Escape') {
-        let dropdown = document.getElementById('assigned-dropdown-edit');
-        if (dropdown.style.display === 'block') {
-            toggleContactDropdownEdit(); /* 2b DELETED: ctually CHANGED to new function */
-        }
-    }
-}
 
 /**
  * Handles keyboard events for save button
@@ -107,18 +80,6 @@ function handleSubtaskSaveKeydown(event, index) {
 }
 
 /**
- * Handles keyboard events for subtask row
- * @param {KeyboardEvent} event - The keyboard event
- * @param {number} index - The subtask index
- */
-function handleSubtaskRowKeydown(event, index) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        editSubtask(index);
-    }
-}
-
-/**
  * Handles keyboard events for subtask edit action
  * @param {KeyboardEvent} event - The keyboard event
  * @param {number} index - The subtask index
@@ -127,17 +88,6 @@ function handleSubtaskEditActionKeydown(event, index) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         editSubtask(index);
-    }
-}
-
-/**
- * Handles keyboard events for subtask input
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleSubtaskKey(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        addSubtaskEdit();
     }
 }
 
