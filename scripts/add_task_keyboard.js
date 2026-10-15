@@ -3,21 +3,6 @@
  * Contains all keyboard navigation and accessibility functions for the add task module
  */
 
-/**
- * Handles keyboard events for assigned dropdown interactions
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleAssignedDropdownKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleContactDropdown();
-    } else if (event.key === 'Escape') {
-        let dropdown = document.getElementById('assigned-dropdown');
-        if (dropdown.style.display === 'block') {
-            toggleContactDropdown();
-        }
-    }
-}
 
 /**
  * Handles keyboard events for close button
@@ -30,6 +15,7 @@ function handleCloseKeydown(event) {
     }
 }
 
+/* 2b DELETED: CHECK global_keyboards.js OR actually CHANGED to new function */
 /**
  * Handles keyboard events for edit assigned dropdown
  * @param {KeyboardEvent} event - The keyboard event
@@ -37,11 +23,11 @@ function handleCloseKeydown(event) {
 function handleAssignedDropdownEditKeydown(event) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        toggleContactDropdownEdit();
+        toggleContactDropdownEdit(); /* 2b DELETED: actually CHANGED to new function */
     } else if (event.key === 'Escape') {
         let dropdown = document.getElementById('assigned-dropdown-edit');
         if (dropdown.style.display === 'block') {
-            toggleContactDropdownEdit();
+            toggleContactDropdownEdit(); /* 2b DELETED: ctually CHANGED to new function */
         }
     }
 }

@@ -67,7 +67,7 @@ async function handleCreateTask(boardCategory, event) {
     const newTask = createTaskObject(boardCategory);
     try {
         await saveTaskToServer(newTask);
-        finalizeTaskCreation();
+        await finalizeTaskCreation();
     } catch (error) {
         console.error("Task creation failed:", error);
     }
@@ -106,18 +106,18 @@ async function saveTaskToServer(task) {
 /**
  * Finalizes task creation by clearing form and showing success animation
  */
-function finalizeTaskCreation() {
-    clearForm();
+async function finalizeTaskCreation() {
+    await clearForm();
     showSuccessImageAnimation();
 }
 
 /**
  * Clears all form inputs and resets form state
  */
-function clearForm() {
+async function clearForm() {
     resetBaseInputs();
     resetCategory();
-    resetAssigned();
+    await resetAssigned();
     resetSubtasks();
     resetPriority();
     resetValidation();
@@ -147,18 +147,13 @@ function resetCategory() {
 /**
  * Clears the assigned contacts list, resets the dropdown, and updates the UI.
  */
-function resetAssigned() {
+async function resetAssigned() {
     editAssignedIds = [];
-    const disp = document.getElementById('assigned-display-edit');
-    if (disp) disp.innerHTML = `
-        <p>Select contacts to assign</p>
-        <img id="arrow-icon-edit" src="../assets/icons/arrow_drop_down.svg" class="dropdown-icon" aria-hidden="true">
-    `;
-    const dd = document.getElementById('assigned-dropdown-edit');
-    if (dd) {
-        dd.innerHTML = '';
-        loadAndRenderContacts('assigned-dropdown-edit', 'addTask')
-            .then(() => setCheckboxesById());
+    const dropdown = document.getElementById('assigned-dropdown-edit');
+    if (dropdown) {
+        dropdown.innerHTML = '';
+        await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
+        setCheckboxesById();
     }
     renderAssignedEditCircles();
 }

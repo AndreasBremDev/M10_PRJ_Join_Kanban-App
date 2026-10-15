@@ -927,14 +927,7 @@ function displaySearchInBoardHtml() {
         </div>`
 }
 
-
-
-
-
-
-
-// NEW CODE from HERE
-
+// RENAME below NEW function:
 
 
 /**
@@ -1082,7 +1075,7 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                 </fieldset>
 
                 <div class="edit-form-section">
-                    <label id="assigned-label" class="form-headline-text">Assigned to</label>
+                    <label id="assigned-label" for="assigned" class="form-headline-text">Assigned to</label>
                     <div class="custom-select-container">
                         <div id="assigned-display-edit" 
                             class="select-display" 
@@ -1093,9 +1086,11 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                             aria-labelledby="assigned-label"
                             aria-controls="assigned-dropdown-edit"
                             aria-describedby="assigned-hint"
-                            onclick="toggleContactDropdownEdit()"                   
+                            onclick="toggleCustomDropdown('assigned-display-edit', 'assigned-dropdown-edit', 'assigned-arrow')"                   
                             onkeydown="handleAssignedDropdownEditKeydown(event)"> 
-                            Select contacts to assign
+                            <span>Select contacts to assign</span>
+                            <img id="assigned-arrow" src="../assets/icons/arrow_drop_down.svg" alt="Arrow"
+                                class="dropdown-icon">
                         </div>
 
                         <div id="assigned-dropdown-edit" 
@@ -1104,6 +1099,7 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                             aria-labelledby="assigned-label"
                             style="display: none;"> 
                         </div>
+                        <input type="hidden" id="assigned" value="">
                     </div>
                     <div id="assigned-hint" class="sr-only">Use arrow keys to navigate options, Enter to select</div>
 
@@ -1120,7 +1116,7 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
 
                     <div class="custom-select-container">
 
-                        <div id="category-display" class="select-display" onclick="toggleCategoryDropdown()"
+                        <div id="category-display" class="select-display" onclick="toggleCustomDropdown('category-display', 'category-options', 'category-arrow')"
                             tabindex="0" role="combobox"
                             required aria-required="true" aria-describedby="category-error" aria-invalid="false" aria-haspopup="listbox"
                             onkeydown="handleCategoryDropdownKeydown(event)">

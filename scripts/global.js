@@ -331,6 +331,7 @@ function handleDropdown(event, dropdown, displayElement) {
     }
 }
 
+/* 2b DELETED: MIND call at global_keyboards.js*/
 /**
  * Toggle function for assigned dropdown
  */
@@ -350,6 +351,27 @@ function toggleAssignedDropdown() {
     }
 }
 
+/* 2b DELETED */
+/**
+ * Toggles the visibility of the edit contact dropdown
+ */
+function toggleContactDropdownEdit() {
+    let dropdown = document.getElementById('assigned-dropdown-edit');
+    let arrow = document.getElementById('arrow-icon-edit');
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+        if (arrow) {
+            arrow.classList.remove('rotate-180');
+        }
+    } else {
+        dropdown.style.display = 'block';
+        if (arrow) {
+            arrow.classList.add('rotate-180');
+        }
+    }
+}
+
+/* 2b DELETED */
 /**
  * Toggle function for category dropdown
  */
@@ -365,6 +387,24 @@ function toggleCategoryDropdown() {
         if (!isOpen) {
             setTimeout(() => {
                 const firstItem = dropdown.querySelector('.contact-item');
+                if (firstItem) firstItem.focus();
+            }, 50);
+        } else { displayElement.focus(); }
+    }
+}
+
+function toggleCustomDropdown(displayId, dropdownId, arrowId) {
+    const displayElement = document.getElementById(displayId);
+    const dropdown = document.getElementById(dropdownId);
+    const arrow = document.getElementById(arrowId);
+    if (dropdown && displayElement) {
+        const isOpen = dropdown.style.display === 'block';
+        dropdown.style.display = isOpen ? 'none' : 'block';
+        displayElement.setAttribute('aria-expanded', !isOpen);
+        if (arrow) { arrow.classList.toggle('rotate-180', !isOpen) }
+        if (!isOpen) {
+            setTimeout(() => {
+                const firstItem = dropdown.querySelector('.contact-item, [tabindex="0"], input, button, a');
                 if (firstItem) firstItem.focus();
             }, 50);
         } else { displayElement.focus(); }

@@ -84,25 +84,6 @@ function cancelMainSubtaskInput() {
 }
 
 /**
- * Toggles the visibility of the edit contact dropdown
- */
-function toggleContactDropdownEdit() {
-    let dropdown = document.getElementById('assigned-dropdown-edit');
-    let arrow = document.getElementById('arrow-icon-edit');
-    if (dropdown.style.display === 'block') {
-        dropdown.style.display = 'none';
-        if (arrow) {
-            arrow.classList.remove('rotate-180');
-        }
-    } else {
-        dropdown.style.display = 'block';
-        if (arrow) {
-            arrow.classList.add('rotate-180');
-        }
-    }
-}
-
-/**
  * Sets checkbox states based on currently assigned IDs
  */
 function setCheckboxesById() {

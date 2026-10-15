@@ -80,7 +80,7 @@ async function renderAddTaskOverlay(board = "toDo") {
     overlay.classList.remove('d-none');
     overlay.removeAttribute('aria-hidden'); 
     overlay.innerHTML = prepareTaskFormTemplate(null, true, board); // WAS: getAddTaskOverlayTemplate(board);
-    clearForm();
+    await clearForm();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setTimeout(() => {
         let titleInput = document.getElementById('title');

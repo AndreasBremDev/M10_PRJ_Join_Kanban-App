@@ -560,16 +560,10 @@ select:focus {
 }
 
 @media (max-width: 950px) {
-
     .main-add-task {
         width: calc(100% - 232px);
         margin-left: 232px;
         padding: 32px;
-    }
-
-    /* 2b DELETED */
-    .divider {
-        display: none;
     }
 
 }
