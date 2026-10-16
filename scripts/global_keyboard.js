@@ -45,29 +45,6 @@ function handleUserMenuKeydown(event) {
     }
 }
 
-/* 2b DELETED: no call for this function - check, which fn is called instead? */
-/**
- * Keyboard event handler for assigned dropdown
- * @param {KeyboardEvent} event - The keyboard event
- */
-function handleAssignedDropdownKeydown(event) {
-    const dropdown = document.getElementById('assigned-dropdown');
-    const displayElement = document.getElementById('assigned-display');
-    
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        toggleAssignedDropdown(); /* 2b DELETED: actually CHANGED to new function */
-    } else if (event.key === 'Escape') {
-        if (dropdown && dropdown.style.display === 'block') {
-            dropdown.style.display = 'none';
-            if (displayElement) {
-                displayElement.setAttribute('aria-expanded', 'false');
-                displayElement.focus();
-            }
-        }
-    }
-}
-
 /**
  * Keyboard event handler for category dropdown
  * @param {KeyboardEvent} event - The keyboard event
@@ -78,7 +55,7 @@ function handleCategoryDropdownKeydown(event) {
     
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        toggleCategoryDropdown(); /* 2b DELETED: actually CHANGED to new function */
+        toggleCustomDropdown('category-display', 'category-options', 'category-arrow');
     } else if (event.key === 'Escape') {
         if (dropdown && dropdown.style.display === 'block') {
             dropdown.style.display = 'none';

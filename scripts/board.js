@@ -79,7 +79,7 @@ async function renderAddTaskOverlay(board = "toDo") {
     overlay.onclick = closeAddTaskOverlay;
     overlay.classList.remove('d-none');
     overlay.removeAttribute('aria-hidden'); 
-    overlay.innerHTML = prepareTaskFormTemplate(null, true, board); // WAS: getAddTaskOverlayTemplate(board);
+    overlay.innerHTML = addAndEditTaskFormTemplate(null, true, board); // WAS: getAddTaskOverlayTemplate(board);
     await clearForm();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setTimeout(() => {
@@ -165,7 +165,8 @@ async function renderEditTaskDetail(taskId) {
     renderSubtasksEditMode();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     renderAssignedEditCircles();
-    setCheckboxesById()
+    setCheckboxesById();
+    checkRequiredFieldsPriorToEditing()
 }
 
 /**
@@ -184,7 +185,7 @@ function loadTaskVariableGlobally(task) {
  */
 function loadEditTaskDetailOverlay(task) {
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = prepareTaskFormTemplate(task, true); // WAS: editTaskDetailOverlayTemplate(task)
+    overlay.innerHTML = addAndEditTaskFormTemplate(task, true);
     overlay.classList.remove('d-none');
 }
 
@@ -196,6 +197,8 @@ function loadFillInputFields(task) {
     document.getElementById('title').value = task.title;
     document.getElementById('description').value = task.description;
     document.getElementById('due-date').value = task.dueDate;
+    document.getElementById('category').value = task.category;
+    document.getElementById('category-text').innerHTML = task.category || 'Select task category';
 }
 
 /**

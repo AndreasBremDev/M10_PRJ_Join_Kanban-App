@@ -838,7 +838,7 @@ function contactRowHTML(contact, index) {
     let icon = isSelected ? getCheckboxCheckedSvg() : getCheckboxEmptySvg();
     return `
     <div id="contact-row-${contact.id}" class="${cssClass}" onclick="toggleContactSelection('${contact.id}', event)"
-    onkeydown="handlecontactSelectonCheckboxKeydown('${contact.id}', event)">
+    onkeydown="handleContactSelectionCheckboxKeydown('${contact.id}', event)">
         <div class="contact-item-left">
             ${renderContactCircle(contact)}
             <span class="contact-name">${contact.name}</span>
@@ -934,16 +934,13 @@ function displaySearchInBoardHtml() {
         </div>`
 }
 
-// RENAME below NEW function:
-
-
 /**
 * Generates the HTML form for adding and editing tasks. 
 * @param {Object|null} task - The task object (null for "Add Task", populated for "Edit Task")
 * @param {boolean} isOverlay - true if loaded in a modal; false for add_task.html
 * @param {string} board - The board/status (e.g., 'toDo')
 */
-function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') {
+function addAndEditTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') {
     const isEdit = !!task; /* true wenn task existiert, sonst false */
     const todayStr = new Date().toISOString().split('T')[0];
     const titleVal = isEdit ? task.title : '';
@@ -991,12 +988,12 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                         placeholder="Enter a title"
                         value="${titleVal}"
                         onblur="validateField('title')"
-                        oninput="clearError('title')"
+                        oninput="clearErrorMessageOnInput('title')"
                         aria-required="true"
                         aria-describedby="title-error title-hint"
                         autofocus>
-                    <div id="title-hint" class="sr-only">Enter a descriptive title for the task</div>
                     <div id="title-error" class="error-text" aria-live="polite"></div>
+                    <div id="title-hint" class="sr-only">Enter a descriptive title for the task</div>
                 </div>
 
                 <div class="edit-form-section">
@@ -1008,7 +1005,7 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                         aria-describedby="description-hint"
                         rows="4"
                         onblur="validateField('description')"
-                        oninput="clearError('description')"
+                        oninput="clearErrorMessageOnInput('description')"
                     >${descVal}</textarea>
                     <div id="description-error" class="error-text" aria-live="polite"></div>
                     <div id="description-hint" class="sr-only">Optional detailed description of the task</div>
@@ -1027,9 +1024,9 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                         aria-required="true"
                         aria-describedby="due-date-error date-hint"
                         onblur="validateField('due-date')"
-                        oninput="clearError('due-date')">
-                    <div id="date-hint" class="sr-only">Select the deadline for this task</div>
+                        oninput="clearErrorMessageOnInput('due-date')">
                     <div id="due-date-error" class="error-text" aria-live="polite"></div>
+                    <div id="date-hint" class="sr-only">Select the deadline for this task</div>
                 </div>
             </div>
 
@@ -1046,7 +1043,7 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                             role="radio" 
                             aria-checked="${prioVal === 'urgent' ? 'true' : 'false'}"
                             onclick="setEditPrio('urgent')"
-                            onkeydown="setEditPrio('urgent')"
+                            onkeydown="handlePrioritySelectionKeydown(event, 'urgent')"
                             aria-describedby="urgent-hint">
                             Urgent
                             <img src="../assets/icons/prio_urgent_icon.svg" alt="" aria-hidden="true">
@@ -1058,7 +1055,7 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                             role="radio" 
                             aria-checked="${prioVal === 'medium' ? 'true' : 'false'}"
                             onclick="setEditPrio('medium')"
-                            onkeydown="setEditPrio('medium')"
+                            onkeydown="handlePrioritySelectionKeydown(event, 'medium')"
                             aria-describedby="medium-hint">
                             Medium
                             <img src="../assets/icons/prio_medium_icon.svg" alt="" aria-hidden="true">
@@ -1070,7 +1067,7 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                             role="radio" 
                             aria-checked="${prioVal === 'low' ? 'true' : 'false'}"
                             onclick="setEditPrio('low')"
-                            onkeydown="setEditPrio('low')"
+                            onkeydown="handlePrioritySelectionKeydown(event, 'low')"
                             aria-describedby="low-hint">
                             Low
                             <img src="../assets/icons/prio_low_icon.svg" alt="" aria-hidden="true">
@@ -1126,7 +1123,8 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                         <div id="category-display" class="select-display" onclick="toggleCustomDropdown('category-display', 'category-options', 'category-arrow')"
                             tabindex="0" role="combobox"
                             required aria-required="true" aria-describedby="category-error" aria-invalid="false" aria-haspopup="listbox"
-                            onkeydown="handleCategoryDropdownKeydown(event)">
+                            onkeydown="handleCategoryDropdownKeydown(event)"
+                            onblur="validateCategory()">
 
                             <span id="category-text">Select task category</span>
 
@@ -1134,9 +1132,11 @@ function prepareTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') 
                                 class="dropdown-icon">
                         </div>
                         <div id="category-options" class="select-dropdown" style="display: none;">
-                            <div class="contact-item" onclick="selectCategory('Technical Task')" tabindex="0">Technical Task
+                            <div class="contact-item" onclick="selectCategory('Technical Task')" tabindex="0"
+                            onkeydown="handleCategorySelectionKeydown(event, 'Technical Task')">Technical Task
                             </div>
-                            <div class="contact-item" onclick="selectCategory('User Story')" tabindex="0">User Story</div>
+                            <div class="contact-item" onclick="selectCategory('User Story')" tabindex="0"
+                            onkeydown="handleCategorySelectionKeydown(event, 'User Story')">User Story</div>
                         </div>
                         <div id="category-error" class="error-text" style="padding-top: 8px;" role="alert"
                             aria-live="polite">This field is

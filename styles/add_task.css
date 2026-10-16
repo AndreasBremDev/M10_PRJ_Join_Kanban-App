@@ -463,7 +463,8 @@ select:focus {
     transition: all 0.1s ease-in-out;
 }
 
-.contact-item:hover:not(.selected) {
+.contact-item:hover:not(.selected),
+.contact-item:not(.selected):has(.contact-checkbox-icon:focus-visible) {
     background-color: #EEEEEE;
 }
 
@@ -513,6 +514,8 @@ select:focus {
     font-size: 16px;
     visibility: hidden;
     min-height: 20px;
+    margin-top: -4px;
+    margin-bottom: 4px;
 }
 
 .error-text.visible {

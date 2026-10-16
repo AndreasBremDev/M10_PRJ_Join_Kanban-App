@@ -40,6 +40,18 @@ function handleSubtaskAddKeydown(event) {
 }
 
 /**
+ * Handles keyboard events for subtask add button
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} priority - The priority level to select
+ */
+function handlePrioritySelectionKeydown(event, priority) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        setEditPrio(priority);
+    }
+}
+
+/**
  * Handles keyboard events for subtask edit input
  * @param {KeyboardEvent} event - The keyboard event
  * @param {number} index - The subtask index
@@ -96,12 +108,36 @@ function handleSubtaskEditActionKeydown(event, index) {
  * @param {string} contactId - The ID of the contact
  * @param {KeyboardEvent} event - The keyboard event
  */
-function handlecontactSelectonCheckboxKeydown(contactId, event) {
+function handleContactSelectionCheckboxKeydown(contactId, event) {
+    let element = event.target;
+    let parent = element.parentElement.parentElement;  
+    let lastLastElementChild = parent.lastElementChild.lastElementChild;    
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         toggleContactSelection(contactId, event)
+    } else if (event.key === 'Escape' || element === lastLastElementChild) {
+        event.preventDefault();
+        toggleCustomDropdown('assigned-display-edit', 'assigned-dropdown-edit', 'assigned-arrow');
     }
 }
+
+/**
+ * Handles keyboard events for category selection
+ * @param {KeyboardEvent} event - The keyboard event
+ * @param {string} category - The category to select
+ */
+function handleCategorySelectionKeydown(event, category) {
+    let element = event.target;
+    let parent = element.parentElement;   
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        selectCategory(category);
+    } else if (event.key === 'Escape' || element === parent.lastElementChild) {
+        event.preventDefault();
+        toggleCustomDropdown('category-display', 'category-options', 'category-arrow');
+    }
+}
+
 
 /**
  * Initializes accessibility features for the edit task form

@@ -165,7 +165,7 @@ function resetValidationVisuals() {
 function selectCategory(category) {
     document.getElementById('category-text').innerHTML = category;
     document.getElementById('category').value = category;
-    toggleCategoryDropdown();
+    toggleCustomDropdown('category-display', 'category-options', 'category-arrow');
     let container = document.getElementById('category-display');
     let errorMsg = document.getElementById('category-error');
     container.classList.remove('input-error');

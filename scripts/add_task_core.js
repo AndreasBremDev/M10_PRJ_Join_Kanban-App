@@ -19,7 +19,7 @@ async function initAddTask() {
 function renderAddTaskTemplate() {
     const addTaskContainer = document.getElementById('mainAddTask');
     if (addTaskContainer) {
-        addTaskContainer.innerHTML = prepareTaskFormTemplate(null, false);// WAS getAddTaskTemplate()
+        addTaskContainer.innerHTML = addAndEditTaskFormTemplate(null, false);// WAS getAddTaskTemplate()
     }
 }
 

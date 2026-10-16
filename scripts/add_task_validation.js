@@ -16,6 +16,15 @@ function validateTaskForm() {
 }
 
 /**
+ * Validates all required fields in the task form
+ */
+function checkRequiredFieldsPriorToEditing(){
+    validateField('title');
+    validateField('due-date');
+    validateCategory();
+}
+
+/**
  * Validates the edit task form and shows error messages
  * @returns {boolean} true if form is valid
  */
@@ -134,10 +143,10 @@ function containsHTML(str) {
 function validateField(id) {
     const input = document.getElementById(id), error = document.getElementById(`${id}-error`);
     if (!input || !error) return;
-    if (input.type === 'date' && input.value < new Date().toISOString().split('T')[0]) input.value = '';
     const value = input.value.trim();
     let isInvalid = false;
     let htmlInvalid = false;
+    if (input.type === 'date' && (input.value < new Date().toISOString().split('T')[0] || input.value === '')) isInvalid = true;
     if (id === 'title') {
         isInvalid = !value;
     }
@@ -163,12 +172,21 @@ function clearErrorMessage(error, input) {
 }
 
 /**
+ * Clears error message and error styling on input for a field
+ * @param {string} elementId - The dom element id
+ */
+function clearErrorMessageOnInput(elementId) {
+    const input = document.getElementById(elementId), error = document.getElementById(`${elementId}-error`);
+    clearErrorMessage(error, input);
+}
+
+/**
  * Displays required field error message and styling
  * @param {HTMLElement} error - The error message element
  * @param {HTMLElement} input - The input field element
  */
 function displayFieldErrorMessage(error, input) {
-    error.textContent = 'This field is required';
+    error.textContent = error.id === "due-date-error" ? 'Today of future date is required' : 'This field is required'; 
     error.classList.add('visible');
     input.classList.add('input-error');
 }
@@ -204,22 +222,6 @@ function validateCategory() {
         container.classList.remove('input-error');
         errorMsg.classList.remove('visible');
         return true;
-    }
-}
-
-/**
- * Clears error styling and messages for a form field.
- * Safely checks if elements exist before updating UI to prevent errors.
- * @param {string} id - The ID of the form field to clear errors for
- */
-function clearError(id) {
-    const input = document.getElementById(id);
-    const errorMsg = document.getElementById(id + '-error');
-    if (input) {
-        input.classList.remove('input-error');
-    }
-    if (errorMsg) {
-        errorMsg.classList.remove('visible');
     }
 }
 
