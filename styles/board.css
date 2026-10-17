@@ -928,16 +928,9 @@ body {
     box-sizing: border-box;
 }
 
-.task__container--edit-overlay {
-    width: min(100%, 525px);
-}
-
-.task__container--add-overlay {
-    width: 1200px;
-}
-
 .task__container--edit-overlay,
 .task__container--add-overlay {
+    width: min(100%, 525px);
     height: 90%;
     max-height: 90vh;
     background-color: var(--white);
@@ -956,42 +949,44 @@ body {
     scrollbar-width: thin;
 }
 
-@media (min-width: 1200px) {
-    .task__container--add-overlay .task__form--responsive-grid {
-        grid-template-columns: 1fr 1px 1fr;
-        align-items: start;
-    }
-
-    .task__container--add-overlay .task__form--divider {
-        background-color: #D1D1D1;
-        height: 90%;
-        width: 1px;
-    }
-}
-
-.task__container--desktop.task__container--add-task-page .close-board-info-overlay{
+.task__form--divider {
     display: none;
 }
 
-@media (min-width: 1432px) {
-    .task__container--desktop.task__container--add-task-page .task__form--responsive-grid {
+.task__container--desktop.task__container--add-task-page .close-board-info-overlay {
+    display: none;
+}
+
+@media (min-width: 1200px) {
+    .task__container--add-overlay {
+        width: 1200px;
+    }
+    .task__container--add-overlay .task__form--responsive-grid {
         grid-template-columns: 1fr 1px 1fr;
         align-items: start;
+        gap: 24px;
     }
 
-    .task__container--desktop.task__container--add-task-page .task__form--divider {
+    .task__container--add-overlay .task__form--divider {
+        display: block;
         background-color: #D1D1D1;
         height: 90%;
         width: 1px;
     }
 }
 
-.task__form--responsive-grid {
-    gap: 24px;
-}
-
-@media (max-width: 1200px) {
-    .task__container--add-overlay {
-        width: min(100%, 525px);
+@media (min-width: 1350px) {
+    .task__container--desktop.task__container--add-task-page .task__form--responsive-grid {
+        grid-template-columns: 1fr 1px 1fr;
+        align-items: start;
+        gap: 24px;
     }
+
+    .task__container--desktop.task__container--add-task-page .task__form--divider {
+        display: block;
+        background-color: #D1D1D1;
+        height: 90%;
+        width: 1px;
+    }
+
 }
