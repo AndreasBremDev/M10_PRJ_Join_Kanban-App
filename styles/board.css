@@ -969,13 +969,17 @@ body {
     }
 }
 
+.task__container--desktop.task__container--add-task-page .close-board-info-overlay{
+    display: none;
+}
+
 @media (min-width: 1432px) {
     .task__container--desktop.task__container--add-task-page .task__form--responsive-grid {
         grid-template-columns: 1fr 1px 1fr;
         align-items: start;
     }
 
-    .task__container--desktop.task__container--add-task-page .task__formdivider {
+    .task__container--desktop.task__container--add-task-page .task__form--divider {
         background-color: #D1D1D1;
         height: 90%;
         width: 1px;
