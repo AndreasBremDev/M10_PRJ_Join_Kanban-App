@@ -541,6 +541,11 @@ select:focus {
     object-fit: cover;
 }
 
+.filepicker-image--nonvisible {
+    width: 0px;
+    height: 0px;
+}
+
 @media (max-width: 1350px) {
 
     h1 {

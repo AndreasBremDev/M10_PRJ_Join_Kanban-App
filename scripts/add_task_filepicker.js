@@ -119,6 +119,7 @@ function render() {
     let imagesHTML = '<div id="viewer-container" style="display: contents;">';
     allImages.forEach((image, index) => {
         if (index < 5) { imagesHTML += `<img class="filepicker-image" src="${image.base64}" alt="${image.filename}" />`}
+        else { imagesHTML += `<img class="filepicker-image--nonvisible" aria-hidden="true" src="${image.base64}" alt="${image.filename}">`; }
     });
     imagesHTML += '</div>';
     gallery.innerHTML += imagesHTML;
