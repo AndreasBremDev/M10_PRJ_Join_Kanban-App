@@ -78,13 +78,14 @@ async function renderAddTaskOverlay(board = "toDo") {
     let overlay = document.getElementById("add-task-overlay");
     overlay.onclick = closeAddTaskOverlay;
     overlay.classList.remove('d-none');
-    overlay.removeAttribute('aria-hidden'); 
+    overlay.removeAttribute('aria-hidden');
     overlay.innerHTML = addAndEditTaskFormTemplate(null, true, board); // WAS: getAddTaskOverlayTemplate(board);
     await clearForm();
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
+    filepickerInit();
     setTimeout(() => {
         let titleInput = document.getElementById('title');
-        if (titleInput) {setTimeout(() => titleInput.focus(), 150);}
+        if (titleInput) { setTimeout(() => titleInput.focus(), 150); }
     }, 20);
 }
 
@@ -98,7 +99,7 @@ async function closeAddTaskOverlay() {
     setTimeout(async () => {
         overlay.classList.add('d-none');
         overlay.innerHTML = '';
-        overlay.setAttribute('aria-hidden', 'true'); 
+        overlay.setAttribute('aria-hidden', 'true');
         try {
             let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
             renderTasks(tasksRefetch);
@@ -130,7 +131,7 @@ async function renderTaskDetail(taskJson) {
     setupPriorityButtons();
     setTimeout(() => {
         let section = overlay.querySelector('.task-detail-overlay');
-        if (section) {section.classList.add('slide-in');}
+        if (section) { section.classList.add('slide-in'); }
     }, 50);
     renderContactsInOverlay(task);
 }
@@ -166,7 +167,8 @@ async function renderEditTaskDetail(taskId) {
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     renderAssignedEditCircles();
     setCheckboxesById();
-    checkRequiredFieldsPriorToEditing()
+    checkRequiredFieldsPriorToEditing();
+    filepickerInit();
 }
 
 /**
@@ -228,12 +230,12 @@ function renderSubtasksForOverlay(task) {
  * @param {string} taskId - The ID of the task containing the subtask
  * @param {number} subtaskIndex - The index of the subtask to toggle
  */
-async function toggleSubtask(taskId, subtaskIndex) { 
+async function toggleSubtask(taskId, subtaskIndex) {
     let task = tasks.find(t => t.id === taskId);
     if (!task || !task.subtasks) return;
     let currentStatus = task.subtasks[subtaskIndex].done === true || task.subtasks[subtaskIndex].done === 'true';
     let newStatus = !currentStatus;
-    task.subtasks[subtaskIndex].done = newStatus; 
+    task.subtasks[subtaskIndex].done = newStatus;
     try {
         await putData(`/${activeUserId}/tasks/${taskId}/subtasks/${subtaskIndex}/done`, newStatus);
         const taskJson = btoa(JSON.stringify(task));
@@ -260,7 +262,7 @@ async function toggleSubtaskWithScrollPreservation(taskId, subtaskIndex) {
         await putData(`/${activeUserId}/tasks/${taskId}/subtasks/${subtaskIndex}/done`, newStatus);
         updateSubtaskElementInDOM(taskId, subtaskIndex, newStatus);
         let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
-        tasks = tasksRefetch; 
+        tasks = tasksRefetch;
     } catch (error) {
         console.error("Update failed:", error);
         task.subtasks[subtaskIndex].done = currentStatus;
@@ -335,7 +337,7 @@ function positionSearchField() {
     const wasFocused = document.activeElement && document.activeElement.id === 'searchTasks';
     if (window.innerWidth > 1074) {
         searchFieldPositionInclusiveWcagAriaConformityA(searchMobileRef, searchDesktopRef, currentValue, wasFocused);
-        
+
     } else {
         searchFieldPositionInclusiveWcagAriaConformityB(searchDesktopRef, searchMobileRef, currentValue, wasFocused);
     }

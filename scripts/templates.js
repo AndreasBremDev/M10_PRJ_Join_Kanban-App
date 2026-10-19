@@ -1028,7 +1028,37 @@ function addAndEditTaskFormTemplate(task = null, isOverlay = true, board = 'toDo
                     <div id="due-date-error" class="error-text" aria-live="polite"></div>
                     <div id="date-hint" class="sr-only">Select the deadline for this task</div>
                 </div>
+
+                <div class="edit-form-section">
+                        <label id="filepicker-label" for="filepicker" class="form-headline-text">Attachments</label>
+                        <div class="custom-select-container">
+                            <div id="assigned-display-edit" 
+                                class="select-display" 
+                                role="combobox"
+                                tabindex="0"
+                                aria-expanded="false"
+                                aria-haspopup="listbox"
+                                aria-labelledby="assigned-label"
+                                aria-controls="assigned-dropdown-edit"
+                                aria-describedby="assigned-hint"
+                                onclick="filepicker.click()"                   
+                                onkeydown="handleAssignedDropdownEditKeydown(event)"> 
+                                <span>Select image attachments</span>
+                                <img id="assigned-arrow" src="../assets/icons/plus_icon.svg" alt="Arrow"
+                                    class="dropdown-icon">
+                            </div>
+                                
+                            <input type="file" id="filepicker" accept="image/jpeg" multiple="true" style="display:none">
+                        </div>
+                        <div id="assigned-hint" class="sr-only">Use arrow keys to navigate options, Enter to select</div>
+    
+                        <div id="filepicker-gallery" class="filepicker-gallery"></div>
+                        <div id="filepicker-error" class="error-text"></div>
+                    
+                </div>
+
             </div>
+
 
             <div class="task__form--divider" role="presentation" aria-hidden="true"></div>
 

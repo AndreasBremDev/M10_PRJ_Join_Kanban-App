@@ -11,6 +11,7 @@ async function initAddTask() {
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     setCheckboxesById();
     setupFormElements();
+    filepickerInit();
 }
 
 /**

@@ -522,6 +522,25 @@ select:focus {
     visibility: visible;
 }
 
+.filepicker-gallery {
+    display: inline-flex;
+    min-height: 44px;
+}
+
+.filepicker-image {
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    object-fit: cover;
+}
+
 @media (max-width: 1350px) {
 
     h1 {
