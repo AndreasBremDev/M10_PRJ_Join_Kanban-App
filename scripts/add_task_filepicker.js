@@ -1,25 +1,26 @@
 let filepicker;
 let gallery;
 let error;
-let currentfilename;
 let currentViewer = null;
-
 let allImages = [];
 
 function filepickerInit() {
     [filepicker, gallery, error] = ['filepicker', 'filepicker-gallery', 'filepicker-error'].map(id => document.getElementById(id));
     if (!filepicker) {console.error("Filepicker-Element nicht gefunden!"); return;}
     load();
+    filepickerEventListener();
+}
+
+function filepickerEventListener() {
     filepicker.addEventListener('change', () => {
         const files = filepicker.files;
         if (files.length > 0) {
-            Array.from(files).forEach(async file => {
-                file.name = currentfilename;
+            Array.from(files).forEach(async (file) => {
                 errorHandling__filepicker(file, error);
                 if (error.textContent) return;
-                const blob = new Blob([file], { type: file.type })
-                const compressedBase64 = await compressImage(file, 800, 800, 0.8)
-                allImages.push({filename: file.name, fileType: blob.type, base64: compressedBase64});
+                const blob = new Blob([file], { type: file.type });
+                const compressedBase64 = await compressImage(file, 800, 800, 0.8);
+                allImages.push({ filename: file.name, fileType: blob.type, base64: compressedBase64 });
                 save();
                 render();
             });
@@ -118,14 +119,12 @@ function render() {
     gallery.innerHTML = '';
     let imagesHTML = '<div id="viewer-container" style="display: contents;">';
     allImages.forEach((image, index) => {
-        if (index < 5) { imagesHTML += `<img class="filepicker-image" src="${image.base64}" alt="${image.filename}" />`}
-        else { imagesHTML += `<img class="filepicker-image--nonvisible" aria-hidden="true" src="${image.base64}" alt="${image.filename}">`; }
+        imagesHTML += index < 5 ? `<img class="filepicker-image" src="${image.base64}" alt="${image.filename}" />` : `<img class="filepicker-image--nonvisible" aria-hidden="true" src="${image.base64}" alt="${image.filename}">`;
     });
     imagesHTML += '</div>';
     gallery.innerHTML += imagesHTML;
     if (allImages.length > 5) {
-        const overflowCount = allImages.length - 5;
-        gallery.innerHTML += `<span class="filepicker-image" style="background-color: #2A3647; color: white;">+${overflowCount}</span>`;
+        gallery.innerHTML += `<span class="filepicker-image" style="background-color: #2A3647; color: white;">+${allImages.length - 5}</span>`;
     }
     if (currentViewer) {
         currentViewer.destroy();
