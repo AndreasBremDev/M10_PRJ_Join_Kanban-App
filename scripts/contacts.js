@@ -8,11 +8,12 @@ const isEmailValid = val => /^(?=[a-zA-Z0-9@._%+-]{6,64}$)(?=[a-zA-Z0-9._%+-]{1,
 /** Validates phone number format (6-20 characters, numbers and common symbols) */
 /** was: const isPhoneValid = val => /^[0-9 +()\/-]{6,20}$/.test(val); */
 /** now is: accept empty value */
+/** updated 2026.10 from /^(?!.*\s{2,})[0-9+()\/\-\s]{1,25}$/ to /^(?=.{1,25}$)\+?[0-9]+( [0-9]+)*$/ (only numbers, "+" optional)  */
 function isPhoneValid(value) {
     if (!value || value.trim() === '') {
         return true;
     }
-    return /^(?!.*\s{2,})[0-9+()\/\-\s]{1,25}$/.test(value.trim());
+    return /^(?=.{1,25}$)\+?[0-9]+( [0-9]+)*$/.test(value.trim());
 }
 
 /**
@@ -144,10 +145,7 @@ async function createContact() {
  */
 async function updateContact(currContactId, option, event = null) {
     try {
-        if (event) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
+        if (event) { event.preventDefault(); event.stopPropagation(); }
         await new Promise(resolve => requestAnimationFrame(() => setTimeout(resolve, 10)));
         let contactData = await setContactDataForBackendUpload('contactEditDeleteModal');
         if (option === 'Edit') {
@@ -157,14 +155,21 @@ async function updateContact(currContactId, option, event = null) {
         }
         clearAllContactsInputFields();
         await loadAndRenderContacts('contactList', 'contacts');
-        const big = document.getElementById('contactDisplayLarge');
-        big.innerHTML = '';
-        big.style.display = 'none';
-        const modal = document.getElementById('contactEditDeleteModal');
-        modal.close();
+        closeContactModal__updateContact();
     } catch (error) {
         console.error('Error edit/delete contact at putData():', error);
     }
+}
+
+/**
+ * Closes the contact update/edit modal dialog and resets the large display container.
+ */
+function closeContactModal__updateContact() {
+    const big = document.getElementById('contactDisplayLarge');
+    big.innerHTML = '';
+    big.style.display = 'none';
+    const modal = document.getElementById('contactEditDeleteModal');
+    modal.close();
 }
 
 /**
