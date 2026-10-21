@@ -32,7 +32,7 @@ function filepickerEventListener() {
             if (!errorHandling__filepicker(file, error)) return;
             const blob = new Blob([file], { type: file.type });
             const compressedBase64 = await compressImage(file, 800, 800, 0.8);
-            allImages.push({ filename: file.name, fileType: blob.type, base64: compressedBase64 });
+            allImages.push({ fileName: file.name, fileType: blob.type, fileSize: file.size, base64: compressedBase64 });
             save();
             render();
         });
@@ -180,7 +180,7 @@ function render() {
     gallery.innerHTML = '';
     let imagesHTML = '<div id="viewer-container" style="display: contents;">';
     allImages.forEach((image, index) => {
-        imagesHTML += index < 5 ? `<img class="filepicker-image" src="${image.base64}" alt="${image.filename}" />` : `<img class="filepicker-image--nonvisible" aria-hidden="true" src="${image.base64}" alt="${image.filename}">`;
+        imagesHTML += index < 5 ? `<img class="filepicker-image" src="${image.base64}" alt="${image.fileName}" tabindex="0" />` : `<img class="filepicker-image--nonvisible" aria-hidden="true" src="${image.base64}" alt="${image.fileName}" />`;
     });
     imagesHTML += '</div>';
     gallery.innerHTML += imagesHTML;

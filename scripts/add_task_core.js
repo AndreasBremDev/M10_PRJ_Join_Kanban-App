@@ -89,9 +89,11 @@ function createTaskObject(boardCategory) {
         assigned: editAssignedIds,
         subtasks: editSubtasks,
         board: boardCategory,
-        createdAt: new Date().getTime()
+        createdAt: new Date().getTime(),
+        images: Object.fromEntries(allImages.map((img, index) => [index, img]))
     };
 }
+
 
 /**
  * Saves a task object to the server with auto-generated ID

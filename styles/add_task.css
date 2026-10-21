@@ -541,6 +541,14 @@ select:focus {
     object-fit: cover;
 }
 
+.filepicker-image:hover,
+.filepicker-image:focus-visible {
+    outline: 2px solid var(--primary-hover);
+    outline-offset: 1px;    
+    scale: 1.05;
+    z-index: 99;
+}
+
 .filepicker-image--nonvisible {
     width: 0px;
     height: 0px;

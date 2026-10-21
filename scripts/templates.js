@@ -1032,7 +1032,7 @@ function addAndEditTaskFormTemplate(task = null, isOverlay = true, board = 'toDo
                 <div class="edit-form-section">
                         <label id="filepicker-label" for="filepicker" class="form-headline-text">Attachments</label>
                         <div class="custom-select-container">
-                            <div id="assigned-display-edit" 
+                            <div id="filepicker-attachments" 
                                 class="select-display" 
                                 role="combobox"
                                 tabindex="0"
