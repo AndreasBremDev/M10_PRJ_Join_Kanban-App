@@ -8,13 +8,21 @@ const MAX_ERROR_TIMEOUT = 3000;
 const MAX_FILENAME_CHARACTER = 20;
 
 /**
- * Initializes the filepicker elements, loads existing images from storage,
- * and sets up the event listener for file selections.
+ * Initializes the filepicker elements, optionally populates the image array 
+ * with existing attachments from a given task (Edit mode), and sets up the event listener.
+ * 
+ * @param {Object|null} [task=null] - The task object containing existing images, or null for a new task.
  */
-function filepickerInit() {
+function filepickerInit(task = null) {
     [filepicker, gallery, error] = ['filepicker', 'filepicker-gallery', 'filepicker-error'].map(id => document.getElementById(id));
     if (!filepicker) { console.error("Filepicker-Element nicht gefunden!"); return; }
-    load();
+    allImages = [];
+    if (task && task.images) {
+        Object.values(task?.images || {}).forEach(image => {
+            allImages.push({ fileName: image.fileName, fileType: image.fileType, fileSize: image.fileSize, base64: image.base64 });
+        });
+    }
+    render();
     filepickerEventListener();
 }
 
@@ -33,7 +41,7 @@ function filepickerEventListener() {
             const blob = new Blob([file], { type: file.type });
             const compressedBase64 = await compressImage(file, 800, 800, 0.8);
             allImages.push({ fileName: file.name, fileType: blob.type, fileSize: file.size, base64: compressedBase64 });
-            save();
+            // save();
             render();
         });
     });
@@ -153,24 +161,6 @@ function blobToBase64(blob) {
     });
 }
 
-/**
- * Saves the current image array state into the browser's local storage as a JSON string.
- */
-function save() {
-    let arrayAsString = JSON.stringify(allImages);
-    localStorage.setItem('allImages', arrayAsString)
-}
-
-/**
- * Loads the stored images array from local storage, parses it, and triggers a UI render update.
- */
-function load() {
-    let arrayAsString = localStorage.getItem('allImages');
-    if (arrayAsString) {
-        allImages = JSON.parse(arrayAsString)
-        render();
-    }
-}
 
 /**
  * Renders the image gallery UI, applying visibility rules for thumbnail limits (max 5 visible),
@@ -188,4 +178,9 @@ function render() {
     if (currentViewer) { currentViewer.destroy(); }
     const viewerContainer = document.getElementById('viewer-container');
     currentViewer = new Viewer(viewerContainer);
+}
+
+function resetFilePicker() {
+    allImages = [];
+    render();
 }

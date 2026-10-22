@@ -125,6 +125,7 @@ async function clearForm() {
     resetPriority();
     resetValidation();
     enableCreateBtn();
+    resetFilePicker();
 }
 
 /**

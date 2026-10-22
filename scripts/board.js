@@ -79,10 +79,10 @@ async function renderAddTaskOverlay(board = "toDo") {
     overlay.onclick = closeAddTaskOverlay;
     overlay.classList.remove('d-none');
     overlay.removeAttribute('aria-hidden');
-    overlay.innerHTML = addAndEditTaskFormTemplate(null, true, board); // WAS: getAddTaskOverlayTemplate(board);
-    await clearForm();
+    overlay.innerHTML = addAndEditTaskFormTemplate(null, true, board);
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     filepickerInit();
+    await clearForm();
     setTimeout(() => {
         let titleInput = document.getElementById('title');
         if (titleInput) { setTimeout(() => titleInput.focus(), 150); }
@@ -168,7 +168,7 @@ async function renderEditTaskDetail(taskId) {
     renderAssignedEditCircles();
     setCheckboxesById();
     checkRequiredFieldsPriorToEditing();
-    filepickerInit();
+    filepickerInit(task);
 }
 
 /**

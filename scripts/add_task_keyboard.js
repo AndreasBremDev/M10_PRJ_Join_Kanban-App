@@ -33,7 +33,7 @@ function handleSubtaskCancelKeydown(event) {
  * @param {KeyboardEvent} event - The keyboard event
  */
 function handleSubtaskAddKeydown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === 'Enter') {
         event.preventDefault();
         addSubtaskEdit();
     }
