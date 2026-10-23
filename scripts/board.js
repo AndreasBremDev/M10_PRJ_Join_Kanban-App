@@ -79,7 +79,7 @@ async function renderAddTaskOverlay(board = "toDo") {
     overlay.onclick = closeAddTaskOverlay;
     overlay.classList.remove('d-none');
     overlay.removeAttribute('aria-hidden');
-    overlay.innerHTML = addAndEditTaskFormTemplate(null, true, board);
+    overlay.innerHTML = getAddAndEditTaskFormTemplate(null, true, board);
     await loadAndRenderContacts('assigned-dropdown-edit', 'addTask');
     filepickerInit();
     await clearForm();
@@ -112,27 +112,26 @@ async function closeAddTaskOverlay() {
 /**
  * Adds slide-in animation to the overlay
  */
-function slideInOverlay() {
-    let overlay = document.getElementById("add-task-overlay");
-    overlay.classList.add("slide-in");
+function slideInOverlay(htmlElement) {
+    htmlElement.classList.add("slide-in");
 }
 
 /**
  * Renders the task detail overlay for viewing task information
  * @param {string} taskJson - Base64 encoded JSON string of the task object
  */
-async function renderTaskDetail(taskJson) {
+async function renderShowTaskDetail(taskJson) {
     let task = JSON.parse(decodeURIComponent(escape(atob(taskJson))));
     let overlay = document.getElementById("add-task-overlay");
+    if (!overlay) {return;}
     overlay.onclick = closeAddTaskOverlay;
-    overlay.innerHTML = getTaskDetailOverlayTemplate(task);
+    overlay.innerHTML = getShowTaskOverlayTemplate(task);
     overlay.classList.remove('d-none');
+    void overlay.offsetWidth;
+    slideInOverlay(overlay);
+    renderAttachmentGallery(task);
     overlay.setAttribute('aria-hidden', 'false');
     setupPriorityButtons();
-    setTimeout(() => {
-        let section = overlay.querySelector('.task-detail-overlay');
-        if (section) { section.classList.add('slide-in'); }
-    }, 50);
     renderContactsInOverlay(task);
 }
 
@@ -187,7 +186,7 @@ function loadTaskVariableGlobally(task) {
  */
 function loadEditTaskDetailOverlay(task) {
     let overlay = document.getElementById("add-task-overlay");
-    overlay.innerHTML = addAndEditTaskFormTemplate(task, true);
+    overlay.innerHTML = getAddAndEditTaskFormTemplate(task, true);
     overlay.classList.remove('d-none');
 }
 
@@ -239,7 +238,7 @@ async function toggleSubtask(taskId, subtaskIndex) {
     try {
         await putData(`/${activeUserId}/tasks/${taskId}/subtasks/${subtaskIndex}/done`, newStatus);
         const taskJson = btoa(JSON.stringify(task));
-        renderTaskDetail(taskJson);
+        renderShowTaskDetail(taskJson);
         let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
         renderTasks(tasksRefetch);
     } catch (error) {

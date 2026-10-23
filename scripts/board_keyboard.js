@@ -11,7 +11,7 @@
 function handleTaskCardKeydown(event, taskJson) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        renderTaskDetail(taskJson);
+        renderShowTaskDetail(taskJson);
     }
 }
 

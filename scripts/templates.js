@@ -5,7 +5,7 @@ function renderTasksCardSmallHtml(task) {
         role="button" 
         tabindex="0" 
         aria-label="${task.title}"
-        onclick="renderTaskDetail('${taskJson}')" 
+        onclick="renderShowTaskDetail('${taskJson}')" 
         onkeydown="handleTaskCardKeydown(event, '${taskJson}')"
         class="drag-item" 
         draggable="true" 
@@ -134,9 +134,9 @@ function contactsLoadingIssueHTML() {
     `
 }
 
-function getTaskDetailOverlayTemplate(task) {
+function getShowTaskOverlayTemplate(task) {
     return /* html */`
-    <div class="task-detail-overlay"
+    <div class="task__container--edit-overlay"
             onclick="event.stopPropagation()"
             role="dialog" 
             aria-modal="true"
@@ -169,12 +169,20 @@ function getTaskDetailOverlayTemplate(task) {
                 <div>${task.dueDate}</div>
             </div>
             
+            
             <div class="task-detail-priority" role="text" aria-label="Priority: ${task.priority}">
                 <div style="font-size: 18px;">Priority:</div>
                 <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>&nbsp;&nbsp;
                 <img src="../assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority icon" aria-hidden="true">
             </div>
-
+            
+            <div class="task-detail-attachment" id="attachment-section">
+                <h2 class="sr-only">Attachments</h2>
+                <div style="font-size: 18px;" role="text">Attachments:</div>
+                <div id="filepicker-gallery" class="filepicker-gallery">
+                </div>
+            </div>
+            
             <div class="task-detail-assigned">
                 <h2 class="sr-only">Assigned Contacts</h2>
                 <div style="font-size: 18px;" role="text">Assigned to:</div>
@@ -940,7 +948,7 @@ function displaySearchInBoardHtml() {
 * @param {boolean} isOverlay - true if loaded in a modal; false for add_task.html
 * @param {string} board - The board/status (e.g., 'toDo')
 */
-function addAndEditTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') {
+function getAddAndEditTaskFormTemplate(task = null, isOverlay = true, board = 'toDo') {
     const isEdit = !!task; /* true wenn task existiert, sonst false */
     const todayStr = new Date().toISOString().split('T')[0];
     const titleVal = isEdit ? task.title : '';

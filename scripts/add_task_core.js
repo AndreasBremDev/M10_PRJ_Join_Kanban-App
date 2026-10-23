@@ -20,7 +20,7 @@ async function initAddTask() {
 function renderAddTaskTemplate() {
     const addTaskContainer = document.getElementById('mainAddTask');
     if (addTaskContainer) {
-        addTaskContainer.innerHTML = addAndEditTaskFormTemplate(null, false);// WAS getAddTaskTemplate()
+        addTaskContainer.innerHTML = getAddAndEditTaskFormTemplate(null, false);// WAS getAddTaskTemplate()
     }
 }
 
@@ -288,7 +288,8 @@ function getMergedTaskData(oldTask) {
         category: document.getElementById('category').value == '' ? oldTask.category : document.getElementById('category').value,
         priority: editPriority,
         assigned: editAssignedIds,
-        subtasks: editSubtasks
+        subtasks: editSubtasks,
+        images: Object.fromEntries(allImages.map((img, index) => [index, img]))
     };
 }
 

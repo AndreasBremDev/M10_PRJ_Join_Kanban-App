@@ -26,6 +26,18 @@ function filepickerInit(task = null) {
     filepickerEventListener();
 }
 
+function renderAttachmentGallery(task) {
+    gallery = document.getElementById('filepicker-gallery');
+    if (!gallery) { console.error("Filepicker-Galerie-Element nicht gefunden!"); return; }
+    allImages = [];
+    if (task && task.images) {
+        Object.values(task?.images || {}).forEach(image => {
+            allImages.push({ fileName: image.fileName, fileType: image.fileType, fileSize: image.fileSize, base64: image.base64 });
+        });
+    }
+    render();
+}
+
 /**
  * Attaches a change event listener to the file input to handle uploaded images,
  * run error checks, compress them, store them in the global array, and update the view.
