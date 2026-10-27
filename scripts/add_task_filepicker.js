@@ -16,26 +16,36 @@ const MAX_FILENAME_CHARACTER = 20;
 function filepickerInit(task = null) {
     [filepicker, gallery, error] = ['filepicker', 'filepicker-gallery', 'filepicker-error'].map(id => document.getElementById(id));
     if (!filepicker) { console.error("Filepicker-Element nicht gefunden!"); return; }
-    allImages = [];
-    if (task && task.images) {
-        Object.values(task?.images || {}).forEach(image => {
-            allImages.push({ fileName: image.fileName, fileType: image.fileType, fileSize: image.fileSize, base64: image.base64 });
-        });
-    }
+    pushTaskImagesToAllImages(task);
     render();
     filepickerEventListener();
 }
 
+/**
+ * Renders the attachment gallery for a given task in the detail view.
+ * Populates the global image array with task images and triggers the render process.
+ * 
+ * @param {Object} task - The task object containing the attachments/images to display.
+ */
 function renderAttachmentGallery(task) {
     gallery = document.getElementById('filepicker-gallery');
     if (!gallery) { console.error("Filepicker-Galerie-Element nicht gefunden!"); return; }
+    pushTaskImagesToAllImages(task);
+    render();
+}
+
+/**
+ * Clears the global allImages array and populates it with image objects from the provided task.
+ * 
+ * @param {Object} task - The task object containing image attachments.
+ */
+function pushTaskImagesToAllImages(task) {
     allImages = [];
     if (task && task.images) {
         Object.values(task?.images || {}).forEach(image => {
             allImages.push({ fileName: image.fileName, fileType: image.fileType, fileSize: image.fileSize, base64: image.base64 });
         });
     }
-    render();
 }
 
 /**
@@ -173,7 +183,6 @@ function blobToBase64(blob) {
     });
 }
 
-
 /**
  * Renders the image gallery UI, applying visibility rules for thumbnail limits (max 5 visible),
  * appending an overflow badge if necessary, and re-initializing the ViewerJS lightbox instance.
@@ -182,16 +191,35 @@ function render() {
     gallery.innerHTML = '';
     let imagesHTML = '<div id="viewer-container" style="display: contents;">';
     allImages.forEach((image, index) => {
-        imagesHTML += index < 5 ? `<img class="filepicker-image" src="${image.base64}" alt="${image.fileName}" tabindex="0" />` : `<img class="filepicker-image--nonvisible" aria-hidden="true" src="${image.base64}" alt="${image.fileName}" />`;
+        imagesHTML += index < 5 ? `
+        <div class="filepicker-image-wrapper" role="group" aria-label="Vorschaubild mit Option zum Löschen">
+            <img class="filepicker-image" src="${image.base64}" alt="${image.fileName}" tabindex="0" />
+            <button type="button" class="filepicker-delete-btn" aria-label="${image.fileName} löschen">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <mask id="mask0_75592_9951" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                        <rect width="24" height="24" fill="#D9D9D9"/>
+                    </mask>
+                    <g mask="url(#mask0_75592_9951)">
+                        <path d="M7 21C6.45 21 5.97917 20.8042 5.5875 20.4125C5.19583 20.0208 5 19.55 5 19V6C4.71667 6 4.47917 5.90417 4.2875 5.7125C4.09583 5.52083 4 5.28333 4 5C4 4.71667 4.09583 4.47917 4.2875 4.2875C4.47917 4.09583 4.71667 4 5 4H9C9 3.71667 9.09583 3.47917 9.2875 3.2875C9.47917 3.09583 9.71667 3 10 3H14C14.2833 3 14.5208 3.09583 14.7125 3.2875C14.9042 3.47917 15 3.71667 15 4H19C19.2833 4 19.5208 4.09583 19.7125 4.2875C19.9042 4.47917 20 4.71667 20 5C20 5.28333 19.9042 5.52083 19.7125 5.7125C19.5208 5.90417 19.2833 6 19 6V19C19 19.55 18.8042 20.0208 18.4125 20.4125C18.0208 20.8042 17.55 21 17 21H7ZM7 6V19H17V6H7ZM9 16C9 16.2833 9.09583 16.5208 9.2875 16.7125C9.47917 16.9042 9.71667 17 10 17C10.2833 17 10.5208 16.9042 10.7125 16.7125C10.9042 16.5208 11 16.2833 11 16V9C11 8.71667 10.9042 8.47917 10.7125 8.2875C10.5208 8.09583 10.2833 8 10 8C9.71667 8 9.47917 8.09583 9.2875 8.2875C9.09583 8.47917 9 8.71667 9 9V16ZM13 16C13 16.2833 13.0958 16.5208 13.2875 16.7125C13.4792 16.9042 13.7167 17 14 17C14.2833 17 14.5208 16.9042 14.7125 16.7125C14.9042 16.5208 15 16.2833 15 16V9C15 8.71667 14.9042 8.47917 14.7125 8.2875C14.5208 8.09583 14.2833 8 14 8C13.7167 8 13.4792 8.09583 13.2875 8.2875C13.0958 8.47917 13 8.71667 13 9V16Z" fill="#2A3647"/>
+                    </g>
+                </svg>
+            </button>
+        </div>
+        ` : `
+        <img class="filepicker-image--nonvisible" aria-hidden="true" src="${image.base64}" alt="${image.fileName}" />
+        `;
     });
     imagesHTML += '</div>';
     gallery.innerHTML += imagesHTML;
-    if (allImages.length > 5) { gallery.innerHTML += `<span class="filepicker-image" style="background-color: #2A3647; color: white;">+${allImages.length - 5}</span>`; }
+    if (allImages.length > 5) { gallery.innerHTML += `<span class="filepicker-image--span">+${allImages.length - 5}</span>`; }
     if (currentViewer) { currentViewer.destroy(); }
     const viewerContainer = document.getElementById('viewer-container');
     currentViewer = new Viewer(viewerContainer);
 }
 
+/**
+ * Resets the file picker by clearing the global allImages array and re-rendering the gallery.
+ */
 function resetFilePicker() {
     allImages = [];
     render();
