@@ -1,5 +1,12 @@
 function renderTasksCardSmallHtml(task) {
     const taskJson = btoa(unescape(encodeURIComponent(JSON.stringify(task))));
+    const hasImages = task.images && Object.keys(task.images).length > 0;
+    const overlengthTitle = task.title.length > 35;
+    const [year, month, day] = task.dueDate.split('-');
+    const dueDateTimestamp = new Date(year, month - 1, day).setHours(0, 0, 0, 0);
+    const todayTimestamp = new Date().setHours(0, 0, 0, 0);
+    const diffDays = Math.round((dueDateTimestamp - todayTimestamp) / (1000 * 60 * 60 * 24));
+
     return /* html */`
     <div 
         role="button" 
@@ -12,8 +19,12 @@ function renderTasksCardSmallHtml(task) {
         ondragstart="dragstartHandler(event, '${task.id}')" 
         ondragend="dragendHandler(event)">
         <div class="card-inner">
-            <p class="${categoryColor(task)}">${task.category}</p>
-            <h3>${task.title}</h3>
+            <div class="card-category">
+                <p class="${categoryColor(task)}">${task.category}</p>
+                ${hasImages ? `<img src="../assets/icons/attach_file.svg" alt="attachment">` : ``}
+            </div>
+            <p class="${task.board === 'done' ? '' : (diffDays <= 0 ? 'card-bgRed' : diffDays === 1 ? 'card-bgYellow' : '')}">Due Date: ${task.dueDate}</p>
+            <h3>${overlengthTitle ? task.title.slice(0, 35) + "..." : task.title}</h3>
             <p class="card-description">${task.description}</p>
                 ${checkForAndDisplaySubtasks(task)}
             <div class="flex spacebetween">
@@ -135,6 +146,10 @@ function contactsLoadingIssueHTML() {
 }
 
 function getShowTaskOverlayTemplate(task) {
+    const [year, month, day] = task.dueDate.split('-');
+    const dueDateTimestamp = new Date(year, month - 1, day).setHours(0, 0, 0, 0);
+    const todayTimestamp = new Date().setHours(0, 0, 0, 0);
+    const diffDays = Math.round((dueDateTimestamp - todayTimestamp) / (1000 * 60 * 60 * 24));
     return /* html */`
     <div class="task__container--edit-overlay"
             onclick="event.stopPropagation()"
@@ -164,7 +179,7 @@ function getShowTaskOverlayTemplate(task) {
                 <p id="task-detail-description" role="text">${task.description}</p>
             </div>
 
-            <div class="task-detail-due-date" role="text" aria-label="Due date: ${task.dueDate}">
+            <div class="${task.board === 'done' ? '' : (diffDays <= 0 ? 'card-bgRed' : diffDays === 1 ? 'card-bgYellow' : '')} task-detail-due-date" role="text" aria-label="Due date: ${task.dueDate}">
                 <div>Due Date:</div>
                 <div>${task.dueDate}</div>
             </div>

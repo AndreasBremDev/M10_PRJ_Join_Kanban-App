@@ -113,7 +113,7 @@ function countTasks(tasks) {
     else if (board.includes("await")) counts.awaitingFeedback++;
     else if (board.includes("done")) counts.done++;
 
-    if (priority === "urgent") counts.urgent++;
+    if (priority === "urgent" && !board.includes("done") && tasks[i].dueDate) counts.urgent++;
   }
   counts.nextDeadline = formatDate(findNextDeadline(tasks));
   return counts;

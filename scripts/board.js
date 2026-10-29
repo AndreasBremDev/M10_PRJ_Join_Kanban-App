@@ -96,13 +96,14 @@ async function renderAddTaskOverlay(board = "toDo") {
 async function closeAddTaskOverlay() {
     let overlay = document.getElementById("add-task-overlay");
     if (overlay) { overlay.classList.remove('slide-in'); }
+    currentTaskId = null;
     setTimeout(async () => {
         overlay.classList.add('d-none');
         overlay.innerHTML = '';
         overlay.setAttribute('aria-hidden', 'true');
         try {
             let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
-            renderTasks(tasksRefetch);
+            await renderTasks(tasksRefetch);
         } catch (error) {
             console.error("Error updating board after overlay close:", error);
         }
@@ -144,7 +145,7 @@ async function deleteTaskfromBoard(taskId) {
         await deletePath(`/${activeUserId}/tasks/${taskId}`);
         closeAddTaskOverlay();
         let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
-        renderTasks(tasksRefetch);
+        await renderTasks(tasksRefetch);
     } catch (error) {
         console.error("Error deleting task:", error);
     }
@@ -240,7 +241,7 @@ async function toggleSubtask(taskId, subtaskIndex) {
         const taskJson = btoa(JSON.stringify(task));
         renderShowTaskDetail(taskJson);
         let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
-        renderTasks(tasksRefetch);
+        await renderTasks(tasksRefetch);
     } catch (error) {
         console.error("Update failed:", error);
     }

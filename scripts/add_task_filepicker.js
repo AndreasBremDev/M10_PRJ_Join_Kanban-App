@@ -3,6 +3,7 @@ let gallery;
 let error;
 let currentViewer = null;
 let allImages = [];
+let currentTaskId = null;
 const MAX_FILE_LIMIT = 10;
 const MAX_ERROR_TIMEOUT = 3000;
 const MAX_FILENAME_CHARACTER = 20;
@@ -16,6 +17,7 @@ const MAX_FILENAME_CHARACTER = 20;
 function filepickerInit(task = null) {
     [filepicker, gallery, error] = ['filepicker', 'filepicker-gallery', 'filepicker-error'].map(id => document.getElementById(id));
     if (!filepicker) { console.error("Filepicker-Element nicht gefunden!"); return; }
+    currentTaskId = task?.id || null;
     pushTaskImagesToAllImages(task);
     render();
     filepickerEventListener();
@@ -29,6 +31,7 @@ function filepickerInit(task = null) {
  */
 function renderAttachmentGallery(task) {
     gallery = document.getElementById('filepicker-gallery');
+    currentTaskId = task?.id || null;
     if (!gallery) { console.error("Filepicker-Galerie-Element nicht gefunden!"); return; }
     pushTaskImagesToAllImages(task);
     render();
@@ -63,7 +66,6 @@ function filepickerEventListener() {
             const blob = new Blob([file], { type: file.type });
             const compressedBase64 = await compressImage(file, 800, 800, 0.8);
             allImages.push({ fileName: file.name, fileType: blob.type, fileSize: file.size, base64: compressedBase64 });
-            // save();
             render();
         });
     });
@@ -191,10 +193,11 @@ function render() {
     gallery.innerHTML = '';
     let imagesHTML = '<div id="viewer-container" style="display: contents;">';
     allImages.forEach((image, index) => {
+
         imagesHTML += index < 5 ? `
         <div class="filepicker-image-wrapper" role="group" aria-label="Vorschaubild mit Option zum Löschen">
             <img class="filepicker-image" src="${image.base64}" alt="${image.fileName}" tabindex="0" />
-            <button type="button" class="filepicker-delete-btn" aria-label="${image.fileName} löschen">
+            <button onclick="deleteFromAllImages(${index})" type="button" class="filepicker-delete-btn" aria-label="${image.fileName} löschen">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_75592_9951" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                         <rect width="24" height="24" fill="#D9D9D9"/>
@@ -215,6 +218,32 @@ function render() {
     if (currentViewer) { currentViewer.destroy(); }
     const viewerContainer = document.getElementById('viewer-container');
     currentViewer = new Viewer(viewerContainer);
+}
+
+/**
+ * Deletes an image from the global allImages array by its index.
+ * If a currentTaskId is set (edit mode), it updates the task's images object 
+ * in the Firebase database, re-fetches the tasks, and updates the board rendering.
+ * Finally, it re-renders the local filepicker/attachment gallery.
+ * 
+ * @async
+ * @param {number} index - The index of the image in the allImages array to be removed.
+ * @returns {Promise<void>}
+ */
+async function deleteFromAllImages(index) {
+    console.log('index:', index, 'allImages:', allImages);
+    allImages.splice(index, 1);
+    render();
+    if (currentTaskId) {
+        let task = tasks.find(t => t.id === currentTaskId);
+        if (task) {
+            task.images = Object.fromEntries(allImages.map((img, index)=>[index, img]))
+            await putData(`/${activeUserId}/tasks/${currentTaskId}/images`, task.images);
+            tasks = await fetchAndAddIdAndRemoveUndefinedContacts();
+            await renderTasks(tasks);
+        }
+    }
+    render();
 }
 
 /**

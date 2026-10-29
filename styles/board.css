@@ -236,13 +236,19 @@ body {
     gap: 12px;
 }
 
+.card-category {
+    display: flex;
+    justify-content: space-between;
+}
+
 .card-inner h3 {
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
+    word-break: break-all;
 }
 
 .turquoise,
@@ -261,6 +267,20 @@ body {
     background-color: #1FD7C1;
 }
 
+.card-bgRed {
+    /* text-shadow: 1px 1px 1px var(--red); */
+    background-color: var(--redSoft);
+    color: var(--primary);
+    border-radius: 5px;
+}
+
+.card-bgYellow {
+    /* text-shadow: 1px 1px 1px var(--yellow); */
+    background-color: var(--yellowSoft);
+    color: var(--primary);
+    border-radius: 5px;
+}
+
 .card-description {
     color: #A8A8A8;
     display: -webkit-box;
@@ -269,8 +289,6 @@ body {
     line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* line-height: 16px;
-    max-height: 32px; */
 }
 
 .card-inner img {

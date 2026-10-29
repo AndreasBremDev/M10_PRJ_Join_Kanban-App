@@ -48,7 +48,7 @@ function handleEditTaskKeydown(event, taskId) {
 function handleSubtaskToggleKeydown(event, taskId, index) {
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
-        toggleSubtask(taskId, index);
+        toggleSubtaskWithScrollPreservation(taskId, index);
     }
 }
 

@@ -33,7 +33,7 @@ function setupFormElements() {
         const todayStr = new Date().toISOString().split('T')[0];
         dueDateInput.setAttribute('min', todayStr);
     }
-    // Ensure error message element for description exists
+    /* Ensure error message element for description exists */
     const descriptionInput = document.getElementById('description');
     if (descriptionInput && !document.getElementById('description-error')) {
         const errorDiv = document.createElement('div');
@@ -311,7 +311,7 @@ function validateEditInputs() {
 async function refreshBoardAfterEdit() {
     closeAddTaskOverlay();
     tasks = await fetchAndAddIdAndRemoveUndefinedContacts();
-    renderTasks(tasks);
+    await renderTasks(tasks);
 }
 
 /**

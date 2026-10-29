@@ -135,7 +135,7 @@ async function moveTo(category) {
     try {
         await putData('/' + activeUserId + '/tasks/' + currentDraggedId + '/board', category);
         let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
-        renderTasks(tasksRefetch);
+        await renderTasks(tasksRefetch);
     } catch (error) {
         console.error('Error moveTask():', error);
     }
