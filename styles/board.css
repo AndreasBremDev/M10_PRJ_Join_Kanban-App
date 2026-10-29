@@ -672,7 +672,6 @@ body {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 7px 0 7px 16px;
 }
 
 .subtask-list-overlay {
