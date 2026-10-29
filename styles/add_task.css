@@ -526,10 +526,7 @@ select:focus {
     position: relative;
     display: inline-flex;
     align-items: center;
-    margin-right: 8px;
-    /* flex-basis: 42px;
-    flex-shrink: 0; */
-    transition: all 0.3s ease-in-out;
+    margin-right: 24px;
 }
 
 .filepicker-delete-btn {
@@ -538,33 +535,13 @@ select:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.3s ease-in-out;
-    opacity: 0;
-    pointer-events: none;
+    opacity: 1;
     padding: 0;
-    position:absolute;
+    position: absolute;
     right: -24px;
     top: 50%;
     transform: translateY(-50%);
     z-index: 1019;
-}
-
-.filepicker-image-wrapper:hover,
-.filepicker-image-wrapper:focus-within {
-    margin-right: 24px;
-
-}
-
-.filepicker-delete-btn:hover path,
-.filepicker-delete-btn:focus-visible path {
-    fill: #29ABE2;
-}
-
-.filepicker-image-wrapper:hover .filepicker-delete-btn,
-.filepicker-image-wrapper:focus-within .filepicker-delete-btn {
-    opacity: 1;
-    pointer-events: auto;
-    cursor: pointer;
 }
 
 .filepicker-gallery {
@@ -580,6 +557,7 @@ select:focus {
     color: #fff;
     width: 42px;
     height: 42px;
+    min-width: 42px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -593,15 +571,6 @@ select:focus {
     color: white;
 }
 
-.filepicker-image:hover,
-.filepicker-image:focus-visible {
-    outline: 2px solid var(--primary-hover);
-    outline-offset: 1px;
-    scale: 1.05;
-    z-index: 1099;
-    cursor: pointer;
-}
-
 .filepicker-image--nonvisible {
     width: 0px;
     height: 0px;
@@ -609,7 +578,44 @@ select:focus {
 
 
 
+@media (pointer:fine) and (hover: hover) {
+    .filepicker-image-wrapper {
+        margin-right: 8px;
+        transition: all 0.3s ease-in-out;
+    }
 
+    .filepicker-image-wrapper:hover,
+    .filepicker-image-wrapper:focus-within {
+        margin-right: 24px;
+    }
+
+    .filepicker-delete-btn {
+        transition: all 0.3s ease-in-out;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .filepicker-delete-btn:hover path,
+    .filepicker-delete-btn:focus-visible path {
+        fill: #29ABE2;
+    }
+
+    .filepicker-image:hover,
+    .filepicker-image:focus-visible {
+        outline: 2px solid var(--primary-hover);
+        outline-offset: 1px;
+        scale: 1.05;
+        z-index: 1099;
+        cursor: pointer;
+    }
+
+    .filepicker-image-wrapper:hover .filepicker-delete-btn,
+    .filepicker-image-wrapper:focus-within .filepicker-delete-btn {
+        opacity: 1;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+}
 
 
 @media (max-width: 1350px) {

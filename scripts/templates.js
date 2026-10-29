@@ -1065,7 +1065,7 @@ function getAddAndEditTaskFormTemplate(task = null, isOverlay = true, board = 't
                                 aria-controls="assigned-dropdown-edit"
                                 aria-describedby="assigned-hint"
                                 onclick="filepicker.click()"                   
-                                onkeydown="handleAssignedDropdownEditKeydown(event)"> 
+                                onkeydown="handleAttachmentKeydown(event)"> 
                                 <span>Select image attachments</span>
                                 <img id="assigned-arrow" src="../assets/icons/plus_icon.svg" alt="Arrow"
                                     class="dropdown-icon">

@@ -82,3 +82,14 @@ function handleAssignedDropdownEditKeydown(event) {
         }
     }
 }
+
+/**
+ * Handles keydown events on attachment elements to trigger the file picker on Enter or Space.
+ * @param {KeyboardEvent} event - The keyboard event object.
+ */
+function handleAttachmentKeydown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        filepicker.click()
+    }
+}
