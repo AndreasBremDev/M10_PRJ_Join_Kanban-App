@@ -9,6 +9,89 @@ const isConfirmValid = val => val === document.getElementById('passwordRegister'
 /** Validates checkbox is checked */
 const isCheckboxValid = () => document.getElementById('checkbox').checked;
 
+const futureDate = new Date();
+futureDate.setFullYear(futureDate.getFullYear() + 1);
+const dueDateString = futureDate.toISOString().split('T')[0];
+
+const firstLoginTasksObject = {
+    "0": {
+        title: "You Successfully logged in",
+        description: "You entered name, email, password and signed in",
+        dueDate: dueDateString,
+        category: "User Story",
+        priority: "low",
+        assigned: { "0": "0" },
+        subtasks: {
+            "0": {
+                title: "Account created and verified",
+                done: true
+            }
+        },
+        board: "done",
+        createdAt: new Date().getTime()
+    },
+    "1": {
+        title: "Manage Contacts & Assignments",
+        description: "Create, edit, or delete contacts in the Contacts section and assign them to this task.",
+        dueDate: dueDateString,
+        category: "User Story",
+        priority: "medium",
+        assigned: { "0": "0" },
+        board: "toDo",
+        createdAt: new Date().getTime()
+    },
+    "2": {
+        title: "Test Attachments & Deletion",
+        description: "Try adding images/attachments to this task and test the card deletion feature.",
+        dueDate: dueDateString,
+        category: "Technical Task",
+        priority: "low",
+        assigned: { "0": "0" },
+        board: "toDo",
+        createdAt: new Date().getTime()
+    },
+    "3": {
+        title: "Create New Tasks And Subtasks",
+        description: "Create new tasks either directly in the board view or via the dedicated add task view.",
+        dueDate: dueDateString,
+        category: "User Story",
+        priority: "urgent",
+        assigned: { "0": "0" },
+        subtasks: {
+            "0": {
+                title: "Test creation in board view",
+                done: false
+            },
+            "1": {
+                title: "Test creation in add task view",
+                done: false
+            }
+        },
+        board: "inProgress",
+        createdAt: new Date().getTime()
+    },
+    "4": {
+        title: "Check Summary & Urgent Tasks",
+        description: "Monitor critical project metrics in the Summary view, especially checking which urgent tasks are due starting today.",
+        dueDate: dueDateString,
+        category: "Technical Task",
+        priority: "urgent",
+        assigned: { "0": "0" },
+        board: "awaitFeedback",
+        createdAt: new Date().getTime()
+    },
+    "5": {
+        title: "Explore via Guest Login",
+        description: "You can also explore the application instantly using the guest login feature without creating a permanent account.",
+        dueDate: dueDateString,
+        category: "User Story",
+        priority: "low",
+        assigned: { "0": "0" },
+        board: "awaitFeedback",
+        createdAt: new Date().getTime()
+    }
+}
+
 let bool = [0, 0, 0, 0, 0]
 
 /**
@@ -124,19 +207,17 @@ function setDataForBackendUpload() {
     let nameRegister = document.getElementById('nameRegister');
     let emailRegister = document.getElementById('emailRegister');
     let passwordRegister = document.getElementById('passwordRegister');
-    let data = {
-        name: nameRegister.value.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-        email: emailRegister.value.trim().toLowerCase(),
+    let formattedName = nameRegister.value.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    let formattedEmail = emailRegister.value.trim().toLowerCase();
+    return {
+        name: formattedName,
+        email: formattedEmail,
         password: passwordRegister.value,
         contacts: {
-            "0": {
-                name: nameRegister.value.trim().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-                email: emailRegister.value.trim().toLowerCase(),
-            }
+            "0": { name: formattedName, email: formattedEmail }
         },
-        tasks: ""
+        tasks: firstLoginTasksObject
     };
-    return data;
 }
 
 /**
