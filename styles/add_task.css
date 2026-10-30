@@ -522,6 +522,14 @@ select:focus {
     visibility: visible;
 }
 
+.filepicker-show-task--inner-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2px;
+    padding-right: 4px
+}
+
 .filepicker-image-wrapper {
     position: relative;
     display: inline-flex;
@@ -551,6 +559,12 @@ select:focus {
     flex-wrap: wrap;
 }
 
+.filepicker-gallery:has(.filepicker-show-task--inner-layout) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 .filepicker-image--span,
 .filepicker-image {
     box-sizing: border-box;
@@ -560,6 +574,7 @@ select:focus {
     width: 42px;
     height: 42px;
     min-width: 42px;
+    min-height: 42px;
     display: inline-flex;
     align-items: center;
     justify-content: center;

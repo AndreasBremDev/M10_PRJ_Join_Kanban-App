@@ -29,12 +29,13 @@ function filepickerInit(task = null) {
  * 
  * @param {Object} task - The task object containing the attachments/images to display.
  */
-function renderAttachmentGallery(task) {
+function renderAttachmentGallery__showTask(task) {
     gallery = document.getElementById('filepicker-gallery');
     currentTaskId = task?.id || null;
     if (!gallery) { console.error("Filepicker-Galerie-Element nicht gefunden!"); return; }
     pushTaskImagesToAllImages(task);
-    render();
+    let showTask = true;
+    render(showTask);
 }
 
 /**
@@ -186,47 +187,83 @@ function blobToBase64(blob) {
 }
 
 /**
- * Renders the image gallery UI, applying visibility rules for thumbnail limits (max 5 visible),
- * appending an overflow badge if necessary, and re-initializing the ViewerJS lightbox instance.
+ * Renders the attachment gallery container, manages image elements up to the limit, 
+ * handles overflow counters, and re-initializes the Viewer.js instance.
+ * 
+ * @param {boolean} [boolShowTask=false] - Flag indicating whether to render in show-task mode or edit/add mode.
+ * @returns {void}
  */
-function render() {
+function render(boolShowTask = false) {
     gallery.innerHTML = '';
     let imagesHTML = '<div id="viewer-container" style="display: contents;">';
-    allImages.forEach((image, index) => {
-        imagesHTML += index < 5 ? getAttachmentImageContainerWithDeleteBtnHtml(image, index) : getAttachmentImageHiddenHtml(image);
-    });
+    imagesHTML = renderAttachmentImageSection(imagesHTML, boolShowTask);
     imagesHTML += '</div>';
     gallery.innerHTML += imagesHTML;
-    if (allImages.length > 5) { gallery.innerHTML += `<span class="filepicker-image--span">+${allImages.length - 5}</span>`; }
+    if (allImages.length > 5) { gallery.innerHTML += getAttachmentRemainderSpanHtml(allImages); }
     if (currentViewer) { currentViewer.destroy(); }
     const viewerContainer = document.getElementById('viewer-container');
-    currentViewer = new Viewer(viewerContainer);
+    currentViewer = new Viewer(viewerContainer, viewerTitleCallback(allImages));
 }
 
 /**
- * Deletes an image from the global allImages array by its index.
- * If a currentTaskId is set (edit mode), it updates the task's images object 
- * in the Firebase database, re-fetches the tasks, and updates the board rendering.
- * Finally, it re-renders the local filepicker/attachment gallery.
+ * Iterates through all images and appends the appropriate HTML template string 
+ * depending on the index limit and the display mode.
  * 
- * @async
- * @param {number} index - The index of the image in the allImages array to be removed.
+ * @param {string} imagesHTML - The accumulated HTML string for the images.
+ * @param {boolean} boolShowTask - Flag determining if the show-task layout should be used.
+ * @returns {string} The updated HTML string containing all rendered image attachments.
+ */
+function renderAttachmentImageSection(imagesHTML, boolShowTask) {
+    allImages.forEach((image, index) => {
+        if (index < 5) {
+            imagesHTML += boolShowTask 
+            ? getShowTaskAttachmentHtml(image, index, boolShowTask)
+            : getAddTaskEditTaskAttachmentHtml(image, index); 
+        } else {
+            imagesHTML += getAttachmentImageHiddenHtml(image);
+        }
+    });
+    return imagesHTML;
+}
+
+/**
+ * Generates a custom configuration object for Viewer.js to display file name, dimensions, and file size.
+ * 
+ * @param {Array<Object>} allImages - Array of image objects containing file metadata like fileSize.
+ * @returns {Object} The configuration object for the Viewer instance containing the custom title function.
+ */
+function viewerTitleCallback(allImages) {
+    return {
+        title: function (image, imageData) {
+            let fileObj = allImages[this.index];
+            let fileSizeMb = (fileObj.fileSize / (1024 * 1024)).toFixed(2) + ' MB'
+            return `${image.alt.slice(0, MAX_FILENAME_CHARACTER) + "..."} (${imageData.naturalWidth} × ${imageData.naturalHeight}) – ${fileSizeMb}`;
+        }
+    }
+}
+
+/**
+ * Deletes an image from the allImages array by its index, updates the backend if a task is active, 
+ * and re-renders the gallery while preserving the current view mode.
+ * 
+ * @param {number} index - The index of the image to delete.
+ * @param {boolean} [boolShowTask=false] - Flag indicating whether to maintain the show-task layout during re-rendering.
  * @returns {Promise<void>}
  */
-async function deleteFromAllImages(index) {
+async function deleteFromAllImages(index, boolShowTask = false) {
     console.log('index:', index, 'allImages:', allImages);
     allImages.splice(index, 1);
-    render();
+    render(boolShowTask);
     if (currentTaskId) {
         let task = tasks.find(t => t.id === currentTaskId);
         if (task) {
-            task.images = Object.fromEntries(allImages.map((img, index)=>[index, img]))
+            task.images = Object.fromEntries(allImages.map((img, index) => [index, img]))
             await putData(`/${activeUserId}/tasks/${currentTaskId}/images`, task.images);
             tasks = await fetchAndAddIdAndRemoveUndefinedContacts();
             await renderTasks(tasks);
         }
     }
-    render();
+    render(boolShowTask);
 }
 
 /**

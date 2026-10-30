@@ -130,7 +130,7 @@ async function renderShowTaskDetail(taskJson) {
     overlay.classList.remove('d-none');
     void overlay.offsetWidth;
     slideInOverlay(overlay);
-    renderAttachmentGallery(task);
+    renderAttachmentGallery__showTask(task);
     overlay.setAttribute('aria-hidden', 'false');
     setupPriorityButtons();
     renderContactsInOverlay(task);

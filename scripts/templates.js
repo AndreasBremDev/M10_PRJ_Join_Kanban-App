@@ -23,7 +23,7 @@ function renderTasksCardSmallHtml(task) {
                 <p class="${categoryColor(task)}">${task.category}</p>
                 ${hasImages ? `<img src="../assets/icons/attach_file.svg" alt="attachment">` : ``}
             </div>
-            <p class="${task.board === 'done' ? '' : (diffDays <= 0 ? 'card-bgRed' : diffDays === 1 ? 'card-bgYellow' : '')}">Due Date: ${task.dueDate}</p>
+            <p class="${task.board === 'done' ? '' : (diffDays <= 0 ? 'card-bgRed' : diffDays === 1 ? 'card-bgYellow' : '')}">${diffDays < 0 ? 'Overdue:' : 'Due Date:'}&nbsp;${task.dueDate}</p>
             <h3>${overlengthTitle ? task.title.slice(0, 35) + "..." : task.title}</h3>
             <p class="card-description">${task.description}</p>
                 ${checkForAndDisplaySubtasks(task)}
@@ -141,102 +141,6 @@ function contactsLoadingIssueHTML() {
         class="error-message"
         style="text-align: center; padding: 1rem; color: #ff4444;">
         <p>Error loading contacts. Please try again.</p>
-    </div>
-    `
-}
-
-function getShowTaskOverlayTemplate(task) {
-    const [year, month, day] = task.dueDate.split('-');
-    const dueDateTimestamp = new Date(year, month - 1, day).setHours(0, 0, 0, 0);
-    const todayTimestamp = new Date().setHours(0, 0, 0, 0);
-    const diffDays = Math.round((dueDateTimestamp - todayTimestamp) / (1000 * 60 * 60 * 24));
-    return /* html */`
-    <div class="task__container--edit-overlay"
-            onclick="event.stopPropagation()"
-            role="dialog" 
-            aria-modal="true"
-            aria-labelledby="task-detail-title"
-            aria-describedby="task-detail-description">
-            <div class="task-detail-header">
-                <p class="${categoryColor(task)}" role="text" aria-label="Category: ${task.category}">${task.category}</p>
-                <button onclick="closeAddTaskOverlay()" 
-                        onkeydown="handleCloseKeydown(event)"
-                        class="close-board-info-overlay" 
-                        aria-label="Close task details dialog"
-                        tabindex="1"
-                        style="border: none; background: none; cursor: pointer; padding: 4px;">
-                    <img src="../assets/icons/close.svg" alt="" aria-hidden="true">
-                </button>
-            </div>
-        <div class="task-overlay-wrapper">
-
-            <div class="task-detail-headline">
-                <h1 id="task-detail-title" class="task-detail-title custom-scrollbar" role="heading" aria-level="1">${task.title}</h1>
-            </div>
-
-            <div class="task-detail-description">
-                <h2 class="sr-only">Description</h2>
-                <p id="task-detail-description" role="text">${task.description}</p>
-            </div>
-
-            <div class="${task.board === 'done' ? '' : (diffDays <= 0 ? 'card-bgRed' : diffDays === 1 ? 'card-bgYellow' : '')} task-detail-due-date" role="text" aria-label="Due date: ${task.dueDate}">
-                <div>Due Date:</div>
-                <div>${task.dueDate}</div>
-            </div>
-            
-            
-            <div class="task-detail-priority" role="text" aria-label="Priority: ${task.priority}">
-                <div style="font-size: 18px;">Priority:</div>
-                <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>&nbsp;&nbsp;
-                <img src="../assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority icon" aria-hidden="true">
-            </div>
-            
-            <div class="task-detail-attachment" id="attachment-section">
-                <h2 class="sr-only">Attachments</h2>
-                <div style="font-size: 18px;" role="text">Attachments:</div>
-                <div id="filepicker-gallery" class="filepicker-gallery">
-                </div>
-            </div>
-            
-            <div class="task-detail-assigned">
-                <h2 class="sr-only">Assigned Contacts</h2>
-                <div style="font-size: 18px;" role="text">Assigned to:</div>
-                <div id="overlayContactContainer" class="contact-circle-container" role="list" aria-label="Assigned contacts"></div>
-            </div>
-
-            <div class="task-detail-subtasks" id="subtasks-section">
-                <h2 class="sr-only">Subtasks</h2>
-                <div style="font-size: 18px;" role="text">Subtasks:</div>
-                <div role="group" aria-label="Subtasks list" id="subtasks-container">
-                    ${renderSubtasksForOverlay(task)}
-                </div>
-            </div>
-
-        </div>
-        <div class="task-detail-delete-edit-button-container" role="toolbar" aria-label="Task actions">
-            <button onclick="deleteTaskfromBoard('${task.id}')" 
-                    onkeydown="handleDeleteTaskKeydown(event, '${task.id}')"
-                    class="task-detail-delete-button"
-                    aria-label="Delete task: ${task.title}"
-                    tabindex="0"
-                    style="border: none; cursor: pointer;">
-                <div class="task-delete-icon" aria-hidden="true"></div>
-                <span class="sr-only">Delete Task</span>
-            </button>
-
-            <div class="task-detail-spacer" aria-hidden="true"></div>
-
-            <button onclick="renderEditTaskDetail('${task.id}')" 
-                    onkeydown="handleEditTaskKeydown(event, '${task.id}')"
-                    class="task-detail-edit-button"
-                    aria-label="Edit task: ${task.title}"
-                    tabindex="0"
-                    style="border: none; cursor: pointer;">
-                <div class="task-edit-icon" aria-hidden="true"></div>
-                <span class="sr-only">Edit Task</span>
-            </button>
-        </div>
-
     </div>
     `
 }
@@ -958,6 +862,109 @@ function displaySearchInBoardHtml() {
 }
 
 /**
+ * Generates the HTML template for the task detail overlay, displaying task information 
+ * including title, description, due date status, priority, attachments, assignees, and subtasks.
+ * 
+ * @param {Object} task - The task object containing all details to display.
+ * @returns {string} The HTML string representing the task detail overlay dialog.
+ */
+function getShowTaskOverlayTemplate(task) {
+    const [year, month, day] = task.dueDate.split('-');
+    const dueDateTimestamp = new Date(year, month - 1, day).setHours(0, 0, 0, 0);
+    const todayTimestamp = new Date().setHours(0, 0, 0, 0);
+    const diffDays = Math.round((dueDateTimestamp - todayTimestamp) / (1000 * 60 * 60 * 24));
+    return /* html */`
+    <div class="task__container--edit-overlay"
+            onclick="event.stopPropagation()"
+            role="dialog" 
+            aria-modal="true"
+            aria-labelledby="task-detail-title"
+            aria-describedby="task-detail-description">
+            <div class="task-detail-header">
+                <p class="${categoryColor(task)}" role="text" aria-label="Category: ${task.category}">${task.category}</p>
+                <button onclick="closeAddTaskOverlay()" 
+                        onkeydown="handleCloseKeydown(event)"
+                        class="close-board-info-overlay" 
+                        aria-label="Close task details dialog"
+                        tabindex="1"
+                        style="border: none; background: none; cursor: pointer; padding: 4px;">
+                    <img src="../assets/icons/close.svg" alt="" aria-hidden="true">
+                </button>
+            </div>
+        <div class="task-overlay-wrapper">
+
+            <div class="task-detail-headline">
+                <h1 id="task-detail-title" class="task-detail-title custom-scrollbar" role="heading" aria-level="1">${task.title}</h1>
+            </div>
+
+            <div class="task-detail-description">
+                <h2 class="sr-only">Description</h2>
+                <p id="task-detail-description" role="text">${task.description}</p>
+            </div>
+
+            <div class="${task.board === 'done' ? '' : (diffDays <= 0 ? 'card-bgRed' : diffDays === 1 ? 'card-bgYellow' : '')} task-detail-due-date" role="text" aria-label="Due date: ${task.dueDate}">
+                <div>Due Date:</div>
+                <div>${task.dueDate}</div>
+            </div>
+            
+            
+            <div class="task-detail-priority" role="text" aria-label="Priority: ${task.priority}">
+                <div style="font-size: 18px;">Priority:</div>
+                <div>${task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}</div>&nbsp;&nbsp;
+                <img src="../assets/icons/prio_${task.priority}_icon.svg" alt="${task.priority} priority icon" aria-hidden="true">
+            </div>
+            
+            <div class="task-detail-attachment" id="attachment-section">
+                <h2 class="sr-only">Attachments</h2>
+                <div style="font-size: 18px;" role="text">Attachments:</div>
+                <div id="filepicker-gallery" class="filepicker-gallery">
+                </div>
+            </div>
+            
+            <div class="task-detail-assigned">
+                <h2 class="sr-only">Assigned Contacts</h2>
+                <div style="font-size: 18px;" role="text">Assigned to:</div>
+                <div id="overlayContactContainer" class="contact-circle-container" role="list" aria-label="Assigned contacts"></div>
+            </div>
+
+            <div class="task-detail-subtasks" id="subtasks-section">
+                <h2 class="sr-only">Subtasks</h2>
+                <div style="font-size: 18px;" role="text">Subtasks:</div>
+                <div role="group" aria-label="Subtasks list" id="subtasks-container">
+                    ${renderSubtasksForOverlay(task)}
+                </div>
+            </div>
+
+        </div>
+        <div class="task-detail-delete-edit-button-container" role="toolbar" aria-label="Task actions">
+            <button onclick="deleteTaskfromBoard('${task.id}')" 
+                    onkeydown="handleDeleteTaskKeydown(event, '${task.id}')"
+                    class="task-detail-delete-button"
+                    aria-label="Delete task: ${task.title}"
+                    tabindex="0"
+                    style="border: none; cursor: pointer;">
+                <div class="task-delete-icon" aria-hidden="true"></div>
+                <span class="sr-only">Delete Task</span>
+            </button>
+
+            <div class="task-detail-spacer" aria-hidden="true"></div>
+
+            <button onclick="renderEditTaskDetail('${task.id}')" 
+                    onkeydown="handleEditTaskKeydown(event, '${task.id}')"
+                    class="task-detail-edit-button"
+                    aria-label="Edit task: ${task.title}"
+                    tabindex="0"
+                    style="border: none; cursor: pointer;">
+                <div class="task-edit-icon" aria-hidden="true"></div>
+                <span class="sr-only">Edit Task</span>
+            </button>
+        </div>
+
+    </div>
+    `
+}
+
+/**
 * Generates the HTML form for adding and editing tasks. 
 * @param {Object|null} task - The task object (null for "Add Task", populated for "Edit Task")
 * @param {boolean} isOverlay - true if loaded in a modal; false for add_task.html
@@ -1251,8 +1258,8 @@ function getAddAndEditTaskFormTemplate(task = null, isOverlay = true, board = 't
     `;
 }
 
-function getAttachmentImageContainerWithDeleteBtnHtml(image, index) {
-    return `
+function getAddTaskEditTaskAttachmentHtml(image, index) {
+    return /*html*/ `
         <div class="filepicker-image-wrapper" role="group" aria-label="Vorschaubild mit Option zum Löschen">
             <img class="filepicker-image" src="${image.base64}" alt="${image.fileName}" tabindex="0" />
             <button onclick="deleteFromAllImages(${index})" type="button" class="filepicker-delete-btn" aria-label="${image.fileName} löschen">
@@ -1269,8 +1276,41 @@ function getAttachmentImageContainerWithDeleteBtnHtml(image, index) {
         `
 }
 
+function getShowTaskAttachmentHtml(image, index, boolShowTask) {
+    return /*html*/ `
+        <div class="filepicker-show-task--inner-layout">
+            <div class="filepicker-image-wrapper" role="group" aria-label="Vorschaubild mit Option zum Löschen">
+                <img class="filepicker-image" src="${image.base64}" alt="${image.fileName}" tabindex="0" />
+                <button onclick="deleteFromAllImages(${index},${boolShowTask})" type="button" class="filepicker-delete-btn" aria-label="${image.fileName} löschen">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <mask id="mask0_75592_9951" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                            <rect width="24" height="24" fill="#D9D9D9"/>
+                        </mask>
+                        <g mask="url(#mask0_75592_9951)">
+                            <path d="M7 21C6.45 21 5.97917 20.8042 5.5875 20.4125C5.19583 20.0208 5 19.55 5 19V6C4.71667 6 4.47917 5.90417 4.2875 5.7125C4.09583 5.52083 4 5.28333 4 5C4 4.71667 4.09583 4.47917 4.2875 4.2875C4.47917 4.09583 4.71667 4 5 4H9C9 3.71667 9.09583 3.47917 9.2875 3.2875C9.47917 3.09583 9.71667 3 10 3H14C14.2833 3 14.5208 3.09583 14.7125 3.2875C14.9042 3.47917 15 3.71667 15 4H19C19.2833 4 19.5208 4.09583 19.7125 4.2875C19.9042 4.47917 20 4.71667 20 5C20 5.28333 19.9042 5.52083 19.7125 5.7125C19.5208 5.90417 19.2833 6 19 6V19C19 19.55 18.8042 20.0208 18.4125 20.4125C18.0208 20.8042 17.55 21 17 21H7ZM7 6V19H17V6H7ZM9 16C9 16.2833 9.09583 16.5208 9.2875 16.7125C9.47917 16.9042 9.71667 17 10 17C10.2833 17 10.5208 16.9042 10.7125 16.7125C10.9042 16.5208 11 16.2833 11 16V9C11 8.71667 10.9042 8.47917 10.7125 8.2875C10.5208 8.09583 10.2833 8 10 8C9.71667 8 9.47917 8.09583 9.2875 8.2875C9.09583 8.47917 9 8.71667 9 9V16ZM13 16C13 16.2833 13.0958 16.5208 13.2875 16.7125C13.4792 16.9042 13.7167 17 14 17C14.2833 17 14.5208 16.9042 14.7125 16.7125C14.9042 16.5208 15 16.2833 15 16V9C15 8.71667 14.9042 8.47917 14.7125 8.2875C14.5208 8.09583 14.2833 8 14 8C13.7167 8 13.4792 8.09583 13.2875 8.2875C13.0958 8.47917 13 8.71667 13 9V16Z" fill="#2A3647"/>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+
+            <p>
+                ${image.fileName.slice(0, MAX_FILENAME_CHARACTER) + "..."}
+            </p>
+            <p>
+                ${(image.fileSize / (1024 * 1024)).toFixed(2) + ' MB'}
+            </p>
+        </div> 
+    `
+}
+
 function getAttachmentImageHiddenHtml(image) {
-    return `
+    return /*html*/ `
         <img class="filepicker-image--nonvisible" aria-hidden="true" src="${image.base64}" alt="${image.fileName}" />
         `
+}
+
+function getAttachmentRemainderSpanHtml(allImages) {
+    return /*html*/ `
+    <span class="filepicker-image--span">+${allImages.length - 5}</span>
+    `
 }

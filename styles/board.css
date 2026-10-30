@@ -492,6 +492,7 @@ body {
     justify-content: flex-end;
 }
 
+.filepicker-gallery,
 .task-detail-title,
 .contact-circle-container,
 .subtask-list-overlay {
@@ -664,7 +665,7 @@ body {
 .contact-circle-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     margin-top: 16px;
 }
 
@@ -917,7 +918,7 @@ body {
 
 .task__container--general {
     display: flex;
-    flex-direction: column;    
+    flex-direction: column;
 }
 
 .task__container--desktop {
@@ -960,6 +961,7 @@ body {
     .task__container--add-overlay {
         width: 1200px;
     }
+
     .task__container--add-overlay .task__form--responsive-grid {
         grid-template-columns: 1fr 1px 1fr;
         align-items: start;
@@ -988,4 +990,12 @@ body {
         width: 1px;
     }
 
+}
+
+@media (min-height: 962px) {
+    .task__container--edit-overlay,
+    .task__container--add-overlay {
+        height: clamp(700px, 80dvh, 1300px);
+        justify-content: center;
+    }
 }
