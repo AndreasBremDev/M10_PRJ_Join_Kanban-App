@@ -31,6 +31,7 @@ async function renderTasks(tasks) {
         const container = document.getElementById(htmlContainerId);
         task.length === 0 ? container.innerHTML = renderTasksHtmlEmptyArray(htmlContainerId) : container.innerHTML = task.map(task => renderTasksCardSmallHtml(task)).join('');
     });
+    initTouchDragAndDrop();
 }
 
 /**

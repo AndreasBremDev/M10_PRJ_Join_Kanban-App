@@ -1,7 +1,7 @@
 function renderTasksCardSmallHtml(task) {
     const taskJson = btoa(unescape(encodeURIComponent(JSON.stringify(task))));
     const hasImages = task.images && Object.keys(task.images).length > 0;
-    const overlengthTitle = task.title.length > 35;
+    const overlengthTitle = task.title?.length > 35;
     const [year, month, day] = task.dueDate.split('-');
     const dueDateTimestamp = new Date(year, month - 1, day).setHours(0, 0, 0, 0);
     const todayTimestamp = new Date().setHours(0, 0, 0, 0);
@@ -17,7 +17,8 @@ function renderTasksCardSmallHtml(task) {
         class="drag-item" 
         draggable="true" 
         ondragstart="dragstartHandler(event, '${task.id}')" 
-        ondragend="dragendHandler(event)">
+        ondragend="dragendHandler(event)"
+        data-task-id="${task.id}">
         <div class="card-inner">
             <div class="card-category">
                 <p class="${categoryColor(task)}">${task.category}</p>
