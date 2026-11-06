@@ -151,6 +151,7 @@ function checkIfTouchMoveExceedsThreshold__handleTouchMove(touch) {
  * @param {TouchEvent} event - The touch end event containing final touch coordinates
  */
 async function handleTouchEnd(ev) {
+    if(!isDraggingTouch) {clearLongPressTimeoutAndResetVariables__handleTouchEnd();return;};
     stopAutoScroll();
     if (touchClone) {touchClone.remove(); touchClone = null;};
     if (touchElement) touchElement.style.opacity = '1';
@@ -166,6 +167,16 @@ async function handleTouchEnd(ev) {
 }
 
 /**
+ * Clears the active long-press timeout and resets all touch state variables.
+ * Executed when a touch ends before the long-press drag threshold is reached.
+ */
+function clearLongPressTimeoutAndResetVariables__handleTouchEnd() {
+    clearTimeout(longPressTimeout);
+    longPressTimeout = null;
+    resetTouchVariables();
+}
+
+/**
  * Resets all touch drag state and cleans up visual effects
  * Removes styling, highlights, stops auto-scroll, and resets variables
  */
@@ -178,26 +189,6 @@ function resetTouchState() {
     stopAutoScroll();
     resetTouchVariables();
 }
-
-/**
- * Global touchmove event listener for active drag operations
- * Handles touch movement only when a drag is in progress to optimize performance
- */
-document.addEventListener('touchmove', (e) => {
-    if (isDraggingTouch) {
-        handleTouchMove(e);
-    }
-}, { passive: false });
-
-/**
- * Global touchend event listener for completing drag operations
- * Ensures drag operations are properly completed even if touch ends outside the original element
- */
-document.addEventListener('touchend', (e) => {
-    if (isDraggingTouch || touchElement) {
-        handleTouchEnd(e);
-    }
-}, { passive: false });
 
 /**
  * Removes highlight styling from all drop zones
@@ -246,12 +237,33 @@ function removeTouchListeners(item) {
     item.removeEventListener('touchend', handleTouchEnd);
 }
 
-// POSSIBLY NOT NEEDED ANYMORE, BUT KEEPING FOR NOW IN CASE OF FUTURE USE
 
-// /**
-//  * Checks if the current browser is Safari (including iOS/MacOS Safari).
-//  * @returns {boolean} True if Safari, otherwise false.
-//  */
-// function isSafari() {
-//     return /^((?!chrome|android|crios).)*safari/i.test(navigator.userAgent);
-// }
+/* POSSIBLY NOT NEEDED ANYMORE, BUT KEEPING FOR NOW IN CASE OF FUTURE USE */
+
+/**
+ * Checks if the current browser is Safari (including iOS/MacOS Safari).
+ * @returns {boolean} True if Safari, otherwise false.
+ */
+function isSafari() {
+    return /^((?!chrome|android|crios).)*safari/i.test(navigator.userAgent);
+}
+
+/**
+ * Global touchmove event listener for active drag operations
+ * Handles touch movement only when a drag is in progress to optimize performance
+ */
+document.addEventListener('touchmove', (e) => {
+    if (isDraggingTouch) {
+        handleTouchMove(e);
+    }
+}, { passive: false });
+
+/**
+ * Global touchend event listener for completing drag operations
+ * Ensures drag operations are properly completed even if touch ends outside the original element
+ */
+document.addEventListener('touchend', (e) => {
+    if (isDraggingTouch || touchElement) {
+        handleTouchEnd(e);
+    }
+}, { passive: false });
