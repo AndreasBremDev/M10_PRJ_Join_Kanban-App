@@ -15,7 +15,7 @@ function renderTasksCardSmallHtml(task) {
         onclick="renderShowTaskDetail('${taskJson}')" 
         onkeydown="handleTaskCardKeydown(event, '${taskJson}')"
         class="drag-item" 
-        draggable="true" 
+        draggable="${isTouchDevice() ? 'false' : 'true'}" 
         ondragstart="dragstartHandler(event, '${task.id}')" 
         ondragend="dragendHandler(event)"
         data-task-id="${task.id}">

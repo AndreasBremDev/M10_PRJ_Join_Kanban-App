@@ -70,6 +70,7 @@ function handleTouchStart(event) {
             enableTouchDragEffects__handleTouchStart(currentTouch);
         }
     }, longPressDragThresholdInMs);
+    event.preventDefault();
 }
 
 /**
@@ -237,17 +238,6 @@ function removeTouchListeners(item) {
     item.removeEventListener('touchend', handleTouchEnd);
 }
 
-
-/* POSSIBLY NOT NEEDED ANYMORE, BUT KEEPING FOR NOW IN CASE OF FUTURE USE */
-
-/**
- * Checks if the current browser is Safari (including iOS/MacOS Safari).
- * @returns {boolean} True if Safari, otherwise false.
- */
-function isSafari() {
-    return /^((?!chrome|android|crios).)*safari/i.test(navigator.userAgent);
-}
-
 /**
  * Global touchmove event listener for active drag operations
  * Handles touch movement only when a drag is in progress to optimize performance
@@ -267,3 +257,14 @@ document.addEventListener('touchend', (e) => {
         handleTouchEnd(e);
     }
 }, { passive: false });
+
+
+/* POSSIBLY NOT NEEDED ANYMORE, BUT KEEPING FOR NOW IN CASE OF FUTURE USE */
+
+/**
+ * Checks if the current browser is Safari (including iOS/MacOS Safari).
+ * @returns {boolean} True if Safari, otherwise false.
+ */
+function isSafari() {
+    return /^((?!chrome|android|crios).)*safari/i.test(navigator.userAgent);
+}
