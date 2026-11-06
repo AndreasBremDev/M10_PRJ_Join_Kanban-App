@@ -4,9 +4,9 @@ let touchStartY = 0;
 let touchElement = null;
 let isDraggingTouch = false;
 let longPressTimeout = null;
+let touchClone = null;
 const longPressDragThresholdInMs = 300;
 const longPressMoveThresholdInPx = 10;
-
 
 /**
  * Initializes touch drag-and-drop functionality for all task items
@@ -40,7 +40,6 @@ function setupNewTouchListeners(item) {
     item.addEventListener('touchend', handleTouchEnd, { passive: false });
 }
 
-
 /**
  * Maps drop zone element IDs to their corresponding category names
  * Converts DOM element IDs to backend category identifiers
@@ -65,10 +64,11 @@ function handleTouchStart(event) {
     const item = event.currentTarget;
     const taskId = item.dataset.taskId || item.closest('[data-task-id]')?.dataset.taskId;
     if (!taskId) return;
+    currentTouch = event.touches[0];
     initializeTouchDrag__handleTouchStart(event, item, taskId);
     longPressTimeout = setTimeout(() => {
         if (touchElement) {
-            enableTouchDragEffects__handleTouchStart();
+            enableTouchDragEffects__handleTouchStart(currentTouch);
         }
     }, longPressDragThresholdInMs);
 }
@@ -89,14 +89,26 @@ function initializeTouchDrag__handleTouchStart(event, item, taskId) {
 }
 
 /**
- * Enables visual and logical effects for touch drag start.
- * Sets dragging state, applies CSS class and styles, and disables body scrolling.
+ * Enables the touch drag effects by creating a floating visual clone of the 
+ * dragged element, positioning it precisely at the touch coordinates, and 
+ * dimming the original DOM element as a placeholder.
+ * 
+ * @returns {void}
  */
-function enableTouchDragEffects__handleTouchStart() {
+function enableTouchDragEffects__handleTouchStart(touch) {
     isDraggingTouch = true;
-    touchElement.classList.add('dragging-touch');
-    touchElement.style.transform = 'rotate(2deg)';
-    touchElement.style.zIndex = "1000";
+    if (!touchElement) return;
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    const rect = touchElement.getBoundingClientRect();
+    touchClone = touchElement.cloneNode(true);
+    touchClone.classList.add('dragging-touch');
+    touchClone.style.top = `${rect.top}px`;
+    touchClone.style.left = `${rect.left}px`;
+    touchClone.style.width = `${rect.width}px`;
+    touchClone.style.height = `${rect.height}px`;
+    document.body.appendChild(touchClone);
+    touchElement.style.opacity = '0.3';
     document.body.style.overflow = 'hidden';
 }
 
@@ -108,14 +120,12 @@ function enableTouchDragEffects__handleTouchStart() {
 function handleTouchMove(ev) {
     const touch = ev.touches[0];
     if (!isDraggingTouch) {checkIfTouchMoveExceedsThreshold__handleTouchMove(touch); return;};
-    if (!touchElement) return;
-    const x = touch.clientX - touchElement.offsetWidth / 2;
-    const y = touch.clientY - touchElement.offsetHeight / 2;
-    touchElement.style.transform = `translate3d(${x}px, ${y}px, 0) rotate(2deg)`;
+    if (!touchClone) return;
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    touchClone.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) rotate(2deg)`;
     handleAutoScroll(touch);
-    touchElement.style.pointerEvents = 'none';
     const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-    touchElement.style.pointerEvents = 'auto';
     handleTouchRemoveHighlightsAllDropZone();
     handleTouchHighlightNewDropZone(elementBelow);
     ev.preventDefault();
@@ -135,7 +145,6 @@ function checkIfTouchMoveExceedsThreshold__handleTouchMove(touch) {
         }
 }
 
-
 /**
  * Handles the end of a touch drag operation
  * Determines drop zone, executes task movement, and resets touch state
@@ -143,12 +152,13 @@ function checkIfTouchMoveExceedsThreshold__handleTouchMove(touch) {
  */
 function handleTouchEnd(ev) {
     stopAutoScroll();
-    if (!touchElement) return;
+    if (touchClone) {touchClone.remove(); touchClone = null;};
+    if (!touchElement) {isDraggingTouch = false; return;}
+    touchElement.style.opacity = '1';
+    isDraggingTouch = false;
     const touch = ev.changedTouches[0];
-    touchElement.style.pointerEvents = 'none';
     const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
     const dropZone = elementBelow?.closest('.draggable');
-    touchElement.style.pointerEvents = 'auto';
     if (dropZone) {
         const category = getCategoryByDropZoneId(dropZone);
         if (category) dragOndropMoveTo(category);
@@ -162,26 +172,14 @@ function handleTouchEnd(ev) {
  */
 function resetTouchState() {
     if (touchElement) {
-        touchElement.style.transform = '';
-        touchElement.style.zIndex = '';
-        touchElement.style.pointerEvents = '';
         touchElement.classList.remove('dragging-touch');
+        touchElement.style.pointerEvents = '';
         document.body.style.overflow = '';
     }
     handleTouchRemoveHighlightsAllDropZone();
     stopAutoScroll();
     resetTouchVariables();
 }
-
-
-
-
-
-/**
- * Global touch event listeners for enhanced drag-and-drop performance
- * Uses document-level listeners to ensure touch events are captured even when
- * dragged elements move outside their original containers
- */
 
 /**
  * Global touchmove event listener for active drag operations

@@ -49,7 +49,6 @@ function toggleStyleDragSections(ev) {
  * @param {string} category - The target category ('toDo', 'inProgress', 'awaitFeedback', 'done')
  */
 async function dragOndropMoveTo(category) {
-    console.log('dragOndropMoveTo(category): ', category, 'currentDraggedId: ', currentDraggedId);
     try {
         await putData('/' + activeUserId + '/tasks/' + currentDraggedId + '/board', category);
         let tasksRefetch = await fetchAndAddIdAndRemoveUndefinedContacts();
