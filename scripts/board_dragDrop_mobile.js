@@ -5,7 +5,7 @@ let touchElement = null;
 let isDraggingTouch = false;
 let longPressTimeout = null;
 let touchClone = null;
-const longPressDragThresholdInMs = 300;
+const longPressDragThresholdInMs = 500;
 const longPressMoveThresholdInPx = 10;
 
 /**
@@ -64,7 +64,6 @@ function handleTouchStart(event) {
     const item = event.currentTarget;
     const taskId = item.dataset.taskId || item.closest('[data-task-id]')?.dataset.taskId;
     if (!taskId) return;
-    currentTouch = event.touches[0];
     initializeTouchDrag__handleTouchStart(event, item, taskId);
     longPressTimeout = setTimeout(() => {
         if (touchElement) {
@@ -82,6 +81,7 @@ function handleTouchStart(event) {
  */
 function initializeTouchDrag__handleTouchStart(event, item, taskId) {
     const touch = event.touches[0];
+    currentTouch = touch;
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
     touchElement = item;
@@ -150,20 +150,19 @@ function checkIfTouchMoveExceedsThreshold__handleTouchMove(touch) {
  * Determines drop zone, executes task movement, and resets touch state
  * @param {TouchEvent} event - The touch end event containing final touch coordinates
  */
-function handleTouchEnd(ev) {
+async function handleTouchEnd(ev) {
     stopAutoScroll();
     if (touchClone) {touchClone.remove(); touchClone = null;};
-    if (!touchElement) {isDraggingTouch = false; return;}
-    touchElement.style.opacity = '1';
+    if (touchElement) touchElement.style.opacity = '1';
     isDraggingTouch = false;
     const touch = ev.changedTouches[0];
     const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
     const dropZone = elementBelow?.closest('.draggable');
+    resetTouchState();
     if (dropZone) {
         const category = getCategoryByDropZoneId(dropZone);
-        if (category) dragOndropMoveTo(category);
+        if (category) await dragOndropMoveTo(category);
     }
-    resetTouchState();
 }
 
 /**
@@ -172,7 +171,6 @@ function handleTouchEnd(ev) {
  */
 function resetTouchState() {
     if (touchElement) {
-        touchElement.classList.remove('dragging-touch');
         touchElement.style.pointerEvents = '';
         document.body.style.overflow = '';
     }
