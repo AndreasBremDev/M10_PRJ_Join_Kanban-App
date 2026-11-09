@@ -197,9 +197,9 @@ function logout() {
     localStorage.removeItem('activeUserId');
     localStorage.removeItem('shownGreeting');
     for (let i = 0; i < 50; i++) {
-        history.pushState(null, null, '../index.html');
+        history.pushState(null, null, '../IHK_Join/index.html');
     }
-    window.location.replace(window.location.origin + '/index.html');
+    window.location.replace(window.location.origin + '/IHK_Join/index.html');
 }
 
 /**
@@ -208,9 +208,9 @@ function logout() {
 function checkLoggedInPageSecurity() {
     if (!localStorage.getItem('activeUserId')) {
         for (let i = 0; i < 50; i++) {
-            history.pushState(null, null, '../index.html');
+            history.pushState(null, null, '../IHK_Join/index.html');
         }
-        window.location.replace(window.location.origin + '/index.html');
+        window.location.replace(window.location.origin + '/IHK_Join/index.html');
         return;
     }
 }
