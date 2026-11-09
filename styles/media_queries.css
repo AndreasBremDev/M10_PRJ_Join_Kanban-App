@@ -94,7 +94,7 @@
   /*----------Header----------*/
   header {
     height: 80px;
-    padding: 0;
+    padding: 0 38px 0;
   }
 
   .header-left {
