@@ -35,7 +35,6 @@ function updateContactButtonState(dialogId, buttonId = 'contactCreateBtn') {
     const isValid = bool[0] === 1 && bool[1] === 1 && bool[2] === 1;
     const dialog = document.getElementById(dialogId);
     const button = dialog ? dialog.querySelector(`#${buttonId}`) : null;
-    
     if (button) {
         if (isValid) {
             button.disabled = false;
@@ -156,9 +155,7 @@ async function updateContact(currContactId, option, event = null) {
         clearAllContactsInputFields();
         await loadAndRenderContacts('contactList', 'contacts');
         closeContactModal__updateContact();
-    } catch (error) {
-        console.error('Error edit/delete contact at putData():', error);
-    }
+    } catch (error) {console.error('Error edit/delete contact at putData():', error);}
 }
 
 /**
@@ -193,7 +190,6 @@ async function deleteContact(currContactId, option) {
         console.error('Error edit/delete contact at putData():', error);
     }
 }
-
 
 /**
  * Creates the next contact ID, saves the contact data and re-renders the contact list

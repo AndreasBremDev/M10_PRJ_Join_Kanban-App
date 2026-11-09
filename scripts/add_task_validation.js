@@ -111,18 +111,25 @@ function setupEditFormValidation() {
     const titleInput = document.getElementById('title');
     if (titleInput) {
         titleInput.addEventListener('blur', () => validateEditTaskForm());
-        titleInput.addEventListener('input', () => {
-            const titleError = document.getElementById('title-error');
-            if (titleError && titleInput.value.trim()) {
-                titleError.textContent = '';
-                titleInput.setAttribute('aria-invalid', 'false');
-            }
-        });
+        titleInput.addEventListener('input', () => validateTitleInput(titleInput));
     }
     const dateInput = document.getElementById('due-date');
     if (dateInput) {
         dateInput.addEventListener('blur', () => validateEditTaskForm());
         dateInput.addEventListener('change', () => validateEditTaskForm());
+    }
+}
+
+/**
+ * Validates the title input field and clears any existing error messages if valid.
+ * 
+ * @param {HTMLInputElement} titleInput - The title input element to validate.
+ */
+function validateTitleInput(titleInput) {
+    const titleError = document.getElementById('title-error');
+    if (titleError && titleInput.value.trim()) {
+        titleError.textContent = '';
+        titleInput.setAttribute('aria-invalid', 'false');
     }
 }
 
@@ -147,15 +154,10 @@ function validateField(id) {
     let isInvalid = false;
     let htmlInvalid = false;
     if (input.type === 'date' && (input.value < new Date().toISOString().split('T')[0] || input.value === '')) isInvalid = true;
-    if (id === 'title') {
-        isInvalid = !value;
-    }
-    if ((id === 'title' || id === 'description') && containsHTML(value)) {
-        htmlInvalid = displayHtmlError(error, input, htmlInvalid);
-    } else if (isInvalid) {
-        displayFieldErrorMessage(error, input);
-    } else {
-        clearErrorMessage(error, input);
+    if (id === 'title') {isInvalid = !value;}
+    if ((id === 'title' || id === 'description') && containsHTML(value)) {htmlInvalid = displayHtmlError(error, input, htmlInvalid);
+    } else if (isInvalid) {displayFieldErrorMessage(error, input);
+    } else {clearErrorMessage(error, input);
     }
     return !isInvalid && !htmlInvalid;
 }

@@ -198,16 +198,10 @@ function showGreetingOverlay(userName) {
   const overlay = document.getElementById("greeting_overlay");
   const text = document.getElementById("overlay_greeting_text");
   const name = document.getElementById("overlay_greeting_name");
-  if (!overlay || !text || !name) {
-    console.error("Overlay elements not found");
-    return;
-  }
+  if (!overlay || !text || !name) { console.error("Overlay elements not found"); return; }
   displayGreeting(overlay, userName, text, name);
   setTimeout(() => overlay.classList.add("fade-out"), 1200);
-  setTimeout(() => {
-    overlay.style.display = "none";
-    overlay.classList.remove("fade-out");
-  }, 2000);
+  setTimeout(() => { overlay.style.display = "none"; overlay.classList.remove("fade-out"); }, 2000);
   shownGreeting = true;
   localStorage.setItem("shownGreeting", "true");
 }

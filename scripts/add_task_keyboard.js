@@ -4,7 +4,6 @@
  */
 
 
-
 /**
  * Handles keyboard events for save button
  * @param {KeyboardEvent} event - The keyboard event
@@ -137,7 +136,6 @@ function handleCategorySelectionKeydown(event, category) {
         toggleCustomDropdown('category-display', 'category-options', 'category-arrow');
     }
 }
-
 
 /**
  * Initializes accessibility features for the edit task form

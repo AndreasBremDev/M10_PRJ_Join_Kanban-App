@@ -20,7 +20,7 @@ async function initAddTask() {
 function renderAddTaskTemplate() {
     const addTaskContainer = document.getElementById('mainAddTask');
     if (addTaskContainer) {
-        addTaskContainer.innerHTML = getAddAndEditTaskFormTemplate(null, false);// WAS getAddTaskTemplate()
+        addTaskContainer.innerHTML = getAddAndEditTaskFormTemplate(null, false);
     }
 }
 
@@ -33,7 +33,6 @@ function setupFormElements() {
         const todayStr = new Date().toISOString().split('T')[0];
         dueDateInput.setAttribute('min', todayStr);
     }
-    /* Ensure error message element for description exists */
     const descriptionInput = document.getElementById('description');
     if (descriptionInput && !document.getElementById('description-error')) {
         const errorDiv = document.createElement('div');
@@ -93,7 +92,6 @@ function createTaskObject(boardCategory) {
         images: Object.fromEntries(allImages.map((img, index) => [index, img]))
     };
 }
-
 
 /**
  * Saves a task object to the server with auto-generated ID
@@ -271,8 +269,6 @@ function checkInput(inputId, errorId, msg) {
     }
     return !isInvalid;
 }
-
-
 
 /**
  * Merges old task data with edited form values

@@ -1,4 +1,3 @@
-
 let touchStartX = 0;
 let touchStartY = 0;
 let touchElement = null;
@@ -70,7 +69,6 @@ function handleTouchStart(event) {
             enableTouchDragEffects__handleTouchStart(currentTouch);
         }
     }, longPressDragThresholdInMs);
-    // event.preventDefault();
 }
 
 /**
@@ -256,9 +254,7 @@ document.addEventListener('touchend', (e) => {
     }
 }, { passive: false });
 
-
 /* POSSIBLY NOT NEEDED ANYMORE, BUT KEEPING FOR NOW IN CASE OF FUTURE USE */
-
 /**
  * Checks if the current browser is Safari (including iOS/MacOS Safari).
  * @returns {boolean} True if Safari, otherwise false.

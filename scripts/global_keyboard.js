@@ -52,7 +52,6 @@ function handleUserMenuKeydown(event) {
 function handleCategoryDropdownKeydown(event) {
     const dropdown = document.getElementById('category-options');
     const displayElement = document.getElementById('category-display');
-    
     if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         toggleCustomDropdown('category-display', 'category-options', 'category-arrow');
@@ -60,8 +59,7 @@ function handleCategoryDropdownKeydown(event) {
         if (dropdown && dropdown.style.display === 'block') {
             dropdown.style.display = 'none';
             if (displayElement) {
-                displayElement.setAttribute('aria-expanded', 'false');
-                displayElement.focus();
+                displayElement.setAttribute('aria-expanded', 'false'); displayElement.focus();
             }
         }
     }

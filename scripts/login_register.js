@@ -47,7 +47,7 @@ const firstLoginTasksObject = {
         category: "Technical Task",
         priority: "low",
         assigned: { "0": "0" },
-        board: "toDo",
+        board: "inProgress",
         createdAt: new Date().getTime()
     },
     "3": {
@@ -65,9 +65,13 @@ const firstLoginTasksObject = {
             "1": {
                 title: "Test creation in add task view",
                 done: false
+            },
+            "2": {
+                title: "Change subtask status to done",
+                done: false
             }
         },
-        board: "inProgress",
+        board: "toDo",
         createdAt: new Date().getTime()
     },
     "4": {
@@ -88,6 +92,26 @@ const firstLoginTasksObject = {
         priority: "low",
         assigned: { "0": "0" },
         board: "awaitFeedback",
+        createdAt: new Date().getTime()
+    },
+    "6": {
+        title: "You can drag and drop tasks between columns",
+        description: "Try dragging and dropping tasks between different columns on the board to see how the drag-and-drop functionality works.",
+        dueDate: dueDateString,
+        category: "Technical Task",
+        priority: "medium",
+        assigned: { "0": "0" },
+        subtasks: {
+            "0": {
+                title: "drag and drop to To Do",
+                done: false
+            },
+            "1": {
+                title: "drag and drop to Done",
+                done: false
+            }
+        },
+        board: "inProgress",
         createdAt: new Date().getTime()
     }
 }
@@ -241,10 +265,7 @@ async function login(path = "") {
     let email = document.getElementById('emailLogin');
     let password = document.getElementById('passwordLogin');
     let response = await fetchData();
-    let activeUser = response.findIndex(user =>
-        user && user.email && user.password &&
-        user.email === email.value && user.password === password.value
-    );
+    let activeUser = response.findIndex(user => user && user.email && user.password && user.email === email.value && user.password === password.value);
     if (activeUser !== -1) {
         saveToLocalStorage(activeUser);
         window.location.href = 'html/summary.html';
@@ -279,9 +300,7 @@ function animateLogoFirstVisit() {
         setTimeout(() => {
             animatedImgMobile.src = './assets/icons/Join_dark.png';
         }, 400);
-    } else {
-        logoOverlay.classList.add('animate-out');
-    }
+    } else { logoOverlay.classList.add('animate-out'); }
     setTimeout(() => {
         logoOverlay.style.display = 'none';
         logo.style.opacity = 1;

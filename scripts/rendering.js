@@ -236,11 +236,8 @@ function renderContactsInOverlay(task) {
                 let color = contactCircleColor[contactId % contactCircleColor.length];
                 let initials = getInitials(contact.name);
                 html += getContactsInTaskOverlayHtml(color, initials, contact);
-            }
-        }
-    } else {
-        html = '<span class="gray-text">No contact assigned</span>';
-    }
+        }}
+    } else { html = '<span class="gray-text">No contact assigned</span>'; }
     container.innerHTML = html;
 }
 

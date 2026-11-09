@@ -284,19 +284,11 @@ function updateSubtaskElementInDOM(taskId, subtaskIndex, newStatus) {
         const text = row.querySelector('.subtask-text');
         const statusSpan = row.querySelector('.sr-only');
         row.setAttribute('aria-checked', newStatus.toString());
-        if (icon) {
-            icon.innerHTML = newStatus ? getCheckIcon() : getUncheckIcon();
-        }
+        if (icon) {icon.innerHTML = newStatus ? getCheckIcon() : getUncheckIcon();}
         if (text) {
-            if (newStatus) {
-                text.classList.add('text-done');
-            } else {
-                text.classList.remove('text-done');
-            }
-        }
-        if (statusSpan) {
-            statusSpan.textContent = newStatus ? 'Completed' : 'Not completed';
-        }
+            if (newStatus) {text.classList.add('text-done');
+            } else {text.classList.remove('text-done');}}
+        if (statusSpan) {statusSpan.textContent = newStatus ? 'Completed' : 'Not completed';}
     }
 }
 

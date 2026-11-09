@@ -331,6 +331,13 @@ function handleDropdown(event, dropdown, displayElement) {
     }
 }
 
+/**
+ * Toggles the visibility of a custom dropdown menu, updates ARIA attributes, rotates the arrow icon, and manages focus.
+ * 
+ * @param {string} displayId - The ID of the element that triggers or displays the dropdown value.
+ * @param {string} dropdownId - The ID of the dropdown container element.
+ * @param {string} arrowId - The ID of the optional arrow icon element.
+ */
 function toggleCustomDropdown(displayId, dropdownId, arrowId) {
     const displayElement = document.getElementById(displayId);
     const dropdown = document.getElementById(dropdownId);
@@ -341,10 +348,8 @@ function toggleCustomDropdown(displayId, dropdownId, arrowId) {
         displayElement.setAttribute('aria-expanded', !isOpen);
         if (arrow) { arrow.classList.toggle('rotate-180', !isOpen) }
         if (!isOpen) {
-            setTimeout(() => {
-                const firstItem = dropdown.querySelector('.contact-item, [tabindex="0"], input, button, a');
-                if (firstItem) firstItem.focus();
-            }, 50);
+            setTimeout(() => {const firstItem = dropdown.querySelector('.contact-item, [tabindex="0"], input, button, a');
+                if (firstItem) firstItem.focus();}, 50);
         } else { displayElement.focus(); }
     }
 }

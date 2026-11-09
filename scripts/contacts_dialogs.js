@@ -36,9 +36,7 @@ function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
     setTimeout(() => {
         contactLargeRef.style.display = 'block';
         contactLargeRef.setAttribute('aria-hidden', 'false');
-        const editDeleteDiv = document.querySelector('.edit-delete-contact-btn-section');
-        const editButtonDesktop = document.getElementById('edit-contact-btn');
-        const editButtonMobile = contactLargeRef.querySelector('#mobileActionsBtn');
+        const { editDeleteDiv, editButtonMobile, editButtonDesktop } = initializeEditButtonElements(contactLargeRef);
         const isHidden = editDeleteDiv && window.getComputedStyle(editDeleteDiv).display === 'none';
         isHidden ? editButtonMobile.focus() : editButtonDesktop.focus();
         const handleEscapeKey = (event) => {
@@ -50,6 +48,19 @@ function contactLargeSetFocusAndKeyEscapeHandling(contactLargeRef) {
         };
         document.addEventListener('keydown', handleEscapeKey);
     }, 10);
+}
+
+/**
+ * Initializes and retrieves the edit and delete button elements for desktop and mobile views.
+ * 
+ * @param {HTMLElement} contactLargeRef - The container element holding the large contact view.
+ * @returns {{ editDeleteDiv: HTMLElement | null, editButtonMobile: HTMLElement | null, editButtonDesktop: HTMLElement | null }} An object containing the reference elements for the edit and delete action section and buttons.
+ */
+function initializeEditButtonElements(contactLargeRef) {
+    const editDeleteDiv = document.querySelector('.edit-delete-contact-btn-section');
+    const editButtonDesktop = document.getElementById('edit-contact-btn');
+    const editButtonMobile = contactLargeRef.querySelector('#mobileActionsBtn');
+    return { editDeleteDiv, editButtonMobile, editButtonDesktop };
 }
 
 /**
@@ -150,18 +161,40 @@ function toggleMobileContactMenu() {
     const button = document.querySelector('.mobile-actions-btn');
     const isOpen = menu.classList.contains('show');
     if (isOpen) {
-        menu.classList.remove('show');
-        menu.setAttribute('aria-hidden', 'true');
-        button.setAttribute('aria-expanded', 'false');
-        document.body.onclick = null;
+        hideMenuAndResetAria__toggleMobileContactMenu(menu, button);
     } else {
-        menu.classList.add('show');
-        menu.setAttribute('aria-hidden', 'false');
-        button.setAttribute('aria-expanded', 'true');
-        const firstMenuItem = menu.querySelector('button[role="menuitem"]');
+        const firstMenuItem = showMenuAndUpdateAria__toggleMobileContactMenu(menu, button);
         if (firstMenuItem) { firstMenuItem.focus(); }
         toggleMobileContactMenuTimeoutAriaAndFocus(menu, button);
     }
+}
+
+/**
+ * Hides the mobile contact menu, resets its ARIA attributes, and clears the body click handler.
+ * 
+ * @param {HTMLElement} menu - The menu element to hide.
+ * @param {HTMLElement} button - The toggle button element controlling the menu.
+ */
+function hideMenuAndResetAria__toggleMobileContactMenu(menu, button) {
+    menu.classList.remove('show');
+    menu.setAttribute('aria-hidden', 'true');
+    button.setAttribute('aria-expanded', 'false');
+    document.body.onclick = null;
+}
+
+/**
+ * Displays the mobile contact menu, updates its ARIA attributes, and returns the first menu item for focus management.
+ * 
+ * @param {HTMLElement} menu - The menu element to show.
+ * @param {HTMLElement} button - The toggle button element controlling the menu.
+ * @returns {HTMLElement | null} The first menu item element.
+ */
+function showMenuAndUpdateAria__toggleMobileContactMenu(menu, button) {
+    menu.classList.add('show');
+    menu.setAttribute('aria-hidden', 'false');
+    button.setAttribute('aria-expanded', 'true');
+    const firstMenuItem = menu.querySelector('button[role="menuitem"]');
+    return firstMenuItem;
 }
 
 /**

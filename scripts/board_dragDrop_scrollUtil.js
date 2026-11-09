@@ -1,5 +1,3 @@
-
-
 let scrollSpeed = 10;
 let scrollThreshold = 50;
 let scrollInterval;
