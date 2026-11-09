@@ -251,7 +251,6 @@ function viewerTitleCallback(allImages) {
  * @returns {Promise<void>}
  */
 async function deleteFromAllImages(index, boolShowTask = false) {
-    console.log('index:', index, 'allImages:', allImages);
     allImages.splice(index, 1);
     render(boolShowTask);
     if (currentTaskId) {

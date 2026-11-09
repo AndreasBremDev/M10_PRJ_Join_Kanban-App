@@ -699,7 +699,6 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    touch-action: none;
 }
 
 .dragging-touch {
@@ -754,6 +753,7 @@ body {
         min-height: 240px;
         height: auto;
         flex-direction: row;
+        flex-wrap: nowrap;
         overflow-x: auto;
     }
 

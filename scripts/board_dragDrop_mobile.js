@@ -70,7 +70,7 @@ function handleTouchStart(event) {
             enableTouchDragEffects__handleTouchStart(currentTouch);
         }
     }, longPressDragThresholdInMs);
-    event.preventDefault();
+    // event.preventDefault();
 }
 
 /**
@@ -231,8 +231,6 @@ function resetTouchVariables() {
  * @param {HTMLElement} item - The DOM element to remove touch listeners from
  */
 function removeTouchListeners(item) {
-    console.log('check if removeTouchListerners is running');
-    
     item.removeEventListener('touchstart', handleTouchStart);
     item.removeEventListener('touchmove', handleTouchMove);
     item.removeEventListener('touchend', handleTouchEnd);
