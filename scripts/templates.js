@@ -1281,7 +1281,7 @@ function getShowTaskAttachmentHtml(image, index, boolShowTask) {
     return /*html*/ `
         <div class="filepicker-show-task--inner-layout">
             <div class="filepicker-image-wrapper" role="group" aria-label="Vorschaubild mit Option zum Löschen">
-                <img class="filepicker-image" src="${image.base64}" alt="${image.fileName}" tabindex="0" />
+                <img class="filepicker-image" src="${image.base64}" alt="${image.fileName}" tabindex="0" onclick="openViewerOnImageClick()"/>
                 <button onclick="deleteFromAllImages(${index},${boolShowTask})" type="button" class="filepicker-delete-btn" aria-label="${image.fileName} löschen">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <mask id="mask0_75592_9951" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">

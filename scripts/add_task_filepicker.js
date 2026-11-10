@@ -84,8 +84,8 @@ function errorHandling__filepicker(file, error) {
         showErrorMessage__filepicker(`"${file.name.slice(0, MAX_FILENAME_CHARACTER) + "..."}" ist kein gültiges Bild.`, error);
         return false;
     }
-    if (file.size > 1000000) {
-        showErrorMessage__filepicker(`"${file.name.slice(0, MAX_FILENAME_CHARACTER) + "..."}" muss < 1MB sein.`, error);
+    if (file.size > 10000000) {
+        showErrorMessage__filepicker(`"${file.name.slice(0, MAX_FILENAME_CHARACTER) + "..."}" muss < 10MB sein.`, error);
         return false;
     }
     return true;
@@ -203,6 +203,25 @@ function render(boolShowTask = false) {
     if (currentViewer) { currentViewer.destroy(); }
     const viewerContainer = document.getElementById('viewer-container');
     currentViewer = new Viewer(viewerContainer, viewerTitleCallback(allImages));
+    const images = viewerContainer.querySelectorAll('.filepicker-image');
+    images.forEach(image => addImageViewerClickListener(image));
+}
+
+/**
+ * Adds accessibility attributes and event listeners to an image element to open the image viewer via click or keyboard.
+ * 
+ * @param {HTMLImageElement} image - The image element to enhance.
+ */
+function addImageViewerClickListener(image){
+    image.setAttribute('tabindex', '0');
+    image.setAttribute('role', 'button');
+    image.addEventListener('click', () => currentViewer.show());
+    image.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            currentViewer.show();
+        }
+    });
 }
 
 /**
@@ -216,9 +235,9 @@ function render(boolShowTask = false) {
 function renderAttachmentImageSection(imagesHTML, boolShowTask) {
     allImages.forEach((image, index) => {
         if (index < 5) {
-            imagesHTML += boolShowTask 
-            ? getShowTaskAttachmentHtml(image, index, boolShowTask)
-            : getAddTaskEditTaskAttachmentHtml(image, index); 
+            imagesHTML += boolShowTask
+                ? getShowTaskAttachmentHtml(image, index, boolShowTask)
+                : getAddTaskEditTaskAttachmentHtml(image, index);
         } else {
             imagesHTML += getAttachmentImageHiddenHtml(image);
         }

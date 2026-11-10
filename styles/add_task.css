@@ -557,6 +557,7 @@ select:focus {
     display: inline-flex;
     min-height: 44px;
     flex-wrap: wrap;
+    overflow: visible;
 }
 
 .filepicker-gallery:has(.filepicker-show-task--inner-layout) {
