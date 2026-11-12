@@ -710,6 +710,10 @@ body {
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
+.viewer-title {
+    font-size: 16px !important;
+}
+
 /* Safari/iOS spezifische Anpassungen */
 @supports (-webkit-touch-callout: none) {
     .drag-item {
@@ -720,8 +724,6 @@ body {
         cursor: grabbing;
     }
 }
-
-
 
 @media (max-width: 1000px) {
     .board_add_task_button_text {

@@ -7,6 +7,19 @@ let currentTaskId = null;
 const MAX_FILE_LIMIT = 10;
 const MAX_ERROR_TIMEOUT = 3000;
 const MAX_FILENAME_CHARACTER = 10;
+const viewerStandardOptions = {
+    zoomIn: true,
+    zoomOut: true,
+    oneToOne: true,
+    reset: true,
+    prev: true,
+    play: true,
+    next: true,
+    rotateLeft: true,
+    rotateRight: true,
+    flipHorizontal: true,
+    flipVertical: true,
+}
 
 /**
  * Initializes the filepicker elements, optionally populates the image array 
@@ -202,9 +215,103 @@ function render(boolShowTask = false) {
     if (allImages.length > 5) { gallery.innerHTML += getAttachmentRemainderSpanHtml(allImages); }
     if (currentViewer) { currentViewer.destroy(); }
     const viewerContainer = document.getElementById('viewer-container');
-    currentViewer = new Viewer(viewerContainer, viewerTitleCallback(allImages));
+    currentViewer = new Viewer(viewerContainer, viewerOptionsCallback(allImages));
     const images = viewerContainer.querySelectorAll('.filepicker-image');
     images.forEach(image => addImageViewerClickListener(image));
+}
+
+/**
+ * Generates the configuration options object for the image viewer instance.
+ * 
+ * @param {string[]} allImages - Array of image sources or objects used for the viewer title.
+ * @returns {Object} The configuration object for Viewer.js.
+ */
+function viewerOptionsCallback(allImages) {
+    return {
+        title: viewerTitleCallback(allImages),
+        toolbar: {
+            ...viewerStandardOptions,
+            download: {
+                show: true,
+                click: () => viewerDownloadFunction()
+            }
+        },
+        shown: () => {
+            viewerDownloadButtonSvg();
+            viewerFocusPlayButton();
+            viewerToolbarAccessibility();
+        }
+    }
+}
+
+/**
+ * Generates the title callback function for the image viewer, displaying the file name, dimensions, and file size.
+ * 
+ * @param {Object[]} allImages - Array of file objects containing file data.
+ * @returns {Function} The title callback function used by Viewer.js.
+ */
+function viewerTitleCallback(allImages) {
+    return function (image, imageData) {
+        let currentIndex = currentViewer ? currentViewer.index : 0;
+        let fileObj = allImages[currentIndex];
+        let fileSizeMb = fileObj && fileObj.fileSize ? (fileObj.fileSize / (1024 * 1024)).toFixed(2) + ' MB' : '';
+        return `${image.alt.slice(0, MAX_FILENAME_CHARACTER) + "..."} (${imageData.naturalWidth} × ${imageData.naturalHeight}) – ${fileSizeMb}`;
+    }
+}
+
+/**
+ * Focuses the play button in the viewer toolbar after the viewer is shown.
+ */
+function viewerFocusPlayButton() {
+    setTimeout(() => {
+        const playButton = currentViewer.viewer.querySelector('.viewer-play');
+        if (playButton) {
+            playButton.focus();
+        }
+    }, 50);
+}
+
+/**
+ * Injects the download SVG icon into the viewer toolbar download button, 
+ * makes it accessible, and attaches click and keyboard event listeners.
+ */
+function viewerDownloadButtonSvg() {
+    const downloadButton = currentViewer.viewer.querySelector('.viewer-download');
+    if (downloadButton && !downloadButton.querySelector('svg')) {
+        downloadButton.style.display = 'flex';
+        downloadButton.style.alignItems = 'center';
+        downloadButton.style.justifyContent = 'center';
+        downloadButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" width="16" height="16"><path d="M12,16L7,11L8.4,9.55l2.6,2.6V4h2v8.15l2.6-2.6L17,11l-5,5ZM6,20q-0.82,0-1.41-0.59T4,18V15H6v3H18V15h2v3q0,0.82-0.59,1.41T18,20H6Z"/></svg>';
+        downloadButton.setAttribute('aria-label', 'download');
+        downloadButton.addEventListener('click', viewerDownloadFunction);
+        downloadButton.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); viewerDownloadFunction(); }
+        });
+    }
+}
+
+/**
+ * Triggers the download of the currently viewed image.
+ */
+function viewerDownloadFunction() {
+    const link = document.createElement('a');
+    link.href = currentViewer.image.src;
+    link.download = 'download';
+    link.click();
+}
+
+/**
+ * Adds accessibility attributes (aria-label) to all viewer toolbar buttons 
+ * based on their data-viewer-action attribute.
+ */
+function viewerToolbarAccessibility() {
+    const toolbarButtons = currentViewer.viewer.querySelectorAll('.viewer-toolbar li[data-viewer-action]');
+    toolbarButtons.forEach(button => {
+        const action = button.getAttribute('data-viewer-action');
+        if (action && !button.hasAttribute('aria-label')) {
+            button.setAttribute('aria-label', action);
+        }
+    });
 }
 
 /**
@@ -212,7 +319,7 @@ function render(boolShowTask = false) {
  * 
  * @param {HTMLImageElement} image - The image element to enhance.
  */
-function addImageViewerClickListener(image){
+function addImageViewerClickListener(image) {
     image.setAttribute('tabindex', '0');
     image.setAttribute('role', 'button');
     image.addEventListener('click', () => currentViewer.show());
@@ -243,22 +350,6 @@ function renderAttachmentImageSection(imagesHTML, boolShowTask) {
         }
     });
     return imagesHTML;
-}
-
-/**
- * Generates a custom configuration object for Viewer.js to display file name, dimensions, and file size.
- * 
- * @param {Array<Object>} allImages - Array of image objects containing file metadata like fileSize.
- * @returns {Object} The configuration object for the Viewer instance containing the custom title function.
- */
-function viewerTitleCallback(allImages) {
-    return {
-        title: function (image, imageData) {
-            let fileObj = allImages[this.index];
-            let fileSizeMb = (fileObj.fileSize / (1024 * 1024)).toFixed(2) + ' MB'
-            return `${image.alt.slice(0, MAX_FILENAME_CHARACTER) + "..."} (${imageData.naturalWidth} × ${imageData.naturalHeight}) – ${fileSizeMb}`;
-        }
-    }
 }
 
 /**
