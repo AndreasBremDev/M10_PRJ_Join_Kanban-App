@@ -556,8 +556,6 @@ select:focus {
 .filepicker-gallery {
     display: inline-flex;
     min-height: 44px;
-    flex-wrap: wrap;
-    overflow: visible;
 }
 
 .filepicker-gallery:has(.filepicker-show-task--inner-layout) {
@@ -598,10 +596,6 @@ select:focus {
 
 
 @media (pointer:fine) and (hover: hover) and (min-width: 382px) {
-
-    .filepicker-gallery {
-        flex-wrap: unset;
-    }
 
     .filepicker-image-wrapper {
         margin-right: 8px;

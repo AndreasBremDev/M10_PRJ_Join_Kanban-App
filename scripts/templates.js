@@ -1074,12 +1074,12 @@ function getAddAndEditTaskFormTemplate(task = null, isOverlay = true, board = 't
                                 aria-describedby="assigned-hint"
                                 onclick="filepicker.click()"                   
                                 onkeydown="handleAttachmentKeydown(event)"> 
-                                <span>Select image attachments</span>
+                                <span>Select .png or .jpg image attachments</span>
                                 <img id="assigned-arrow" src="../assets/icons/plus_icon.svg" alt="Arrow"
                                     class="dropdown-icon">
                             </div>
                                 
-                            <input type="file" id="filepicker" accept="image/*" multiple="true" style="display:none">
+                            <input type="file" id="filepicker" accept="image/png, image/jpeg" multiple="true" style="display:none">
                         </div>
                         <div id="assigned-hint" class="sr-only">Use arrow keys to navigate options, Enter to select</div>
     

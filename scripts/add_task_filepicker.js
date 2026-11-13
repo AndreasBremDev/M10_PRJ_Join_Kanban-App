@@ -7,6 +7,7 @@ let currentTaskId = null;
 const MAX_FILE_LIMIT = 10;
 const MAX_ERROR_TIMEOUT = 3000;
 const MAX_FILENAME_CHARACTER = 10;
+const MAX_TOTAL_SIZE_MB = 5 * 1024 * 1024;
 const viewerStandardOptions = {
     zoomIn: true,
     zoomOut: true,
@@ -20,6 +21,7 @@ const viewerStandardOptions = {
     flipHorizontal: true,
     flipVertical: true,
 }
+let isDownloading = false;
 
 /**
  * Initializes the filepicker elements, optionally populates the image array 
@@ -27,13 +29,13 @@ const viewerStandardOptions = {
  * 
  * @param {Object|null} [task=null] - The task object containing existing images, or null for a new task.
  */
-function filepickerInit(task = null) {
+async function filepickerInit(task = null) {
     [filepicker, gallery, error] = ['filepicker', 'filepicker-gallery', 'filepicker-error'].map(id => document.getElementById(id));
     if (!filepicker) { console.error("Filepicker-Element nicht gefunden!"); return; }
     currentTaskId = task?.id || null;
     pushTaskImagesToAllImages(task);
     render();
-    filepickerEventListener();
+    await filepickerEventListener();
 }
 
 /**
@@ -66,23 +68,68 @@ function pushTaskImagesToAllImages(task) {
 }
 
 /**
- * Attaches a change event listener to the file input to handle uploaded images,
- * run error checks, compress them, store them in the global array, and update the view.
+ * Handles the event listener for the file picker, processing selected files,
+ * validating limits, compressing images, converting to base64, and updating the state.
+ * 
+ * @async
+ * @function filepickerEventListener
+ * @returns {void}
  */
-function filepickerEventListener() {
+async function filepickerEventListener() {
     filepicker.addEventListener('change', () => {
         const files = filepicker.files;
-        const remainingSlots = Math.max(0, (MAX_FILE_LIMIT - allImages.length));
-        const filesToProcess = Array.from(files).slice(0, remainingSlots);
-        if (files.length > remainingSlots) { showErrorMessage__filepicker(`Limit ${MAX_FILE_LIMIT} erreicht. ${remainingSlots} Bilder hinzugefügt.`, error); }
+        const filesToProcess = handleMaxUserSelectedFileLimit__filepicker(files);
         Array.from(filesToProcess).forEach(async (file) => {
             if (!errorHandling__filepicker(file, error)) return;
-            const blob = new Blob([file], { type: file.type });
-            const compressedBase64 = await compressImage(file, 800, 800, 0.8);
-            allImages.push({ fileName: file.name, fileType: blob.type, fileSize: file.size, base64: compressedBase64 });
+            const compressedBlob = await compressImage(file, 800, 800, 0.8);
+            if (!handleMaxDatabaseUploadSizeLimit__filepicker(compressedBlob.size)) return;
+            const base64String = await blobToBase64(compressedBlob);
+            allImages.push({ fileName: file.name, fileType: compressedBlob.type, fileSize: compressedBlob.size, base64: base64String });
             render();
         });
     });
+}
+
+/**
+ * Filters the selected files based on the remaining allowed file slots limit.
+ * 
+ * @function handleMaxUserSelectedFileLimit__filepicker
+ * @param {FileList} files - The FileList object from the file picker input.
+ * @returns {File[]} An array of files restricted to the available slots limit.
+ */
+function handleMaxUserSelectedFileLimit__filepicker(files) {
+    const remainingSlots = Math.max(0, (MAX_FILE_LIMIT - allImages.length));
+    const filesToProcess = Array.from(files).slice(0, remainingSlots);
+    if (files.length > remainingSlots) { showErrorMessage__filepicker(`Limit ${MAX_FILE_LIMIT} erreicht. ${remainingSlots} Bilder hinzugefügt.`, error); }
+    return filesToProcess;
+}
+
+/**
+ * Validates if adding a new compressed image exceeds the maximum allowed total database upload size.
+ * 
+ * @function handleMaxDatabaseUploadSizeLimit__filepicker
+ * @param {number} compressedBlobSize - The physical size of the compressed blob in bytes.
+ * @returns {boolean} Returns true if within the limit, false if the limit is exceeded.
+ */
+function handleMaxDatabaseUploadSizeLimit__filepicker(compressedBlobSize) {
+    const currentTotalSize = sumFileSizes(allImages);
+    if ((currentTotalSize + compressedBlobSize) > MAX_TOTAL_SIZE_MB) {
+        showErrorMessage__filepicker(`Max-Upload ${MAX_TOTAL_SIZE_MB / (1024 * 1024)} MB `, error);
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Calculates the total file size of all images currently stored in the array.
+ * 
+ * @function sumFileSizes
+ * @param {Object[]} images - Array of image objects containing a fileSize property.
+ * @returns {number} The total sum of file sizes in bytes.
+ */
+function sumFileSizes(images) {
+    const initialValue = 0;
+    return images.reduce((accumulator, currentImage) => accumulator + currentImage.fileSize, initialValue);
 }
 
 /**
@@ -93,8 +140,8 @@ function filepickerEventListener() {
  * @param {HTMLElement} error - The container element to display error messages.
  */
 function errorHandling__filepicker(file, error) {
-    if (!file.type.startsWith('image/jpeg')) {
-        showErrorMessage__filepicker(`"${file.name.slice(0, MAX_FILENAME_CHARACTER) + "..."}" ist kein gültiges Bild.`, error);
+    if (!file.type.startsWith('image/jpeg') && !file.type.startsWith('image/png')) {
+        showErrorMessage__filepicker(`"${file.name.slice(0, MAX_FILENAME_CHARACTER) + "..."}" ist kein gültiges Format.`, error);
         return false;
     }
     if (file.size > 10000000) {
@@ -128,7 +175,7 @@ function showErrorMessage__filepicker(message, error) {
 function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        loadImageAndCompress__compressImage(reader, maxWidth, maxHeight, quality, resolve, reject);
+        loadImageAndCompress__compressImage(file, reader, maxWidth, maxHeight, quality, resolve, reject);
         reader.onerror = () => reject('Fehler beim Lesen der Datei.');
         reader.readAsDataURL(file);
     });
@@ -137,14 +184,15 @@ function compressImage(file, maxWidth = 800, maxHeight = 800, quality = 0.7) {
 /**
  * Helper function for FileReader onload event to load image data into a canvas and execute compression.
  * 
- * @param {FileReader} reader - The active FileReader instance.
- * @param {number} maxWidth - Maximum allowed width.
- * @param {number} maxHeight - Maximum allowed height.
- * @param {number} quality - Image export quality.
- * @param {Function} resolve - Promise resolve callback.
- * @param {Function} reject - Promise reject callback.
+ * @param {File} file The original image file.
+ * @param {FileReader} reader The active FileReader instance.
+ * @param {number} maxWidth Maximum allowed width.
+ * @param {number} maxHeight Maximum allowed height.
+ * @param {number} quality Image export quality.
+ * @param {Function} resolve Promise resolve callback.
+ * @param {Function} reject Promise reject callback.
  */
-function loadImageAndCompress__compressImage(reader, maxWidth, maxHeight, quality, resolve, reject) {
+function loadImageAndCompress__compressImage(file, reader, maxWidth, maxHeight, quality, resolve, reject) {
     reader.onload = (event) => {
         const img = new Image();
         img.onload = () => {
@@ -152,12 +200,30 @@ function loadImageAndCompress__compressImage(reader, maxWidth, maxHeight, qualit
             const ctx = canvas.getContext('2d');
             let { width, height } = resizeImageToFit__compressImage(img, maxWidth, maxHeight, canvas);
             ctx.drawImage(img, 0, 0, width, height);
-            const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-            resolve(compressedBase64);
+            convertCanvasToBlob__compressImage(canvas, reject, resolve, file, quality);
         };
         img.onerror = () => reject('Fehler beim Laden des Bildes.');
         img.src = event.target.result;
     };
+}
+
+/**
+ * Converts a canvas element into a compressed Blob using the specified file type and quality.
+ * 
+ * @param {HTMLCanvasElement} canvas The canvas element containing the image.
+ * @param {Function} reject Promise reject callback.
+ * @param {Function} resolve Promise resolve callback.
+ * @param {File} file The original image file used to determine the MIME type.
+ * @param {number} quality The compression quality between 0 and 1.
+ */
+function convertCanvasToBlob__compressImage(canvas, reject, resolve, file, quality) {
+    canvas.toBlob((blob) => {
+        if (!blob) {
+            reject('Fehler beim Komprimieren des Bildes.');
+            return;
+        }
+        resolve(blob);
+    }, file.type, quality);
 }
 
 /**
@@ -188,7 +254,7 @@ function resizeImageToFit__compressImage(img, maxWidth, maxHeight, canvas) {
 /**
  * Converts a Blob object to a base64 encoded data string.
  * 
- * @param {Blob} blob - The blob object to convert.
+ * @param {Blob} blob The blob object to convert.
  * @returns {Promise<string>} A promise resolving to the base64 string result.
  */
 function blobToBase64(blob) {
@@ -231,13 +297,10 @@ function viewerOptionsCallback(allImages) {
         title: viewerTitleCallback(allImages),
         toolbar: {
             ...viewerStandardOptions,
-            download: {
-                show: true,
-                click: () => viewerDownloadFunction()
-            }
+            download: { show: true }
         },
         shown: () => {
-            viewerDownloadButtonSvg();
+            viewerDownloadButtonSvg(allImages);
             viewerFocusPlayButton();
             viewerToolbarAccessibility();
         }
@@ -275,7 +338,7 @@ function viewerFocusPlayButton() {
  * Injects the download SVG icon into the viewer toolbar download button, 
  * makes it accessible, and attaches click and keyboard event listeners.
  */
-function viewerDownloadButtonSvg() {
+function viewerDownloadButtonSvg(allImages) {
     const downloadButton = currentViewer.viewer.querySelector('.viewer-download');
     if (downloadButton && !downloadButton.querySelector('svg')) {
         downloadButton.style.display = 'flex';
@@ -283,9 +346,9 @@ function viewerDownloadButtonSvg() {
         downloadButton.style.justifyContent = 'center';
         downloadButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" width="16" height="16"><path d="M12,16L7,11L8.4,9.55l2.6,2.6V4h2v8.15l2.6-2.6L17,11l-5,5ZM6,20q-0.82,0-1.41-0.59T4,18V15H6v3H18V15h2v3q0,0.82-0.59,1.41T18,20H6Z"/></svg>';
         downloadButton.setAttribute('aria-label', 'download');
-        downloadButton.addEventListener('click', viewerDownloadFunction);
+        downloadButton.addEventListener('click', () => viewerDownloadFunction(allImages));
         downloadButton.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); viewerDownloadFunction(); }
+            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); viewerDownloadFunction(allImages); }
         });
     }
 }
@@ -293,11 +356,16 @@ function viewerDownloadButtonSvg() {
 /**
  * Triggers the download of the currently viewed image.
  */
-function viewerDownloadFunction() {
+function viewerDownloadFunction(allImages) {
+    if (isDownloading) return;
+    isDownloading = true;
     const link = document.createElement('a');
     link.href = currentViewer.image.src;
-    link.download = 'download';
+    let currentIndex = currentViewer ? currentViewer.index : 0;
+    let fileObj = allImages[currentIndex];
+    link.download = fileObj ? fileObj.fileName : 'download';
     link.click();
+    setTimeout(() => { isDownloading = false; }, 1000);
 }
 
 /**
